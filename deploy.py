@@ -10,6 +10,7 @@ from passfort_deployment import deploy_file, \
     argparse
 
 integrations = {
+    'duedil': './duedil',
 }
 
 sentry = {
@@ -114,7 +115,7 @@ def main(cluster, service, tag, build, deploy, all, auto):
     if deploy:
         for service in services:
             logging.info("Deploying {} to {}".format(container_tag, cluster))
-            deploy_container(service, container_tag)
+            deploy_container(cluster, service, container_tag)
             logging.info("Deploy completed")
 
 

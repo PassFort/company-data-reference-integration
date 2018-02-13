@@ -1,0 +1,51 @@
+{
+  "countryCode": "GB",
+  "companyId": "06999618",
+  "pagination": {
+    "offset": 0,
+    "limit": 10,
+    "total": 2
+  },
+  "telephoneNumbers": [
+    {
+      "telephoneNumber": "+44 20 3137 8490",
+      "address": {
+        "fullAddress": "26 Red Lion Square, London, WC1R 4AG",
+        "structuredAddress": {
+          "premises": "26",
+          "thoroughfare": "Red Lion Square",
+          "dependentLocality": null,
+          "postTown": "London",
+          "county": "London",
+          "postcode": "WC1R 4AG",
+          "countryCode": "GB"
+        },
+        "geolocation": {
+          "latitude": 51.51974,
+          "longitude": -0.11886
+        }
+      },
+      "tpsRegistered": false
+    },
+    {
+      "telephoneNumber": "+44 20 3695 2604",
+      "address": {
+        "fullAddress": "25 Christopher Street, London, EC2A 2BS",
+        "structuredAddress": {
+          "premises": "25",
+          "thoroughfare": "Christopher Street",
+          "dependentLocality": null,
+          "postTown": "London",
+          "county": "London",
+          "postcode": "EC2A 2BS",
+          "countryCode": "GB"
+        },
+        "geolocation": {
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "tpsRegistered": false
+    }
+  ]
+}

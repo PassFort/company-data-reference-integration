@@ -1,0 +1,15 @@
+{
+  "countryCode": "GB",
+  "companyId": "06999618",
+  "pagination": {
+    "offset": 0,
+    "limit": 10,
+    "total": 1
+  },
+  "websites": [
+    {
+      "website": "http://www.duedil.com",
+      "score": 1
+    }
+  ]
+}

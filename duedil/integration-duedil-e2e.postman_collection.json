@@ -1,0 +1,545 @@
+{
+	"info": {
+		"name": "integration:duedil:e2e",
+		"_postman_id": "5937d872-4d5f-f7f0-b578-bd73d3b7fca8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "[LIVE] [REGISTRY] Test PassFort GBR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2b053a90-24c6-48f2-8360-a75d36a3f4a8",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"It get's correct incorporation date\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.metadata.incorporation_date.v).to.eql(\"2015-04-28\");",
+							"});",
+							"",
+							"pm.test(\"It get's directors\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.officers.directors.length).to.eql(3);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"GBR\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"09565115\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/registry-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"registry-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [REGISTRY] Test AXA FRA",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "439ae3f4-380a-456f-8282-ddae90f2acb5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"It gets correct incorporation date\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.metadata.incorporation_date.v).to.eql(\"1957-01-01\");",
+							"});",
+							"",
+							"pm.test(\"It gets directors\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.officers.directors.length).to.be.gte(3);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"FRA\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"572093920\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/registry-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"registry-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [REGISTRY] Test Boylesports IRL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9d284f53-9967-440f-bfd4-b96c5d31b2d9",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"It gets correct incorporation date\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.metadata.incorporation_date.v).to.eql(\"1992-10-21\");",
+							"});",
+							"",
+							"pm.test(\"It gets directors\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.officers.directors.length).to.be.gte(3);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"IRL\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"194670\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/registry-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"registry-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [OWNERSHIP] Test PassFort GBR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4af2c10-d769-4d5e-8bdf-d2398992e958",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"It get's shareholder first name\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const henry = jsonData.output_data.ownership_structure.shareholders.filter(s => s.dob.v == '1991-08')[0]",
+							"    pm.expect(henry.last_name.v).to.eql(\"Irish\");",
+							"});",
+							"",
+							"pm.test(\"It get's shareholders\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.ownership_structure.shareholders.length).to.be.gte(10);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"GBR\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"09565115\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/ownership-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"ownership-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [OWNERSHIP] Test Boylesports IRL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "94e7786a-5361-40bf-b50f-91b639ba4057",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"It get's shareholders\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.ownership_structure.shareholders.length).to.be.gte(1);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"IRL\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"194670\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/ownership-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"ownership-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [REGISTRY] Bad Company Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a475c484-1def-41a0-acc5-b952ef7a1c03",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It returns blank output data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data).to.eql(null);",
+							"});",
+							"",
+							"pm.test(\"It returns blank raw data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.raw).to.eql(null);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"GBR\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"0956511a5\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/registry-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"registry-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [OWNERSHIP] Test Bad Company Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8aa5ace5-ce83-4090-b727-40911829dd90",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It returns blank output data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data).to.eql(null);",
+							"});",
+							"",
+							"pm.test(\"It returns blank raw data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.raw).to.eql(null);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"GBR\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"0956511a5\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/ownership-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"ownership-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [REGISTRY] Test Configuration With Global Coverage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ac098cfa-461e-44ce-991d-c15c9c4d6d62",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It gives no error message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors.length).to.eql(0);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"FRA\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"572093920\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/registry-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"registry-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [REGISTRY] Test Configuration With No Global Coverage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f3a29ae3-974c-44a0-894c-6e1ef9adf6cb",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It gives error message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors[0].message).to.eql(\"Country 'FRA' is not supported by the provider for this stage\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"FRA\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"09565115\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/registry-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"registry-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [OWNERSHIP] Test Configuration With Global Coverage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a7bec9e8-5029-4757-8e51-c2220d36f018",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It gives no error message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors.length).to.eql(0);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"FRA\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"572093920\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/ownership-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"ownership-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [OWNERSHIP] Test Configuration With No Global Coverage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9cc446e3-2cf7-409a-99bb-378371904cc3",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It gives error message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors[0].message).to.eql(\"Country 'FRA' is not supported by the provider for this stage\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"metadata\": {\n\t\t\t\"country_of_incorporation\": {\n\t\t\t\t\"v\": \"FRA\"\n\t\t\t},\n\t\t\t\"number\": {\n\t\t\t\t\"v\": \"09565115\"\n\t\t\t}\n\t\t}\n\t},\n\t\"config\": {\n\t\t\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/ownership-check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"ownership-check"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

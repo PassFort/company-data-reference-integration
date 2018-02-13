@@ -1,0 +1,43 @@
+{
+  "countryCode": "GB",
+  "companyId": "09565115",
+  "name": "Passfort Limited",
+  "type": "Private limited with share capital",
+  "incorporationCountry": "United Kingdom",
+  "incorporationDate": "2015-04-28",
+  "officialStatus": "Active",
+  "simplifiedStatus": "Active",
+  "numberOfEmployees": null,
+  "primaryWebsite": null,
+  "registeredAddress": {
+    "fullAddress": "The Studio 11 Princelet Street, 11 Princelet Street, London, E1 6QH",
+    "structuredAddress": {
+      "premises": "The Studio 11 Princelet Street, 11",
+      "thoroughfare": "Princelet Street",
+      "dependentLocality": null,
+      "postTown": "London",
+      "county": "London",
+      "postcode": "E1 6QH",
+      "countryCode": "GB"
+    },
+    "geolocation": {
+      "latitude": 51.519869999999997389750205911695957183837890625,
+      "longitude": -0.07260999999999999399147299072865280322730541229248046875
+    }
+  },
+  "charitableIdentitiesCount": 0,
+  "accounts": {
+    "filingType": "Total exemption full",
+    "currency": "GBP",
+    "latestAccountsDate": "2016-12-31",
+    "consolidatedAccounts": false,
+    "nextAccountsDueDate": "2017-05-26"
+  },
+  "financialSummary": {
+    "turnover": null,
+    "ebitda": null,
+    "postTaxProfit": null,
+    "totalAssets": 202114,
+    "netAssets": 164056
+  }
+}

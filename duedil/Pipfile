@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+
+[dev-packages]
+
+mypy = "==0.511"
+neovim = "*"
+
+
+[packages]
+
+gunicorn = "==19.5.0"
+flask = "==0.12.1"
+requests = "*"
+pycountry = "*"
+passfort-data-structure = {git = "git@github.com:PassFort/python-data-structure.git@c7c38649c40a10a428d0694d4ca6328159a3e317", editable = true}
+schemad-types = { git = "git@github.com:PassFort/python-schemad-types.git@a1e93f811b764da64a61c8515e729d2527fe9660", editable = true }
+dassert = { git = "git@github.com:PassFort/python-dassert.git@48233ad93ba806671376526bb25586100bcc0c5a", editable = true }
+sqlalchemy = "*"
+raven = {extras = ["flask"]}
+responses = "*"

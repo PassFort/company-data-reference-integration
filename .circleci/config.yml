@@ -56,6 +56,17 @@ job_aliases:
 version: 2.0
 
 jobs:
+    set_integration_duedil:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo duedil > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build:
         docker:
             - image: passfort/python-builder
@@ -147,3 +158,14 @@ jobs:
 
 workflows:
     version: 2
+
+    duedil:
+        jobs:
+            - set_integration_duedil
+            - build:
+                requires:
+                    - set_integration_duedil
+            - *unit
+            - *e2e
+            - *deploy_staging
+            - *deploy_production
