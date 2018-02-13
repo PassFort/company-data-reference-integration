@@ -43,7 +43,7 @@ job_aliases:
                     only:
                         - staging
     - &deploy_production
-        deploy_master:
+        deploy_integration_production:
             requires:
                 - e2e
                 - unit
