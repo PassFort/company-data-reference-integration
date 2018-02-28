@@ -11,6 +11,7 @@ from passfort_deployment import deploy_file, \
 
 integrations = {
     'duedil': './duedil',
+    'onfido': './onfido',
 }
 
 sentry = {

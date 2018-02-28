@@ -67,6 +67,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_onfido:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo onfido > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build:
         docker:
             - image: passfort/python-builder
@@ -165,6 +176,16 @@ workflows:
             - build:
                 requires:
                     - set_integration_duedil
+            - *unit
+            - *e2e
+            - *deploy_staging
+            - *deploy_production
+    onfido:
+        jobs:
+            - set_integration_onfido
+            - build:
+                requires:
+                  - set_integration_onfido
             - *unit
             - *e2e
             - *deploy_staging
