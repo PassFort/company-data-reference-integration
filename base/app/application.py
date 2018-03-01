@@ -2,6 +2,7 @@ import os
 import logging
 from flask import Flask
 from raven.contrib.flask import Sentry
+import app.json_logger
 
 app = Flask(__name__)
 
