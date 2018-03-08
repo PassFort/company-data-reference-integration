@@ -5,7 +5,7 @@ from passfort_data_structure.companies.metadata import CompanyMetadata
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
-from app.utils import paginate, make_url, base_request, DueDilServiceException,\
+from app.utils import get, make_url, base_request, DueDilServiceException,\
     convert_country_code, tagged, send_exception
 
 COMPANY_TYPES = {
@@ -44,6 +44,7 @@ def request_phonenumbers(country_code, company_number, credentials):
     return base_request(
         make_url(country_code, company_number, 'telephone-numbers', limit=1),
         credentials,
+        get
     )
 
 
@@ -51,6 +52,7 @@ def request_websites(country_code, company_number, credentials):
     return base_request(
         make_url(country_code, company_number, 'websites', limit=1),
         credentials,
+        get
     )
 
 
@@ -58,6 +60,7 @@ def get_metadata(country_code, company_number, credentials):
     status_code, json = base_request(
         f'/company/{country_code}/{company_number}.json',
         credentials,
+        get
     )
 
     if status_code == 404:

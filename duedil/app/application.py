@@ -9,10 +9,11 @@ from schemad_types.serialization import coerce_untracked
 from passfort_data_structure.entities.company_data import CompanyData
 from passfort_data_structure.misc.errors import EngineError, ProviderError
 
-from app.utils import DueDilServiceException
-from app.shareholders import request_shareholders
+from app.companies import request_company_search
 from app.officers import request_officers
 from app.metadata import get_metadata, CompanyTypeError
+from app.shareholders import request_shareholders
+from app.utils import DueDilServiceException
 
 app = Flask(__name__)
 
@@ -184,4 +185,38 @@ def ownership_check():
         raw=raw_response,
         errors=[],
         price=0,
+    )
+
+
+@app.route('/company-search', methods=['POST'])
+def company_search():
+    input_data = request.json['input_data']
+    config = request.json['config']
+    credentials = request.json['credentials']
+
+    country_of_incorporation = input_data['country']
+
+    has_global_coverage = config.get('has_global_coverage', False)
+    supported_countries = global_supported_countries if has_global_coverage else basic_supported_countries
+
+    if country_of_incorporation not in supported_countries:
+        return jsonify(errors=coerce_untracked([
+            EngineError.country_not_supported(country_of_incorporation)
+        ]))
+
+    country_code = supported_countries[country_of_incorporation]
+    search_term = input_data['query']
+
+    try:
+        raw_companies, companies = request_company_search(country_code, search_term, credentials)
+    except base_request_exceptions as e:
+        return jsonify(errors=coerce_untracked([
+            ProviderError.provider_connection_error('DueDil', f'- Company search request failed. {e}')
+        ]))
+
+    return jsonify(
+        output_data=companies,
+        raw=raw_companies,
+        errors=[],
+        price=0
     )

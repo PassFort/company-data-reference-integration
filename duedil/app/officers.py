@@ -6,7 +6,7 @@ from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.entity_type import EntityType
 from passfort_data_structure.entities.role import Role
 
-from app.utils import paginate, make_url, base_request
+from app.utils import paginate, make_url, base_request, get
 
 
 def request_officers(country_code, company_number, credentials):
@@ -31,10 +31,14 @@ def request_officers(country_code, company_number, credentials):
     url = f'/company/{country_code}/{company_number}/officers.json'
 
     def make_request(**kwargs):
-        status_code, json = base_request(make_url(country_code, company_number, 'officers', **kwargs), credentials)
+        status_code, json = base_request(
+            make_url(country_code, company_number, 'officers', **kwargs),
+            credentials,
+            get
+        )
         return status_code, json, json['officers']
 
-    status_code, json = base_request(url, credentials)
+    status_code, json = base_request(url, credentials, get)
     officers = json['officers']
 
     if status_code != 200:

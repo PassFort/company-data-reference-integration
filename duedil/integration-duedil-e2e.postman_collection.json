@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "integration:duedil:e2e",
-		"_postman_id": "5937d872-4d5f-f7f0-b578-bd73d3b7fca8",
+		"_postman_id": "4516fe2d-9ab1-418b-a202-c1fd56a6b850",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -55,7 +55,7 @@
 						"registry-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -108,7 +108,7 @@
 						"registry-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -161,7 +161,7 @@
 						"registry-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -215,7 +215,7 @@
 						"ownership-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -263,7 +263,7 @@
 						"ownership-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -312,7 +312,7 @@
 						"registry-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -361,7 +361,7 @@
 						"ownership-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -405,7 +405,7 @@
 						"registry-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -449,7 +449,7 @@
 						"registry-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -493,7 +493,7 @@
 						"ownership-check"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -535,6 +535,49 @@
 					"port": "8001",
 					"path": [
 						"ownership-check"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [COMPANY] Test company search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "882b5892-fba7-4930-9579-873ee6833eae",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It returns some companies\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.output_data.length).to.be.gt(10)",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"country\": \"GBR\",\n\t\t\"query\": \"Passf\"\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:8001/company-search",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"company-search"
 					]
 				},
 				"description": ""
