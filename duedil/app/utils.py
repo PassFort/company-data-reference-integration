@@ -78,7 +78,7 @@ def make_url(country_code, company_number, endpoint, offset=0, limit=10):
     return f'/company/{country_code}/{company_number}/{endpoint}.json?offset={offset}&limit={limit}'
 
 
-def base_request(url, credentials, method, json_data=None):
+def base_request(url, credentials, method=get, json_data=None):
     response = None
     json = None
 

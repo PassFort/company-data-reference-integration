@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "integration:duedil:e2e",
-		"_postman_id": "4516fe2d-9ab1-418b-a202-c1fd56a6b850",
+		"_postman_id": "9d5b093e-d162-4aad-9015-1d6b750d4258",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -569,6 +569,49 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"input_data\": {\n\t\t\"country\": \"GBR\",\n\t\t\"query\": \"Passf\"\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:8001/company-search",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"company-search"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "[LIVE] [COMPANY] Bad Country Code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6094eeb-d33c-4a87-aeb8-5e3c5d66a8b9",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"It handles bad country codes correctly\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors[0].message).to.equal(\"Country 'GB' is not supported by the provider for this stage\")",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_data\": {\n\t\t\"country\": \"GB\",\n\t\t\"query\": \"Passf\"\n\t},\n\t\"credentials\": {\n\t\t\"auth_token\": \"f1137e75bf253e6eb4231a9a09b5a76d\"\n\t},\n\t\"config\": {\n\t\t\"has_global_coverage\": true\n\t}\n}"
 				},
 				"url": {
 					"raw": "localhost:8001/company-search",
