@@ -1,5 +1,5 @@
 from app.utils import base_request, post
-from app.metadata import search_country_by_name
+from app.utils import convert_country_code
 
 
 def request_company_search(country_code, search_term, credentials, offset=0, limit=20):
@@ -7,7 +7,7 @@ def request_company_search(country_code, search_term, credentials, offset=0, lim
         return {
             'name': company['name'],
             'number': company['companyId'],
-            'country': search_country_by_name(company['countryCode']),
+            'country': convert_country_code(company['countryCode']),
         }
 
     url = f'/search/companies.json?offset={offset}&limit={limit}'
