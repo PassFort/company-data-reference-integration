@@ -89,7 +89,7 @@ def get_metadata(country_code, company_number, credentials):
         'number': tagged(json.get('companyId')),
         'addresses': [
             {
-                'type': 'STRUCTURE',
+                'type': 'registered_address',
                 'address': {
                     'premise': address.get('premises'),
                     'route': address.get('thoroughfare'),
