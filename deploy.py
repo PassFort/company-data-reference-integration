@@ -12,6 +12,7 @@ from passfort_deployment import deploy_file, \
 integrations = {
     'duedil': './duedil',
     'onfido': './onfido',
+    'bvd': './bvd',
 }
 
 sentry = {
@@ -49,7 +50,7 @@ def build_container(container_tag, service, private_key, push=False):
 def deploy_container(cluster, service, container_tag):
     container_uri = get_container_uri(service, container_tag)
     build_dir = integrations[service]
-    sentry_url = sentry.get(cluster)
+    sentry_url = sentry.get(cluster, '')
 
     # Container
     deploy_file(

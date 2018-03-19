@@ -6,7 +6,7 @@ It is also setup for continuous integration and deployment of these services. St
 
 ## Service API & Responsibilities
 
-Please see: TODO: LINK
+Please see: https://docs.google.com/document/d/1eHZANyyfG9WZT3-k3mVFFqu7u2LxpkmLweQej8710lU
 
 # Writing a new service
 
