@@ -1,0 +1,30 @@
+{
+    "pagination": {
+        "offset": 0,
+        "limit": 5,
+        "total": 1429
+    },
+    "filters": {
+        "name": "test"
+    },
+    "companies": [
+        {
+            "countryCode": "GB",
+            "companyId": "09251999",
+            "name": "Test Ltd",
+            "type": "Private limited with share capital",
+            "incorporationDate": "2014-10-07",
+            "officialStatus": "Active",
+            "simplifiedStatus": "Active"
+        },
+        {
+            "countryCode": "GB",
+            "companyId": "09251990",
+            "name": "Test2 Ltd",
+            "type": "Private limited with share capital",
+            "incorporationDate": "2014-11-07",
+            "officialStatus": "Active",
+            "simplifiedStatus": "Active"
+        }
+    ]
+}

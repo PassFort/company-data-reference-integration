@@ -5,7 +5,7 @@ from functools import reduce
 from passfort_data_structure.companies.ownership import Shareholder
 from passfort_data_structure.entities.entity_type import EntityType
 
-from app.utils import get_entity_type, DueDilServiceException, convert_country_code, make_url, \
+from app.utils import get, get_entity_type, DueDilServiceException, convert_country_code, make_url, \
     paginate, base_request, send_exception
 
 
@@ -36,10 +36,14 @@ def request_shareholders(country_code, company_number, credentials):
     url = f'/company/{country_code}/{company_number}/shareholders.json'
 
     def make_request(**kwargs):
-        status_code, json = base_request(make_url(country_code, company_number, 'shareholders', **kwargs), credentials)
+        status_code, json = base_request(
+            make_url(country_code, company_number, 'shareholders', **kwargs),
+            credentials,
+            get
+        )
         return status_code, json, json['shareholders']
 
-    status_code, json = base_request(url, credentials)
+    status_code, json = base_request(url, credentials, get)
     shareholders = json['shareholders']
 
     if status_code != 200:
