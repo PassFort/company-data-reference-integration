@@ -35,7 +35,7 @@ def _get_pages(pagination):
 def paginate(url, pagination, credentials):
     pages = _get_pages(pagination)
     urls = [f'{url}?offset={offset}&limit={limit}' for offset, limit in pages]
-    return [base_request(url, credentials) for url in urls]
+    return [base_request(url, credentials, get) for url in urls]
 
 
 def retry(f, excs, attempts=3):
@@ -49,10 +49,23 @@ def retry(f, excs, attempts=3):
                 raise
 
 
-def get(url, credentials):
+def get(url, credentials, json_data=None):
     response = requests.get(
         BASE_API + url,
         headers={'X-AUTH-TOKEN': credentials.get('auth_token')},
+    )
+
+    if 500 <= response.status_code < 600:
+        raise HTTPError('Server Error', response)
+
+    return response
+
+
+def post(url, credentials, json_data):
+    response = requests.post(
+        BASE_API + url,
+        headers={'X-AUTH-TOKEN': credentials.get('auth_token')},
+        json=json_data
     )
 
     if 500 <= response.status_code < 600:
@@ -65,11 +78,11 @@ def make_url(country_code, company_number, endpoint, offset=0, limit=10):
     return f'/company/{country_code}/{company_number}/{endpoint}.json?offset={offset}&limit={limit}'
 
 
-def base_request(url, credentials):
+def base_request(url, credentials, method=get, json_data=None):
     response = None
     json = None
 
-    response = retry(lambda: get(url, credentials), (RequestException, HTTPError))
+    response = retry(lambda: method(url, credentials, json_data), (RequestException, HTTPError))
     json = response.json()
 
     if response.status_code != 200:
