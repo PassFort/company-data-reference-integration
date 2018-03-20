@@ -10,9 +10,9 @@ from app.utils import get, make_url, base_request, DueDilServiceException,\
 
 COMPANY_TYPES = {
     'Private limited with share capital': 'ltd',
-    'Other': 'unknown',
-    '': 'unknown',
-    None: 'unknown',
+    'Other': 'other',
+    '': 'other',
+    None: 'other',
 }
 
 
@@ -33,7 +33,7 @@ def search_country_by_name(q):
 
 def get_company_type(type_):
     try:
-        COMPANY_TYPES[type_]
+        return COMPANY_TYPES[type_]
     except KeyError:
         exc = CompanyTypeError(f'Unable to process company type {type_}')
         send_exception(exc, custom_data={'company_type': type_})
