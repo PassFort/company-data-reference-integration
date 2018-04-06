@@ -2,9 +2,6 @@ import os
 import logging
 from flask import Flask, jsonify, request
 from raven.contrib.flask import Sentry
-import app.json_logger as json_logger
-from requests import RequestException
-from json import JSONDecodeError
 
 from bvd.format_utils import CustomJSONEncoder
 from bvd.utils import match, get_data, get_query_string, BvDServiceException, \
@@ -79,9 +76,15 @@ def registry_check():
     error, bvd_id = get_bvd_id(credentials, input_data)
     if bvd_id:
         query = get_query_string('registry')
-        error, raw_data = run_check(lambda: get_data(credentials, [bvd_id], query))
+        error, raw_data = run_check(
+            lambda: get_data(credentials, [bvd_id], query)
+        )
+
         if raw_data:
-            output_data = format_registry_data(raw_data)
+            try:
+                output_data = format_registry_data(raw_data)
+            except Exception as e:
+                error = BvDError(e)
 
     return jsonify(
         output_data=output_data if output_data else {},
@@ -112,9 +115,15 @@ def ownership_check():
     error, bvd_id = get_bvd_id(credentials, input_data)
     if bvd_id:
         query = get_query_string('ownership')
-        error, raw_data = run_check(lambda: get_data(credentials, [bvd_id], query))
+        error, raw_data = run_check(
+            lambda: get_data(credentials, [bvd_id], query)
+        )
+
         if raw_data:
-            output_data = format_ownership_data(raw_data)
+            try:
+                output_data = format_ownership_data(raw_data)
+            except Exception as e:
+                error = BvDError(e)
 
     return jsonify(
         output_data=output_data if output_data else {},
