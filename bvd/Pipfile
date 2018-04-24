@@ -1,16 +1,11 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
-
 [dev-packages]
-
 mypy = "==0.511"
 
-
 [packages]
-
 gunicorn = "==19.5.0"
 flask = "==0.12.1"
 requests = "*"
@@ -19,3 +14,4 @@ python-json-logger = "*"
 mock = "*"
 python-dateutil = "*"
 pycountry = "*"
+coverage = "*"
