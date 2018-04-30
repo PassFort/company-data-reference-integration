@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+integrations=(
+    bvd
+    duedil
+    onfido
+)
+results=""
+
+for integration in ${integrations[@]}
+do
+    results+=" ${integration}/.coverage"
+    cd $integration
+    setsid pipenv run ./coverage &
+    wait $!
+    cd -
+done
+
+coverage combine$results
+coverage report

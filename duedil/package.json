@@ -4,6 +4,7 @@
   "scripts": {
     "unit": "pipenv run python -m unittest discover app",
     "e2e": "pipenv run python -m unittest discover e2e",
-    "start": "pipenv run python main.py"
+    "start": "pipenv run python main.py",
+    "coverage": "pipenv run coverage run --omit='e2e/*','**/test_*' --source . main.py"
   }
 }

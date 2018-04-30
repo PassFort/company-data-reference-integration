@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+yarn coverage &
+server_pid=$!
+sleep 2
+yarn e2e
+kill -INT -- -$(ps -o pgid= $server_pid | grep -o '[0-9]*')
+
