@@ -25,6 +25,7 @@ RUN mkdir /srv/logs/ && \
 
 COPY main.py /src
 COPY app /src/app
+COPY e2e /src/e2e
 COPY *.postman_collection.json /src
 
 # Ports.

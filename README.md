@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/PassFort/integrations/branch/staging/graph/badge.svg?token=NGQIrOfkch)](https://codecov.io/gh/PassFort/integrations)
+
 # Integrations
 
 This repo contains code for wrapping third party services.

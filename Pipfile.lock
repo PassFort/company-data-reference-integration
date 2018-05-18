@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "518e897479dbb92c109eaf465443f292be84313ed6fc0482874a651074707577"
+            "sha256": "6e8025b52f59f7a6cf606321d39b34039fd46c7f0d62d97fe8fe80602d3da6f2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -29,6 +29,14 @@
                 "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
             ],
             "version": "==3.0.4"
+        },
+        "codecov": {
+            "hashes": [
+                "sha256:8ed8b7c6791010d359baed66f84f061bba5bd41174bf324c31311e8737602788",
+                "sha256:ae00d68e18d8a20e9c3288ba3875ae03db3a8e892115bf9b83ef20507732bed4"
+            ],
+            "index": "pypi",
+            "version": "==2.0.15"
         },
         "coverage": {
             "hashes": [
@@ -81,8 +89,7 @@
         },
         "passfort-deployment": {
             "editable": true,
-            "git": "git@github.com:PassFort/deployment.git",
-            "ref": "3de7b3f8d634795912b1a2e94fa55fee64f9f378"
+            "git": "git@github.com:PassFort/deployment.git@3de7b3f8d634795912b1a2e94fa55fee64f9f378"
         },
         "requests": {
             "hashes": [

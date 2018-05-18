@@ -17,3 +17,5 @@ flask = "==0.12.1"
 requests = "*"
 raven = {extras = ["flask"]}
 python-json-logger = "*"
+coverage = "*"
+codecov = "*"

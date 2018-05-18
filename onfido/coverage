@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
-yarn coverage &
-server_pid=$!
-sleep 2
+#!/bin/sh -i
+pipenv run coverage run --branch --omit='e2e/*','**/test_*' --source . main.py &
+sleep 5
 yarn e2e
-kill -INT -- -$(ps -o pgid= $server_pid | grep -o '[0-9]*')
-
+kill -INT $(jobs -p)
+while [ ! -f .coverage ]; do sleep 1; done
+pipenv run coverage xml -i
+integration_name=$(echo $INTEGRATION||echo ${PWD##*/})
+#sed -i "s/<source>\/src<\/source>/<source>\/${integration_name}<\/source>/g" coverage.xml
+sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml

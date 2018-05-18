@@ -19,3 +19,5 @@ raven = {extras = ["flask"]}
 responses = "*"
 nameparser = "*"
 coverage = "*"
+codecov = "*"
+duedil = "*"

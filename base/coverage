@@ -1,0 +1,5 @@
+#!/bin/sh -i
+pipenv run coverage run --omit='e2e/*','**/test_*' --source . main.py &
+sleep 10
+yarn e2e
+kill -INT $(jobs -p)

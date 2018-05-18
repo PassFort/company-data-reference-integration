@@ -3,6 +3,9 @@
   "license": "Private",
   "scripts": {
     "unit": "pipenv run python -m unittest discover .",
-    "e2e": "pipenv run python -m unittest e2e.e2e"
+    "e2e": "pipenv run python -m unittest e2e.e2e",
+    "coverage": "./coverage && yarn run coverage:upload",
+    "coverage:server": "pipenv run coverage run --omit='e2e/*','**/test_*' --source . main.py",
+    "coverage:upload": "pipenv run codecov -F worldcheck -X search -f coverage.xml"
   }
 }
