@@ -89,6 +89,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_worldcheck:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo worldcheck > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build:
         docker:
             - image: passfort/python-builder
@@ -208,6 +219,17 @@ workflows:
             - build:
                 requires:
                   - set_integration_bvd
+            - *unit
+            - *e2e
+            - *deploy_staging
+            - *deploy_production
+
+    worldcheck:
+        jobs:
+            - set_integration_worldcheck
+            - build:
+                requires:
+                  - set_integration_worldcheck
             - *unit
             - *e2e
             - *deploy_staging
