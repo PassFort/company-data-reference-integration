@@ -13,6 +13,7 @@ integrations = {
     'duedil': './duedil',
     'onfido': './onfido',
     'bvd': './bvd',
+    'worldcheck': './worldcheck'
 }
 
 sentry = {
