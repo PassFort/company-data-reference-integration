@@ -16,7 +16,6 @@ import re  # noqa: F401
 
 import six
 
-from swagger_client.models.group import Group  # noqa: F401,E501
 from swagger_client.models.status_type import StatusType  # noqa: F401,E501
 
 

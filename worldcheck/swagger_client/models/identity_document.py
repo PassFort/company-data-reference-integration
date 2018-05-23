@@ -16,7 +16,6 @@ import re  # noqa: F401
 
 import six
 
-from swagger_client.models.entity import Entity  # noqa: F401,E501
 from swagger_client.models.identity_document_location_type import IdentityDocumentLocationType  # noqa: F401,E501
 
 
