@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "63ee20e96d1c8ce3b3d4a24c87b293f4c5c934984e7fe60f0a769e6caa4ecbb0"
+            "sha256": "a7652d5d189e10f1ef106073b6f7a81a0eecfd0d0c447f46d17efdbc7f41701b"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -93,6 +93,13 @@
             ],
             "version": "==1.0"
         },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:1adb80e7a782c12e52ef9a8182bebeb73f1d7e24e374397af06fb4956c8dc5c0",
+                "sha256:e27001de32f627c22380a688bcc43ce83504a7bc5da472209b4c70f02829f0b8"
+            ],
+            "version": "==2.7.3"
+        },
         "python-json-logger": {
             "hashes": [
                 "sha256:30999d1d742ecf6645991a2ce9273188505e98b713ad63be06aabff47dd1b3c4",
@@ -120,6 +127,10 @@
                 "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
             ],
             "version": "==1.11.0"
+        },
+        "swagger-client": {
+            "editable": true,
+            "git": "git@github.com:PassFort/python-worldcheck-client.git@5f11c9529a9d6f10d3568947ce7f053877268d43"
         },
         "urllib3": {
             "hashes": [
