@@ -6,18 +6,18 @@ verify_ssl = true
 
 [dev-packages]
 
-mock = "*"
 mypy = "==0.511"
 neovim = "*"
-freezegun = "*"
 
 
 [packages]
+
+freezegun = "*"
+mock = "*"
 
 gunicorn = "==19.5.0"
 flask = "==0.12.1"
 requests = "*"
 raven = {extras = ["flask"]}
 python-json-logger = "*"
-six = "*"
 swagger-client = {git = "git@github.com:PassFort/python-worldcheck-client.git@5f11c9529a9d6f10d3568947ce7f053877268d43", editable=true}
