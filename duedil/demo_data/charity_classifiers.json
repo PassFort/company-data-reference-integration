@@ -1,0 +1,52 @@
+{
+  "countryCode": "GB",
+  "charityId": "ew-261017-0",
+  "pagination": {
+    "offset": 0,
+    "limit": 10,
+    "total": 17
+  },
+  "filters": null,
+  "classifiers": [
+    {
+      "classifier": "People of A Particular Ethnic Or Racial Origin",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "Other Charities Or Voluntary Bodies",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "The General Public\/Mankind",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "Other Defined Groups",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "Children\/Young People",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "People With Disabilities",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "Elderly\/Old People",
+      "type": "beneficiary"
+    },
+    {
+      "classifier": "Sponsors Or Undertakes Research",
+      "type": "activity"
+    },
+    {
+      "classifier": "Makes Grants To Organisations",
+      "type": "activity"
+    },
+    {
+      "classifier": "Education\/Training",
+      "type": "purpose"
+    }
+  ]
+}

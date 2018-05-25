@@ -30,19 +30,12 @@ def request_officers(country_code, company_number, credentials):
     """
     url = f'/company/{country_code}/{company_number}/officers.json'
 
-    def make_request(**kwargs):
-        status_code, json = base_request(
-            make_url(country_code, company_number, 'officers', **kwargs),
-            credentials,
-            get
-        )
-        return status_code, json, json['officers']
-
     status_code, json = base_request(url, credentials, get)
-    officers = json['officers']
 
     if status_code != 200:
         return None, None
+
+    officers = json['officers']
 
     pagination = json.get('pagination') or {}
 

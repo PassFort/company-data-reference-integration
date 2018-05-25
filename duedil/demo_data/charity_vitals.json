@@ -1,0 +1,62 @@
+{
+  "countryCode": "GB",
+  "charityId": "ew-261017-0",
+  "name": "Macmillan Cancer Support",
+  "registeredAs": {
+    "registeredCharityNumber": "261017",
+    "subsidiaryNumber": "0",
+    "nationalJurisdiction": "United Kingdom",
+    "regionalJurisdictions": [
+      {
+        "name": "United Kingdom"
+      },
+      {
+        "name": "England"
+      },
+      {
+        "name": "Wales"
+      }
+    ],
+    "areaOfBenefit": null,
+    "charitableObjects": "TO PROVIDE SUPPORT, ASSISTANCE AND INFORMATION DIRECTLY OR INDIRECTLY TO PEOPLE AFFECTED BY CANCER; TO FURTHER AND BUILD CANCER AWARENESS, EDUCATION AND RESEARCH; TO PROMOTE AND INFLUENCE EFFECTIVE CARE, INVOLVEMENT AND SUPPORT FOR PEOPLE AFFECTED BY CANCER"
+  },
+  "isFilingCharity": true,
+  "isSubsidiaryCharity": false,
+  "firstRegisteredDate": "1989-06-21",
+  "currentStatus": {
+    "status": "REGISTERED",
+    "startDate": "1989-06-21",
+    "reasonForChange": null
+  },
+  "numberOfEmployees": 1642,
+  "numberOfVolunteers": 20000,
+  "filingParent": null,
+  "corporateIdentity": {
+    "countryCode": "GB",
+    "companyId": "02400969",
+    "name": "Macmillan Cancer Support",
+    "officialStatus": "Active",
+    "simplifiedStatus": "Active"
+  },
+  "primaryWebsite": "macmillan.org.uk",
+  "officialContact": {
+    "name": "Mrs Victoria Benson",
+    "email": "henry@passfort.com",
+    "telephoneNumber": "0123456789",
+    "address": {
+      "fullAddress": "Macmillan Cancer Support, 89 Albert Embankment, London, SE1 7UQ"
+    }
+  },
+  "accounts": {
+    "latestAccountsStartDate": "2016-01-01",
+    "latestAccountsEndDate": "2016-12-31",
+    "currency": "GBP",
+    "consolidatedAccounts": true,
+    "charityOnlyAccounts": null
+  },
+  "financialSummary": {
+    "totalIncomeAndEndowments": 247441000,
+    "totalExpenditure": 245591000,
+    "totalFunds": 64302000
+  }
+}

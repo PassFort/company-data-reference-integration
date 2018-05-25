@@ -1,0 +1,41 @@
+{
+  "countryCode": "GB",
+  "charityId": "ew-261017-0",
+  "pagination": {
+    "offset": 0,
+    "limit": 10,
+    "total": 12
+  },
+  "trustees": [
+    {
+      "sourceName": "Dr Jagjit Singh Ahluwalia"
+    },
+    {
+      "sourceName": "Mr Andrew Duff"
+    },
+    {
+      "sourceName": "Mr Feilim Mackle"
+    },
+    {
+      "sourceName": "Mr Iain Charles Andrew Cornish"
+    },
+    {
+      "sourceName": "Mr Richard Andrew Murley"
+    },
+    {
+      "sourceName": "Mr Toby Strauss"
+    },
+    {
+      "sourceName": "Ms Jane Cummings"
+    },
+    {
+      "sourceName": "Ms Julia Palca"
+    },
+    {
+      "sourceName": "Ms Suki Thompson"
+    },
+    {
+      "sourceName": "Ms Susan Carol Langley"
+    }
+  ]
+}
