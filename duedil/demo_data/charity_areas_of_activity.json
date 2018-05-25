@@ -1,0 +1,29 @@
+{
+  "countryCode": "GB",
+  "charityId": "ew-261017-0",
+  "pagination": {
+    "offset": 0,
+    "limit": 10,
+    "total": 6
+  },
+  "areasOfActivity": [
+    {
+      "sourceName": "Throughout England and Wales"
+    },
+    {
+      "sourceName": "Solomon Islands"
+    },
+    {
+      "sourceName": "Northern Ireland"
+    },
+    {
+      "sourceName": "Jersey"
+    },
+    {
+      "sourceName": "St Barthelemy"
+    },
+    {
+      "sourceName": "India"
+    }
+  ]
+}

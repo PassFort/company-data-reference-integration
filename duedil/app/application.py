@@ -14,6 +14,7 @@ from app.officers import request_officers
 from app.metadata import get_metadata, CompanyTypeError
 from app.shareholders import request_shareholders
 from app.utils import DueDilServiceException
+from app.charities import get_charity
 
 app = Flask(__name__)
 
@@ -134,7 +135,6 @@ def registry_check():
 
 @app.route('/ownership-check', methods=['POST'])
 def ownership_check():
-    import random
     input_data = request.json['input_data']
     config = request.json['config']
     credentials = request.json['credentials']
@@ -219,4 +219,33 @@ def company_search():
         raw=raw_companies,
         errors=[],
         price=0
+    )
+
+
+@app.route('/charity-check', methods=['POST'])
+def charity_check():
+    input_data = request.json['input_data']
+    credentials = request.json['credentials']
+
+    company_number = input_data['metadata']['number']
+    country_of_incorporation = input_data['metadata']['country_of_incorporation']
+
+    supported_countries = {
+        'GBR': 'gb'
+    }
+
+    if country_of_incorporation not in supported_countries:
+        return jsonify(errors=coerce_untracked([
+            EngineError.country_not_supported(country_of_incorporation)
+        ]))
+
+    country_code = supported_countries[country_of_incorporation]
+
+    raw_response, response = get_charity(country_code, company_number, credentials)
+
+    return jsonify(
+        output_data=coerce_untracked(response),
+        raw=raw_response,
+        errors=[],
+        price=0,
     )
