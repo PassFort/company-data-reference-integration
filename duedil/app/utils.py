@@ -105,10 +105,12 @@ def convert_country_code(country_code):
 
 
 def send_exception(exception, custom_data=None):
-    from app.application import sentry
+    try:
+        from app.application import sentry
 
-    if sentry:
         sentry.captureException(
             exc_info=(exception.__class__, exception, exception.__traceback__),
             extra=custom_data
         )
+    except ImportError:
+        pass

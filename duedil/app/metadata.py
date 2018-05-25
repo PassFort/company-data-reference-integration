@@ -37,7 +37,7 @@ def get_company_type(type_):
     except KeyError:
         exc = CompanyTypeError(f'Unable to process company type {type_}')
         send_exception(exc, custom_data={'company_type': type_})
-        raise exc
+        return 'other'
 
 
 def request_phonenumbers(country_code, company_number, credentials):
