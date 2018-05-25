@@ -21,6 +21,10 @@ spec:
       containers:
       - name: integrations-duedil
         image: {container_uri}
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "256Mi"
         ports:
         - containerPort: 8001
         env:
