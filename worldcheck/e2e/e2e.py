@@ -143,7 +143,7 @@ class WorldCheckScreenCase(TestCase):
                     "personal_details": PERSONAL_DETAILS_TM
                 }
             })
-            print(response.json())
+
             self.assertEqual(response.status_code, 200)
             result = response.json()
 

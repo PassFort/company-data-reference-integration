@@ -196,11 +196,4 @@ class ScreeningRequest(Model):
 
 class ScreeningResultsRequest(Model):
     credentials = ModelType(WorldCheckCredentials, required=True)
-
     is_demo = BooleanType(default=False)
-
-
-
-
-
-
