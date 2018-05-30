@@ -7,6 +7,7 @@ default_setup: &default_setup
             - "e4:b4:92:9b:6a:57:f5:8a:5d:ee:0a:29:b4:6a:cf:65"
     - run: sudo pip install pipenv
 
+
 aliases:
     - &attach_to_workspace
         attach_workspace:
@@ -25,37 +26,39 @@ aliases:
             gcloud config set project core-gearbox-112418
     - &unit
       steps:
+        - checkout
+        - *attach_to_workspace
+        - *setup_gcp
+        - setup_remote_docker:
+            docker_layer_caching:
+        - run: |
+            export INTEGRATION=`cat workspace/integration_name`
+            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+            gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
+        - run: |
+            export INTEGRATION=`cat workspace/integration_name`
+            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+            docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+
+    - &deploy_staging_common
+      docker:
+          - image: passfort/python-builder
+      steps:
           - checkout
           - *attach_to_workspace
+          - *auth_ssh
           - *setup_gcp
-          - setup_remote_docker
-              docker_layer_caching:
           - run: |
-              export INTEGRATION=`cat workspace/integration_name`
-              export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-              gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-          - run: |
-              export INTEGRATION=`cat workspace/integration_name`
-              export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-              docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+              pipenv --three
+              pipenv install
+              pipenv run python deploy.py -ds `cat workspace/integration_name` staging
 
 job_aliases:
     - &e2e
         e2e:
             requires:
                 - build
-    - &deploy_staging
-        deploy_integration_staging:
-            requires:
-                - e2e
-                - unit_duedil
-                - unit_onfido
-                - unit_bvd
-                - unit_worldcheck
-            filters:
-                branches:
-                    only:
-                        - staging
+
     - &deploy_production
         deploy_integration_production:
             requires:
@@ -146,24 +149,24 @@ jobs:
     unit_duedil:
         docker:
             - image: passfort/python-builder
-        - *unit
+        <<: *unit
 
 
     unit_onfido:
         docker:
             - image: passfort/python-builder
-        - *unit
+        <<: *unit
 
     unit_bvd:
         docker:
             - image: passfort/python-builder
-        - *unit
+        <<: *unit
 
 
     unit_worldcheck:
         docker:
             - image: passfort/python-builder
-        - *unit
+        <<: *unit
 
     e2e:
         docker:
@@ -181,18 +184,17 @@ jobs:
                 docker run --name integration -d eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
             - run: docker exec integration yarn run e2e
 
-    deploy_integration_staging:
-        docker:
-            - image: passfort/python-builder
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *auth_ssh
-            - *setup_gcp
-            - run: |
-                pipenv --three
-                pipenv install
-                pipenv run python deploy.py -ds `cat workspace/integration_name` staging
+    deploy_duedil_staging:
+        <<: *deploy_staging_common
+
+    deploy_onfido_staging:
+        <<: *deploy_staging_common
+
+    deploy_bvd_staging:
+        <<: *deploy_staging_common
+
+    deploy_worldcheck_staging:
+        <<: *deploy_staging_common
 
     deploy_integration_production:
         docker:
@@ -220,7 +222,14 @@ workflows:
                 requires:
                     - build
             - *e2e
-            - *deploy_staging
+            - deploy_duedil_staging:
+                requires:
+                        - e2e
+                        - unit_duedil
+                filters:
+                    branches:
+                        only:
+                            - staging
             - *deploy_production
     onfido:
         jobs:
@@ -232,7 +241,14 @@ workflows:
                 requires:
                     - build
             - *e2e
-            - *deploy_staging
+            - deploy_onfido_staging:
+                requires:
+                        - e2e
+                        - unit_onfido
+                filters:
+                    branches:
+                        only:
+                            - staging
             - *deploy_production
 
     bvd:
@@ -245,7 +261,14 @@ workflows:
                 requires:
                     - build
             - *e2e
-            - *deploy_staging
+            - deploy_bvd_staging:
+                requires:
+                        - e2e
+                        - unit_bvd
+                filters:
+                    branches:
+                        only:
+                            - staging
             - *deploy_production
 
     worldcheck:
@@ -258,5 +281,11 @@ workflows:
                 requires:
                     - build
             - *e2e
-            - *deploy_staging
-            - *deploy_production
+            - deploy_worldcheck_staging:
+                requires:
+                        - e2e
+                        - unit_worldcheck
+                filters:
+                    branches:
+                        only:
+                            - staging
