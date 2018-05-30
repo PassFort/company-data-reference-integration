@@ -24,20 +24,20 @@ aliases:
             gcloud config set compute/zone europe-west1-b
             gcloud config set project core-gearbox-112418
     - &unit
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *setup_gcp
-            - setup_remote_docker:
-                docker_layer_caching:
-            - run: |
-                export INTEGRATION=`cat workspace/integration_name`
-                export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-                gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-            - run: |
-                export INTEGRATION=`cat workspace/integration_name`
-                export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-                docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+      steps:
+          - checkout
+          - *attach_to_workspace
+          - *setup_gcp
+          - setup_remote_docker
+              docker_layer_caching:
+          - run: |
+              export INTEGRATION=`cat workspace/integration_name`
+              export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+              gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
+          - run: |
+              export INTEGRATION=`cat workspace/integration_name`
+              export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+              docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
 
 job_aliases:
     - &e2e
@@ -147,29 +147,24 @@ jobs:
         docker:
             - image: passfort/python-builder
         - *unit
-        requires:
-            - build
+
 
     unit_onfido:
         docker:
             - image: passfort/python-builder
         - *unit
-        requires:
-            - build
 
     unit_bvd:
         docker:
             - image: passfort/python-builder
         - *unit
-        requires:
-            - build
+
 
     unit_worldcheck:
         docker:
             - image: passfort/python-builder
         - *unit
-        requires:
-            - build
+
     e2e:
         docker:
             - image: passfort/python-builder
@@ -221,7 +216,9 @@ workflows:
             - build:
                 requires:
                     - set_integration_duedil
-            - unit_duedil
+            - unit_duedil:
+                requires:
+                    - build
             - *e2e
             - *deploy_staging
             - *deploy_production
@@ -231,7 +228,9 @@ workflows:
             - build:
                 requires:
                   - set_integration_onfido
-            - unit_onfido
+            - unit_onfido:
+                requires:
+                    - build
             - *e2e
             - *deploy_staging
             - *deploy_production
@@ -242,7 +241,9 @@ workflows:
             - build:
                 requires:
                   - set_integration_bvd
-            - unit_bvd
+            - unit_bvd:
+                requires:
+                    - build
             - *e2e
             - *deploy_staging
             - *deploy_production
@@ -253,7 +254,9 @@ workflows:
             - build:
                 requires:
                   - set_integration_worldcheck
-            - unit_worldcheck
+            - unit_worldcheck:
+                requires:
+                    - build
             - *e2e
             - *deploy_staging
             - *deploy_production
