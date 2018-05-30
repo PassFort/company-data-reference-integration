@@ -29,7 +29,15 @@ job_aliases:
         unit:
             requires:
                 - build
+    - &unit_worldcheck
+        unit:
+            requires:
+                - build
     - &e2e
+        e2e:
+            requires:
+                - build
+    - &e2e_worldcheck
         e2e:
             requires:
                 - build
@@ -230,7 +238,7 @@ workflows:
             - build:
                 requires:
                   - set_integration_worldcheck
-            - *unit
-            - *e2e
+            - *unit_worldcheck
+            - *e2e_worldcheck
             - *deploy_staging
             - *deploy_production
