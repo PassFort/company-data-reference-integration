@@ -7,6 +7,7 @@ default_setup: &default_setup
             - "e4:b4:92:9b:6a:57:f5:8a:5d:ee:0a:29:b4:6a:cf:65"
     - run: sudo pip install pipenv
 
+
 aliases:
     - &attach_to_workspace
         attach_workspace:
@@ -23,35 +24,64 @@ aliases:
             gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
             gcloud config set compute/zone europe-west1-b
             gcloud config set project core-gearbox-112418
-
-job_aliases:
     - &unit
-        unit:
-            requires:
-                - build
+      docker:
+        - image: passfort/python-builder
+      steps:
+        - checkout
+        - *attach_to_workspace
+        - *setup_gcp
+        - setup_remote_docker:
+            docker_layer_caching:
+        - run: |
+            export INTEGRATION=`cat workspace/integration_name`
+            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+            gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
+        - run: |
+            export INTEGRATION=`cat workspace/integration_name`
+            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+            docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
     - &e2e
-        e2e:
-            requires:
-                - build
-    - &deploy_staging
-        deploy_integration_staging:
-            requires:
-                - e2e
-                - unit
-            filters:
-                branches:
-                    only:
-                        - staging
-    - &deploy_production
-        deploy_integration_production:
-            requires:
-                - e2e
-                - unit
-            filters:
-                branches:
-                    only:
-                        - master
+      docker:
+        - image: passfort/python-builder
+      steps:
+        - checkout
+        - *attach_to_workspace
+        - *setup_gcp
+        - setup_remote_docker:
+            docker_layer_caching:
+        - run: |
+            export INTEGRATION=`cat workspace/integration_name`
+            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
+            gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
+            docker run --name integration -d eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
+        - run: docker exec integration yarn run e2e
 
+    - &deploy_staging_common
+      docker:
+          - image: passfort/python-builder
+      steps:
+          - checkout
+          - *attach_to_workspace
+          - *auth_ssh
+          - *setup_gcp
+          - run: |
+              pipenv --three
+              pipenv install
+              pipenv run python deploy.py -ds `cat workspace/integration_name` staging
+
+    - &deploy_production_common
+      docker:
+          - image: passfort/python-builder
+      steps:
+          - checkout
+          - *attach_to_workspace
+          - *auth_ssh
+          - *setup_gcp
+          - run: |
+              pipenv --three
+              pipenv install
+              pipenv run python deploy.py -ds `cat workspace/integration_name` production
 
 version: 2.0
 
@@ -129,65 +159,53 @@ jobs:
                     cd `cat workspace/integration_name`
                     grep Raven src/*.py || exit 1
 
-    unit:
-        docker:
-            - image: passfort/python-builder
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *setup_gcp
-            - setup_remote_docker:
-                docker_layer_caching:
-            - run: |
-                export INTEGRATION=`cat workspace/integration_name`
-                export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-                gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-            - run: |
-                export INTEGRATION=`cat workspace/integration_name`
-                export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-                docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+    unit_duedil:
+        <<: *unit
 
-    e2e:
-        docker:
-            - image: passfort/python-builder
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *setup_gcp
-            - setup_remote_docker:
-                docker_layer_caching:
-            - run: |
-                export INTEGRATION=`cat workspace/integration_name`
-                export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-                gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-                docker run --name integration -d eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-            - run: docker exec integration yarn run e2e
+    unit_onfido:
+        <<: *unit
 
-    deploy_integration_staging:
-        docker:
-            - image: passfort/python-builder
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *auth_ssh
-            - *setup_gcp
-            - run: |
-                pipenv --three
-                pipenv install
-                pipenv run python deploy.py -ds `cat workspace/integration_name` staging
+    unit_bvd:
+        <<: *unit
 
-    deploy_integration_production:
-        docker:
-            - image: passfort/python-builder
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *auth_ssh
-            - *setup_gcp
-            - run: |
-                pipenv --three
-                pipenv install
-                pipenv run python deploy.py -ds `cat workspace/integration_name` production
+    unit_worldcheck:
+        <<: *unit
+
+    e2e_duedil:
+        <<: *e2e
+
+    e2e_onfido:
+        <<: *e2e
+
+    e2e_bvd:
+        <<: *e2e
+
+    e2e_worldcheck:
+        <<: *e2e
+
+    deploy_duedil_staging:
+        <<: *deploy_staging_common
+
+    deploy_onfido_staging:
+        <<: *deploy_staging_common
+
+    deploy_bvd_staging:
+        <<: *deploy_staging_common
+
+    deploy_worldcheck_staging:
+        <<: *deploy_staging_common
+
+    deploy_duedil_production:
+        <<: *deploy_production_common
+
+    deploy_onfido_production:
+        <<: *deploy_production_common
+
+    deploy_bvd_production:
+        <<: *deploy_production_common
+
+    deploy_worldcheck_production:
+        <<: *deploy_production_common
 
 workflows:
     version: 2
@@ -197,21 +215,58 @@ workflows:
             - set_integration_duedil
             - build:
                 requires:
-                    - set_integration_duedil
-            - *unit
-            - *e2e
-            - *deploy_staging
-            - *deploy_production
+                  - set_integration_duedil
+            - unit_duedil:
+                requires:
+                  - build
+            - e2e_duedil:
+                requires:
+                  - build
+            - deploy_duedil_staging:
+                requires:
+                  - e2e_duedil
+                  - unit_duedil
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_duedil_production:
+                requires:
+                  - e2e_duedil
+                  - unit_duedil
+                filters:
+                    branches:
+                        only:
+                          - master
+
     onfido:
         jobs:
             - set_integration_onfido
             - build:
                 requires:
                   - set_integration_onfido
-            - *unit
-            - *e2e
-            - *deploy_staging
-            - *deploy_production
+            - unit_onfido:
+                requires:
+                  - build
+            - e2e_onfido:
+                requires:
+                  - build
+            - deploy_onfido_staging:
+                requires:
+                  - e2e_onfido
+                  - unit_onfido
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_onfido_production:
+                requires:
+                  - e2e_onfido
+                  - unit_onfido
+                filters:
+                    branches:
+                        only:
+                          - master
 
     bvd:
         jobs:
@@ -219,10 +274,28 @@ workflows:
             - build:
                 requires:
                   - set_integration_bvd
-            - *unit
-            - *e2e
-            - *deploy_staging
-            - *deploy_production
+            - unit_bvd:
+                requires:
+                  - build
+            - e2e_bvd:
+                requires:
+                  - build
+            - deploy_bvd_staging:
+                requires:
+                  - e2e_bvd
+                  - unit_bvd
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_bvd_production:
+                requires:
+                  - e2e_bvd
+                  - unit_bvd
+                filters:
+                    branches:
+                        only:
+                          - master
 
     worldcheck:
         jobs:
@@ -230,7 +303,25 @@ workflows:
             - build:
                 requires:
                   - set_integration_worldcheck
-            - *unit
-            - *e2e
-            - *deploy_staging
-            - *deploy_production
+            - unit_worldcheck:
+                requires:
+                  - build
+            - e2e_worldcheck:
+                requires:
+                  - build
+            - deploy_worldcheck_staging:
+                requires:
+                  - e2e_worldcheck
+                  - unit_worldcheck
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_worldcheck_production:
+                requires:
+                  - e2e_worldcheck
+                  - unit_worldcheck
+                filters:
+                    branches:
+                        only:
+                          - master

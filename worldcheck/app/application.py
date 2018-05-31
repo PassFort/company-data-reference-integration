@@ -1,10 +1,16 @@
 import os
 import logging
-from flask import Flask, jsonify
+import traceback
+from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
-import app.json_logger
 
+from app.api.types import validate_model, ScreeningRequest, ScreeningResultsRequest, Error
+from app.api.responses import make_error_response
+from app.worldcheck_handler import CaseHandler, WorldCheckPendingError, WorldCheckConnectionError
+
+from swagger_client.rest import ApiException
 app = Flask(__name__)
+
 
 sentry_url = os.environ.get('SENTRY_URL')
 if sentry_url:
@@ -18,3 +24,52 @@ if sentry_url:
 @app.route('/health')
 def health():
     return jsonify('success')
+
+
+@app.route('/screening_request', methods=['POST'])
+@validate_model(ScreeningRequest)
+def screen_request(request_data: ScreeningRequest):
+    result = CaseHandler(
+        request_data.credentials,
+        request_data.config
+    ).submit_screening_request(request_data.input_data)
+    return jsonify(result)
+
+
+@app.route('/results/<string:worldcheck_system_id>', methods=['POST'])
+@validate_model(ScreeningResultsRequest)
+def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_system_id):
+    try:
+        result = CaseHandler(
+            request_data.credentials,
+            None
+        ).get_results(worldcheck_system_id)
+        return jsonify(result)
+    except WorldCheckPendingError:
+        # The request has been accepted for processing,
+        # but the processing has not been completed.
+        return jsonify({}), 202
+
+
+@app.errorhandler(400)
+def api_400(error):
+
+    return jsonify(errors=[error.description]), 400
+
+
+@app.errorhandler(500)
+def api_500(error):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[Error.from_exception(error)]), 500
+
+
+@app.errorhandler(WorldCheckConnectionError)
+def api_provider_connection_error(error):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[Error.from_exception(error)]), 500
+
+
+@app.errorhandler(ApiException)
+def api_provider_other_error(error):
+    logging.error(traceback.format_exc())
+    return jsonify(make_error_response([Error.from_provider_exception(error)]))

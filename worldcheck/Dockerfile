@@ -25,7 +25,7 @@ RUN mkdir /srv/logs/ && \
 
 COPY main.py /src
 COPY app /src/app
-COPY *.postman_collection.json /src
+COPY e2e /src/e2e
 
 # Ports.
 EXPOSE 8001

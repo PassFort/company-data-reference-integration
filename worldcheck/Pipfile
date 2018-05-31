@@ -14,9 +14,9 @@ neovim = "*"
 
 freezegun = "*"
 mock = "*"
-
 gunicorn = "==19.5.0"
-flask = "==0.12.1"
+Flask = "==0.12.1"
+schematics = "*"
 requests = "*"
 raven = {extras = ["flask"]}
 python-json-logger = "*"
