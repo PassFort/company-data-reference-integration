@@ -74,12 +74,18 @@ def format_trustee(trustee):
     name = trustee['sourceName']
     names = name.split(' ')
     return {
-        'title': names[0],
-        'first_names': names[1:-1],
-        'last_name': names[-1],
-        'provider': 'DueDil',
-        'role': 'TRUSTEE',
-        'type': 'INDIVIDUAL',
+        'immediate_data': {
+            'entity_type': 'INDIVIDUAL',
+            'personal_details': {
+                'name': {
+                    'title': names[0],
+                    'given_names': names[1:-1],
+                    'family_name': names[-1],
+                }
+            }
+        },
+        'entity_type': 'INDIVIDUAL',
+        'provider_name': 'DueDil'
     }
 
 
@@ -112,6 +118,7 @@ def get_charity(country_code, company_number, credentials):
 
     contact = vitals.get('officialContact', {})
     financial = vitals.get('financialSummary', {})
+    currency = get_in(vitals, ['accounts', 'currency'])
 
     raw_areas, areas_of_activity = request_areas_of_activity(country_code, charity_id, credentials)
     raw_classifiers, classifiers = request_classifiers(country_code, charity_id, credentials)
@@ -135,7 +142,7 @@ def get_charity(country_code, company_number, credentials):
                     'type': 'contact_address',
                     'address': {
                         'type': 'STRUCTURED',
-                        'original_address': get_in(vitals, ['officialContact', 'address', 'fullAddress'])
+                        'original_freeform_address': get_in(vitals, ['officialContact', 'address', 'fullAddress'])
                     }
                 }
             ],
@@ -153,7 +160,7 @@ def get_charity(country_code, company_number, credentials):
         'officers': {
             'trustees': [format_trustee(trustee) for trustee in trustees],
         },
-        'charity': {
+        'charity_data': {
             'registration_date': registration_date,
             'number_of_volunteers': vitals.get('numberOfVolunteers'),
             'beneficiaries': get_classifiers('beneficiary'),
@@ -161,8 +168,17 @@ def get_charity(country_code, company_number, credentials):
             'purpose': get_classifiers('purpose'),
         },
         'financials': {
-            'total_income_and_endowments': financial.get('totalIncomeAndEndowments'),
-            'total_expenditure': financial.get('totalExpenditure'),
-            'total_funds': financial.get('totalFunds'),
+            'total_income_and_endowments': {
+                'value': financial.get('totalIncomeAndEndowments'),
+                'currency_code': currency,
+            },
+            'total_expenditure': {
+                'value': financial.get('totalExpenditure'),
+                'currency_code': currency,
+            },
+            'total_funds': {
+                'value': financial.get('totalFunds'),
+                'currency_code': currency,
+            },
         }
     }
