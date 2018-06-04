@@ -66,7 +66,7 @@ class CustomAuthApiClient(ApiClient):
         :return: dict: {Date, Authorization}
         """
         import json
-        date = datetime.utcnow().strftime('%a, %d %B %Y %H:%M:%S GMT')
+        date = datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
         data_to_sign = '(request-target): {method} {base}{path}\nhost: {host}\ndate: {date}'.format(
             method=method.lower(),
             base=self.gateway_base_url,
