@@ -1,0 +1,3384 @@
+[
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS COTE D'IVOIRE E&P LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790456",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9138",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 08 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS VIETNAM B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790454",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b913a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 09 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL SERBIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2937911",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b913c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 29 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL MARINE LUBRICANTS LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798617",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b913e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 14 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL BALTIJA R",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2970184",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9140",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL OVERSEAS PERSONNEL LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798616",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9142",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 14 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "PEP"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "OOO LUKOIL-ENGINEERING",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_3623784",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9144",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 27 Oct 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_PEP N-A"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL TECHNOLOGY SERVICES BALTIC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798619",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9146",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 09 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL-AVIA LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2935174",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9148",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL BH D.O.O. SARAJEVO",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2970221",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b914a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL LUBRICANTS CENTRAL ASIA LLP",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798611",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b914c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 24 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "PEP",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL-KMN",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2427110",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b914e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_PEP SN-A",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "EVERGREEN LUKOIL INC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2037256",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9150",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 03 Jun 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL-CHERNOZEMIENEFTEPRODUKT",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2437056",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9152",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 09 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL LUBRICANTS EAST EUROPE",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2463044",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9154",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 19 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL LUBRICANTS INTERNATIONAL BV",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2463045",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9156",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 22 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS SIERRA-LEONE B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790441",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9158",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 08 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "PEP",
+      "Sanctions",
+      "Other Bodies",
+      "Regulatory Enforcement",
+      "Regulatory Enforcement",
+      "Sanctions",
+      "Regulatory Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "AKA",
+    "matched_term": "Lukoil",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_9437",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b915a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 09 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_PEP NG-A",
+      "b_trwc_UKR-EO13662",
+      "b_trwc_133",
+      "b_trwc_179",
+      "b_trwc_355",
+      "b_trwc_OFAC-NONSDN",
+      "b_trwc_466"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL INVEST AUSTRIA GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794885",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b915c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 26 Jul 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL EURASIA PETROL A.S.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2937007",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b915e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 02 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL EMPLOYEE",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2982619",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9160",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "WEAK",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL JET YAKITI DAGITIM VE TICARET LTD SIRKETI",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794887",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9162",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 11 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1898780",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9164",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 25 Apr 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL HOLDING GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_3092116",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9166",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS (B.V.I.) LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798683",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9168",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 15 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL MACEDONIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798686",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b916a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 15 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL MID-EAST LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794881",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b916c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL NETHERLANDS B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794882",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b916e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 22 May 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ENERGIA AND GAZ KALUSH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793277",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9170",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 10 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS SECONDMENT B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790440",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9172",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 08 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL MARINE LUBRICANTS DMCC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_3461494",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9174",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 19 Jun 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "PETROTEL LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2464811",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9176",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 02 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Regulatory Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL UKRAINA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1986429",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9178",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 18 Nov 2016 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_UAAMC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL TEKHNOLODZHI SERVISIZ UKRAINA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790437",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b917a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS NETHERLANDS B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794917",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b917c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO AVTOSERVIS LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2968283",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b917e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Regulatory Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL B LIMITED",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_374728",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9180",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 07 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_139"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS SHAH DENIZ LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791927",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9182",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 29 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL INTERNATIONAL UPSTREAM HOLDING B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_3356949",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9184",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 19 Jun 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL BELORUSSIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790438",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9186",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 25 Jul 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_INSAE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL UZBEKISTAN OPERATING COMPANY",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790439",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9188",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 02 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL EUROPE HOLDINGS BV",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2477598",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b918a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 29 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS ARAL LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794871",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b918c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL-ENERGOENGINEERING",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2452747",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b918e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "GETTY MANTUA PIKE LUKOIL INC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2037153",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9190",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 03 Jun 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL OVERSEAS UZBEKISTAN LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2729858",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9192",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 07 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "SCOTCH PLAINS LUKOIL INC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2037311",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9194",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 03 Jun 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Regulatory Enforcement",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL-UNP",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1684225",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9196",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_179",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL NORTH AMERICA LLC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2455680",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9198",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 16 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL AVIEISHN UKRAINA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793258",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b919a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 10 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL CYPRUS LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794865",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b919c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 24 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL OVERSEAS EGYPT LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794868",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b919e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL MONTENEGRO",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794903",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91a0",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Regulatory Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL JAPAN",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2265856",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91a2",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 01 Apr 2014 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_147"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL PETROLEUM LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_3884503",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91a4",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 18 May 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_4"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL INTERNATIONAL GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2424698",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91a6",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS HOLDING GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2424699",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91a8",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL NAFTOKHIM",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793253",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91aa",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 08 Feb 2016 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL-BUNKER ITALY S.R.L.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793252",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ac",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 10 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL-REZERVNEFTEPRODUKT",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2424730",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ae",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 09 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS SERVICE B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793250",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91b0",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 10 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LAWRENCEVILLE LUKOIL INC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2037301",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91b2",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 03 Jun 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL AMERICAS CORPORATION",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2789718",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91b4",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL POLSKA SP Z O O",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2800547",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91b6",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 24 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL ACCOUNTING & FINANCE LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790412",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91b8",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS KUMKOL B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2800548",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ba",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 14 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL-KOMI LLC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2424728",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91bc",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL EESTI",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2800549",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91be",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 24 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL-PERM",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2424729",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91c0",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ENERGY GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793249",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91c2",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL AVIATION BULGARIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790378",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91c4",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 28 Feb 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL SAUDI ARABIA ENERGY LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2793246",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91c6",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 26 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL EPU SERVIS",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2803377",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91c8",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 26 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL TECHNOLOGY SERVICES DOO BEOGRAD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2938006",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ca",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Sat, 31 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS GHANA LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791904",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91cc",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 09 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL-GEORGIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2794857",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ce",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS SERVICE LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791901",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91d0",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS PROJECTHOLDING LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791902",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91d2",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL-CUR",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2437004",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91d4",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 09 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL-TTK",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2435102",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91d6",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 09 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO TD LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2452766",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91d8",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1884443",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91da",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 01 Nov 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL FINANCE LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2729870",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91dc",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 02 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL-ENGINEERING",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2800429",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91de",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 26 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS KARACHAGANAK B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791975",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91e0",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 09 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL CROATIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2955416",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91e2",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 29 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS CYPRUS LIMITED",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791971",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91e4",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Regulatory Enforcement",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL BALTIJA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1950973",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91e6",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 16 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_LTCC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS SECONDMENT LIMITED",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797311",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91e8",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ITALIA SRL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798642",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ea",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 15 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1884311",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ec",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 13 Nov 2012 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL BELGIUM N.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797310",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91ee",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 22 May 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL OVERSEAS BALTIC LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798644",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91f0",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 15 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS INVESTHOLDING LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797312",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91f2",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "WEAK",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ENERGIYA I GAZ BULGARIA EOOD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2955380",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91f4",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL BENELUX BV",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2511783",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91f6",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 31 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL-KNT",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2427260",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91f8",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL-AERO LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2425921",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91fa",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 06 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "OOO LUKOIL-KGPZ",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2427261",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91fc",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 09 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS NORTH SHELF AS",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_3356894",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b91fe",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 16 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL AVIATION B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791966",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9200",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 09 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Law Enforcement",
+      "Regulatory Enforcement",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ROMANIA SRL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1660764",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9202",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 08 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RODIICOT",
+      "b_trwc_178",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL HAMBURG GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2463033",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9204",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 31 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL PAN AMERICAS LLC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2463031",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9206",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 18 May 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL TECHNOLOGY SERVICES GMBH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791960",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9208",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 26 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL INTERNATIONAL TRADE AND SUPPLY COMPANY",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2463030",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b920a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 31 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL-PERMNEFTEGAZPERERABOTKA LLC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791201",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b920c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 26 Mar 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS SUPPLY AND TRADING LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797306",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b920e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 14 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ENERGY & GAS ROMANIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2756289",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9210",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 08 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS ANARAN LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797305",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9212",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 14 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "ZAO LUKOIL-AZERBAIJAN",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797308",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9214",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS RIYADH LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798638",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9216",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 15 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS ATASH B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797307",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9218",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS WEST PROJECT LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2797309",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b921a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "PEP"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL AVIATION CZECH",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2319026",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b921c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 23 May 2016 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_PEP N-A"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Regulatory Enforcement",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL-YUGNEFTEPRODUCT",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1560794",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b921e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_179",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL CHEMICAL B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798632",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9220",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 24 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL INTERNATIONAL FINANCE B.V.",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2476580",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9222",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 17 Apr 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL PERSONAL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2425908",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9224",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 30 Jan 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "PEP"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "NATIVE_AKA",
+    "matched_term": "ОАО ЛУКОЙЛ",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_1417298",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9226",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 30 May 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_PEP NG-A"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "LANG_VARIATION",
+    "matched_term": "LUKOIL OVERSEAS U.K. LIMITED",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791955",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9228",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 09 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "WEAK",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS SHAH DENIZ MIDSTREAM LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791952",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b922a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 09 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Law Enforcement"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "EXACT",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2081262",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b922c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 26 Jul 2013 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_457"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS COTE D'IVOIRE SHELF LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790464",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b922e",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 09 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "NATIVE_AKA",
+    "matched_term": "ЗАКРЫТОЕ АКЦИОНЕРНОЕ ОБЩЕСТВО ЛУКОЙЛ-АИК",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2800551",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9230",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 28 Feb 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL MARINE LUBRICANTS USA INC",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2791959",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9232",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Wed, 09 Sep 2015 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS SHELF BV",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798629",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9234",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Tue, 14 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Law Enforcement",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL NEFTOHIM BURGAS",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2507186",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9236",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 10 May 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RODIICOT",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL TECHNOLOGY SERVICES GENEVA SARL",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2798620",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9238",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Fri, 10 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL OVERSEAS COTE D'IVOIRE DEEPWATER LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2790462",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b923a",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 13 Mar 2017 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC"
+    ],
+    "submitted_term": "Lukoil"
+  },
+  {
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "MEDIUM",
+    "matched_name_type": "AKA",
+    "matched_term": "LUKOIL BULGARIA BUNKER LTD",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "e_tr_wco_2463029",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b923c",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Mon, 05 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "Lukoil"
+  }
+]

@@ -2,10 +2,11 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, IntType
+from schematics.types import BooleanType, StringType, ModelType, ListType, DateType
 from schematics.exceptions import DataError, ValidationError
 
 from swagger_client.rest import ApiException
+from swagger_client.models import MatchStrength
 
 
 def validate_model(validation_model):
@@ -22,9 +23,7 @@ def validate_model(validation_model):
             model = None
             try:
                 model = validation_model().import_data(request.json, apply_defaults=True)
-                print('validating')
                 model.validate(partial=True)
-                print('error?')
             except DataError as e:
                 abort(400, Error.bad_api_request(e))
 
@@ -144,6 +143,12 @@ class WorldCheckCredentials(Model):
 
 class WorldCheckConfig(Model):
     group_id = StringType(required=True)
+    minimum_match_strength = StringType(
+        choices=[
+            MatchStrength.WEAK, MatchStrength.MEDIUM, MatchStrength.STRONG, MatchStrength.EXACT
+        ],
+        default=MatchStrength.WEAK
+    )
 
 
 class FullName(Model):
@@ -154,8 +159,38 @@ class FullName(Model):
         return ' '.join(self.given_names + [self.family_name])
 
 
+class Country(Model):
+    v = StringType(default=None)
+
+
+class Gender(Model):
+    v = StringType(choices=["M", "F"], default=None)
+
+    @property
+    def wordlcheck_gender(self):
+        if self.v is None:
+            return None
+        if self.v == "M":
+            return "MALE"
+        if self.v == "F":
+            return "FEMALE"
+        raise NotImplementedError()
+
+
+class TaggedString(Model):
+    v = StringType(default=None)
+
+
 class PersonalDetails(Model):
     name = ModelType(FullName, required=True)
+    dob = DateType(default=None)
+    gender = ModelType(Gender, default=None)
+    nationality = ModelType(Country, default=None)
+
+
+class CompanyMetadata(Model):
+    name = ModelType(TaggedString, required=True)
+    country_of_incorporation = ModelType(Country, default=None)
 
 
 class WorldCheckRefs(Model):
@@ -166,6 +201,7 @@ class ScreeningRequestData(Model):
     entity_type = StringType(choices=['INDIVIDUAL', 'COMPANY'], required=True)
 
     personal_details = ModelType(PersonalDetails, default=None)
+    company_metadata = ModelType(CompanyMetadata, default=None)
 
     def validate_personal_details(self, data, value):
         if 'entity_type' not in data:
@@ -174,6 +210,21 @@ class ScreeningRequestData(Model):
         if data['entity_type'] == 'INDIVIDUAL' and not value:
             raise ValidationError('Personal details are required for individuals')
         return value
+
+    def validate_company_metadata(self, data, value):
+        if 'entity_type' not in data:
+            return value
+
+        if data['entity_type'] == 'COMPANY' and not value:
+            raise ValidationError('Company metadata is required for companies')
+        return value
+
+    @property
+    def name(self):
+        if self.entity_type == 'INDIVIDUAL':
+            return self.personal_details.name.combine()
+        else:
+            return self.company_metadata.name.v
 
     @property
     def worldcheck_entity_type(self):
@@ -196,4 +247,5 @@ class ScreeningRequest(Model):
 
 class ScreeningResultsRequest(Model):
     credentials = ModelType(WorldCheckCredentials, required=True)
+    config = ModelType(WorldCheckConfig, default=None)
     is_demo = BooleanType(default=False)

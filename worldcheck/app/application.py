@@ -6,7 +6,7 @@ from raven.contrib.flask import Sentry
 
 from app.api.types import validate_model, ScreeningRequest, ScreeningResultsRequest, Error
 from app.api.responses import make_error_response
-from app.worldcheck_handler import CaseHandler, WorldCheckPendingError, WorldCheckConnectionError
+from app.worldcheck_handler import CaseHandler, MatchHandler, WorldCheckPendingError, WorldCheckConnectionError
 
 from swagger_client.rest import ApiException
 app = Flask(__name__)
@@ -29,6 +29,7 @@ def health():
 @app.route('/screening_request', methods=['POST'])
 @validate_model(ScreeningRequest)
 def screen_request(request_data: ScreeningRequest):
+
     result = CaseHandler(
         request_data.credentials,
         request_data.config
@@ -42,13 +43,20 @@ def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_syste
     try:
         result = CaseHandler(
             request_data.credentials,
-            None
+            request_data.config,
+            request_data.is_demo
         ).get_results(worldcheck_system_id)
         return jsonify(result)
     except WorldCheckPendingError:
         # The request has been accepted for processing,
         # but the processing has not been completed.
         return jsonify({}), 202
+
+
+@app.route('/match/<string:match_id>', methods=['POST'])
+@validate_model(ScreeningResultsRequest)
+def get_match_data(request_data: ScreeningResultsRequest, match_id):
+    return jsonify(MatchHandler(request_data.credentials, None).get_entity_for_match(match_id))
 
 
 @app.errorhandler(400)
