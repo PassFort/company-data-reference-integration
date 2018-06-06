@@ -90,11 +90,11 @@ class CaseHandler:
                     Field(type_id="SFCT_5",
                           value=input_data.personal_details.nationality.v))
         else:
-            if input_data.company_metadata.country_of_incorporation and \
-                    input_data.company_metadata.country_of_incorporation.v:
+            if input_data.metadata.country_of_incorporation and \
+                    input_data.metadata.country_of_incorporation.v:
                 fields.append(
                     Field(type_id="SFCT_6",
-                          value=input_data.company_metadata.country_of_incorporation.v))
+                          value=input_data.metadata.country_of_incorporation.v))
         return fields
 
 

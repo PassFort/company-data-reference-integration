@@ -201,7 +201,7 @@ class ScreeningRequestData(Model):
     entity_type = StringType(choices=['INDIVIDUAL', 'COMPANY'], required=True)
 
     personal_details = ModelType(PersonalDetails, default=None)
-    company_metadata = ModelType(CompanyMetadata, default=None)
+    metadata = ModelType(CompanyMetadata, default=None)
 
     def validate_personal_details(self, data, value):
         if 'entity_type' not in data:
@@ -211,7 +211,7 @@ class ScreeningRequestData(Model):
             raise ValidationError('Personal details are required for individuals')
         return value
 
-    def validate_company_metadata(self, data, value):
+    def validate_metadata(self, data, value):
         if 'entity_type' not in data:
             return value
 
@@ -224,7 +224,7 @@ class ScreeningRequestData(Model):
         if self.entity_type == 'INDIVIDUAL':
             return self.personal_details.name.combine()
         else:
-            return self.company_metadata.name.v
+            return self.metadata.name.v
 
     @property
     def worldcheck_entity_type(self):

@@ -1,3 +1,5 @@
+import logging
+
 
 def make_error_response(errors=[]):
     return {
@@ -26,12 +28,23 @@ def make_results_response(results=[], config=None):
         MatchStrength.STRONG: 2,
         MatchStrength.EXACT: 3
     }
-    minimum_order_of_strength = order_of_strength.get(config.minimum_match_strength, 0) if config else 0
+
+    minimum_order_of_strength = None
+    if config:
+        minimum_order_of_strength = order_of_strength.get(config.minimum_match_strength)
+        if minimum_order_of_strength is None:
+            logging.error('Unexpected minimum match strength: {}'.format(config.minimum_match_strength))
 
     def meets_minimum_match_strength(match_strength):
-        if match_strength is None:
+        if match_strength is None or minimum_order_of_strength is None:
             return True
-        return order_of_strength.get(match_strength, 100) >= minimum_order_of_strength
+
+        match_strength_order = order_of_strength.get(match_strength)
+        if match_strength_order is None:
+            logging.error('Unexpected match strength from provider: {}'.format(match_strength))
+            return True
+
+        return match_strength_order >= minimum_order_of_strength
 
     return {
         'output_data': [
