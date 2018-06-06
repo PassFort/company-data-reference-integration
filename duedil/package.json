@@ -2,11 +2,8 @@
   "private": true,
   "license": "Private",
   "scripts": {
-    "unit": "pipenv run python -m unittest discover .",
-    "e2e": "newman run *.postman_collection.json",
+    "unit": "pipenv run python -m unittest discover app",
+    "e2e": "pipenv run python -m unittest discover e2e",
     "start": "pipenv run python main.py"
-  },
-  "dependencies": {
-    "newman": "^3.9.3"
   }
 }
