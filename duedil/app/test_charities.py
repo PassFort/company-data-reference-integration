@@ -46,11 +46,11 @@ class TestCharities(unittest.TestCase):
     def test_it_requests_charities_metadata(self):
         self.mock_all_requests()
 
-        raw, response = get_charity('gb', '02400969', {})
+        raw, response = get_charity('gb', '02400969', 'None', {})
         Assert.equal(response['metadata'], {
             'name': 'Macmillan Cancer Support',
             'number': '02400969',
-            'charity_number': '261017',
+            'uk_charity_commission_number': '261017',
             'addresses': [
                 {
                     'type': 'contact_address',
@@ -85,7 +85,7 @@ class TestCharities(unittest.TestCase):
     def test_it_requests_charities_officers(self):
         self.mock_all_requests()
 
-        raw, response = get_charity('gb', '02400969', {})
+        raw, response = get_charity('gb', '02400969', 'None', {})
         Assert.equal(len(response['officers']['trustees']), 20)
         Assert.equal(response['officers']['trustees'][0], {
             'immediate_data': {
@@ -120,7 +120,7 @@ class TestCharities(unittest.TestCase):
     def test_it_requests_charities_charity_data(self):
         self.mock_all_requests()
 
-        raw, response = get_charity('gb', '02400969', {})
+        raw, response = get_charity('gb', '02400969', 'None', {})
         Assert.equal(response['charity_data'], {
             'registration_date': '1989-06-21',
             'number_of_volunteers': 20000,
@@ -146,7 +146,7 @@ class TestCharities(unittest.TestCase):
     def test_it_requests_charities_financials(self):
         self.mock_all_requests()
 
-        raw, response = get_charity('gb', '02400969', {})
+        raw, response = get_charity('gb', '02400969', 'None', {})
         Assert.equal(response['financials'], {
             'total_income_and_endowments': {'value': 247441000, 'currency_code': 'GBP'},
             'total_expenditure': {'value': 245591000, 'currency_code': 'GBP'},
