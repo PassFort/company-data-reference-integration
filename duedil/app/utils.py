@@ -114,3 +114,14 @@ def send_exception(exception, custom_data=None):
         )
     except ImportError:
         pass
+
+
+def string_compare(s1, s2):
+    import string
+
+    if (s1 is None) or (s2 is None):
+        return False
+
+    remove = string.punctuation + string.whitespace + '&'
+    translation = str.maketrans('', '', remove)
+    return s1.translate(translation).upper() == s2.translate(translation).upper()
