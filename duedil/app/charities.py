@@ -5,7 +5,7 @@ from requests.exceptions import RequestException, HTTPError
 from functools import reduce
 
 from app.utils import paginate, base_request, DueDilServiceException, convert_country_code,\
-    send_exception, retry, BASE_API
+    send_exception, retry, BASE_API, string_compare
 
 
 def make_charity_url(country_code, charity_id, endpoint):
@@ -47,27 +47,52 @@ def request_areas_of_activity(country_code, charity_id, credentials):
     return request_paginated_attribute(url, 'areasOfActivity', credentials)
 
 
-def find_charity_from_number(country_code, company_number, credentials):
+def perform_search(country_code, search_term, credentials):
     url = f'{BASE_API}/search/charities.json'
-    query = {
-        'criteria': {
-            'name': company_number,
-        }
-    }
+    query = {'criteria': {'name': search_term}}
     headers = {'X-AUTH-TOKEN': credentials.get('auth_token')}
 
     response = retry(lambda: requests.post(url, json=query, headers=headers), (RequestException, HTTPError))
+    return response.json()['charities']
 
-    charities = response.json()['charities']
-    charities = [
-        charity for charity in charities
-        if get_in(charity, ['corporateIdentity', 'companyId']) == company_number
-    ]
 
-    if len(charities) > 0:
-        return get_in(charities, [0, 'charityId'])
+def find_charity_candidates(country_code, company_number, name, credentials):
+    charities = perform_search(country_code, company_number, credentials)
 
-    return None
+    if len(charities) == 0:
+        charities = perform_search(country_code, name, credentials)
+
+    return charities
+
+
+def find_charity_from_number(country_code, company_number, name, credentials):
+    candidates = find_charity_candidates(country_code, company_number, name, credentials)
+
+    def is_match(charity):
+        return get_in(charity, ['corporateIdentity', 'companyId']) == company_number or \
+            string_compare(get_in(charity, ['name']), name) or \
+            string_compare(get_in(charity, ['corporateIdentity', 'name']), name)
+
+    def is_active(charity):
+        return get_in(charity, ['currentStatus', 'status'])
+
+    candidates = [charity for charity in candidates if is_match(charity)]
+
+    if len(candidates) == 0:
+        return None
+
+    if len(candidates) == 1:
+        return get_in(candidates, [0, 'charityId'])
+
+    # Still multiple candidates, let's try and return the first active candidate, if there are any
+
+    active_candidates = [charity for charity in candidates if is_active(charity)]
+    if len(active_candidates) > 0:
+        return get_in(active_candidates, [0, 'charityId'])
+
+    # Giveup and just return first candidate
+
+    return get_in(candidates, [0, 'charityId'])
 
 
 def format_trustee(trustee):
@@ -89,8 +114,8 @@ def format_trustee(trustee):
     }
 
 
-def get_charity(country_code, company_number, credentials):
-    charity_id = find_charity_from_number(country_code, company_number, credentials)
+def get_charity(country_code, company_number, name, credentials):
+    charity_id = find_charity_from_number(country_code, company_number, name, credentials)
 
     if charity_id is None:
         return None, None
@@ -136,7 +161,7 @@ def get_charity(country_code, company_number, credentials):
         'metadata': {
             'name': vitals.get('name'),
             'number': corporate.get('companyId'),
-            'charity_number': get_in(vitals, ['registeredAs', 'registeredCharityNumber']),
+            'uk_charity_commission_number': get_in(vitals, ['registeredAs', 'registeredCharityNumber']),
             'addresses': [
                 {
                     'type': 'contact_address',

@@ -4,7 +4,7 @@
   "pagination": {
     "offset": 0,
     "limit": 10,
-    "total": 17
+    "total": 10
   },
   "filters": null,
   "classifiers": [

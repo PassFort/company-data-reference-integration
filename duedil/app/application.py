@@ -227,8 +227,27 @@ def charity_check():
     input_data = request.json['input_data']
     credentials = request.json['credentials']
 
-    company_number = input_data['metadata']['number']
-    country_of_incorporation = input_data['metadata']['country_of_incorporation']
+    errors = []
+
+    try:
+        company_number = input_data['metadata']['number']
+    except KeyError:
+        errors.append({'message': 'Missing company number in input'})
+
+    try:
+        name = input_data['metadata']['name']
+    except KeyError:
+        errors.append({'message': 'Missing company name in input'})
+
+    try:
+        country_of_incorporation = input_data['metadata']['country_of_incorporation']
+    except KeyError:
+        errors.append({'message': 'Missing country in input'})
+
+    print(errors)
+
+    if len(errors):
+        return jsonify(errors=errors)
 
     supported_countries = {
         'GBR': 'gb'
@@ -241,7 +260,7 @@ def charity_check():
 
     country_code = supported_countries[country_of_incorporation]
 
-    raw_response, response = get_charity(country_code, company_number, credentials)
+    raw_response, response = get_charity(country_code, company_number, name, credentials)
 
     return jsonify(
         output_data=coerce_untracked(response),

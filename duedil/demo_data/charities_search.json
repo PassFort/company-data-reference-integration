@@ -1,0 +1,32 @@
+{
+  "pagination": {
+    "offset": 0,
+    "limit": 10,
+    "total": 1
+  },
+  "filters": {
+    "name": "02400969"
+  },
+  "charities": [
+    {
+      "countryCode": "GB",
+      "charityId": "ew-261017-0",
+      "name": "Macmillan Cancer Support",
+      "firstRegisteredDate": "1989-06-21",
+      "currentStatus": {
+        "status": "REGISTERED",
+        "startDate": "1989-06-21",
+        "reasonForChange": null
+      },
+      "isFilingCharity": true,
+      "isSubsidiaryCharity": false,
+      "corporateIdentity": {
+        "countryCode": "GB",
+        "companyId": "02400969",
+        "name": "Macmillan Cancer Support",
+        "officialStatus": "Active",
+        "simplifiedStatus": "Active"
+      }
+    }
+  ]
+}
