@@ -20,4 +20,4 @@ schematics = "*"
 requests = "*"
 raven = {extras = ["flask"]}
 python-json-logger = "*"
-swagger-client = {git = "git@github.com:PassFort/python-worldcheck-client.git@5f11c9529a9d6f10d3568947ce7f053877268d43", editable=true}
+swagger-client = {git = "git@github.com:PassFort/python-worldcheck-client.git@997ffa71befba2e176be87f13dac33189be57090", editable=true}

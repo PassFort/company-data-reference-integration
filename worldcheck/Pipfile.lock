@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "786c2702501055220157e9c4b29ec865ab342d764deca1cc5b091bd54819d0b9"
+            "sha256": "f9a6de9b4298567eb8c795e500450fd43916f4418cd60700229c03de4794d1e8"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -130,10 +130,10 @@
         },
         "raven": {
             "hashes": [
-                "sha256:1c641e5ebc2d4185560608e253970ca0d4b98475f4edf67735015a415f9e1d48",
-                "sha256:95aecf76c414facaddbb056f3e98c7936318123e467728f2e50b3a66b65a6ef7"
+                "sha256:95f44f3ea2c1b176d5450df4becdb96c15bf2632888f9ab193e9dd22300ce46a",
+                "sha256:3fd787d19ebb49919268f06f19310e8112d619ef364f7989246fc8753d469888"
             ],
-            "version": "==6.8.0"
+            "version": "==6.9.0"
         },
         "requests": {
             "hashes": [
@@ -158,7 +158,7 @@
         },
         "swagger-client": {
             "editable": true,
-            "git": "git@github.com:PassFort/python-worldcheck-client.git@5f11c9529a9d6f10d3568947ce7f053877268d43"
+            "git": "git@github.com:PassFort/python-worldcheck-client.git@997ffa71befba2e176be87f13dac33189be57090"
         },
         "urllib3": {
             "hashes": [
