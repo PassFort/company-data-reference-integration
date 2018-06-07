@@ -81,10 +81,10 @@ class CaseHandler:
                 fields.append(
                     Field(type_id="SFCT_1",
                           value=input_data.personal_details.gender.wordlcheck_gender))
-            if input_data.personal_details.dob:
+            if input_data.personal_details.dob and input_data.personal_details.dob.v:
                 fields.append(
                     Field(type_id="SFCT_2",
-                          date_time_value=input_data.personal_details.dob))
+                          date_time_value=input_data.personal_details.dob.v))
             if input_data.personal_details.nationality and input_data.personal_details.nationality.v:
                 fields.append(
                     Field(type_id="SFCT_5",

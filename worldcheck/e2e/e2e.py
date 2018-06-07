@@ -16,8 +16,10 @@ GOOD_CREDENTIALS = {
 
 PERSONAL_DETAILS_TM = {
     "name": {
-        "given_names": ["Theresa"],
-        "family_name": "May"
+        "v": {
+            "given_names": ["Theresa"],
+            "family_name": "May"
+        }
     }
 }
 
