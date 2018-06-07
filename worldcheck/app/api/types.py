@@ -181,9 +181,17 @@ class TaggedString(Model):
     v = StringType(default=None)
 
 
+class TaggedDate(Model):
+    v = DateType(default=None)
+
+
+class TaggedFullName(Model):
+    v = ModelType(FullName, required=True)
+
+
 class PersonalDetails(Model):
-    name = ModelType(FullName, required=True)
-    dob = DateType(default=None)
+    name = ModelType(TaggedFullName, required=True)
+    dob = ModelType(TaggedDate, default=None)
     gender = ModelType(Gender, default=None)
     nationality = ModelType(Country, default=None)
 
@@ -222,7 +230,7 @@ class ScreeningRequestData(Model):
     @property
     def name(self):
         if self.entity_type == 'INDIVIDUAL':
-            return self.personal_details.name.combine()
+            return self.personal_details.name.v.combine()
         else:
             return self.metadata.name.v
 
