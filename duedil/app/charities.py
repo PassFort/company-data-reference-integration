@@ -65,7 +65,7 @@ def find_charity_candidates(country_code, company_number, name, credentials):
     return charities
 
 
-def find_charity_from_number(country_code, company_number, name, credentials):
+def find_charity(country_code, company_number, name, credentials):
     candidates = find_charity_candidates(country_code, company_number, name, credentials)
 
     def is_match(charity):
@@ -73,8 +73,8 @@ def find_charity_from_number(country_code, company_number, name, credentials):
             string_compare(get_in(charity, ['name']), name) or \
             string_compare(get_in(charity, ['corporateIdentity', 'name']), name)
 
-    def is_active(charity):
-        return get_in(charity, ['currentStatus', 'status'])
+    def is_registered(charity):
+        return get_in(charity, ['currentStatus', 'status']) == 'REGISTERED'
 
     candidates = [charity for charity in candidates if is_match(charity)]
 
@@ -86,7 +86,7 @@ def find_charity_from_number(country_code, company_number, name, credentials):
 
     # Still multiple candidates, let's try and return the first active candidate, if there are any
 
-    active_candidates = [charity for charity in candidates if is_active(charity)]
+    active_candidates = [charity for charity in candidates if is_registered(charity)]
     if len(active_candidates) > 0:
         return get_in(active_candidates, [0, 'charityId'])
 
@@ -115,7 +115,7 @@ def format_trustee(trustee):
 
 
 def get_charity(country_code, company_number, name, credentials):
-    charity_id = find_charity_from_number(country_code, company_number, name, credentials)
+    charity_id = find_charity(country_code, company_number, name, credentials)
 
     if charity_id is None:
         return None, None
@@ -142,7 +142,7 @@ def get_charity(country_code, company_number, name, credentials):
         is_active = corporate.get('simplifiedStatus') == 'Active'
 
     contact = vitals.get('officialContact', {})
-    financial = vitals.get('financialSummary', {})
+    financials = vitals.get('financialSummary')
     currency = get_in(vitals, ['accounts', 'currency'])
 
     raw_areas, areas_of_activity = request_areas_of_activity(country_code, charity_id, credentials)
@@ -194,16 +194,16 @@ def get_charity(country_code, company_number, name, credentials):
         },
         'financials': {
             'total_income_and_endowments': {
-                'value': financial.get('totalIncomeAndEndowments'),
+                'value': financials.get('totalIncomeAndEndowments'),
                 'currency_code': currency,
             },
             'total_expenditure': {
-                'value': financial.get('totalExpenditure'),
+                'value': financials.get('totalExpenditure'),
                 'currency_code': currency,
             },
             'total_funds': {
-                'value': financial.get('totalFunds'),
+                'value': financials.get('totalFunds'),
                 'currency_code': currency,
             },
-        }
+        } if currency and financials else None
     }

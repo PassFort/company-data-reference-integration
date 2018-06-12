@@ -244,8 +244,6 @@ def charity_check():
     except KeyError:
         errors.append({'message': 'Missing country in input'})
 
-    print(errors)
-
     if len(errors):
         return jsonify(errors=errors)
 
