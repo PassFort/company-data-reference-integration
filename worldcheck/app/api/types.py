@@ -37,6 +37,7 @@ def validate_model(validation_model):
 @unique
 class ErrorCode(Enum):
     INVALID_INPUT_DATA = 201
+    MISCONFIGURATION_ERROR = 205
 
     PROVIDER_CONNECTION_ERROR = 302
     PROVIDER_UNKNOWN_ERROR = 303
@@ -103,19 +104,34 @@ class Error:
         }.get(str(e.status), 'Provider unhandled error')
         if e.body and e.body != '[]':
             message = message + ': ' + str(e.body)
-        return {
-            'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
-            'source': 'PROVIDER',
-            'message': message
-        }
+        if e.status in ['401', '404']:
+            return {
+                'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+                'source': 'PROVIDER',
+                'message': message
+            }
+        else:
+            return {
+                'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                'source': 'PROVIDER',
+                'message': message
+            }
 
     @staticmethod
     def from_exception(e):
-        return {
-            'code': ErrorCode.UNKNOWN_INTERNAL_ERROR.value,
-            'source': 'ENGINE',
-            'message': '{}'.format(e)
-        }
+        from app.worldcheck_handler import WorldCheckConnectionError
+        if isinstance(e, WorldCheckConnectionError):
+            return {
+                'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+                'source': 'PROVIDER',
+                'message': '{}'.format(e)
+            }
+        else:
+            return {
+                'code': ErrorCode.UNKNOWN_INTERNAL_ERROR.value,
+                'source': 'ENGINE',
+                'message': '{}'.format(e)
+            }
 
     @staticmethod
     def bad_api_request(e):
