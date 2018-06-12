@@ -6,7 +6,7 @@ from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.entity_type import EntityType
 from passfort_data_structure.entities.role import Role
 
-from app.utils import paginate, make_url, base_request, get
+from app.utils import paginate, base_request, get
 
 
 def request_officers(country_code, company_number, credentials):
