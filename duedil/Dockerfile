@@ -10,7 +10,7 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /src
 
-COPY Pipfile Pipfile.lock package.json yarn.lock /src/
+COPY Pipfile Pipfile.lock package.json /src/
 
 RUN mkdir /srv/logs/ && \
     pip install pipenv && \
@@ -26,7 +26,7 @@ RUN mkdir /srv/logs/ && \
 COPY main.py /src
 COPY app /src/app
 COPY demo_data /src/demo_data
-COPY *.postman_collection.json /src
+COPY e2e /src/e2e
 
 # Ports.
 EXPOSE 8001
