@@ -1,17 +1,12 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
-
 [dev-packages]
-
 mypy = "==0.511"
 neovim = "*"
 
-
 [packages]
-
 datadog = "*"
 freezegun = "*"
 mock = "*"
@@ -22,3 +17,5 @@ requests = "*"
 raven = {extras = ["flask"]}
 python-json-logger = "*"
 swagger-client = {git = "git@github.com:PassFort/python-worldcheck-client.git@997ffa71befba2e176be87f13dac33189be57090", editable=true}
+coverage = "*"
+codecov = "*"

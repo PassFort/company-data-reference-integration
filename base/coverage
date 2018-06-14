@@ -1,5 +1,29 @@
 #!/bin/sh -i
-pipenv run coverage run --omit='e2e/*','**/test_*' --source . main.py &
-sleep 10
+pipenv run coverage run --branch --omit='e2e/*','**/test_*' --source . main.py &
+
+# Waiting for the server to start
+sleep 5
+
+# Launch the e2e tests
 yarn e2e
+
+# Send SIGINT to all jobs to ask the server process to gracefully shutdown
 kill -INT $(jobs -p)
+
+# Wait for the .coverage file
+while [ ! -f .coverage ]; do sleep 1; done
+
+# Convert coverage report to XML
+pipenv run coverage xml -i
+
+if [ -z "$INTEGRATION" ]; then
+    integration_name=$INTEGRATION
+else
+    integration_name=${PWD##*/}
+fi
+
+sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml
+
+if [ -z "$CODECOV_TOKEN" ]; then
+    pipenv run codecov -F $integration_name -X search -f coverage.xml
+fi
