@@ -108,8 +108,8 @@ class WorldCheckScreenCase(TestCase):
         result = response.json()
 
         self.assertEqual(len(result['errors']), 1)
-        self.assertEqual(result['errors'][0]['code'], 303)
-        self.assertEqual(result['errors'][0]['message'], 'The provider cannot return a response for the specified id')
+        self.assertEqual(result['errors'][0]['code'], 205)
+        self.assertTrue('group id' in result['errors'][0]['message'])
 
     def test_bad_authentication(self):
         response = requests.post(API_URL + '/screening_request', json={
@@ -129,8 +129,8 @@ class WorldCheckScreenCase(TestCase):
         result = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(result['errors']), 1)
-        self.assertEqual(result['errors'][0]['code'], 303)
-        self.assertEqual(result['errors'][0]['message'], 'The request has failed an authorisation check')
+        self.assertEqual(result['errors'][0]['code'], 205)
+        self.assertTrue('authorised' in result['errors'][0]['message'])
 
     def test_individual_successful_screening_request(self):
 

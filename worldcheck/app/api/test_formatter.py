@@ -5,7 +5,7 @@ from app.api.formatter import entity_to_passfort_format, get_some_name
 from swagger_client.models import IndividualEntity, OrganisationEntity, Name, NameType, ActionDetail, \
     ProfileActionType, \
     ProviderSource, Role, \
-    ProviderSourceStatus
+    ProviderSourceStatus, ProviderSourceType, ProviderSourceTypeCategoryDetail
 
 
 bashar_uk_sanction = ActionDetail(
@@ -66,6 +66,25 @@ gazprom_canada_sanction = ActionDetail(
                           name="World-Check Other Sanction")
 )
 
+pep_source = ProviderSource(
+    abbreviation="PEP N-R",
+    creation_date="2013-03-21T13:41:09Z",
+    name="PEP - National Government - Immediate Relative",
+    identifier="b_trwc_PEP N-R",
+    provider_source_status="ACTIVE",
+    type=ProviderSourceType(
+        category=ProviderSourceTypeCategoryDetail(
+            description="This gives details of high-ranking government officials in over 200 countries. Although there "
+                        "may be no reason why you should not do business with these individuals, the Basle Committee "
+                        "on Banking supervision has stated that one should check these customers because without this "
+                        "due diligence, banks can become subject to reputational, operational, legal and concentration "
+                        "risks, which can result in significant financial cost.",
+            name="PEP"
+        ),
+        identifier="t_trwc_8",
+        name="National Government"
+    )
+)
 
 class TestEntityFormatter(TestCase):
 
@@ -93,7 +112,9 @@ class TestEntityFormatter(TestCase):
                     "match_name": {"v": "John JONES"},
                     "aliases": [{"v": "JONES,John Mervyn"}],
                     "pep": {"v": {"match": False, "roles": []}},
-                    "sanctions": []
+                    "sanctions": [],
+                    "sources": [],
+                    "details": []
                 })
 
         with self.subTest("without primary name or explicit alias"):
@@ -118,8 +139,10 @@ class TestEntityFormatter(TestCase):
                     Name(full_name="Bashar AL-ASSAD", type=NameType.PRIMARY),
                 ],
                 actions=[bashar_eu_sanction, bashar_swiss_sanction, bashar_uk_sanction],
+                sources=[pep_source, bashar_eu_sanction.source, bashar_swiss_sanction.source, bashar_uk_sanction.source],
                 roles=[Role(title="President of the Syrian Arab Republic")])
             formatted_result = entity_to_passfort_format(entity)
+
             self.assertDictEqual(
                 formatted_result,
                 {
@@ -155,7 +178,34 @@ class TestEntityFormatter(TestCase):
                                 "is_current": True
                             }
                         }
-                    ]
+                    ],
+                    "sources": [
+                        {
+                            "v": {
+                                "name": "PEP - National Government - Immediate Relative",
+                                "description": pep_source.type.category.description
+                            }
+                        },
+                        {
+                            "v": {
+                                "name": "World-Check Other Sanctions",
+                                "description": None
+                            }
+                        },
+                        {
+                            "v": {
+                                "name": "SWITZERLAND  - SECO - State Secretariat for Econ. Affairs.",
+                                "description": None
+                            }
+                        },
+                        {
+                            "v": {
+                                "name": "UK - UKHMT - HM Treasury Sanctions Lists",
+                                "description": None
+                            }
+                        }
+                    ],
+                    "details": []
                 })
 
     def test_can_format_company(self):
