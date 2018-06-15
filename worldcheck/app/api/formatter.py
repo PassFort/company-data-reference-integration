@@ -1,4 +1,4 @@
-from swagger_client.models import Result, Entity, Name, NameType, ProfileActionType, ProfileEntityType
+from swagger_client.models import Result, Entity, Name, NameType, DetailType, ProfileEntityType, IndividualEntity
 
 
 def get_some_name(n: Name):
@@ -36,6 +36,8 @@ def entity_to_passfort_format(entity: Entity):
 
     roles = None
     if entity.entity_type == ProfileEntityType.INDIVIDUAL:
+        result["gender"] = {"v": get_gender_if_any(entity)}
+        result["deceased"] = {"v": entity.is_deceased}
         roles = [{"name": role.title} for role in entity.roles] if entity.roles is not None else []
 
     # Companies can be PEPs in world-check data (if they are State owned entities
@@ -47,6 +49,15 @@ def entity_to_passfort_format(entity: Entity):
 def has_pep_source(entity: Entity):
     return next((True for s in entity.sources or [] if s.type and s.type.category and s.type.category.name == "PEP"),
                 False)
+
+
+def get_gender_if_any(entity: IndividualEntity):
+    from swagger_client.models.gender import Gender
+    if entity.gender == Gender.MALE:
+        return "M"
+    if entity.gender == Gender.FEMALE:
+        return "F"
+    return None
 
 
 def get_sanctions_if_any(entity: Entity):
@@ -101,4 +112,5 @@ def get_details(entity: Entity):
             "text": detail.text or "?"
         }
         for detail in entity.details
+        if detail.detail_type != DetailType.SANCTION
     ]
