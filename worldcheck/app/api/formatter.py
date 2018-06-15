@@ -45,11 +45,8 @@ def entity_to_passfort_format(entity: Entity):
 
 
 def has_pep_source(entity: Entity):
-    return len(
-        list(filter(
-            lambda s: s.type and s.type.category and s.type.category.name == "PEP",
-            entity.sources or [])
-        )) > 0
+    return next((True for s in entity.sources or [] if s.type and s.type.category and s.type.category.name == "PEP"),
+                False)
 
 
 def get_sanctions_if_any(entity: Entity):
