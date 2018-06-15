@@ -95,16 +95,19 @@ class Error:
 
         """
         message = {
-            '400': 'Bad request submitted to World Check',
-            '401': 'The request has failed an authorisation check',
-            '404': 'The provider cannot return a response for the specified id',
-            '415': 'An unsupported Content-Type was specified',
-            '429': 'The API client is making too many concurrent requests, and some are being throttled',
-            '500': 'Provider unexpected error'
-        }.get(str(e.status), 'Provider unhandled error')
+            400: 'Bad request submitted to World Check',
+            401: 'The request could not be authorised',
+            # This could happen for any invalid reference (entity id etc.), but a bad group id is
+            # the most likely to happen - all the other ids are passed through programmatically,
+            # the group id is configured by the user
+            404: 'The supplied group id is not valid',
+            415: 'An unsupported Content-Type was specified',
+            429: 'The API client is making too many concurrent requests, and some are being throttled',
+            500: 'Provider unexpected error'
+        }.get(e.status, 'Provider unhandled error')
         if e.body and e.body != '[]':
             message = message + ': ' + str(e.body)
-        if e.status in ['401', '404']:
+        if e.status in [401, 404]:
             return {
                 'code': ErrorCode.MISCONFIGURATION_ERROR.value,
                 'source': 'PROVIDER',
