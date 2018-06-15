@@ -114,7 +114,9 @@ class TestEntityFormatter(TestCase):
                     "pep": {"v": {"match": False, "roles": []}},
                     "sanctions": [],
                     "sources": [],
-                    "details": []
+                    "details": [],
+                    "gender": {"v": None},
+                    "deceased": {"v": False}
                 })
 
         with self.subTest("without primary name or explicit alias"):
@@ -205,7 +207,9 @@ class TestEntityFormatter(TestCase):
                             }
                         }
                     ],
-                    "details": []
+                    "details": [],
+                    "gender": {"v": None},
+                    "deceased": {"v": False}
                 })
 
     def test_can_format_company(self):
