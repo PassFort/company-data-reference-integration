@@ -1,0 +1,237 @@
+{
+  "entityType": "INDIVIDUAL",
+  "actions": [],
+  "active": true,
+  "addresses": [
+    {
+      "city": "New Orleans",
+      "country": {
+        "code": "USA",
+        "name": "UNITED STATES"
+      },
+      "postCode": null,
+      "region": "Louisiana",
+      "street": null
+    }
+  ],
+  "associates": [
+    {
+      "reversed": null,
+      "targetEntityId": "e_tr_wco_2843634",
+      "targetExternalImportId": "ei_trwc_2843634",
+      "type": "AFFILIATED_COMPANY"
+    }
+  ],
+  "category": "INDIVIDUAL",
+  "comments": null,
+  "contacts": [],
+  "countryLinks": [
+    {
+      "country": {
+        "code": "USA",
+        "name": "UNITED STATES"
+      },
+      "countryText": "USA",
+      "type": "NATIONALITY"
+    },
+    {
+      "country": {
+        "code": "USA",
+        "name": "UNITED STATES"
+      },
+      "countryText": "USA",
+      "type": "LOCATION"
+    }
+  ],
+  "creationDate": "2014-01-28T00:00:00Z",
+  "deletionDate": null,
+  "description": null,
+  "details": [
+    {
+      "detailType": "IDENTIFICATION",
+      "text": " To be determined. ",
+      "title": "IDENTIFICATION"
+    },
+    {
+      "detailType": "BIOGRAPHY",
+      "text": " Member of the Board of Directors of the Federal Reserve Bank (SOE) (New Orleans Branch) (Jan 2014 - ). President and Chief Executive Officer of Entergy Louisiana LLC and Entergy Gulf States Louisiana LLC (Feb 2013 - ). ",
+      "title": "BIOGRAPHY"
+    },
+    {
+      "detailType": "REPORTS",
+      "text": " Feb 2016 - no further information reported.",
+      "title": "REPORTS"
+    }
+  ],
+  "entityId": "e_tr_wci_2213420",
+  "externalImportId": "ei_trwc_2213420",
+  "files": [],
+  "identityDocuments": [],
+  "images": [],
+  "lastAdjunctChangeDate": null,
+  "modificationDate": "2016-03-01T00:00:00Z",
+  "names": [
+    {
+      "fullName": "Phillip R MAY",
+      "givenName": "Phillip R",
+      "languageCode": null,
+      "lastName": "MAY",
+      "originalScript": "Phillip R MAY",
+      "prefix": null,
+      "suffix": null,
+      "type": "PRIMARY"
+    },
+    {
+      "fullName": "MAY,Phillip",
+      "givenName": null,
+      "languageCode": null,
+      "lastName": null,
+      "originalScript": "MAY,Phillip",
+      "prefix": null,
+      "suffix": null,
+      "type": "AKA"
+    },
+    {
+      "fullName": "MAY,Phillip R Jr",
+      "givenName": null,
+      "languageCode": null,
+      "lastName": null,
+      "originalScript": "MAY,Phillip R Jr",
+      "prefix": null,
+      "suffix": null,
+      "type": "AKA"
+    }
+  ],
+  "previousCountryLinks": [],
+  "provider": {
+    "code": "trwc",
+    "identifier": "cnp_7",
+    "master": true,
+    "name": "World Check"
+  },
+  "sourceDescription": null,
+  "sourceUris": [],
+  "sources": [
+    {
+      "abbreviation": "PEP N",
+      "creationDate": "2013-03-21T13:41:09Z",
+      "identifier": "b_trwc_PEP N",
+      "importIdentifier": null,
+      "name": "PEP - National Government",
+      "provider": null,
+      "providerSourceStatus": "ACTIVE",
+      "regionOfAuthority": null,
+      "subscriptionCategory": "STANDARD",
+      "type": {
+        "category": {
+          "description": "This gives details of high-ranking government officials in over 200 countries. Although there may be no reason why you should not do business with these individuals, the Basle Committee on Banking supervision has stated that one should check these customers because without this due diligence, banks can become subject to reputational, operational, legal and concentration risks, which can result in significant financial cost.",
+          "identifier": "ec_4",
+          "name": "PEP",
+          "providerSourceTypes": []
+        },
+        "identifier": "t_trwc_8",
+        "name": "National Government"
+      }
+    }
+  ],
+  "subCategory": "PEP N",
+  "updateCategory": "C1",
+  "updatedDates": {
+    "ageUpdated": null,
+    "aliasesUpdated": "2016-03-01T00:00:00Z",
+    "alternativeSpellingUpdated": null,
+    "asOfDateUpdated": null,
+    "categoryUpdated": null,
+    "citizenshipsUpdated": null,
+    "companiesUpdated": "2016-03-01T00:00:00Z",
+    "deceasedUpdated": null,
+    "dobsUpdated": null,
+    "eiUpdated": null,
+    "enteredUpdated": null,
+    "externalSourcesUpdated": null,
+    "firstNameUpdated": null,
+    "foreignAliasUpdated": null,
+    "furtherInformationUpdated": "2016-03-01T00:00:00Z",
+    "idNumbersUpdated": null,
+    "keywordsUpdated": null,
+    "lastNameUpdated": null,
+    "linkedToUpdated": null,
+    "locationsUpdated": null,
+    "lowQualityAliasesUpdated": null,
+    "passportsUpdated": null,
+    "placeOfBirthUpdated": null,
+    "positionUpdated": null,
+    "ssnUpdated": null,
+    "subCategoryUpdated": null,
+    "titleUpdated": null,
+    "updatecategoryUpdated": "2016-03-01T00:00:00Z"
+  },
+  "weblinks": [
+    {
+      "caption": null,
+      "uri": "http://www.entergy.com/news_room/newsrelease.aspx?NR_ID=2599",
+      "tags": []
+    },
+    {
+      "caption": null,
+      "uri": "http://www.frbatlanta.org/news/pressreleases/staffdirectors/131219_nola.cfm",
+      "tags": []
+    },
+    {
+      "caption": null,
+      "uri": "http://entergy.com/about_entergy/leadership/may.aspx",
+      "tags": [
+        "PHOTO"
+      ]
+    },
+    {
+      "caption": null,
+      "uri": "http://www.frbatlanta.org/about/atlantafed/directors/neworl.cfm",
+      "tags": [
+        "PHOTO"
+      ]
+    },
+    {
+      "caption": null,
+      "uri": "https://www.frbatlanta.org/about/atlantafed/directors/new-orleans.aspx",
+      "tags": [
+        "PHOTO"
+      ]
+    }
+  ],
+  "gender": "MALE",
+  "roles": [
+    {
+      "end": null,
+      "location": null,
+      "source": null,
+      "start": null,
+      "title": "Central Bank Official",
+      "type": "Position"
+    }
+  ],
+  "ageAsOfDate": "2012-11-07T00:00:00Z",
+  "isDeceased": null,
+  "events": [
+    {
+      "address": null,
+      "allegedAddresses": [],
+      "day": null,
+      "fullDate": "1961",
+      "month": null,
+      "type": "BIRTH",
+      "year": 1961
+    },
+    {
+      "address": null,
+      "allegedAddresses": [],
+      "day": null,
+      "fullDate": "1962",
+      "month": null,
+      "type": "BIRTH",
+      "year": 1962
+    }
+  ],
+  "previousRoles": [],
+  "age": "50"
+}

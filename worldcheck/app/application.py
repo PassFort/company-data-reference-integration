@@ -29,10 +29,10 @@ def health():
 @app.route('/screening_request', methods=['POST'])
 @validate_model(ScreeningRequest)
 def screen_request(request_data: ScreeningRequest):
-
     result = CaseHandler(
         request_data.credentials,
-        request_data.config
+        request_data.config,
+        request_data.is_demo
     ).submit_screening_request(request_data.input_data)
     return jsonify(result)
 
@@ -56,7 +56,7 @@ def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_syste
 @app.route('/match/<string:match_id>', methods=['POST'])
 @validate_model(ScreeningResultsRequest)
 def get_match_data(request_data: ScreeningResultsRequest, match_id):
-    return jsonify(MatchHandler(request_data.credentials, None).get_entity_for_match(match_id))
+    return jsonify(MatchHandler(request_data.credentials, None, request_data.is_demo).get_entity_for_match(match_id))
 
 
 @app.errorhandler(400)
