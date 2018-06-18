@@ -36,6 +36,6 @@ class CaseHandlerTest(TestCase):
             }),
             is_demo=True
         )
-        result = handler.get_results('lukoil-demo')
-        self.assertEqual(len(result['output_data']), 8)
-        self.assertEqual(len(result['raw']), 131)
+        result = handler.get_results('lukoil_romania_srl_results')
+        self.assertEqual(len(result['output_data']), 1)
+        self.assertEqual(len(result['raw']), 3)
