@@ -34,7 +34,7 @@ class CaseHandler:
 
     def submit_screening_request(self, input_data: ScreeningRequestData):
         if self.is_demo:
-            case_system_id = input_data.name + '-demo'
+            case_system_id = input_data.name.lower().replace(" ", "_") + "_results"
         else:
             case = self.__new_case(input_data)
             self.case_api.cases_case_system_id_screening_request_post(case.case_system_id)
@@ -72,7 +72,6 @@ class CaseHandler:
 
         return result
 
-
     @staticmethod
     def __secondary_fields(input_data: ScreeningRequestData):
         fields = []
@@ -100,7 +99,7 @@ class CaseHandler:
 
 class MatchHandler:
 
-    def __init__(self, credentials: WorldCheckCredentials, config: WorldCheckConfig):
+    def __init__(self, credentials: WorldCheckCredentials, config: WorldCheckConfig, is_demo=False):
         custom_client = CustomAuthApiClient(
             credentials.url,
             credentials.api_key,
@@ -108,12 +107,19 @@ class MatchHandler:
         )
         self.ref_api = ReferenceApi(custom_client)
         self.config = config
+        self.is_demo = is_demo
 
     def get_entity_for_match(self, match_id):
         import datetime
         n = datetime.datetime.now()
 
-        entity = self.ref_api.reference_profile_id_get(match_id)
+        if self.is_demo:
+            entity = self.ref_api.api_client.deserialize(
+                create_response_from_file("./mock_data/{}.json".format(match_id)),
+                'IndividualEntity'
+            )
+        else:
+            entity = self.ref_api.reference_profile_id_get(match_id)
 
         delta = datetime.datetime.now() - n
         logging.info('Time to retrieve entity {}: {}'.format(match_id, delta))

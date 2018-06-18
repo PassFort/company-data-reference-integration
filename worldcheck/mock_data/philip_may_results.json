@@ -1,0 +1,50 @@
+[
+  {
+    "resultId": "0a3687d0-63f9-1478-9904-bbc1003b27c4",
+    "referenceId": "philip_may_2213420",
+    "matchStrength": "STRONG",
+    "matchedTerm": "MAY,Phillip",
+    "submittedTerm": "Philip May",
+    "matchedNameType": "AKA",
+    "secondaryFieldResults": [],
+    "sources": [
+      "b_trwc_PEP N"
+    ],
+    "categories": [
+      "PEP"
+    ],
+    "creationDate": "2018-06-18T12:46:51.500Z",
+    "modificationDate": "2018-06-18T12:46:51.500Z",
+    "resolution": null,
+    "resultReview": {
+      "reviewRequired": false,
+      "reviewRequiredDate": "2016-03-01T00:00:00.000Z",
+      "reviewRemark": null,
+      "reviewDate": null
+    }
+  },
+  {
+    "resultId": "0a3687d0-63f9-1478-9904-bbc1003b27c6",
+    "referenceId": "philip_may_796567",
+    "matchStrength": "EXACT",
+    "matchedTerm": "Philip MAY",
+    "submittedTerm": "Philip May",
+    "matchedNameType": "PRIMARY",
+    "secondaryFieldResults": [],
+    "sources": [
+      "b_trwc_PEP N-R"
+    ],
+    "categories": [
+      "PEP"
+    ],
+    "creationDate": "2018-06-18T12:46:51.500Z",
+    "modificationDate": "2018-06-18T12:46:51.500Z",
+    "resolution": null,
+    "resultReview": {
+      "reviewRequired": false,
+      "reviewRequiredDate": "2016-07-26T00:00:00.000Z",
+      "reviewRemark": null,
+      "reviewDate": null
+    }
+  }
+]
