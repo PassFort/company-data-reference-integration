@@ -168,6 +168,7 @@ class WorldCheckConfig(Model):
         ],
         default=MatchStrength.WEAK
     )
+    enable_ongoing_monitoring = BooleanType(default=False)
 
 
 class FullName(Model):
@@ -274,5 +275,5 @@ class ScreeningRequest(Model):
 
 class ScreeningResultsRequest(Model):
     credentials = ModelType(WorldCheckCredentials, required=True)
-    config = ModelType(WorldCheckConfig, default=None)
+    config = ModelType(WorldCheckConfig, required=True)
     is_demo = BooleanType(default=False)

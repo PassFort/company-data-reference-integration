@@ -61,6 +61,12 @@ class CaseHandler:
 
         return make_results_response(results=results, config=self.config)
 
+    def set_ongoing_screening(self, case_system_id):
+        if self.is_demo:
+            pass
+        else:
+            self.case_api.cases_case_system_id_ongoing_screening_put(case_system_id)
+
     def __new_case(self, input_data: ScreeningRequestData) -> Case:
         result = self.case_api.cases_post(
             NewCase(

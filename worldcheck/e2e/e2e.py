@@ -159,7 +159,11 @@ class WorldCheckScreenCase(TestCase):
 
             while retries > 0:
                 response = requests.post(API_URL + '/results/' + case_system_id, json={
-                    "credentials": GOOD_CREDENTIALS
+                    "credentials": GOOD_CREDENTIALS,
+                    "config": {
+                        "group_id": TEST_GROUP_ID,
+                        "enable_ongoing_monitoring": True
+                    },
                 })
 
                 if response.status_code != 202:
