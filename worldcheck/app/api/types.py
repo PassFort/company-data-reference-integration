@@ -168,6 +168,7 @@ class WorldCheckConfig(Model):
         ],
         default=MatchStrength.WEAK
     )
+    enable_ongoing_monitoring = BooleanType(default=False)
 
 
 class FullName(Model):

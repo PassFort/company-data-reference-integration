@@ -41,11 +41,16 @@ def screen_request(request_data: ScreeningRequest):
 @validate_model(ScreeningResultsRequest)
 def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_system_id):
     try:
-        result = CaseHandler(
+        case_handler = CaseHandler(
             request_data.credentials,
             request_data.config,
             request_data.is_demo
-        ).get_results(worldcheck_system_id)
+        )
+        result = case_handler.get_results(worldcheck_system_id)
+
+        if request_data.config.enable_ongoing_monitoring:
+            case_handler.set_ongoing_screening(worldcheck_system_id)
+
         return jsonify(result)
     except WorldCheckPendingError:
         # The request has been accepted for processing,
