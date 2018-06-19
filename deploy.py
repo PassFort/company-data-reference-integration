@@ -13,7 +13,8 @@ integrations = {
     'duedil': './duedil',
     'onfido': './onfido',
     'bvd': './bvd',
-    'worldcheck': './worldcheck'
+    'worldcheck': './worldcheck',
+    'transunion': './transunion',
 }
 
 sentry = {
