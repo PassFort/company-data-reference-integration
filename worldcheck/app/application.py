@@ -29,10 +29,10 @@ def health():
 @app.route('/screening_request', methods=['POST'])
 @validate_model(ScreeningRequest)
 def screen_request(request_data: ScreeningRequest):
-
     result = CaseHandler(
         request_data.credentials,
-        request_data.config
+        request_data.config,
+        request_data.is_demo
     ).submit_screening_request(request_data.input_data)
     return jsonify(result)
 
@@ -41,11 +41,16 @@ def screen_request(request_data: ScreeningRequest):
 @validate_model(ScreeningResultsRequest)
 def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_system_id):
     try:
-        result = CaseHandler(
+        case_handler = CaseHandler(
             request_data.credentials,
             request_data.config,
             request_data.is_demo
-        ).get_results(worldcheck_system_id)
+        )
+        result = case_handler.get_results(worldcheck_system_id)
+
+        if request_data.config.enable_ongoing_monitoring:
+            case_handler.set_ongoing_screening(worldcheck_system_id)
+
         return jsonify(result)
     except WorldCheckPendingError:
         # The request has been accepted for processing,
@@ -56,7 +61,7 @@ def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_syste
 @app.route('/match/<string:match_id>', methods=['POST'])
 @validate_model(ScreeningResultsRequest)
 def get_match_data(request_data: ScreeningResultsRequest, match_id):
-    return jsonify(MatchHandler(request_data.credentials, None).get_entity_for_match(match_id))
+    return jsonify(MatchHandler(request_data.credentials, None, request_data.is_demo).get_entity_for_match(match_id))
 
 
 @app.errorhandler(400)
