@@ -130,6 +130,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_transunion:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo transunion > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build:
         docker:
             - image: passfort/python-builder
@@ -171,6 +182,9 @@ jobs:
     unit_worldcheck:
         <<: *unit
 
+    unit_transunion:
+        <<: *unit
+
     e2e_duedil:
         <<: *e2e
 
@@ -181,6 +195,9 @@ jobs:
         <<: *e2e
 
     e2e_worldcheck:
+        <<: *e2e
+
+    e2e_transunion:
         <<: *e2e
 
     deploy_duedil_staging:
@@ -195,6 +212,9 @@ jobs:
     deploy_worldcheck_staging:
         <<: *deploy_staging_common
 
+    deploy_transunion_staging:
+        <<: *deploy_staging_common
+
     deploy_duedil_production:
         <<: *deploy_production_common
 
@@ -205,6 +225,9 @@ jobs:
         <<: *deploy_production_common
 
     deploy_worldcheck_production:
+        <<: *deploy_production_common
+
+    deploy_transunion_production:
         <<: *deploy_production_common
 
 workflows:
@@ -325,3 +348,33 @@ workflows:
                     branches:
                         only:
                           - master
+
+    transunion:
+        jobs:
+            - set_integration_transunion
+            - build:
+                requires:
+                  - set_integration_transunion
+            - unit_transunion:
+                requires:
+                  - build
+            - e2e_transunion:
+                requires:
+                  - build
+            - deploy_transunion_staging:
+                requires:
+                  - e2e_transunion
+                  - unit_transunion
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_transunion_production:
+                requires:
+                  - e2e_transunion
+                  - unit_transunion
+                filters:
+                    branches:
+                        only:
+                          - master
+
