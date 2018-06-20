@@ -100,11 +100,11 @@ def parsed_onfido_breakdown(breakdown):
     }
     source_results = breakdown['breakdown']
     for source, source_result in source_results.items():
-        if source_result['result'] is not 'clear':
-            return source_match_count
 
         # For USA and other countries, the structure of onfido data differs!
         if source == 'address_matched' or source == 'date_of_birth_matched':
+            if source_result['result'] is not 'clear':
+                return source_match_count
             sources = map(to_snake_case, source_result['properties']['sources'].split(','))
             for actual_source in sources:
                 if actual_source in source_match_count:
@@ -113,6 +113,8 @@ def parsed_onfido_breakdown(breakdown):
                     logging.info('Did not handle source %s', actual_source)
             return source_match_count
         elif source == 'credit_agencies':  # Handle special case where count reported is explicit number
+            if source_result['result'] is not 'clear':
+                return source_match_count
             count = get_number_of_agencies(source_result['properties']) if source_result['result'] == 'clear' else 0
         else:
             count = 1 if source_result['result'] == 'clear' else 0
