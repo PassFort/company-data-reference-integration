@@ -96,13 +96,14 @@ def parsed_onfido_breakdown(breakdown):
         'utility_registration': {'count': 0},
         'postal_authorities': {'count': 0},
         'commercial_database': {'count': 0},
-        'proprietary':  {'count': 0},
+        'proprietary': {'count': 0},
     }
     source_results = breakdown['breakdown']
     for source, source_result in source_results.items():
+
         # For USA and other countries, the structure of onfido data differs!
         if source == 'address_matched' or source == 'date_of_birth_matched':
-            sources = map(to_snake_case, source_result['properties']['sources'].split(','))
+            sources = map(to_snake_case, source_result.get('properties', {}).get('sources', "").split(','))
             for actual_source in sources:
                 if actual_source in source_match_count:
                     source_match_count[actual_source] = {'count': 1}
