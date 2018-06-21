@@ -1,7 +1,8 @@
 from swagger_client.models import NewCase, ProviderType, Case, CaseEntityType, Result, Filter, Field, MatchStrength
 from app.auth import CustomAuthApiClient
 from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData, Error
-from app.api.responses import make_screening_started_response, make_results_response, make_match_response
+from app.api.responses import make_screening_started_response, make_results_response, make_match_response, \
+    make_associate_response, make_associates_response
 from swagger_client.api import CaseApi, ReferenceApi
 
 import logging
@@ -116,6 +117,22 @@ class MatchHandler:
         self.is_demo = is_demo
 
     def get_entity_for_match(self, match_id):
+        return make_match_response(result=self.__get_entity(match_id))
+
+    def get_match_associates(self, match_id):
+        from swagger_client.models import Entity
+        entity: Entity = self.__get_entity(match_id)
+        return make_associates_response([a.target_entity_id for a in entity.associates])
+
+    def get_associate(self, match_id, associate_id):
+        from swagger_client.models import Entity
+        matched_entity: Entity = self.__get_entity(match_id)
+        associated_entity = self.__get_entity(associate_id)
+
+        association_data = next(a for a in matched_entity.associates if a.target_entity_id == associate_id)
+        return make_associate_response(associated_entity, association_data)
+
+    def __get_entity(self, match_id):
         import datetime
         n = datetime.datetime.now()
 
@@ -130,4 +147,4 @@ class MatchHandler:
         delta = datetime.datetime.now() - n
         logging.info('Time to retrieve entity {}: {}'.format(match_id, delta))
 
-        return make_match_response(result=entity)
+        return entity

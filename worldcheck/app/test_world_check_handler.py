@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.worldcheck_handler import CaseHandler
+from app.worldcheck_handler import CaseHandler, MatchHandler
 from app.api.types import WorldCheckCredentials, WorldCheckConfig
 
 TEST_API_KEY = 'a4364e62-e58b-4b64-9c71-faead5417557'
@@ -39,3 +39,38 @@ class CaseHandlerTest(TestCase):
         result = handler.get_results('lukoil_romania_srl_results')
         self.assertEqual(len(result['output_data']), 1)
         self.assertEqual(len(result['raw']), 3)
+
+
+class MatchHandlerTest(TestCase):
+
+    def setUp(self):
+        self.handler = MatchHandler(
+            WorldCheckCredentials(GOOD_CREDENTIALS),
+            WorldCheckConfig({
+                'group_id': TEST_GROUP_ID
+            }),
+            is_demo=True
+        )
+
+    def test_get_associates(self):
+        self.assertDictEqual(
+            self.handler.get_match_associates('lukoil_romania_srl_9437'),
+            {
+                'output_data': ['lukoil_romania_srl_2756289'],
+                'errors': []
+            })
+
+    def test_get_associate_data(self):
+        response = self.handler.get_associate('lukoil_romania_srl_9437',
+                                              'lukoil_romania_srl_2756289')
+
+        self.assertEqual(
+            response['output_data'],
+            {
+                'name': 'LUKOIL ENERGY & GAS ROMANIA',
+                'association': 'AFFILIATED_COMPANY',
+                'is_pep': False,
+                'is_sanction': False
+            }
+        )
+

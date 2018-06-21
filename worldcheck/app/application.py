@@ -64,6 +64,30 @@ def get_match_data(request_data: ScreeningResultsRequest, match_id):
     return jsonify(MatchHandler(request_data.credentials, None, request_data.is_demo).get_entity_for_match(match_id))
 
 
+@app.route('/match/<string:match_id>/associates', methods=['POST'])
+@validate_model(ScreeningResultsRequest)
+def get_match_associates(request_data: ScreeningResultsRequest, match_id):
+    return jsonify(
+        MatchHandler(
+            request_data.credentials,
+            None,
+            request_data.is_demo
+        ).get_match_associates(match_id)
+    )
+
+
+@app.route('/match/<string:match_id>/associate/<string:associate_id>', methods=['POST'])
+@validate_model(ScreeningResultsRequest)
+def get_associate_data(request_data: ScreeningResultsRequest, match_id, associate_id):
+    return jsonify(
+        MatchHandler(
+            request_data.credentials,
+            None,
+            request_data.is_demo
+        ).get_associate(match_id, associate_id)
+    )
+
+
 @app.errorhandler(400)
 def api_400(error):
 
