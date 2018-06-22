@@ -1,4 +1,5 @@
-from swagger_client.models import Result, Entity, Name, NameType, DetailType, ProfileEntityType, IndividualEntity
+from swagger_client.models import Result, Entity, Name, NameType, DetailType, ProfileEntityType, IndividualEntity, \
+    Associate, EventType
 
 
 def get_some_name(n: Name):
@@ -22,8 +23,7 @@ def entity_to_passfort_format(entity: Entity):
 
     aliases = list(set([get_some_name(a) for a in entity.names if a.type != NameType.PRIMARY])) \
         if entity.names is not None else None
-    primary_name = next((get_some_name(n) for n in entity.names if n.type == NameType.PRIMARY),
-                        None) if entity.names is not None else None
+    primary_name = get_primary_name(entity)
 
     result = {
         "match_id": entity.entity_id,
@@ -44,6 +44,20 @@ def entity_to_passfort_format(entity: Entity):
     result["pep"] = {"v": {"match": has_pep_source(entity), "roles": roles}}
 
     return result
+
+
+def associated_entity_to_passfort_format(entity: Entity, association: Associate):
+    return {
+        "name": get_primary_name(entity),
+        "association": association.type,
+        "is_pep": has_pep_source(entity),
+        "is_sanction": len(get_sanctions_if_any(entity)) > 0
+    }
+
+
+def get_primary_name(entity: Entity):
+    return next((get_some_name(n) for n in entity.names if n.type == NameType.PRIMARY),
+                None) if entity.names is not None else None
 
 
 def has_pep_source(entity: Entity):
