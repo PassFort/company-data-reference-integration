@@ -1,5 +1,5 @@
 import logging
-
+from swagger_client.models import Entity, Associate
 
 def make_error_response(errors=[]):
     return {
@@ -61,5 +61,25 @@ def make_match_response(result):
     return {
         'output_data': entity_to_passfort_format(result),
         'raw': result.to_dict(),
+        'errors': []
+    }
+
+
+def make_associates_response(associates):
+
+    return {
+        'output_data': associates,
+        'errors': []
+    }
+
+
+def make_associate_response(associate_data: Entity, association: Associate):
+    from app.api.formatter import associated_entity_to_passfort_format
+    return {
+        'output_data': associated_entity_to_passfort_format(associate_data, association),
+        'raw': {
+            'associate_data': associate_data.to_dict(),
+            'association': association.to_dict()
+        },
         'errors': []
     }
