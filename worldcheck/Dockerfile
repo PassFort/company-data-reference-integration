@@ -12,6 +12,8 @@ WORKDIR /src
 
 COPY Pipfile Pipfile.lock package.json yarn.lock /src/
 
+RUN env
+
 RUN mkdir /srv/logs/ && \
     pip install pipenv && \
     mkdir -p ~/.ssh  && \
