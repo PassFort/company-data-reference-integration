@@ -255,10 +255,10 @@ workflows:
                   - set_integration_duedil
             - unit_duedil:
                 requires:
-                  - build
+                  - build_duedil
             - e2e_duedil:
                 requires:
-                  - build
+                  - build_duedil
             - deploy_duedil_staging:
                 requires:
                   - e2e_duedil
