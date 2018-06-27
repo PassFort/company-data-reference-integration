@@ -1,0 +1,358 @@
+{
+    "entityType": "INDIVIDUAL",
+    "actions": [],
+    "active": true,
+    "addresses": [
+        {
+            "city": "London",
+            "country": {
+                "code": "GBR",
+                "name": "UNITED KINGDOM"
+            },
+            "postCode": null,
+            "region": "Greater London",
+            "street": null
+        },
+        {
+            "city": "Maidenhead",
+            "country": {
+                "code": "GBR",
+                "name": "UNITED KINGDOM"
+            },
+            "postCode": null,
+            "region": "Berkshire",
+            "street": null
+        },
+        {
+            "city": "Merton",
+            "country": {
+                "code": "GBR",
+                "name": "UNITED KINGDOM"
+            },
+            "postCode": null,
+            "region": "Greater London",
+            "street": null
+        }
+    ],
+    "category": "POLITICAL INDIVIDUAL",
+    "comments": null,
+    "contacts": [],
+    "countryLinks": [
+        {
+            "country": {
+                "code": "GBR",
+                "name": "UNITED KINGDOM"
+            },
+            "countryText": "UNITED KINGDOM",
+            "type": "NATIONALITY"
+        },
+        {
+            "country": {
+                "code": "GBR",
+                "name": "UNITED KINGDOM"
+            },
+            "countryText": "UNITED KINGDOM",
+            "type": "LOCATION"
+        }
+    ],
+    "creationDate": "2001-03-04T00:00:00Z",
+    "deletionDate": null,
+    "description": null,
+    "details": [
+        {
+            "detailType": "IDENTIFICATION",
+            "text": " Philip May (spouse). ",
+            "title": "IDENTIFICATION"
+        },
+        {
+            "detailType": "BIOGRAPHY",
+            "text": " Prime Minister (Jul 2016 - ). First Lord of the Treasury (Jul 2016 - ). Minister for the Civil Service (Jul 2016 - ). Leader of the Conservative Party (Jul 2016 - ). Secretary of State for the Home Office (2010-2015) (2015 - Jul 2016). Member of Parliament, representing Maidenhead (1997-2015) (2015- ). Minister for Women and Equalities (2010-2012). Shadow Minister for Women (2007-2010). Shadow Secretary of State for Work and Pensions (2009-2010). Shadow Leader of the House of Commons (2005-2009). Shadow Secretary of State for the Family (2004-2005). Member of the Conservative Party. ",
+            "title": "BIOGRAPHY"
+        },
+        {
+            "detailType": "REPORTS",
+            "text": " Apr 2017 - no further information reported.",
+            "title": "REPORTS"
+        }
+    ],
+    "entityId": "e_tr_wci_20187",
+    "externalImportId": "ei_trwc_20187",
+    "files": [],
+    "identityDocuments": [],
+    "images": [],
+    "lastAdjunctChangeDate": null,
+    "modificationDate": "2017-04-18T00:00:00Z",
+    "names": [
+        {
+            "fullName": "Rt Hon Theresa MAY",
+            "givenName": "Theresa",
+            "languageCode": null,
+            "lastName": "MAY",
+            "originalScript": "Rt Hon Theresa MAY",
+            "prefix": "Rt Hon",
+            "suffix": null,
+            "type": "PRIMARY"
+        },
+        {
+            "fullName": "MAY,Theresa Mary",
+            "givenName": null,
+            "languageCode": null,
+            "lastName": null,
+            "originalScript": "MAY,Theresa Mary",
+            "prefix": null,
+            "suffix": null,
+            "type": "AKA"
+        }
+    ],
+    "previousCountryLinks": [],
+    "provider": {
+        "code": "trwc",
+        "identifier": "cnp_7",
+        "master": true,
+        "name": "World Check"
+    },
+    "sourceDescription": null,
+    "sourceUris": [],
+    "sources": [
+        {
+            "abbreviation": "PEP N",
+            "creationDate": "2013-03-21T13:41:09Z",
+            "identifier": "b_trwc_PEP N",
+            "importIdentifier": null,
+            "name": "PEP - National Government",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": null,
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of high-ranking government officials in over 200 countries. Although there may be no reason why you should not do business with these individuals, the Basle Committee on Banking supervision has stated that one should check these customers because without this due diligence, banks can become subject to reputational, operational, legal and concentration risks, which can result in significant financial cost.",
+                    "identifier": "ec_4",
+                    "name": "PEP",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_8",
+                "name": "National Government"
+            }
+        }
+    ],
+    "subCategory": "PEP N",
+    "updateCategory": "C4",
+    "updatedDates": {
+        "ageUpdated": null,
+        "aliasesUpdated": "2010-05-14T00:00:00Z",
+        "alternativeSpellingUpdated": null,
+        "asOfDateUpdated": null,
+        "categoryUpdated": "2001-03-04T00:00:00Z",
+        "citizenshipsUpdated": "2001-03-04T00:00:00Z",
+        "companiesUpdated": "2005-05-13T00:00:00Z",
+        "deceasedUpdated": null,
+        "dobsUpdated": null,
+        "eiUpdated": "2009-01-21T00:00:00Z",
+        "enteredUpdated": null,
+        "externalSourcesUpdated": "2017-04-18T00:00:00Z",
+        "firstNameUpdated": "2001-03-04T00:00:00Z",
+        "foreignAliasUpdated": null,
+        "furtherInformationUpdated": "2017-04-18T00:00:00Z",
+        "idNumbersUpdated": "2010-05-14T00:00:00Z",
+        "keywordsUpdated": null,
+        "lastNameUpdated": "2001-03-04T00:00:00Z",
+        "linkedToUpdated": "2008-02-05T00:00:00Z",
+        "locationsUpdated": "2015-05-20T00:00:00Z",
+        "lowQualityAliasesUpdated": null,
+        "passportsUpdated": null,
+        "placeOfBirthUpdated": "2008-02-05T00:00:00Z",
+        "positionUpdated": "2016-07-15T00:00:00Z",
+        "ssnUpdated": null,
+        "subCategoryUpdated": "2010-05-14T00:00:00Z",
+        "titleUpdated": "2005-12-21T00:00:00Z",
+        "updatecategoryUpdated": "2017-04-18T00:00:00Z"
+    },
+    "weblinks": [
+        {
+            "caption": null,
+            "uri": "http://www.politicsresources.net/area/uk/leaders/Cons-2016.htm",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.tmay.co.uk/biography",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.tmay.co.uk/biography/",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.votetheresa.com/about.php",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "https://www.gov.uk/government/ministers/first-lord-of-the-treasury",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "https://www.gov.uk/government/ministers/minister-for-the-civil-service",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "https://www.gov.uk/government/ministers/prime-minister",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "https://www.gov.uk/government/people/theresa-may",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://news.bbc.co.uk/1/hi/uk_politics/2119977.stm",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://news.bbc.co.uk/2/shared/spl/hi/uk_politics/03/shadow_cabinet/html/commons.stm",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://news.bbc.co.uk/hi/english/static/vote2001/candidates/candidates/3/38903.stm",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.bbc.com/news/election-2015-32658697",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.cabinetoffice.gov.uk/government-business/government-ministers-responsibilities.aspx",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.conservatives.com/People/Meet_the_Shadow_Cabinet.aspx",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.conservatives.com/People/Members_of_Parliament/May_Theresa.aspx",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.conservatives.com/tile.do?def=people.person.page&personID=4790",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.conservatives.com/tile.do?def=people.shadow.cabinet.page",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.equalities.gov.uk/ministers.aspx",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.number10.gov.uk/news/latest-news/2010/05/her-majestys-government-49840",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.parliament.uk/biographies/commons/mrs-theresa-may/8",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.parliament.uk/biographies/commons/theresa-may/25452",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.parliament.uk/biographies/theresa-may/25452",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.politics.co.uk/MP/xmps/m/may-theresa-$451611.htm",
+            "tags": [
+                "PHOTO"
+            ]
+        },
+        {
+            "caption": null,
+            "uri": "http://www.politics.co.uk/mps/party-politics/conservatives/may-theresa-$451611.htm",
+            "tags": [
+                "PHOTO"
+            ]
+        }
+    ],
+    "gender": "FEMALE",
+    "roles": [
+        {
+            "end": null,
+            "location": null,
+            "source": null,
+            "start": null,
+            "title": "Prime Minister",
+            "type": "Position"
+        }
+    ],
+    "ageAsOfDate": null,
+    "isDeceased": null,
+    "events": [
+        {
+            "address": {
+                "city": null,
+                "country": {
+                    "code": "GBR",
+                    "name": "UNITED KINGDOM"
+                },
+                "postCode": null,
+                "region": "Eastbourne, Sussex, United Kingdom",
+                "street": null
+            },
+            "allegedAddresses": [],
+            "day": 1,
+            "fullDate": "1956-10-01",
+            "month": 10,
+            "type": "BIRTH",
+            "year": 1956
+        }
+    ],
+    "previousRoles": [],
+    "age": null
+}

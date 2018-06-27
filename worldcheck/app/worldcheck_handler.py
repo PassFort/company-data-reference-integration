@@ -122,7 +122,7 @@ class MatchHandler:
     def get_match_associates(self, match_id):
         from swagger_client.models import Entity
         entity: Entity = self.__get_entity(match_id)
-        return make_associates_response([a.target_entity_id for a in entity.associates])
+        return make_associates_response([a.target_entity_id for a in entity.associates or []])
 
     def get_associate(self, match_id, associate_id):
         from swagger_client.models import Entity
