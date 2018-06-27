@@ -24,6 +24,22 @@ aliases:
             gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
             gcloud config set compute/zone europe-west1-b
             gcloud config set project core-gearbox-112418
+    - &build
+      docker:
+        - image: passfort/python-builder
+      environment:
+        - GITHUB_KEY_LOCATION: id_rsa_e4b4929b6a57f58a5dee0a29b46acf65
+      steps:
+        - checkout
+        - *attach_to_workspace
+        - *auth_ssh
+        - *setup_gcp
+        - setup_remote_docker:
+            docker_layer_caching:
+        - run: |
+            pipenv --three
+            pipenv install
+            pipenv run python deploy.py -bs `cat workspace/integration_name` staging
     - &unit
       docker:
         - image: passfort/python-builder
@@ -141,22 +157,20 @@ jobs:
                 paths:
                     - integration_name
 
-    build:
-        docker:
-            - image: passfort/python-builder
-        environment:
-            - GITHUB_KEY_LOCATION: id_rsa_e4b4929b6a57f58a5dee0a29b46acf65
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - *auth_ssh
-            - *setup_gcp
-            - setup_remote_docker:
-                docker_layer_caching:
-            - run: |
-                pipenv --three
-                pipenv install
-                pipenv run python deploy.py -bs `cat workspace/integration_name` staging
+    build_duedil:
+        <<: *build
+
+    build_onfido:
+        <<: *build
+
+    build_bvd:
+        <<: *build
+
+    build_worldcheck:
+        <<: *build
+
+    build_transunion:
+        <<: *build
 
     lint:
         docker:
@@ -236,7 +250,7 @@ workflows:
     duedil:
         jobs:
             - set_integration_duedil
-            - build:
+            - build_duedil:
                 requires:
                   - set_integration_duedil
             - unit_duedil:
@@ -265,15 +279,15 @@ workflows:
     onfido:
         jobs:
             - set_integration_onfido
-            - build:
+            - build_onfido:
                 requires:
                   - set_integration_onfido
             - unit_onfido:
                 requires:
-                  - build
+                  - build_onfido
             - e2e_onfido:
                 requires:
-                  - build
+                  - build_onfido
             - deploy_onfido_staging:
                 requires:
                   - e2e_onfido
@@ -294,15 +308,15 @@ workflows:
     bvd:
         jobs:
             - set_integration_bvd
-            - build:
+            - build_bvd:
                 requires:
                   - set_integration_bvd
             - unit_bvd:
                 requires:
-                  - build
+                  - build_bvd
             - e2e_bvd:
                 requires:
-                  - build
+                  - build_bvd
             - deploy_bvd_staging:
                 requires:
                   - e2e_bvd
@@ -323,15 +337,15 @@ workflows:
     worldcheck:
         jobs:
             - set_integration_worldcheck
-            - build:
+            - build_worldcheck:
                 requires:
                   - set_integration_worldcheck
             - unit_worldcheck:
                 requires:
-                  - build
+                  - build_worldcheck
             - e2e_worldcheck:
                 requires:
-                  - build
+                  - build_worldcheck
             - deploy_worldcheck_staging:
                 requires:
                   - e2e_worldcheck
@@ -352,15 +366,15 @@ workflows:
     transunion:
         jobs:
             - set_integration_transunion
-            - build:
+            - build_transunion:
                 requires:
                   - set_integration_transunion
             - unit_transunion:
                 requires:
-                  - build
+                  - build_transunion
             - e2e_transunion:
                 requires:
-                  - build
+                  - build_transunion
             - deploy_transunion_staging:
                 requires:
                   - e2e_transunion
