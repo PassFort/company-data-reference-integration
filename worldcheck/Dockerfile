@@ -20,7 +20,7 @@ RUN mkdir /srv/logs/ && \
     apk add --no-cache yarn openssh-client git
 
 RUN pipenv run pip install --upgrade wheel
-RUN pipenv install
+RUN ["pipenv", "install"]
 
 RUN yarn && \
     apk del --no-cache git openssh-client
