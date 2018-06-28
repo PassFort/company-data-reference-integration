@@ -1,10 +1,6 @@
 
 import unittest
-from onfido.mock_data.checks import mock_usa_check, mock_uk_check
-from flask import json
-import json
 import requests
-from app.mock_data.mock_responses import mock_uk_response
 
 
 sandbox_token = 'test_bQqXUdkaKMHJczn9wxYcg6FiZoyiK8_A'
