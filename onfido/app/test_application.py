@@ -1,6 +1,6 @@
 import responses
 import unittest
-from onfido.mock_data.checks import mock_usa_check, mock_uk_check
+from onfido.mock_data.ekyc import mock_usa_check, mock_uk_check
 from flask import json
 from app.application import app
 import json

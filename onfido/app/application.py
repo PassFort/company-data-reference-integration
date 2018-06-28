@@ -3,9 +3,8 @@ import logging
 from raven.contrib.flask import Sentry
 from flask import Flask, jsonify, request
 from onfido.onfido_requests import create_applicant, make_onfido_requestor, create_identity_check
-from onfido.onfido_to_passfort import onfido_check_to_individual, stage_error_from_onfido_response
-from app.demo_handler import get_demo_response
-import app.json_logger
+from onfido.ekyc import onfido_check_to_individual, stage_error_from_onfido_response
+from app.demo_handler import get_demo_ekyc_response
 
 app = Flask(__name__)
 
@@ -31,7 +30,7 @@ def ekyc_check():
     api_key = json['credentials']['token']
     is_demo = json['is_demo']
     if is_demo:
-        demo_data = get_demo_response(input_data['personal_details']['name']['v'])
+        demo_data = get_demo_ekyc_response(input_data['personal_details']['name']['v'])
         return jsonify(demo_data)
 
     requestor = make_onfido_requestor(api_key)
