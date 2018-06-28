@@ -14,14 +14,6 @@
       "street": null
     }
   ],
-  "associates": [
-    {
-      "reversed": null,
-      "targetEntityId": "e_tr_wco_2843634",
-      "targetExternalImportId": "ei_trwc_2843634",
-      "type": "AFFILIATED_COMPANY"
-    }
-  ],
   "category": "INDIVIDUAL",
   "comments": null,
   "contacts": [],

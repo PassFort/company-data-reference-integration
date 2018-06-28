@@ -17,32 +17,8 @@
   "associates": [
     {
       "reversed": null,
-      "targetEntityId": "e_tr_wco_2463044",
-      "targetExternalImportId": "ei_trwc_2463044",
-      "type": "AFFILIATED_COMPANY"
-    },
-    {
-      "reversed": null,
-      "targetEntityId": "e_tr_wco_2464811",
-      "targetExternalImportId": "ei_trwc_2464811",
-      "type": "AFFILIATED_COMPANY"
-    },
-    {
-      "reversed": null,
-      "targetEntityId": "e_tr_wco_9437",
+      "targetEntityId": "lukoil_romania_srl_9437",
       "targetExternalImportId": "ei_trwc_9437",
-      "type": "AFFILIATED_COMPANY"
-    },
-    {
-      "reversed": null,
-      "targetEntityId": "e_tr_wco_2756365",
-      "targetExternalImportId": "ei_trwc_2756365",
-      "type": "AFFILIATED_COMPANY"
-    },
-    {
-      "reversed": null,
-      "targetEntityId": "e_tr_wco_2756351",
-      "targetExternalImportId": "ei_trwc_2756351",
       "type": "AFFILIATED_COMPANY"
     }
   ],
