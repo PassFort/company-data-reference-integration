@@ -1,6 +1,6 @@
 import unittest
-from onfido.onfido_to_passfort import onfido_to_source_counts, get_report_from_check, source_counts_to_individual, onfido_check_to_individual
-from onfido.mock_data.checks import mock_uk_check, mock_usa_check, mock_usa_ssn_fail_check
+from onfido.ekyc import onfido_to_source_counts, get_report_from_check, source_counts_to_individual, onfido_check_to_individual
+from onfido.mock_data.ekyc import mock_uk_check, mock_usa_check, mock_usa_ssn_fail_check
 
 
 class TestOnfioRequests(unittest.TestCase):
