@@ -647,14 +647,15 @@ mock_watchlist_consider = {
     'error': [],
     'output_data': {
         'sanctions_results': [{
+            'match_id': 'f584b7e5-ce09-4474-8365-a024eef576fb',
             'locations': [{'v': {'country': 'GBR'}}],
             'remarks': [{'v': 'Leader of party'}],
             'match_name': {'v': 'Demo watchlist'},
-            'sanctions': [{'v': {'name': 'Sanction sanction', 'issuer': 'WorldBank'}}, {'v': {'name': 'Sanctioned'}}],
+            'sanctions': [{'v': {'name': 'Sanction sanction', 'issuer': 'WorldBank', 'is_current': True}}, {'v': {'name': 'Sanctioned', 'is_current': True}}],
             'gender': {'v': 'Male'},
             'pep': {'v': {'match': True, 'tier': 1, 'roles': [{'name': 'Head of state', 'tier': 1}, {'name': 'Family member', 'tier': 2}]}},
             'aliases': [{'v': 'Watchlist Test'}, {'v': 'Tested Listed'}],
-            'sources': [{'v': {'url': 'http://www.google.com'}}, {'v': {'url': 'http://www.yahoo.com'}}],
+            'sources': [{'v': {'name': '', 'url': 'http://www.google.com'}}, {'v': {'name': '', 'url': 'http://www.yahoo.com'}}],
             'media': [{'v': {'url': 'http://www.bbc.com', 'title': 'A Headline'}}, {'v': {'url': 'http://www.news.com', 'title': 'Another headline'}}]
         }]
     },
@@ -665,17 +666,7 @@ mock_watchlist_consider = {
 mock_watchlist_pass = {
     'error': [],
     'output_data': {
-        'sanctions_results': [{
-            'locations': [{'v': {'country': 'GBR'}}],
-            'remarks': [],
-            'match_name': {'v': 'Demo Pass'},
-            'sanctions': [],
-            'gender': {'v': 'Male'},
-            'pep': {'v': {'match': False}},
-            'aliases': [{'v': 'Pass Test'}],
-            'sources': [{'v': {'url': 'http://www.google.com'}}, {'v': {'url': 'http://www.yahoo.com'}}],
-            'media': []
-        }]
+        'sanctions_results': []
     },
     'raw': {}
 }
