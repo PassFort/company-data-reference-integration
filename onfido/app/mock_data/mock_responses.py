@@ -646,7 +646,7 @@ mock_usa_response = {'errors': [],
 mock_watchlist_consider = {
     'error': [],
     'output_data': {
-        'sanctions_results': {
+        'sanctions_results': [{
             'locations': [{'v': {'country': 'GBR'}}],
             'remarks': [{'v': 'Leader of party'}],
             'match_name': {'v': 'Demo watchlist'},
@@ -656,7 +656,7 @@ mock_watchlist_consider = {
             'aliases': [{'v': 'Watchlist Test'}, {'v': 'Tested Listed'}],
             'sources': [{'v': {'url': 'http://www.google.com'}}, {'v': {'url': 'http://www.yahoo.com'}}],
             'media': [{'v': {'url': 'http://www.bbc.com', 'title': 'A Headline'}}, {'v': {'url': 'http://www.news.com', 'title': 'Another headline'}}]
-        }
+        }]
     },
     'raw': {}
 }
@@ -665,7 +665,7 @@ mock_watchlist_consider = {
 mock_watchlist_pass = {
     'error': [],
     'output_data': {
-        'sanctions_results': {
+        'sanctions_results': [{
             'locations': [{'v': {'country': 'GBR'}}],
             'remarks': [],
             'match_name': {'v': 'Demo Pass'},
@@ -675,7 +675,7 @@ mock_watchlist_pass = {
             'aliases': [{'v': 'Pass Test'}],
             'sources': [{'v': {'url': 'http://www.google.com'}}, {'v': {'url': 'http://www.yahoo.com'}}],
             'media': []
-        }
+        }]
     },
     'raw': {}
 }
