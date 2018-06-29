@@ -1,4 +1,5 @@
-from app.mock_data.mock_responses import mock_uk_response, mock_uk_response_fail, mock_uk_response_one_plus_one
+from app.mock_data.mock_responses import mock_uk_response, mock_uk_response_fail, mock_uk_response_one_plus_one, \
+    mock_watchlist_consider, mock_watchlist_pass
 
 
 def get_demo_ekyc_response(name):
@@ -11,3 +12,12 @@ def get_demo_ekyc_response(name):
 
     # Return data which will trigger a 2+2 on the stage
     return mock_uk_response
+
+
+def get_demo_watchlist_response(name):
+    joined_name = (' '.join(name['given_names']) + name['family_name']).lower()
+
+    if 'pep' in joined_name or 'sanction' in joined_name:
+        return mock_watchlist_consider
+
+    return mock_watchlist_pass
