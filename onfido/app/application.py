@@ -4,7 +4,7 @@ from raven.contrib.flask import Sentry
 from flask import Flask, jsonify, request
 from onfido.onfido_requests import create_applicant, make_onfido_requestor, create_identity_check
 from onfido.ekyc import onfido_check_to_individual, stage_error_from_onfido_response
-from app.demo_handler import get_demo_ekyc_response
+from app.demo_handler import get_demo_ekyc_response, get_demo_watchlist_response
 
 app = Flask(__name__)
 
@@ -65,3 +65,13 @@ def ekyc_check():
             errors=errors,
             price=0,
         )
+
+
+@app.route('/watchlist', methods=['POST'])
+def watchlist_check():
+    json = request.json
+    input_data = json['input_data']
+    is_demo = json['is_demo']
+
+    if is_demo:
+        return jsonify(get_demo_watchlist_response(input_data['personal_details']['name']['v']))

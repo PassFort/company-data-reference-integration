@@ -641,3 +641,41 @@ mock_usa_response = {'errors': [],
                                 'name': 'identity',
                                 'result': 'clear',
                                 'status': 'complete'}]}}}
+
+
+mock_watchlist_consider = {
+    'error': [],
+    'output_data': {
+        'sanctions_results': {
+            'locations': [{'v': {'country': 'GBR'}}],
+            'remarks': [{'v': 'Leader of party'}],
+            'match_name': {'v': 'Demo watchlist'},
+            'sanctions': [{'v': {'name': 'Sanction sanction', 'issuer': 'WorldBank'}}, {'v': {'name': 'Sanctioned'}}],
+            'gender': {'v': 'Male'},
+            'pep': {'v': {'match': True, 'tier': 1, 'roles': [{'name': 'Head of state', 'tier': 1}, {'name': 'Family member', 'tier': 2}]}},
+            'aliases': [{'v': 'Watchlist Test'}, {'v': 'Tested Listed'}],
+            'sources': [{'v': {'url': 'http://www.google.com'}}, {'v': {'url': 'http://www.yahoo.com'}}],
+            'media': [{'v': {'url': 'http://www.bbc.com', 'title': 'A Headline'}}, {'v': {'url': 'http://www.news.com', 'title': 'Another headline'}}]
+        }
+    },
+    'raw': {}
+}
+
+
+mock_watchlist_pass = {
+    'error': [],
+    'output_data': {
+        'sanctions_results': {
+            'locations': [{'v': {'country': 'GBR'}}],
+            'remarks': [],
+            'match_name': {'v': 'Demo Pass'},
+            'sanctions': [],
+            'gender': {'v': 'Male'},
+            'pep': {'v': {'match': False}},
+            'aliases': [{'v': 'Pass Test'}],
+            'sources': [{'v': {'url': 'http://www.google.com'}}, {'v': {'url': 'http://www.yahoo.com'}}],
+            'media': []
+        }
+    },
+    'raw': {}
+}
