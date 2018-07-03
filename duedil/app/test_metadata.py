@@ -3,6 +3,7 @@ import os
 import responses  # type: ignore
 import requests
 from schemad_types.utils import get_in
+from passfort_data_structure.companies.metadata import StructuredCompanyType
 
 from flask import json
 from app.metadata import get_metadata, request_phonenumbers, request_websites
@@ -125,15 +126,35 @@ class TestMetadata(unittest.TestCase):
         url = "/company/gb/100.json"
         self.mock_get(url=url, json=create_metadata_response())
 
-        _, metadata = get_metadata('gb', '100', {})
-        Assert.equal(metadata.structured_company_type.is_limited.v, True)
-        Assert.equal(metadata.structured_company_type.is_public.v, False)
+        company_type = StructuredCompanyType({
+            "is_limited": tagged(True),
+            "is_public": tagged(False),
+        })
 
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.structured_company_type, company_type)
+
+    @responses.activate
+    def test_it_stores_company_type_wholesale(self):
+        url = "/company/gb/100.json"
+        self.mock_get(url=url, json=create_anpartsselskab_response())
+
+        company_type = StructuredCompanyType({
+            "is_limited": tagged(True),
+            "is_public": tagged(False),
+        })
+
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.company_type.v, 'Anpartsselskab')
+        Assert.equal(metadata.structured_company_type, company_type)
 
 def create_metadata_response():
     with open("./demo_data/metadata.json", 'rb') as f:
         return json.loads(f.read())
 
+def create_anpartsselskab_response():
+    with open("./demo_data/anpartsselskab.json", 'rb') as f:
+        return json.loads(f.read())
 
 def create_registry_response(with_pagination=False, pagination=None):
     with open("./demo_data/registry.json", 'rb') as f:

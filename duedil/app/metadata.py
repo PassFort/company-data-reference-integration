@@ -29,7 +29,9 @@ def structure_company_type(type_):
     if type_ == 'Private limited with share capital':
         structured_type.is_limited = tagged(True)
         structured_type.is_public = tagged(False)
-
+    elif type_ == 'Anpartsselskab':
+        structured_type.is_limited = tagged(True)
+        structured_type.is_public = tagged(False)
     return structured_type
 
 
