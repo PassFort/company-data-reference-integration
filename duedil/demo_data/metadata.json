@@ -1,0 +1,36 @@
+{
+    "countryCode": "GB",
+    "companyId": "06999618",
+    "name": "DueDil Limited",
+    "legalEntityIdentifier": {
+    "lei": "213800L79TM117EYOL08",
+    "sourceUrl": "https://www.gleif.org/lei/213800L79TM117EYOL08"
+    },
+    "type": "Private limited with share capital",
+    "incorporationCountry": "United Kingdom",
+    "incorporationDate": "2009-08-25",
+    "officialStatus": "Active",
+    "simplifiedStatus": "Active",
+    "numberOfEmployees": 75,
+    "primaryWebsite": "http://www.duedil.com",
+    "registeredAddress": {
+    "fullAddress": "10 Queen Street Place, London, EC4R 1AG",
+    "structuredAddress": {},
+    "geolocation": null
+    },
+    "charitableIdentitiesCount": 0,
+    "accounts": {
+    "filingType": "Full accounts",
+    "currency": "GBP",
+    "latestAccountsDate": "2016-12-31",
+    "consolidatedAccounts": false,
+    "nextAccountsDueDate": "2018-09-30"
+    },
+    "financialSummary": {
+    "turnover": 2247618,
+    "ebitda": -6304976,
+    "postTaxProfit": -6167711,
+    "totalAssets": 3007169,
+    "netAssets": -1862920
+    }
+}

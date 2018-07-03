@@ -5,9 +5,9 @@ import requests
 from schemad_types.utils import get_in
 
 from flask import json
-from app.metadata import request_phonenumbers, request_websites
+from app.metadata import get_metadata, request_phonenumbers, request_websites
+from app.utils import tagged
 from dassert import Assert
-
 
 class TestMetadata(unittest.TestCase):
     base_url = "https://duedil.io/v4{}"
@@ -119,6 +119,20 @@ class TestMetadata(unittest.TestCase):
         request_websites('gb', '100', {})
         Assert.equal(len(responses.calls), 2)
         Assert.in_(url, responses.calls[0].request.url)
+
+    @responses.activate
+    def test_it_structures_company_type(self):
+        url = "/company/gb/100.json"
+        self.mock_get(url=url, json=create_metadata_response())
+
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.structured_company_type.is_limited.v, True)
+        Assert.equal(metadata.structured_company_type.is_public.v, False)
+
+
+def create_metadata_response():
+    with open("./demo_data/metadata.json", 'rb') as f:
+        return json.loads(f.read())
 
 
 def create_registry_response(with_pagination=False, pagination=None):

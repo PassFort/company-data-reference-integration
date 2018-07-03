@@ -1,19 +1,12 @@
 import pycountry
 from datetime import datetime
 from schemad_types.utils import get_in
-from passfort_data_structure.companies.metadata import CompanyMetadata
+from passfort_data_structure.companies.metadata import CompanyMetadata, StructuredCompanyType
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
 from app.utils import get, make_url, base_request, DueDilServiceException,\
     convert_country_code, tagged, send_exception
-
-COMPANY_TYPES = {
-    'Private limited with share capital': 'ltd',
-    'Other': 'other',
-    '': 'other',
-    None: 'other',
-}
 
 
 class CompanyTypeError(DueDilServiceException):
@@ -31,13 +24,13 @@ def search_country_by_name(q):
             return country.alpha_3
 
 
-def get_company_type(type_):
-    try:
-        return COMPANY_TYPES[type_]
-    except KeyError:
-        exc = CompanyTypeError(f'Unable to process company type {type_}')
-        send_exception(exc, custom_data={'company_type': type_})
-        return 'other'
+def structure_company_type(type_):
+    structured_type = StructuredCompanyType()
+    if type_ == 'Private limited with share capital':
+        structured_type.is_limited = tagged(True)
+        structured_type.is_public = tagged(False)
+
+    return structured_type
 
 
 def request_phonenumbers(country_code, company_number, credentials):
@@ -114,7 +107,8 @@ def get_metadata(country_code, company_number, credentials):
         'country_of_incorporation': tagged(search_country_by_name(company_json.get('incorporationCountry'))),
         'is_active': tagged(is_active) if is_active is not None else None,
         'incorporation_date': tagged(incorporation_date),
-        'company_type': tagged(get_company_type(company_json.get('type'))),
+        'company_type': tagged(company_json.get('type')),
+        'structured_company_type': structure_company_type(company_json.get('type')),
         'contact_details': {
             'url': tagged(website),
             'phone_number': tagged(phone_number),
