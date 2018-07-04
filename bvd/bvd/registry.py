@@ -20,25 +20,37 @@ COMPANY_IDENTIFIERS_MAP = {
     'number': 'TRADEREGISTERNR',
 }
 
+class OwnershipType(Enum):
+    PARTNERSHIP = 'PARTNERSHIP'
+    COMPANY = 'COMPANY'
+    ASSOCIATION = 'ASSOCIATION'
+    TRUST = 'TRUST'
+    OTHER = 'OTHER'
 
-class CompanyType(Enum):
-    PLC = 'plc'
-    LTD = 'ltd'
-    LLP = 'llp'
-    OTHER = 'other'
+
+class StructuredCompanyType(BaseObject):
+    ownership_type: Optional[OwnershipType]
+    is_public: Optional[bool]
+    is_limited: Optional[bool]
+
+    def __init__(self, d=None) -> None:
+        if d is not None:
+            self.__dict__ = d
 
 
-COMPANY_TYPE_MAP = {
-    'public limited companies': CompanyType.PLC,
-    'private limited companies': CompanyType.LTD,
-    'partnerships': CompanyType.LLP,
-    'sole traders/proprietorships': CompanyType.OTHER,
-    'public authorities': CompanyType.OTHER,
-    'non profit organisations': CompanyType.OTHER,
-    'branches': CompanyType.OTHER,
-    'foreign companies': CompanyType.OTHER,
-    'other legal forms': CompanyType.OTHER,
-    'companies with unknown/unrecorded legal form': CompanyType.OTHER,
+STRUCTURED_COMPANY_TYPE_MAP = {
+    'public limited companies': StructuredCompanyType({'is_public': True, 'is_limited': True}),
+    'private limited companies': StructuredCompanyType({'is_public': False, 'is_limited': True}),
+
+    #TODO: How do these map to the structure
+    'partnerships': StructuredCompanyType(),
+    'sole traders/proprietorships': StructuredCompanyType(),
+    'public authorities': StructuredCompanyType(),
+    'non profit organisations': StructuredCompanyType(),
+    'branches': StructuredCompanyType(),
+    'foreign companies': StructuredCompanyType(),
+    'other legal forms': StructuredCompanyType(),
+    'companies with unknown/unrecorded legal form': StructuredCompanyType()
 }
 
 
@@ -73,15 +85,18 @@ def format_previous_names(raw_data: CompanyRawData) -> Optional[List[PreviousNam
     return None
 
 
-def format_company_type(raw_data: CompanyRawData) -> CompanyType:
-    # SLEGALF: Company type;
-    company_type = raw_data['SLEGALF']
-    try:
-        return COMPANY_TYPE_MAP[company_type.lower()]
-    except (ValueError, KeyError):
-        pass
+def format_company_type(raw_data: CompanyRawData) -> Optional[str]:
+    return raw_data.get('SLEGALF')
 
-    return CompanyType.OTHER
+
+def format_structured_company_type(raw_data: CompanyRawData) -> StructuredCompanyType:
+    company_type: Optional[str] = raw_data.get('SLEGALF')
+
+    if company_type is not None:
+        structured_company_type = STRUCTURED_COMPANY_TYPE_MAP[company_type.lower()]
+        return structured_company_type
+
+    return StructuredCompanyType()
 
 
 def format_sic_codes(raw_data: CompanyRawData) -> Optional[List[SICCode]]:
@@ -140,7 +155,8 @@ class CompanyMetadata(BaseObject):
     eurovat_number: str
     lei: str
     name: str
-    company_type: CompanyType
+    company_type: str
+    structured_company_type: StructuredCompanyType
     incorporation_date: datetime
     previous_names: List[PreviousName]
     sic_codes: List[SICCode]
@@ -160,6 +176,7 @@ class CompanyMetadata(BaseObject):
 
         metadata.name = raw_data.get('NAME')
         metadata.company_type = format_company_type(raw_data)
+        metadata.structured_company_type = format_structured_company_type(raw_data)
         metadata.is_active = format_is_active(raw_data)
         metadata.incorporation_date = format_date(raw_data.get('DATEINC'))
         metadata.previous_names = format_previous_names(raw_data)
