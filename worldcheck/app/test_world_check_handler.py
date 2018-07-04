@@ -41,6 +41,17 @@ class CaseHandlerTest(TestCase):
         self.assertEqual(len(result['raw']), 3)
 
 
+class CaseHandlerIntegrationTest(TestCase):
+    def test_ongoing_monitoring_results_returns_data_from_worldcheck(self):
+        test_query = "updateDate>='2018-06-27T00:00:00.00Z' and updateDate<'2018-06-29T00:00:00.00Z'"
+        handler = CaseHandler(WorldCheckCredentials(GOOD_CREDENTIALS), None, False)
+
+        # There should be 39 items in total for these 2 dates. Paginate by displaying 20 per page
+        results = handler.parse_paginated_result(test_query, 20)
+
+        self.assertEqual(len(results), 39)
+
+
 class MatchHandlerTest(TestCase):
 
     def setUp(self):
