@@ -68,6 +68,28 @@ class CaseHandler:
         else:
             self.case_api.cases_case_system_id_ongoing_screening_put(case_system_id)
 
+    def get_ongoing_screening_results(self, from_date):
+        iso_dt = from_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+
+        return self.parse_paginated_result(f"updateDate>='{iso_dt}'", 100)
+
+    def parse_paginated_result(self, query, items_per_page):
+        from swagger_client.models import OngoingScreeningUpdateSearchResponse, Pagination
+        updated_result_ids = []
+        current_page = 1
+        while True:
+            raw_result: OngoingScreeningUpdateSearchResponse = self.case_api.cases_ongoing_screening_updates_post(
+                filter=Filter(
+                    query=query,
+                    pagination=Pagination(current_page=current_page, items_per_page=items_per_page)
+                ))
+
+            if len(raw_result.results) == 0:
+                return updated_result_ids
+
+            updated_result_ids.extend([r.case_system_id for r in raw_result.results])
+            current_page += 1
+
     def __new_case(self, input_data: ScreeningRequestData) -> Case:
         result = self.case_api.cases_post(
             NewCase(

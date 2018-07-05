@@ -4,7 +4,8 @@ import traceback
 from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
 
-from app.api.types import validate_model, ScreeningRequest, ScreeningResultsRequest, Error
+from app.api.types import validate_model, ScreeningRequest, ScreeningResultsRequest, OngoingScreeningResultsRequest, \
+    Error
 from app.api.responses import make_error_response
 from app.worldcheck_handler import CaseHandler, MatchHandler, WorldCheckPendingError, WorldCheckConnectionError
 
@@ -86,6 +87,29 @@ def get_associate_data(request_data: ScreeningResultsRequest, match_id, associat
             request_data.is_demo
         ).get_associate(match_id, associate_id)
     )
+
+
+@app.route('/results/ongoing_monitoring', methods=['POST'])
+@validate_model(OngoingScreeningResultsRequest)
+def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequest):
+    from requests import RequestException
+
+    result = CaseHandler(
+            request_data.credentials, None, False
+        ).get_ongoing_screening_results(request_data.from_date)
+
+    try:
+        send_to_callback(request_data.callback_url, result)
+    except RequestException as e:
+        return jsonify(errors=[Error.from_exception(e)]), 500
+    return jsonify(errors=[])
+
+
+def send_to_callback(callback_url, result):
+    import requests
+    import json
+    response = requests.post(callback_url, json=json.dumps(result))
+    response.raise_for_status()
 
 
 @app.errorhandler(400)
