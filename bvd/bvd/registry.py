@@ -2,7 +2,7 @@ from typing import Optional, List
 from enum import Enum
 from datetime import datetime
 
-from bvd.utils import CompanyRawData
+from bvd.utils import BvDServiceException, CompanyRawData, send_sentry_exception
 from bvd.format_utils import BaseObject, EntityType, format_date
 from bvd.officers import format_officers, Officers
 
@@ -19,6 +19,13 @@ COMPANY_IDENTIFIERS_MAP = {
     'lei': 'LEI',
     'number': 'TRADEREGISTERNR',
 }
+
+class CompanyTypeError(Exception):
+    pass
+
+    def to_dict(self):
+        return {'message': self.args[0]}
+
 
 class OwnershipType(Enum):
     PARTNERSHIP = 'PARTNERSHIP'
@@ -87,14 +94,17 @@ def format_company_type(raw_data: CompanyRawData) -> Optional[str]:
     return raw_data.get('SLEGALF')
 
 
-def format_structured_company_type(raw_data: CompanyRawData) -> StructuredCompanyType:
-    company_type: Optional[str] = raw_data.get('SLEGALF')
-
+def format_structured_company_type(raw_data: CompanyRawData) -> Optional[StructuredCompanyType]:
+    company_type = raw_data.get('SLEGALF')
     if company_type is not None:
-        structured_company_type = STRUCTURED_COMPANY_TYPE_MAP[company_type.lower()]
-        return structured_company_type
-
-    return StructuredCompanyType()
+        try:
+            structured_company_type = STRUCTURED_COMPANY_TYPE_MAP[company_type.lower()]
+            return structured_company_type
+        except:
+            exc = CompanyTypeError(f'Unrecognised company type {company_type}')
+            send_sentry_exception(exc, custom_data={'company_type': company_type})
+            return StructuredCompanyType()
+    return None
 
 
 def format_sic_codes(raw_data: CompanyRawData) -> Optional[List[SICCode]]:
