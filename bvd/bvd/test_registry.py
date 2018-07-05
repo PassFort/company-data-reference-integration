@@ -6,11 +6,11 @@ from bvd.registry import format_company_type, format_structured_company_type
 class TestFormatRawData(TestCase):
 
     def test_format_company_type(self):
-        raw_data = get_raw_data() 
+        raw_data = get_raw_data()
         self.assertEqual(format_company_type(raw_data), 'Public limited companies')
 
     def test_format_structured_company_type(self):
-        raw_data = get_raw_data() 
+        raw_data = get_raw_data()
         structured_company_type = format_structured_company_type(raw_data)
         self.assertEqual(structured_company_type.is_public, True)
         self.assertEqual(structured_company_type.is_limited, True)

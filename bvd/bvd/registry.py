@@ -24,6 +24,7 @@ class OwnershipType(Enum):
     PARTNERSHIP = 'PARTNERSHIP'
     COMPANY = 'COMPANY'
     ASSOCIATION = 'ASSOCIATION'
+    SOLE_PROPRIETORSHIP = 'SOLE_PROPRIETORSHIP'
     TRUST = 'TRUST'
     OTHER = 'OTHER'
 
@@ -33,24 +34,21 @@ class StructuredCompanyType(BaseObject):
     is_public: Optional[bool]
     is_limited: Optional[bool]
 
-    def __init__(self, d=None) -> None:
-        if d is not None:
-            self.__dict__ = d
+    def __init__(self, d={}) -> None:
+        self.__dict__ = {**self.__dict__, **d}
 
 
 STRUCTURED_COMPANY_TYPE_MAP = {
-    'public limited companies': StructuredCompanyType({'is_public': True, 'is_limited': True}),
-    'private limited companies': StructuredCompanyType({'is_public': False, 'is_limited': True}),
-
-    #TODO: How do these map to the structure
-    'partnerships': StructuredCompanyType(),
-    'sole traders/proprietorships': StructuredCompanyType(),
-    'public authorities': StructuredCompanyType(),
-    'non profit organisations': StructuredCompanyType(),
-    'branches': StructuredCompanyType(),
-    'foreign companies': StructuredCompanyType(),
-    'other legal forms': StructuredCompanyType(),
-    'companies with unknown/unrecorded legal form': StructuredCompanyType()
+    'public limited companies': StructuredCompanyType({'is_public': True, 'is_limited': True, 'ownership_type': OwnershipType.COMPANY}),
+    'private limited companies': StructuredCompanyType({'is_public': False, 'is_limited': True, 'ownership_type': OwnershipType.COMPANY}),
+    'partnerships': StructuredCompanyType({'ownership_type': OwnershipType.PARTNERSHIP}),
+    'sole traders/proprietorships': StructuredCompanyType({'ownership_type': OwnershipType.SOLE_PROPRIETORSHIP}),
+    'public authorities': StructuredCompanyType({'is_public': True, 'ownership_type': OwnershipType.OTHER}),
+    'non profit organisations': StructuredCompanyType({'ownership_type': OwnershipType.ASSOCIATION}),
+    'branches': StructuredCompanyType({'ownership_type': OwnershipType.OTHER}),
+    'foreign companies': StructuredCompanyType({'ownership_type': OwnershipType.COMPANY}),
+    'other legal forms': StructuredCompanyType({'ownership_type': OwnershipType.OTHER}),
+    'companies with unknown/unrecorded legal form': StructuredCompanyType({'ownership_type': OwnershipType.OTHER})
 }
 
 
