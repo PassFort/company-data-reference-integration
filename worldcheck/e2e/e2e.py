@@ -180,3 +180,21 @@ class WorldCheckScreenCase(TestCase):
     def test_company_successful_screening_request(self):
         pass
 
+
+class WorldCheckOngoingScreening(TestCase):
+
+    def test_completes_ongoing_results_request(self):
+        from datetime import datetime
+        from dateutil.relativedelta import relativedelta
+
+        a_week_ago = datetime.now() + relativedelta(weeks=-1)
+        with self.subTest('return error when callback errors'):
+            response = requests.post(API_URL + '/results/ongoing_monitoring', json={
+                "credentials": GOOD_CREDENTIALS,
+                "from_date": a_week_ago.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                "callback_url": "no_callback"
+            })
+
+            as_json = response.json()
+            self.assertEqual(response.status_code, 500)
+            self.assertEqual(len(as_json['errors']), 1)

@@ -2,7 +2,7 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, DateType
+from schematics.types import BooleanType, StringType, ModelType, ListType, DateType, DateTimeType
 from schematics.exceptions import DataError, ValidationError
 
 from swagger_client.rest import ApiException
@@ -23,7 +23,7 @@ def validate_model(validation_model):
             model = None
             try:
                 model = validation_model().import_data(request.json, apply_defaults=True)
-                model.validate(partial=True)
+                model.validate()
             except DataError as e:
                 abort(400, Error.bad_api_request(e))
 
@@ -277,3 +277,10 @@ class ScreeningResultsRequest(Model):
     credentials = ModelType(WorldCheckCredentials, required=True)
     config = ModelType(WorldCheckConfig, required=True)
     is_demo = BooleanType(default=False)
+
+
+class OngoingScreeningResultsRequest(Model):
+    credentials = ModelType(WorldCheckCredentials, required=True)
+
+    callback_url = StringType(required=True, default=None)
+    from_date = DateTimeType(required=True, default=None)
