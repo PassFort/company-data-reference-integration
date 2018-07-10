@@ -99,7 +99,13 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
         ).get_ongoing_screening_results(request_data.from_date)
 
     try:
-        send_to_callback(request_data.callback_url, result)
+        send_to_callback(
+            request_data.callback_url,
+            {
+                'institution_id': request_data.institution_id,
+                'results': result
+            }
+        )
     except RequestException as e:
         return jsonify(errors=[Error.from_exception(e)]), 500
     return jsonify(errors=[])
@@ -108,7 +114,7 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
 def send_to_callback(callback_url, result):
     import requests
     import json
-    response = requests.post(callback_url, json=json.dumps(result))
+    response = requests.post(callback_url, json=result)
     response.raise_for_status()
 
 

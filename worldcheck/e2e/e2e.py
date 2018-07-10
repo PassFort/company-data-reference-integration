@@ -191,6 +191,7 @@ class WorldCheckOngoingScreening(TestCase):
         with self.subTest('return error when callback errors'):
             response = requests.post(API_URL + '/results/ongoing_monitoring', json={
                 "credentials": GOOD_CREDENTIALS,
+                "institution_id": "kansas",
                 "from_date": a_week_ago.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
                 "callback_url": "no_callback"
             })
