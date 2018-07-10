@@ -106,7 +106,7 @@
         },
         "passfort-data-structure": {
             "editable": true,
-            "git": "git@github.com:PassFort/python-data-structure.git@c7c38649c40a10a428d0694d4ca6328159a3e317"
+            "git": "git@github.com:PassFort/python-data-structure.git@85f2efd8b090e15c1138d76cd8a31bacbde5c6f4"
         },
         "pycountry": {
             "hashes": [
