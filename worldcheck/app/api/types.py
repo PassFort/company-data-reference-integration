@@ -280,6 +280,7 @@ class ScreeningResultsRequest(Model):
 
 
 class OngoingScreeningResultsRequest(Model):
+    institution_id = StringType(required=True)
     credentials = ModelType(WorldCheckCredentials, required=True)
 
     callback_url = StringType(required=True, default=None)
