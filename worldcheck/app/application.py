@@ -35,16 +35,13 @@ class DataDogWrapper:
 
 def initialize_datadog():
     from datadog import initialize
-    dd_config = app.config.get('DATADOG')
-    if dd_config:
-        try:
-            initialize(statsd_host=os.environ['STATSD_HOST_IP'],
-                       statsd_port=os.environ['STATSD_HOST_PORT'])
-            return DataDogWrapper(mock=False)
-        except Exception:
-            return DataDogWrapper(mock=True)
 
-    return DataDogWrapper(mock=True)
+    try:
+        initialize(statsd_host=os.environ['STATSD_HOST_IP'],
+                   statsd_port=os.environ['STATSD_HOST_PORT'])
+        return DataDogWrapper(mock=False)
+    except Exception:
+        return DataDogWrapper(mock=True)
 
 
 app.dd = initialize_datadog()
