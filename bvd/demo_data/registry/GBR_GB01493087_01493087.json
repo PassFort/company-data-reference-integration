@@ -5,7 +5,12 @@
         "metadata": {
             "bvd9": "004086504",
             "bvd_id": "GB01493087",
-            "company_type": "plc",
+            "company_type": "Public limited companies",
+            "structured_company_type": {
+                "is_public": false,
+                "is_limited": true,
+                "ownership_type": "COMPANY"
+            },
             "eurovat_number": null,
             "freeform_address": "WORKS ROAD,LETCHWORTH GARDEN CITY,SG6 1NW,LETCHWORTH,United Kingdom",
             "incorporation_date": "1980-04-24",
