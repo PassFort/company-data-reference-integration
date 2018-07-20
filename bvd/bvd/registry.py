@@ -2,7 +2,7 @@ from typing import Optional, List
 from enum import Enum
 from datetime import datetime
 
-from bvd.utils import CompanyRawData
+from bvd.utils import BvDServiceException, CompanyRawData, send_sentry_exception
 from bvd.format_utils import BaseObject, EntityType, format_date
 from bvd.officers import format_officers, Officers
 
@@ -20,25 +20,42 @@ COMPANY_IDENTIFIERS_MAP = {
     'number': 'TRADEREGISTERNR',
 }
 
+class CompanyTypeError(Exception):
+    pass
 
-class CompanyType(Enum):
-    PLC = 'plc'
-    LTD = 'ltd'
-    LLP = 'llp'
-    OTHER = 'other'
+    def to_dict(self):
+        return {'message': self.args[0]}
 
 
-COMPANY_TYPE_MAP = {
-    'public limited companies': CompanyType.PLC,
-    'private limited companies': CompanyType.LTD,
-    'partnerships': CompanyType.LLP,
-    'sole traders/proprietorships': CompanyType.OTHER,
-    'public authorities': CompanyType.OTHER,
-    'non profit organisations': CompanyType.OTHER,
-    'branches': CompanyType.OTHER,
-    'foreign companies': CompanyType.OTHER,
-    'other legal forms': CompanyType.OTHER,
-    'companies with unknown/unrecorded legal form': CompanyType.OTHER,
+class OwnershipType(Enum):
+    PARTNERSHIP = 'PARTNERSHIP'
+    COMPANY = 'COMPANY'
+    ASSOCIATION = 'ASSOCIATION'
+    SOLE_PROPRIETORSHIP = 'SOLE_PROPRIETORSHIP'
+    TRUST = 'TRUST'
+    OTHER = 'OTHER'
+
+
+class StructuredCompanyType(BaseObject):
+    ownership_type: Optional[OwnershipType]
+    is_public: Optional[bool]
+    is_limited: Optional[bool]
+
+    def __init__(self, d={}) -> None:
+        self.__dict__ = {**self.__dict__, **d}
+
+
+STRUCTURED_COMPANY_TYPE_MAP = {
+    'public limited companies': StructuredCompanyType({'is_public': True, 'is_limited': True, 'ownership_type': OwnershipType.COMPANY}),
+    'private limited companies': StructuredCompanyType({'is_public': False, 'is_limited': True, 'ownership_type': OwnershipType.COMPANY}),
+    'partnerships': StructuredCompanyType({'ownership_type': OwnershipType.PARTNERSHIP}),
+    'sole traders/proprietorships': StructuredCompanyType({'ownership_type': OwnershipType.SOLE_PROPRIETORSHIP}),
+    'public authorities': StructuredCompanyType({'is_public': True, 'ownership_type': OwnershipType.OTHER}),
+    'non profit organisations': StructuredCompanyType({'ownership_type': OwnershipType.ASSOCIATION}),
+    'branches': StructuredCompanyType({'ownership_type': OwnershipType.OTHER}),
+    'foreign companies': StructuredCompanyType({'ownership_type': OwnershipType.COMPANY}),
+    'other legal forms': StructuredCompanyType({'ownership_type': OwnershipType.OTHER}),
+    'companies with unknown/unrecorded legal form': StructuredCompanyType({'ownership_type': OwnershipType.OTHER})
 }
 
 
@@ -73,15 +90,21 @@ def format_previous_names(raw_data: CompanyRawData) -> Optional[List[PreviousNam
     return None
 
 
-def format_company_type(raw_data: CompanyRawData) -> CompanyType:
-    # SLEGALF: Company type;
-    company_type = raw_data['SLEGALF']
-    try:
-        return COMPANY_TYPE_MAP[company_type.lower()]
-    except (ValueError, KeyError):
-        pass
+def format_company_type(raw_data: CompanyRawData) -> Optional[str]:
+    return raw_data.get('SLEGALF')
 
-    return CompanyType.OTHER
+
+def format_structured_company_type(raw_data: CompanyRawData) -> Optional[StructuredCompanyType]:
+    company_type = raw_data.get('SLEGALF')
+    if company_type is not None:
+        try:
+            structured_company_type = STRUCTURED_COMPANY_TYPE_MAP[company_type.lower()]
+            return structured_company_type
+        except:
+            exc = CompanyTypeError(f'Unrecognised company type {company_type}')
+            send_sentry_exception(exc, custom_data={'company_type': company_type})
+            return StructuredCompanyType()
+    return None
 
 
 def format_sic_codes(raw_data: CompanyRawData) -> Optional[List[SICCode]]:
@@ -140,7 +163,8 @@ class CompanyMetadata(BaseObject):
     eurovat_number: str
     lei: str
     name: str
-    company_type: CompanyType
+    company_type: str
+    structured_company_type: StructuredCompanyType
     incorporation_date: datetime
     previous_names: List[PreviousName]
     sic_codes: List[SICCode]
@@ -160,6 +184,7 @@ class CompanyMetadata(BaseObject):
 
         metadata.name = raw_data.get('NAME')
         metadata.company_type = format_company_type(raw_data)
+        metadata.structured_company_type = format_structured_company_type(raw_data)
         metadata.is_active = format_is_active(raw_data)
         metadata.incorporation_date = format_date(raw_data.get('DATEINC'))
         metadata.previous_names = format_previous_names(raw_data)

@@ -64,6 +64,18 @@ class BvDError(BaseObject):
         }
 
 
+def send_sentry_exception(exception, custom_data=None):
+    try:
+        from app.application import sentry
+
+        sentry.captureException(
+            exc_info=(exception.__class__, exception, exception.__traceback__),
+            extra=custom_data
+        )
+    except ImportError:
+        pass
+
+
 def make_default_exception(status_code: int) -> BvDServiceException:
     return BvDServiceException(status_code, 'Something went wrong')
 

@@ -1,18 +1,40 @@
 import pycountry
 from datetime import datetime
 from schemad_types.utils import get_in
-from passfort_data_structure.companies.metadata import CompanyMetadata
+from passfort_data_structure.companies.metadata import CompanyMetadata, StructuredCompanyType, OwnershipType
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
 from app.utils import get, make_url, base_request, DueDilServiceException,\
     convert_country_code, tagged, send_exception
 
-COMPANY_TYPES = {
-    'Private limited with share capital': 'ltd',
-    'Other': 'other',
-    '': 'other',
-    None: 'other',
+
+STRUCTURED_COMPANY_TYPE_MAP = {
+    'Private limited with share capital': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
+    'Private company limited by shares': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
+    'Anpartsselskab': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
+    'Public limited with share capital': StructuredCompanyType({
+        'is_public': tagged(True),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
+    'Limited Partnership': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.PARTNERSHIP)
+    })
 }
 
 
@@ -31,14 +53,13 @@ def search_country_by_name(q):
             return country.alpha_3
 
 
-def get_company_type(type_):
+def structure_company_type(type_):
     try:
-        return COMPANY_TYPES[type_]
-    except KeyError:
-        exc = CompanyTypeError(f'Unable to process company type {type_}')
+        return STRUCTURED_COMPANY_TYPE_MAP[type_]
+    except (KeyError, ValueError):
+        exc = CompanyTypeError(f'Unrecognised company type {type_}')
         send_exception(exc, custom_data={'company_type': type_})
-        return 'other'
-
+        return StructuredCompanyType()
 
 def request_phonenumbers(country_code, company_number, credentials):
     return base_request(
@@ -86,7 +107,7 @@ def get_metadata(country_code, company_number, credentials):
         phone_number = get_in(telephone_json, ['telephoneNumbers', 0, 'telephoneNumber'])
     except (RequestException, HTTPError, JSONDecodeError):
         phone_number = None
-    
+
     is_active = { 'Active': True, 'Inactive': False }.get(company_json.get('simplifiedStatus'))
 
     return company_json, CompanyMetadata({
@@ -114,7 +135,8 @@ def get_metadata(country_code, company_number, credentials):
         'country_of_incorporation': tagged(search_country_by_name(company_json.get('incorporationCountry'))),
         'is_active': tagged(is_active) if is_active is not None else None,
         'incorporation_date': tagged(incorporation_date),
-        'company_type': tagged(get_company_type(company_json.get('type'))),
+        'company_type': tagged(company_json.get('type')),
+        'structured_company_type': structure_company_type(company_json.get('type')),
         'contact_details': {
             'url': tagged(website),
             'phone_number': tagged(phone_number),

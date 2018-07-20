@@ -73,12 +73,16 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(output_data['entity_type'], 'COMPANY')
 
         metadata = output_data['metadata']
+        structured_company_type = metadata['structured_company_type']
         officers = output_data['officers']
 
         self.assertEqual(metadata['number'], '03875000')
         self.assertEqual(metadata['bvd_id'], 'GB03875000')
         self.assertEqual(metadata['incorporation_date'], '1999-11-11')
-        self.assertEqual(metadata['company_type'], 'ltd')
+        self.assertEqual(metadata['company_type'], 'Private limited companies')
+        self.assertEqual(structured_company_type['is_public'], False)
+        self.assertEqual(structured_company_type['is_limited'], True)
+        self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
         self.assertEqual(metadata['isin'], None)
         self.assertEqual(metadata['is_active'], True)
         self.assertIsInstance(metadata['freeform_address'], str)
@@ -121,13 +125,18 @@ class EndToEndTests(unittest.TestCase):
 
         metadata = output_data['metadata']
         ownership = output_data['ownership_structure']
+        structured_company_type = metadata['structured_company_type']
 
         self.assertTrue('beneficial_owners' in ownership.keys())
         self.assertTrue('shareholders' in ownership.keys())
 
         shareholders = ownership['shareholders']
 
-        self.assertEqual(metadata['company_type'], 'plc')
+        self.assertEqual(metadata['company_type'], 'Public limited companies')
+        self.assertEqual(structured_company_type['is_public'], True)
+        self.assertEqual(structured_company_type['is_limited'], True)
+        self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
+
         self.assertTrue(len(shareholders) > 0)
 
     def test_success_demo_registry_check(self):
@@ -146,12 +155,16 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(output_data['entity_type'], 'COMPANY')
 
         metadata = output_data['metadata']
+        structured_company_type = metadata['structured_company_type']
         officers = output_data['officers']
 
         self.assertEqual(metadata['number'], '01493087')
         self.assertEqual(metadata['bvd_id'], 'GB01493087')
         self.assertEqual(metadata['incorporation_date'], '1980-04-24')
-        self.assertEqual(metadata['company_type'], 'plc')
+        self.assertEqual(metadata['company_type'], 'Public limited companies')
+        self.assertEqual(structured_company_type['is_public'], False)
+        self.assertEqual(structured_company_type['is_limited'], True)
+        self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
         self.assertEqual(metadata['isin'], None)
         self.assertEqual(metadata['is_active'], True)
         self.assertIsInstance(metadata['freeform_address'], str)
@@ -178,6 +191,7 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(output_data['entity_type'], 'COMPANY')
 
         metadata = output_data['metadata']
+        structured_company_type = metadata['structured_company_type']
         ownership = output_data['ownership_structure']
 
         self.assertTrue('beneficial_owners' in ownership.keys())
@@ -185,5 +199,9 @@ class EndToEndTests(unittest.TestCase):
 
         shareholders = ownership['shareholders']
 
-        self.assertEqual(metadata['company_type'], 'ltd')
+        self.assertEqual(metadata['company_type'], 'Private limited companies')
+        self.assertEqual(structured_company_type['is_public'], False)
+        self.assertEqual(structured_company_type['is_limited'], True)
+        self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
+ 
         self.assertTrue(len(shareholders) > 0)

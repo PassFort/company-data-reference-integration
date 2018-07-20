@@ -2,7 +2,7 @@ from typing import List
 
 from bvd.format_utils import BaseObject, EntityType, format_date
 from bvd.utils import CompanyRawData
-from bvd.registry import CompanyMetadata, CompanyType, format_company_type
+from bvd.registry import CompanyMetadata, format_company_type, format_structured_company_type
 from bvd.shareholders import Shareholder, format_shareholders
 from bvd.beneficial_owners import BeneficialOwner, format_beneficial_owners
 
@@ -32,6 +32,7 @@ class CompanyOwnershipData(BaseObject):
         ownership_data = CompanyOwnershipData()
         ownership_data.metadata = CompanyMetadata()
         ownership_data.metadata.company_type = format_company_type(raw_data)
+        ownership_data.metadata.structured_company_type = format_structured_company_type(raw_data)
         ownership_data.ownership_structure = OwnershipStructure.from_raw_data(raw_data)
         return ownership_data
 

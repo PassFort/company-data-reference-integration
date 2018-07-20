@@ -5,12 +5,7 @@
         "metadata": {
             "bvd9": "004086504",
             "bvd_id": "GB01493087",
-            "company_type": "Public limited companies",
-            "structured_company_type": {
-                "is_public": false,
-                "is_limited": true,
-                "ownership_type": "COMPANY"
-            },
+            "company_type": "plc",
             "eurovat_number": null,
             "freeform_address": "WORKS ROAD,LETCHWORTH GARDEN CITY,SG6 1NW,LETCHWORTH,United Kingdom",
             "incorporation_date": "1980-04-24",
@@ -375,7 +370,7 @@
         "PREVNAME": "ADAMITE HOLDINGS LIMITED",
         "PRODUCTS_SERVICES": "Provides floor cleaning products suitable for safety flooring, resin flooring, rubber flooring, and smooth flooring; Offers contractors for wall installation services; Covers safety flooring, smooth flooring, rubber flooring, and sports flooring products; resin systems; static dissipative flooring; wall cladding products; hygienic wall coatings; hygienic door sets; and ceiling systems [source: Bureau van Dijk]",
         "REGION_IN_COUNTRY": "England",
-        "SLEGALF": "Public limited companies",
+        "SLEGALF": "A STRANGE COMPANY TYPE",
         "STATEINC": null,
         "STATE_US": null,
         "TICKER": "Unlisted",
