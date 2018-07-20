@@ -3,7 +3,12 @@
     "output_data": {
         "entity_type": "COMPANY",
         "metadata": {
-            "company_type": "ltd"
+            "company_type": "Private limited companies",
+            "structured_company_type": {
+                "is_public": false,
+                "is_limited": true,
+                "ownership_type": "COMPANY"
+            }
         },
         "ownership_structure": {
             "beneficial_owners": [],

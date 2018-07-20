@@ -2,10 +2,13 @@ import unittest
 import os
 import responses  # type: ignore
 import requests
+from unittest.mock import patch
 from schemad_types.utils import get_in
+from passfort_data_structure.companies.metadata import OwnershipType, StructuredCompanyType
 
 from flask import json
-from app.metadata import request_phonenumbers, request_websites
+from app.metadata import get_metadata, request_phonenumbers, request_websites
+from app.utils import tagged
 from dassert import Assert
 
 
@@ -119,6 +122,59 @@ class TestMetadata(unittest.TestCase):
         request_websites('gb', '100', {})
         Assert.equal(len(responses.calls), 2)
         Assert.in_(url, responses.calls[0].request.url)
+
+    @responses.activate
+    def test_it_structures_company_type(self):
+        url = '/company/gb/100.json'
+        self.mock_get(url=url, json=create_metadata_response())
+
+        company_type = StructuredCompanyType({
+            'is_limited': tagged(True),
+            'is_public': tagged(False),
+            'ownership_type': tagged(OwnershipType.COMPANY)
+        })
+
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.structured_company_type, company_type)
+
+    @responses.activate
+    def test_it_stores_company_type_wholesale(self):
+        url = "/company/gb/100.json"
+        self.mock_get(url=url, json=create_anpartsselskab_response())
+
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.company_type.v, 'Anpartsselskab')
+
+    @responses.activate
+    @patch('app.metadata.send_exception')
+    def test_it_notifies_if_unrecognised_company_type(self, send_exception):
+        url = "/company/gb/100.json"
+        self.mock_get(url=url, json=create_unrecognised_company_type_response())
+
+        _, metadata = get_metadata('gb', '100', {})
+        send_exception.assert_called_once()
+
+    @responses.activate
+    def test_it_cannot_structure_unrecognised_company_type(self):
+        url = "/company/gb/100.json"
+        self.mock_get(url=url, json=create_unrecognised_company_type_response())
+
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.structured_company_type, StructuredCompanyType())
+
+
+def create_metadata_response():
+    with open("./demo_data/metadata.json", 'rb') as f:
+        return json.loads(f.read())
+
+
+def create_anpartsselskab_response():
+    with open("./demo_data/anpartsselskab.json", 'rb') as f:
+        return json.loads(f.read())
+
+def create_unrecognised_company_type_response():
+    with open("./demo_data/unrecognised_company_type.json", 'rb') as f:
+        return json.loads(f.read())
 
 
 def create_registry_response(with_pagination=False, pagination=None):
