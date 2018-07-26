@@ -130,7 +130,7 @@ def get_charity(country_code, company_number, name, credentials):
     elif status_code != 200:
         raise DueDilServiceException(f'Request failed with status code {status_code}')
 
-    corporate = vitals.get('corporateIdentity', {})
+    corporate = vitals.get('corporateIdentity', {}) or {}
 
     country_of_incorporation_iso2 = corporate.get('countryCode')
     country_of_incorporation = convert_country_code(country_of_incorporation_iso2)
