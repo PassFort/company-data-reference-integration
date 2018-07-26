@@ -1,4 +1,5 @@
 import requests
+import nameparser
 from datetime import datetime
 from schemad_types.utils import get_in
 from requests.exceptions import RequestException, HTTPError
@@ -6,6 +7,11 @@ from functools import reduce
 
 from app.utils import paginate, base_request, DueDilServiceException, convert_country_code,\
     send_exception, retry, BASE_API, string_compare
+
+
+nameparser.config.CONSTANTS.suffix_acronyms.add('jp')
+nameparser.config.CONSTANTS.suffix_acronyms.add('cc')
+nameparser.config.CONSTANTS.suffix_acronyms.add('dl')
 
 
 def make_charity_url(country_code, charity_id, endpoint):
@@ -96,16 +102,15 @@ def find_charity(country_code, company_number, name, credentials):
 
 
 def format_trustee(trustee):
-    name = trustee['sourceName']
-    names = name.split(' ')
+    name = nameparser.HumanName(trustee['sourceName'])
     return {
         'immediate_data': {
             'entity_type': 'INDIVIDUAL',
             'personal_details': {
                 'name': {
-                    'title': names[0],
-                    'given_names': names[1:-1],
-                    'family_name': names[-1],
+                    'title': name.title,
+                    'given_names': name.first.split() + name.middle.split(),
+                    'family_name': name.last,
                 }
             }
         },
