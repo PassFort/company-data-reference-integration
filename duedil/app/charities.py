@@ -115,7 +115,8 @@ def format_trustee(trustee):
             }
         },
         'entity_type': 'INDIVIDUAL',
-        'provider_name': 'DueDil'
+        'provider_name': 'DueDil',
+        'original_role': 'Trustee'
     }
 
 

@@ -99,7 +99,8 @@ class TestCharities(unittest.TestCase):
                 }
             },
             'entity_type': 'INDIVIDUAL',
-            'provider_name': 'DueDil'
+            'provider_name': 'DueDil',
+            'original_role': 'Trustee',
         })
         Assert.equal(response['officers']['trustees'][-1], {
             'immediate_data': {
@@ -113,7 +114,8 @@ class TestCharities(unittest.TestCase):
                 },
             },
             'entity_type': 'INDIVIDUAL',
-            'provider_name': 'DueDil'
+            'provider_name': 'DueDil',
+            'original_role': 'Trustee',
         })
 
     @responses.activate
