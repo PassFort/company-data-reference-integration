@@ -22,3 +22,4 @@ dassert = { git = "git@github.com:PassFort/python-dassert.git@48233ad93ba8066713
 sqlalchemy = "*"
 raven = {extras = ["flask"]}
 responses = "*"
+nameparser = "*"
