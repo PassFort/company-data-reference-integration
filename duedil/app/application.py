@@ -177,7 +177,7 @@ def ownership_check():
     response = CompanyData(
         ownership_structure={
             'shareholders': shareholders,
-        } if shareholders else None
+        }
     )
 
     return jsonify(
