@@ -1,6 +1,7 @@
 import logging
 from swagger_client.models import Entity, Associate
 
+
 def make_error_response(errors=[]):
     return {
         'output_data': None,

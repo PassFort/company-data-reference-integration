@@ -8,7 +8,7 @@ from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
 
 from app.api.types import validate_model, ScreeningRequest, ScreeningResultsRequest, OngoingScreeningResultsRequest, \
-    Error
+    Error, OngoingScreeningDisableRequest
 from app.api.responses import make_error_response
 from app.worldcheck_handler import CaseHandler, MatchHandler, WorldCheckPendingError, WorldCheckConnectionError
 
@@ -157,6 +157,17 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
     except RequestException as e:
         return jsonify(errors=[Error.from_exception(e)]), 500
     return jsonify(errors=[])
+
+
+@app.route('/config/ongoing_monitoring/<string:case_system_id>', methods=['DELETE'])
+@validate_model(OngoingScreeningDisableRequest)
+def disable_ongoing_monitoring_request(request_data: OngoingScreeningDisableRequest, case_system_id):
+    return jsonify(
+        CaseHandler(
+            request_data.config,
+            request_data.credentials,
+        ).disable_ongoing_screening(case_system_id)
+    )
 
 
 def send_to_callback(callback_url, result):
