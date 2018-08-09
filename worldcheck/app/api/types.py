@@ -285,3 +285,9 @@ class OngoingScreeningResultsRequest(Model):
 
     callback_url = StringType(required=True, default=None)
     from_date = DateTimeType(required=True, default=None)
+
+
+class OngoingScreeningDisableRequest(Model):
+    credentials = ModelType(WorldCheckCredentials, required=True)
+    config = ModelType(WorldCheckConfig, required=True)
+    is_demo = BooleanType(default=False)
