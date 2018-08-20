@@ -162,12 +162,12 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
 @app.route('/config/ongoing_monitoring/<string:case_system_id>', methods=['DELETE'])
 @validate_model(OngoingScreeningDisableRequest)
 def disable_ongoing_monitoring_request(request_data: OngoingScreeningDisableRequest, case_system_id):
-    return jsonify(
-        CaseHandler(
-            request_data.credentials,
-            request_data.config
-        ).disable_ongoing_screening(case_system_id)
-    )
+    CaseHandler(
+        request_data.credentials,
+        request_data.config,
+        request_data.is_demo
+    ).disable_ongoing_screening(case_system_id)
+    return jsonify(errors=[])
 
 
 def send_to_callback(callback_url, result):
