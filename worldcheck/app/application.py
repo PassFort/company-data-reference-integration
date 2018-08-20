@@ -164,8 +164,8 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
 def disable_ongoing_monitoring_request(request_data: OngoingScreeningDisableRequest, case_system_id):
     return jsonify(
         CaseHandler(
-            request_data.config,
             request_data.credentials,
+            request_data.config
         ).disable_ongoing_screening(case_system_id)
     )
 
