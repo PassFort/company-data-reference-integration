@@ -203,5 +203,5 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(structured_company_type['is_public'], False)
         self.assertEqual(structured_company_type['is_limited'], True)
         self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
- 
+
         self.assertTrue(len(shareholders) > 0)

@@ -20,6 +20,7 @@ OFFICER_FIELD_MAP = {
     'nationalities': 'officer_nationalities',
     'dob': 'officer_dobs',
     'uci': 'officer_ucis',
+    'bvd_id': 'officer_bvd_ids',
     'current_previous': 'officer_current_previous',
 }
 
@@ -81,6 +82,7 @@ def format_nationalities(raw_data: OfficerRawData) -> List[str]:
 
 
 class Officer(BaseObject):
+    bvd_id: str
     bvd_uci: str
     type: EntityType
     role: OfficerRole
@@ -96,6 +98,7 @@ class Officer(BaseObject):
     @staticmethod
     def from_raw_data(raw_data: OfficerRawData) -> 'Officer':
         officer = Officer()
+        officer.bvd_id = raw_data['bvd_id']
         officer.bvd_uci = raw_data['uci']
         officer.type = OFFICER_TYPE_MAP[raw_data['type']]
         officer.role = format_officer_role(officer.type, raw_data['role'])
