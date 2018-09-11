@@ -14,7 +14,6 @@ integrations = {
     'onfido': './onfido',
     'bvd': './bvd',
     'worldcheck': './worldcheck',
-    'transunion': './transunion',
 }
 
 sentry = {

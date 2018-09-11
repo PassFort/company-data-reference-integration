@@ -68,6 +68,12 @@ class CaseHandler:
         else:
             self.case_api.cases_case_system_id_ongoing_screening_put(case_system_id)
 
+    def disable_ongoing_screening(self, case_system_id):
+        if self.is_demo:
+            pass
+        else:
+            self.case_api.cases_case_system_id_ongoing_screening_delete(case_system_id)
+
     def get_ongoing_screening_results(self, from_date):
         iso_dt = from_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
