@@ -93,6 +93,30 @@ class EndToEndTests(unittest.TestCase):
         self.assertIsInstance(officers['others'], list)
         self.assertTrue(officers['directors'])
 
+    def test_success_registry_officer_bvd_id(self):
+        response = requests.post(API_URL + '/registry-check', json={
+            'input_data': {
+                'country_of_incorporation': 'GBR',
+                'number': '03977902',
+            },
+            'credentials': CREDENTIALS,
+            'is_demo': False,
+        })
+
+        result = response.json()
+        output_data = result['output_data']
+        officers = output_data['officers']
+        company_officers = [
+            officer for role in ['directors', 'secretaries', 'resigned', 'others']
+            for officer in officers[role]
+            if officer['type'] == 'COMPANY'
+        ]
+
+        self.assertTrue(len(officers) > 0, 'missing company officers for this test!')
+
+        for officer in company_officers:
+            self.assertTrue(type(officer['bvd_id']) is str)
+
     def test_failed_ownership_check(self):
         with self.subTest('invalid company number'):
             response = requests.post(API_URL + '/ownership-check', json={
