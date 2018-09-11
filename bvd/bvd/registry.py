@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, cast
 from enum import Enum
 from datetime import datetime
 
@@ -19,6 +19,7 @@ COMPANY_IDENTIFIERS_MAP = {
     'lei': 'LEI',
     'number': 'TRADEREGISTERNR',
 }
+
 
 class CompanyTypeError(Exception):
     pass
@@ -46,8 +47,16 @@ class StructuredCompanyType(BaseObject):
 
 
 STRUCTURED_COMPANY_TYPE_MAP = {
-    'public limited companies': StructuredCompanyType({'is_public': True, 'is_limited': True, 'ownership_type': OwnershipType.COMPANY}),
-    'private limited companies': StructuredCompanyType({'is_public': False, 'is_limited': True, 'ownership_type': OwnershipType.COMPANY}),
+    'public limited companies': StructuredCompanyType({
+        'is_public': True,
+        'is_limited': True,
+        'ownership_type': OwnershipType.COMPANY
+    }),
+    'private limited companies': StructuredCompanyType({
+        'is_public': False,
+        'is_limited': True,
+        'ownership_type': OwnershipType.COMPANY
+    }),
     'partnerships': StructuredCompanyType({'ownership_type': OwnershipType.PARTNERSHIP}),
     'sole traders/proprietorships': StructuredCompanyType({'ownership_type': OwnershipType.SOLE_PROPRIETORSHIP}),
     'public authorities': StructuredCompanyType({'is_public': True, 'ownership_type': OwnershipType.OTHER}),
@@ -77,7 +86,7 @@ class SICCode(BaseObject):
         self.description = description
 
 
-def format_previous_names(raw_data: CompanyRawData) -> Optional[List[PreviousName]]:
+def format_previous_names(raw_data: CompanyRawData) -> List[PreviousName]:
     # PREVNAME: Previous company name; NAMECHDT: Company name change date
     # If data is missing we get None
     name: Optional[str] = raw_data.get('PREVNAME')
@@ -87,7 +96,7 @@ def format_previous_names(raw_data: CompanyRawData) -> Optional[List[PreviousNam
         end = format_date(end_date)
         return [PreviousName(name, end)]
 
-    return None
+    return []
 
 
 def format_company_type(raw_data: CompanyRawData) -> Optional[str]:
@@ -100,7 +109,7 @@ def format_structured_company_type(raw_data: CompanyRawData) -> Optional[Structu
         try:
             structured_company_type = STRUCTURED_COMPANY_TYPE_MAP[company_type.lower()]
             return structured_company_type
-        except:
+        except Exception:
             exc = CompanyTypeError(f'Unrecognised company type {company_type}')
             send_sentry_exception(exc, custom_data={'company_type': company_type})
             return StructuredCompanyType()
@@ -136,7 +145,7 @@ def format_is_active(raw_data: CompanyRawData) -> Optional[bool]:
 
 
 def format_address(raw_data: CompanyRawData) -> str:
-    return ','.join(raw_data[field] for field in ADDRESS_FIELDS if raw_data.get(field) is not None)
+    return ','.join(cast(str, raw_data[field]) for field in ADDRESS_FIELDS if raw_data.get(field) is not None)
 
 
 class ContactDetails(BaseObject):
@@ -157,20 +166,20 @@ class CompanyMetadata(BaseObject):
     bvd_id: str
     number: str
     bvd9: str
-    isin: str
+    isin: Optional[str]
     irs: str
     vat_number: str
     eurovat_number: str
     lei: str
-    name: str
-    company_type: str
-    structured_company_type: StructuredCompanyType
-    incorporation_date: datetime
+    name: Optional[str]
+    company_type: Optional[str]
+    structured_company_type: Optional[StructuredCompanyType]
+    incorporation_date: Optional[datetime]
     previous_names: List[PreviousName]
     sic_codes: List[SICCode]
     contact_information: ContactDetails
     freeform_address: str
-    is_active: bool
+    is_active: Optional[bool]
 
     @staticmethod
     def from_raw_data(raw_data: CompanyRawData) -> 'CompanyMetadata':
