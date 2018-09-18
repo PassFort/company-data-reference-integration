@@ -17,13 +17,16 @@ while [ ! -f .coverage ]; do sleep 1; done
 pipenv run coverage xml -i
 
 if [ -z "$INTEGRATION" ]; then
-    integration_name=$INTEGRATION
-else
     integration_name=${PWD##*/}
+else
+    integration_name=$INTEGRATION
 fi
 
 sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml
 
 if [ -z "$CODECOV_TOKEN" ]; then
+    echo "Will not upload code coverage to codecov"
+    cat coverage.xml
+else
     pipenv run codecov -F $integration_name -X search -f coverage.xml
 fi
