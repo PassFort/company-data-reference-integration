@@ -25,10 +25,9 @@ def get_bvd_id(credentials, input_data):
     bvd_id = input_data.get('bvd_id')
     if bvd_id is None:
         error, result = run_check(lambda: match(credentials, {
-            'Country': input_data['country_of_incorporation'],
-            'NationalId': input_data['number'],
+            'Country': input_data.get('country_of_incorporation'),
+            'NationalId': input_data.get('number'),
         }))
-
         if error:
             return error, result
         elif result:
@@ -118,7 +117,6 @@ def ownership_check():
         error, raw_data = run_check(
             lambda: get_data(credentials, [bvd_id], query)
         )
-
         if raw_data:
             try:
                 output_data = format_ownership_data(raw_data)
