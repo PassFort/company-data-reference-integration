@@ -28,7 +28,6 @@ def get_bvd_id(credentials, input_data):
             'Country': input_data['country_of_incorporation'],
             'NationalId': input_data['number'],
         }))
-
         if error:
             return error, result
         elif result:
@@ -118,7 +117,6 @@ def ownership_check():
         error, raw_data = run_check(
             lambda: get_data(credentials, [bvd_id], query)
         )
-
         if raw_data:
             try:
                 output_data = format_ownership_data(raw_data)

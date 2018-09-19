@@ -13,6 +13,7 @@ BENEFICIAL_OWNER_FIELD_MAP = {
     'dob': 'BO_BIRTHDATE',
     'uci': 'BO_UPI',
     'bvd_id': 'BO_SUITEID',
+
 }
 
 BORawData = Dict[str, str]
@@ -56,7 +57,8 @@ def format_benefical_owner(bos_data: ItemsView[str, dict], idx: int) -> Benefici
 def format_beneficial_owners(raw_data: CompanyRawData) -> List[BeneficialOwner]:
     str_num_bo: str = raw_data.get('NrBeneficialOwners')
     num_bo = 0 if str_num_bo == DATA_NOT_ACCESSIBLE else int(str_num_bo)
-
+    if num_bo > 0:
+        num_bo = len(raw_data['BO_NAMEORIGINALLANGUAGE'])
     bos_data = {
         dest: raw_data.get(source, [''] * num_bo)
         for dest, source in BENEFICIAL_OWNER_FIELD_MAP.items()
