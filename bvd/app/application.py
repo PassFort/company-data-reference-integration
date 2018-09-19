@@ -25,8 +25,8 @@ def get_bvd_id(credentials, input_data):
     bvd_id = input_data.get('bvd_id')
     if bvd_id is None:
         error, result = run_check(lambda: match(credentials, {
-            'Country': input_data.get('country_of_incorporation'),
-            'NationalId': input_data.get('number'),
+            'Country': input_data['country_of_incorporation'],
+            'NationalId': input_data['number'],
         }))
         if error:
             return error, result
