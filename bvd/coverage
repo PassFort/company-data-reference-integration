@@ -22,6 +22,8 @@ else
     integration_name=$INTEGRATION
 fi
 
+# We need to prepend the integration_name so that codecov can succesfully
+# match the coverage data with the files in the integrations monorepo
 sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml
 
 if [ -z "$CODECOV_TOKEN" ]; then
