@@ -1,19 +1,17 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
-
 [dev-packages]
-
 mypy = "==0.511"
 neovim = "*"
 
-
 [packages]
-
 gunicorn = "==19.5.0"
 flask = "==0.12.1"
 requests = "*"
 raven = {extras = ["flask"]}
 python-json-logger = "*"
+mock = "*"
+coverage = "*"
+codecov = "*"

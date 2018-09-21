@@ -24,6 +24,7 @@ RUN mkdir /srv/logs/ && \
     apk del --no-cache git openssh-client
 
 COPY main.py /src
+COPY coverage /src
 COPY app /src/app
 COPY e2e /src/e2e
 COPY bvd /src/bvd
