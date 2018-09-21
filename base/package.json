@@ -3,9 +3,7 @@
   "license": "Private",
   "scripts": {
     "unit": "pipenv run python -m unittest discover .",
-    "e2e": "newman run *.postman_collection.json"
-  },
-  "dependencies": {
-    "newman": "^3.9.3"
+    "e2e": "pipenv run python -m unittest e2e.e2e",
+    "coverage": "./coverage"
   }
 }

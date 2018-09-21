@@ -1,5 +1,9 @@
 .venv
+.coverage
 *.pyc
+htmlcov/
+node_modules/
+*.log
 .idea/
 .mypy_cache/
 .DS_Store
