@@ -1,6 +1,6 @@
 import json
 
-from typing import List, Dict, Optional, Union, Tuple, Callable, Any, IO
+from typing import List, Dict, Optional, Union, Tuple, Callable, Any, IO, cast
 from requests import post
 from requests.exceptions import RequestException, HTTPError
 from requests.models import Response
@@ -88,7 +88,7 @@ def make_response_exception(response: Response) -> BvDServiceException:
     return make_default_exception(response.status_code)
 
 
-def retry(f: Callable, excs, attempts: int=3) -> Any:
+def retry(f: Callable, excs, attempts: int = 3) -> Any:
     while True:
         try:
             return f()
@@ -104,7 +104,7 @@ def make_full_url(config: BvDConfig, url: str) -> str:
     if service_url:
         return service_url + url
 
-    raise BvDInvalidConfigException(None, 'Missing service url')
+    raise BvDInvalidConfigException(400, 'Missing service url')
 
 
 def make_headers(config: BvDConfig) -> Dict[str, str]:
@@ -115,7 +115,7 @@ def make_headers(config: BvDConfig) -> Dict[str, str]:
             'apitoken': api_token,
         }
 
-    raise BvDInvalidConfigException(None, 'Missing api token')
+    raise BvDInvalidConfigException(400, 'Missing api token')
 
 
 def send_request(config: BvDConfig, url: str, payload: Optional[dict]) -> List[CompanyRawData]:
@@ -153,7 +153,7 @@ def get_query_string(name: str) -> str:
         return file.read().replace('\n', '')
 
 
-def parse_demo_filename(filename: str) -> list:
+def parse_demo_filename(filename: str) -> Optional[list]:
     name, ext = splitext(filename)
     if ext == '.json':
         components = name.split('_')
@@ -173,11 +173,11 @@ def get_demo_data(
     company_number: str = None,
 ) -> dict:
     demo_files_path = join(dirname(dirname(abspath(__file__))), 'demo_data', check)
-    available_files = [parse_demo_filename(filename) for filename in listdir(demo_files_path)]
-    available_files = [components for components in available_files if components]
+    _available_files = [parse_demo_filename(filename) for filename in listdir(demo_files_path)]
+    available_files = [components for components in _available_files if components]
 
     if len(available_files) == 0:
-        raise BvDServiceException(None, 'Missing demo files')
+        raise BvDServiceException(500, 'Missing demo files')
 
     demo_file_name = None
     # Attempt to find a match
@@ -193,7 +193,7 @@ def get_demo_data(
 
     if demo_file_name is None:
         # If no match return anything
-        demo_file_name = available_files[3]
+        demo_file_name = cast(str, available_files[-1])
 
     with open(join(demo_files_path, demo_file_name), 'r') as file:
         return json.load(file)

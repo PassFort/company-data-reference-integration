@@ -36,11 +36,10 @@ class EntityType(Enum):
 
 def name_strip(name: str) -> str:
     '''Clean names from useless garbage text'''
-    if name:
-        garbage = ['via its funds']
-        for string in garbage:
-            if string in name:
-                name = re.sub(string, '', name)
+    garbage = ['via its funds']
+    for string in garbage:
+        if string in name:
+            name = re.sub(string, '', name)
     return name
 
 
@@ -62,10 +61,10 @@ def format_names(
         else:
             return '', ''
     else:
-        return name_strip(firstname), name_strip(lastname)
+        return name_strip(firstname) if firstname else '', name_strip(lastname) if lastname else ''
 
 
-def format_date(input_string: Optional[str]) -> datetime:
+def format_date(input_string: Optional[str]) -> Optional[datetime]:
     if input_string:
         try:
             return dateutil_parser.parse(input_string)

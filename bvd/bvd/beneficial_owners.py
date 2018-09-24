@@ -1,4 +1,4 @@
-from typing import Dict, ItemsView, List, Tuple
+from typing import Optional, Dict, ItemsView, List, Tuple, cast
 from datetime import datetime
 
 from bvd.utils import CompanyRawData
@@ -34,7 +34,7 @@ class BeneficialOwner(BaseObject):
     type: EntityType
     first_names: str
     last_name: str
-    dob: datetime
+    dob: Optional[datetime]
 
     @staticmethod
     def from_raw_data(raw_data: BORawData) -> 'BeneficialOwner':
@@ -49,19 +49,24 @@ class BeneficialOwner(BaseObject):
         return bo
 
 
-def format_benefical_owner(bos_data: ItemsView[str, dict], idx: int) -> BeneficialOwner:
+def format_benefical_owner(bos_data: ItemsView[str, list], idx: int) -> BeneficialOwner:
     bo_data: BORawData = {attr: value[idx] for attr, value in bos_data}
     return BeneficialOwner.from_raw_data(bo_data)
 
 
 def format_beneficial_owners(raw_data: CompanyRawData) -> List[BeneficialOwner]:
-    str_num_bo: str = raw_data.get('NrBeneficialOwners')
-    num_bo = 0 if str_num_bo == DATA_NOT_ACCESSIBLE else int(str_num_bo)
+    str_num_bo = raw_data.get('NrBeneficialOwners')
+    num_bo = 0
+    if str_num_bo and str_num_bo != DATA_NOT_ACCESSIBLE:
+        num_bo = int(str_num_bo)
+
     if num_bo > 0:
-        num_bo = len(raw_data['BO_NAMEORIGINALLANGUAGE'])
-    bos_data = {
+        name_list = raw_data['BO_NAMEORIGINALLANGUAGE']
+        num_bo = len(name_list) if name_list else 0
+
+    bos_data = cast(ItemsView[str, list], {
         dest: raw_data.get(source, [''] * num_bo)
         for dest, source in BENEFICIAL_OWNER_FIELD_MAP.items()
-    }.items()
+    }.items())
 
     return [format_benefical_owner(bos_data, idx) for idx in range(num_bo)]
