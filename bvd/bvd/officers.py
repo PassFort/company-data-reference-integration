@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, ItemsView, Tuple
+from typing import Dict, List, Optional, ItemsView, Tuple, cast
 from enum import Enum
 from datetime import datetime
 
@@ -65,7 +65,7 @@ def format_officer_names(type_: EntityType, raw_data: OfficerRawData) -> Tuple[s
     )
 
 
-def format_nationality(country_name: str) -> str:
+def format_nationality(country_name: str) -> Optional[str]:
     try:
         return countries.get(name=country_name).alpha_3
     except KeyError:
@@ -73,7 +73,7 @@ def format_nationality(country_name: str) -> str:
 
 
 def format_nationalities(raw_data: OfficerRawData) -> List[str]:
-    raw_nationalities: str = raw_data.get('nationalities')
+    raw_nationalities = raw_data.get('nationalities')
     if raw_nationalities:
         codes = [format_nationality(name) for name in raw_nationalities.split(';')]
         return [code for code in codes if code is not None]
@@ -91,9 +91,9 @@ class Officer(BaseObject):
     last_name: str
     nationality: str
     resigned: bool
-    appointed_on: datetime
-    resigned_on: datetime
-    dob: datetime
+    appointed_on: Optional[datetime]
+    resigned_on: Optional[datetime]
+    dob: Optional[datetime]
 
     @staticmethod
     def from_raw_data(raw_data: OfficerRawData) -> 'Officer':
@@ -130,21 +130,25 @@ class Officers(BaseObject):
         self.others = []
 
 
-def format_officer(officers_data: ItemsView[str, dict], idx: int) -> Officer:
+def format_officer(officers_data: ItemsView[str, list], idx: int) -> Officer:
     officer_data: OfficerRawData = {attr: value[idx] for attr, value in officers_data}
     return Officer.from_raw_data(officer_data)
 
 
 def _format_officers(raw_data: CompanyRawData) -> List[Officer]:
     str_num_officers: Optional[str] = raw_data.get('num_officers')
-    num_officers = 0 if str_num_officers == DATA_NOT_ACCESSIBLE else int(str_num_officers)
-    if num_officers > 0:
-        num_officers = len(raw_data['officer_full_names'])
+    num_officers = 0
+    if str_num_officers and str_num_officers != DATA_NOT_ACCESSIBLE:
+        num_officers = int(str_num_officers)
 
-    officers_data = {
+    officer_full_names = raw_data.get('officer_full_names')
+    if num_officers > 0 and officer_full_names:
+        num_officers = len(officer_full_names)
+
+    officers_data = cast(ItemsView[str, list], {
         dest: raw_data.get(source, [''] * num_officers)
         for dest, source in OFFICER_FIELD_MAP.items()
-    }.items()
+    }.items())
 
     return [format_officer(officers_data, idx) for idx in range(num_officers)]
 

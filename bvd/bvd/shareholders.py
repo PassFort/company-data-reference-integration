@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict, ItemsView, Optional
+from typing import List, Tuple, Dict, ItemsView, Optional, cast
 from pycountry import countries
 
 from bvd.utils import CompanyRawData
@@ -22,7 +22,7 @@ SHAREHOLDER_FIELD_MAP = {
 }
 
 
-def format_country_code(raw_data: Dict[str, str]) -> str:
+def format_country_code(raw_data: Dict[str, str]) -> Optional[str]:
     input_code = raw_data.get('country_code')
     try:
         return countries.get(alpha_2=input_code).alpha_3
@@ -47,7 +47,7 @@ def format_percentage(input_string: str) -> Optional[float]:
 
 
 class Shareholding(BaseObject):
-    percentage: float
+    percentage: Optional[float]
 
     def __init__(self, raw_data: Dict[str, str]) -> None:
         self.percentage = format_percentage(raw_data['direct'])
@@ -59,7 +59,7 @@ class Shareholder(BaseObject):
     bvd_uci: str
     lei: str
     type: EntityType
-    country_of_incorporation: str
+    country_of_incorporation: Optional[str]
     state_of_incorporation: str
     first_names: str
     last_name: str
@@ -82,18 +82,24 @@ class Shareholder(BaseObject):
         return shareholder
 
 
-def format_shareholder(shareholders_data: ItemsView[str, dict], idx: int) -> Shareholder:
+def format_shareholder(shareholders_data: ItemsView[str, list], idx: int) -> Shareholder:
     shareholder_data: Dict[str, str] = {attr: value[idx] for attr, value in shareholders_data}
     return Shareholder.from_raw_data(shareholder_data)
 
 
 def format_shareholders(raw_data: CompanyRawData) -> List[Shareholder]:
-    str_num_shareholders: str = raw_data.get('num_shareholders')
-    num_shareholders = 0 if str_num_shareholders == DATA_NOT_ACCESSIBLE else int(str_num_shareholders)
+    str_num_shareholders = raw_data.get('num_shareholders')
+    num_shareholders = 0
+    if str_num_shareholders and str_num_shareholders != DATA_NOT_ACCESSIBLE:
+        num_shareholders = int(str_num_shareholders)
+
     if num_shareholders > 0:
-        num_shareholders = len(raw_data['shareholder_full_names'])
-    shareholders_data = {
+        name_list = raw_data['shareholder_full_names']
+        num_shareholders = len(name_list) if name_list else 0
+
+    shareholders_data = cast(ItemsView[str, list], {
         dest: raw_data.get(source, [''] * num_shareholders)
         for dest, source in SHAREHOLDER_FIELD_MAP.items()
-    }.items()
+    }.items())
+
     return [format_shareholder(shareholders_data, idx) for idx in range(num_shareholders)]
