@@ -153,10 +153,13 @@ def get_details(entity: 'Entity'):
 def get_country_links_by_type(entity: 'Entity', country_type: 'CountryLinkType'):
     if entity.country_links is None:
         return []
-
-    return [{"v": get_valid_country_code(country_link.country.code)}
-            for country_link in entity.country_links
-            if country_link.type == country_type and country_link.country is not None]
+    result = []
+    for country_link in entity.country_links:
+        if country_link.type == country_type and country_link.country is not None:
+            country_code = get_valid_country_code(country_link.country.code)
+            if country_code is not None:
+                result.append({"v": country_code})
+    return result
 
 
 def get_country_locations(entity: 'Entity'):
