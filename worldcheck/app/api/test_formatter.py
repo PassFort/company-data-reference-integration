@@ -2,10 +2,10 @@ from unittest import TestCase
 
 from app.api.formatter import entity_to_passfort_format, get_some_name
 
-from swagger_client.models import IndividualEntity, OrganisationEntity, Name, NameType, ActionDetail, \
+from swagger_client.models import Address, IndividualEntity, OrganisationEntity, Name, NameType, ActionDetail, \
     ProfileActionType, \
     ProviderSource, Role, \
-    ProviderSourceStatus, ProviderSourceType, ProviderSourceTypeCategoryDetail
+    ProviderSourceStatus, ProviderSourceType, ProviderSourceTypeCategoryDetail, Country, CountryLink, CountryLinkType
 
 
 bashar_uk_sanction = ActionDetail(
@@ -86,6 +86,7 @@ pep_source = ProviderSource(
     )
 )
 
+
 class TestEntityFormatter(TestCase):
 
     def test_get_name(self):
@@ -132,6 +133,31 @@ class TestEntityFormatter(TestCase):
             self.assertEqual(formatted_result["match_name"], {"v": None})
             self.assertIn({"v": "John JONES"}, formatted_result["aliases"])
             self.assertIn({"v": "JONES,John Mervyn"}, formatted_result["aliases"])
+
+        with self.subTest("with nationality and addresses"):
+            entity = IndividualEntity(
+                entity_id="e_tr_wci_1040772",
+                entity_type="INDIVIDUAL",
+                names=[
+                    Name(full_name="John JONES", type=NameType.PRIMARY),
+                ],
+                country_links=[
+                    CountryLink(type=CountryLinkType.NATIONALITY, country=Country(code="GBR", name="United Kingdom")),
+                    CountryLink(type=CountryLinkType.NATIONALITY, country=Country(code="ESP", name="Spain")),
+                    CountryLink(type=CountryLinkType.RESIDENT, country=Country(code="GBR", name="United Kingdom"))
+                ],
+                addresses=[
+                    Address(country=Country(code="GBR", name="United Kingdom"), city="London", post_code="EC3N 4DR")
+                ]
+            )
+            formatted_result = entity_to_passfort_format(entity)
+            self.assertListEqual(formatted_result["match_countries"], [{"v": "GBR"}, {"v": "ESP"}])
+            self.assertListEqual(
+                formatted_result["locations"],
+                [
+                    {"v": {"type": "RESIDENT", "country": "GBR"}},
+                    {"v": {"type": "ADDRESS", "country": "GBR", "city": "London", "address": "EC3N 4DR"}}
+                ])
 
         with self.subTest("with pep roles and sanctions"):
             entity = IndividualEntity(
@@ -229,6 +255,32 @@ class TestEntityFormatter(TestCase):
             self.assertEqual(formatted_result["sanctions"], [])
             self.assertIn({"v": "ООО ГАЗПРОМ-МЕДИА"}, formatted_result["aliases"])
             self.assertIn({"v": "GAZPROM-MEDIA LLC"}, formatted_result["aliases"])
+
+        with self.subTest("with country of incorporation and addresses"):
+            entity = OrganisationEntity(
+                entity_id="e_tr_wco_2707386",
+                entity_type="ORGANISATION",
+                names=[
+                    Name(full_name="GAZPROM-MEDIA", type=NameType.PRIMARY),
+                ],
+                country_links=[
+                    CountryLink(type=CountryLinkType.REGISTEREDIN,
+                                country=Country(code="RUS", name="Russian Federation")),
+                    CountryLink(type=CountryLinkType.OPERATESIN,
+                                country=Country(code="RUS", name="Russian Federation"))
+                ],
+                addresses=[
+                    Address(country=Country(code="RUS", name="Russian Federation"), city="Moscow")
+                ]
+            )
+            formatted_result = entity_to_passfort_format(entity)
+            self.assertListEqual(formatted_result["match_countries"], [{"v": "RUS"}])
+            self.assertListEqual(
+                formatted_result["locations"],
+                [
+                    {"v": {"type": "OPERATESIN", "country": "RUS"}},
+                    {"v": {"type": "ADDRESS", "country": "RUS", "city": "Moscow", "address": None}}
+                ])
 
         with self.subTest("with sanctions"):
             entity = OrganisationEntity(
