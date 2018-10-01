@@ -172,10 +172,10 @@ def get_country_locations(entity: 'Entity'):
                 "type": country_link.type,
                 "country": get_valid_country_code(country_link.country.code)
             }
-            for country_link in entity.country_links
-            if country_link.type not in [CountryLinkType.NATIONALITY, CountryLinkType.REGISTEREDIN]
-            and country_link.country is not None
         }
+        for country_link in entity.country_links
+        if country_link.type not in [CountryLinkType.NATIONALITY, CountryLinkType.REGISTEREDIN]
+        and country_link.country is not None
     ]
 
 
