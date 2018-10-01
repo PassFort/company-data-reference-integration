@@ -1,3 +1,5 @@
+import logging
+import pycountry
 import typing
 
 from swagger_client.models import NameType, DetailType, ProfileEntityType, CountryLinkType
@@ -151,10 +153,13 @@ def get_details(entity: 'Entity'):
 def get_country_links_by_type(entity: 'Entity', country_type: 'CountryLinkType'):
     if entity.country_links is None:
         return []
-
-    return [{"v": country_link.country.code}
-            for country_link in entity.country_links
-            if country_link.type == country_type and country_link.country is not None]
+    result = []
+    for country_link in entity.country_links:
+        if country_link.type == country_type and country_link.country is not None:
+            country_code = get_valid_country_code(country_link.country.code)
+            if country_code is not None:
+                result.append({"v": country_code})
+    return result
 
 
 def get_country_locations(entity: 'Entity'):
@@ -165,12 +170,12 @@ def get_country_locations(entity: 'Entity'):
         {
             "v": {
                 "type": country_link.type,
-                "country": country_link.country.code
+                "country": get_valid_country_code(country_link.country.code)
             }
-            for country_link in entity.country_links
-            if country_link.type not in [CountryLinkType.NATIONALITY, CountryLinkType.REGISTEREDIN]
-            and country_link.country is not None
         }
+        for country_link in entity.country_links
+        if country_link.type not in [CountryLinkType.NATIONALITY, CountryLinkType.REGISTEREDIN]
+        and country_link.country is not None
     ]
 
 
@@ -192,10 +197,24 @@ def get_address_locations(entity: 'Entity'):
         {
             "v": {
                 "type": "ADDRESS",
-                "country": address.country.code if address.country is not None else None,
+                "country": get_valid_country_code(address.country.code) if address.country is not None else None,
                 "city": address.city,
                 "address": one_liner_address(address)
             }
         }
         for address in entity.addresses
     ]
+
+
+def get_valid_country_code(code):
+    if code is None:
+        return None
+
+    try:
+        pycountry.countries.get(alpha_3=code)
+    except KeyError:
+        # WorldCheck returns 'ZZZ' as country code sometimes
+        logging.info(f'Unsupported country code: {code}')
+        return None
+
+    return code
