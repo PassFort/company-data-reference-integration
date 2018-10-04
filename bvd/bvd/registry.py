@@ -13,11 +13,26 @@ COMPANY_IDENTIFIERS_MAP = {
     'bvd_id': 'BVDID',
     'bvd9': 'BVD9',
     'isin': 'ISIN',
-    'irs': 'IRS',
-    'vat_number': 'VATNUMBER',
-    'eurovat_number': 'EUROVAT',
     'lei': 'LEI',
     'number': 'TRADEREGISTERNR',
+}
+
+
+class TaxIdType(Enum):
+    EUROVAT = "EUROVAT"
+    VAT = "VAT"
+    EIN = "EIN"
+
+
+class TaxId(BaseObject):
+    tax_id_type: TaxIdType
+    value: str
+
+
+COMPANY_TAX_IDENTIFIERS_MAP = {
+    TaxIdType.EIN: 'IRS',
+    TaxIdType.VAT: 'VATNUMBER',
+    TaxIdType.EUROVAT: 'EUROVAT',
 }
 
 
@@ -167,10 +182,8 @@ class CompanyMetadata(BaseObject):
     number: str
     bvd9: str
     isin: Optional[str]
-    irs: str
-    vat_number: str
-    eurovat_number: str
     lei: str
+    tax_ids: List[TaxId]
     name: Optional[str]
     company_type: Optional[str]
     structured_company_type: Optional[StructuredCompanyType]
@@ -187,6 +200,16 @@ class CompanyMetadata(BaseObject):
 
         for dest_key, original_key in COMPANY_IDENTIFIERS_MAP.items():
             setattr(metadata, dest_key, raw_data.get(original_key))
+
+        tax_ids = []
+        for tax_id_type, original_key in COMPANY_TAX_IDENTIFIERS_MAP.items():
+            value = raw_data.get(original_key)
+            if value is not None:
+                tax_id = TaxId()
+                tax_id.tax_id_type = tax_id_type
+                tax_id.value = value
+                tax_ids.append(tax_id)
+        metadata.tax_ids = tax_ids
 
         if metadata.isin == UNLISTED_ISIN:
             metadata.isin = None

@@ -11,10 +11,18 @@
                 "is_limited": true,
                 "ownership_type": "COMPANY"
             },
-            "eurovat_number": "GB991242315",
+            "tax_ids": [
+                {
+                    "tax_id_type": "EUROVAT",
+                    "value": "GB991242315"
+                },
+                {
+                    "tax_id_type": "VAT",
+                    "value": "GB991242315"
+                }
+            ],
             "freeform_address": "BUILDINGS ONE & TWO,TRIDENT PLACE,MOSQUITO WAY,AL10 9UL,HATFIELD,United Kingdom",
             "incorporation_date": "1999-11-11",
-            "irs": null,
             "is_active": true,
             "isin": null,
             "lei": "213800BY73OUVBQPAI88",
@@ -25,8 +33,7 @@
                     "end": "2014-06-16",
                     "name": "OCADO LIMITED"
                 }
-            ],
-            "vat_number": "GB991242315"
+            ]
         },
         "officers": {
             "directors": [
