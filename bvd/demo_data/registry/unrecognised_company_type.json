@@ -6,10 +6,9 @@
             "bvd9": "004086504",
             "bvd_id": "GB01493087",
             "company_type": "plc",
-            "eurovat_number": null,
+            "tax_ids": [],
             "freeform_address": "WORKS ROAD,LETCHWORTH GARDEN CITY,SG6 1NW,LETCHWORTH,United Kingdom",
             "incorporation_date": "1980-04-24",
-            "irs": null,
             "is_active": true,
             "isin": null,
             "lei": "213800D146SXTAZK3G09",
@@ -20,8 +19,7 @@
                     "end": "1984-11-06",
                     "name": "ADAMITE HOLDINGS LIMITED"
                 }
-            ],
-            "vat_number": null
+            ]
         },
         "officers": {
             "directors": [

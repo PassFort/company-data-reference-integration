@@ -80,6 +80,11 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(metadata['bvd_id'], 'GB03875000')
         self.assertEqual(metadata['incorporation_date'], '1999-11-11')
         self.assertEqual(metadata['company_type'], 'Private limited companies')
+        tax_ids = [
+            {'tax_id_type': 'EUROVAT', 'value': 'GB991242315'},
+            {'tax_id_type': 'VAT', 'value': 'GB991242315'}
+        ]
+        self.assertCountEqual(metadata['tax_ids'], tax_ids)
         self.assertEqual(structured_company_type['is_public'], False)
         self.assertEqual(structured_company_type['is_limited'], True)
         self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
@@ -186,6 +191,48 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(metadata['bvd_id'], 'GB01493087')
         self.assertEqual(metadata['incorporation_date'], '1980-04-24')
         self.assertEqual(metadata['company_type'], 'Public limited companies')
+        self.assertEqual(metadata['tax_ids'], [])
+        self.assertEqual(structured_company_type['is_public'], False)
+        self.assertEqual(structured_company_type['is_limited'], True)
+        self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
+        self.assertEqual(metadata['isin'], None)
+        self.assertEqual(metadata['is_active'], True)
+        self.assertIsInstance(metadata['freeform_address'], str)
+
+        self.assertIsInstance(officers['directors'], list)
+        self.assertIsInstance(officers['secretaries'], list)
+        self.assertIsInstance(officers['resigned'], list)
+        self.assertIsInstance(officers['others'], list)
+        self.assertTrue(officers['directors'])
+
+    def test_success_demo_registry_check_with_tax_ids(self):
+        response = requests.post(API_URL + '/registry-check', json={
+            'input_data': {
+                'country_of_incorporation': 'GBR',
+                'bvd_id': 'GB03875000',
+            },
+            'credentials': BAD_CREDENTIALS,
+            'is_demo': True,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+        output_data = result['output_data']
+        self.assertEqual(output_data['entity_type'], 'COMPANY')
+
+        metadata = output_data['metadata']
+        structured_company_type = metadata['structured_company_type']
+        officers = output_data['officers']
+
+        self.assertEqual(metadata['number'], '03875000')
+        self.assertEqual(metadata['bvd_id'], 'GB03875000')
+        self.assertEqual(metadata['incorporation_date'], '1999-11-11')
+        self.assertEqual(metadata['company_type'], 'Private limited companies')
+        tax_ids = [
+            {'tax_id_type': 'EUROVAT', 'value': 'GB991242315'},
+            {'tax_id_type': 'VAT', 'value': 'GB991242315'}
+        ]
+        self.assertCountEqual(metadata['tax_ids'], tax_ids)
         self.assertEqual(structured_company_type['is_public'], False)
         self.assertEqual(structured_company_type['is_limited'], True)
         self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')

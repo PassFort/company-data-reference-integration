@@ -203,10 +203,12 @@ class CompanyMetadata(BaseObject):
 
         tax_ids = []
         for tax_id_type, original_key in COMPANY_TAX_IDENTIFIERS_MAP.items():
-            tax_id = TaxId()
-            tax_id.tax_id_type = tax_id_type
-            tax_id.value = raw_data.get(original_key)
-            tax_ids.append(tax_id)
+            value = raw_data.get(original_key)
+            if value is not None:
+                tax_id = TaxId()
+                tax_id.tax_id_type = tax_id_type
+                tax_id.value = value
+                tax_ids.append(tax_id)
         metadata.tax_ids = tax_ids
 
         if metadata.isin == UNLISTED_ISIN:
