@@ -58,11 +58,12 @@ def make_results_response(results=[], config=None):
 
 
 def make_match_response(result):
-    from app.api.formatter import entity_to_passfort_format
+    from app.api.formatter import entity_to_passfort_format, entity_to_events
     return {
         'output_data': entity_to_passfort_format(result),
         'raw': result.to_dict(),
-        'errors': []
+        'errors': [],
+        'events': entity_to_events(result)
     }
 
 

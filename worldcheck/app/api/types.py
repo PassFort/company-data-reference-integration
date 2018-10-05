@@ -225,6 +225,113 @@ class WorldCheckRefs(Model):
     worldcheck_system_id = StringType
 
 
+class Associate(Model):
+    name = StringType(required=True)
+    association = StringType()
+    is_pep = BooleanType()
+    is_sanction = BooleanType()
+
+
+class Location(Model):
+    pass
+
+
+class Source(Model):
+    name = StringType(required=True)
+    description = StringType()
+    url = StringType()
+
+
+class Detail(Model):
+    title = StringType(required=True)
+    text = StringType(required=True)
+
+
+class PEPRole(Model):
+    name = StringType(required=True)
+    from_date = StringType()
+    to_date = StringType()
+    is_current = BooleanType()
+
+
+class PEPData(Model):
+    match = BooleanType()
+    roles = ListType(ModelType(PEPRole))
+
+
+class SanctionData(Model):
+    type = StringType(required=True)
+    list = StringType()
+    name = StringType()
+    issuer = StringType()
+    is_current = BooleanType()
+
+
+class MatchEvent(Model):
+    event_type = StringType(required=True, choices=['PEP_FLAG', 'SANCTION_FLAG', 'REFER_FLAG'])
+    match_id = StringType(required=True)
+
+    provider_name = StringType()
+
+    # Match information
+    match_name = StringType()
+    match_dates = ListType(DateType)
+
+    # Nationality or country of incorporation.
+    match_countries = ListType(StringType)
+
+    # Additional information
+    aliases = ListType(StringType)
+    associates = ListType(ModelType(Associate))
+
+    # Place of birth address etc. (except nationality or country of incorporation)
+    locations = ListType(ModelType(Location))
+    sources = ListType(ModelType(Source))
+    details = ListType(ModelType(Detail))
+
+    gender = StringType()
+    deceased = BooleanType()
+
+    def as_validated_json(self):
+        self.validate()
+        return self.to_primitive()
+
+
+class PEPMatchEvent(MatchEvent):
+    event_type = StringType(required=True, choices=['PEP_FLAG'], default='PEP_FLAG')
+    pep = ModelType(PEPData)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get('event_type') == 'PEP_FLAG'
+
+    class Options:
+        serialize_when_none = False
+
+
+class SanctionsMatchEvent(MatchEvent):
+    event_type = StringType(required=True, choices=['SANCTION_FLAG'], default='SANCTION_FLAG')
+    sanctions = ListType(ModelType(SanctionData))
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get('event_type') == 'SANCTION_FLAG'
+
+    class Options:
+        serialize_when_none = False
+
+
+class ReferMatchEvent(MatchEvent):
+    event_type = StringType(required=True, choices=['REFER_FLAG'], default='REFER_FLAG')
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get('event_type') == 'REFER_FLAG'
+
+    class Options:
+        serialize_when_none = False
+
+
 class ScreeningRequestData(Model):
     entity_type = StringType(choices=['INDIVIDUAL', 'COMPANY'], required=True)
 
