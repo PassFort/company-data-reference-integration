@@ -233,7 +233,10 @@ class Associate(Model):
 
 
 class Location(Model):
-    pass
+    type = StringType(required=True)
+    country = StringType()  # On api v4, this is actually constrained to alpha_3 country codes
+    city = StringType()
+    address = StringType()
 
 
 class Source(Model):
