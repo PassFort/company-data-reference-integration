@@ -63,6 +63,32 @@ class MatchHandlerTest(TestCase):
             is_demo=True
         )
 
+    def test_get_match(self):
+        with self.subTest('creates both a pep and a sanction event'):
+            match_response = self.handler.get_entity_for_match('bashar_assad_152')
+            self.assertEqual(len(match_response['events']), 2)
+
+            pep_event = match_response['events'][0]
+            sanction_event = match_response['events'][1]
+            self.assertEqual(pep_event['event_type'], 'PEP_FLAG')
+            self.assertEqual(sanction_event['event_type'], 'SANCTION_FLAG')
+
+            with self.subTest('the pep event contains pep data and no sanctions'):
+                self.assertEqual(pep_event['pep'], {
+                    'match': True,
+                    'roles': [{'name': 'President of the Syrian Arab Republic'}]
+                })
+                self.assertTrue('sanctions' not in pep_event)
+
+            with self.subTest('the sanctions event contains sanctions and no pep data'):
+                self.assertGreater(len(sanction_event['sanctions']), 0)
+                self.assertTrue('pep' not in sanction_event)
+
+        with self.subTest('creates a refer flag as default'):
+            match_response = self.handler.get_entity_for_match('lukoil_romania_srl_2756289')
+            self.assertEqual(len(match_response['events']), 1)
+            self.assertEqual(match_response['events'][0]['event_type'], 'REFER_FLAG')
+
     def test_get_associates(self):
         self.assertDictEqual(
             self.handler.get_match_associates('lukoil_romania_srl_9437'),
