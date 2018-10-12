@@ -10,6 +10,7 @@ from passfort_deployment import deploy_file, \
     argparse
 
 integrations = {
+    'comply_advantage': './comply_advantage',
     'duedil': './duedil',
     'onfido': './onfido',
     'bvd': './bvd',

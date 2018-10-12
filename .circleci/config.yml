@@ -108,6 +108,16 @@ aliases:
 version: 2.0
 
 jobs:
+    set_integration_comply_advantage:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo comply_advantage > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
     set_integration_duedil:
         docker:
             - image: circleci/python
@@ -152,6 +162,9 @@ jobs:
                 paths:
                     - integration_name
 
+    build_comply_advantage:
+        <<: *build
+
     build_duedil:
         <<: *build
 
@@ -176,6 +189,9 @@ jobs:
                     cd `cat workspace/integration_name`
                     grep Raven src/*.py || exit 1
 
+    unit_comply_advantage:
+        <<: *unit
+
     unit_duedil:
         <<: *unit
 
@@ -187,6 +203,9 @@ jobs:
 
     unit_worldcheck:
         <<: *unit
+
+    e2e_comply_advantage:
+      <<: *e2e
 
     e2e_duedil:
         <<: *e2e
@@ -200,6 +219,9 @@ jobs:
     e2e_worldcheck:
         <<: *e2e
 
+    deploy_comply_advantage_staging:
+        <<: *deploy_staging_common
+
     deploy_duedil_staging:
         <<: *deploy_staging_common
 
@@ -211,6 +233,9 @@ jobs:
 
     deploy_worldcheck_staging:
         <<: *deploy_staging_common
+
+    deploy_comply_advantage_production:
+      <<: *deploy_production_common
 
     deploy_duedil_production:
         <<: *deploy_production_common
@@ -227,6 +252,34 @@ jobs:
 workflows:
     version: 2
 
+    comply_advantage:
+        jobs:
+            - set_integration_comply_advantage
+            - build_comply_advantage:
+                requires:
+                  - set_integration_comply_advantage
+            - unit_comply_advantage:
+                requires:
+                  - build_comply_advantage
+            - e2e_comply_advantage:
+                requires:
+                  - build_comply_advantage
+            - deploy_comply_advantage_staging:
+                requires:
+                  - e2e_comply_advantage
+                  - unit_comply_advantage
+                filters:
+                    branches:
+                      only:
+                        - staging
+            - deploy_comply_advantage_production:
+                requires:
+                  - e2e_comply_advantage
+                  - unit_comply_advantage
+                filters:
+                    branches:
+                        only:
+                          - master
     duedil:
         jobs:
             - set_integration_duedil
