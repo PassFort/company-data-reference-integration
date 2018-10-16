@@ -84,30 +84,14 @@ class FullName(Model):
         return ' '.join(self.given_names + [self.family_name])
 
 
-class Country(Model):
-    v = StringType(default=None)
-
-
-class TaggedString(Model):
-    v = StringType(default=None)
-
-
-class TaggedDate(Model):
-    v = DateType(default=None, formats=['%Y', '%Y-%m', '%Y-%m-%d'])
-
-
-class TaggedFullName(Model):
-    v = ModelType(FullName, required=True)
-
-
 class PersonalDetails(Model):
-    name = ModelType(TaggedFullName, required=True)
-    dob = ModelType(TaggedDate, default=None)
+    name = ModelType(FullName, required=True)
+    dob = DateType(default=None, formats=['%Y', '%Y-%m', '%Y-%m-%d'])
 
 
 class CompanyMetadata(Model):
-    name = ModelType(TaggedString, required=True)
-    country_of_incorporation = ModelType(Country, default=None)
+    name = StringType(required=True)
+    country_of_incorporation = StringType(default=None)
 
 
 class MatchEvent(Model):
@@ -174,8 +158,8 @@ class ScreeningRequestData(Model):
     @property
     def search_term(self):
         if self.entity_type == 'INDIVIDUAL':
-            return self.personal_details.name.v.combine()
-        return self.metadata.name.v
+            return self.personal_details.name.combine()
+        return self.metadata.name
 
     def to_provider_format(self, config: ComplyAdvantageConfig):
         type_filter = ["pep", "sanction"]
@@ -192,8 +176,8 @@ class ScreeningRequestData(Model):
             }
         }
         if self.entity_type == 'INDIVIDUAL':
-            if self.personal_details.dob and self.personal_details.dob.v:
-                base_format['filters']['birth_year'] = self.personal_details.dob.v.year
+            if self.personal_details.dob:
+                base_format['filters']['birth_year'] = self.personal_details.dob.year
         return base_format
 
     class Options:
