@@ -1,10 +1,16 @@
 import os
 import logging
+import traceback
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 
+from .api.types import validate_model, ScreeningRequest, Error
+from .request_handler import comply_advantage_search_request
+
+
 app = Flask(__name__)
 logging.getLogger().setLevel(logging.INFO)
+
 
 class DataDogWrapper:
     def __init__(self, mock=True):
@@ -63,3 +69,26 @@ def send_analytics(response):
 @app.route('/health')
 def health():
     return jsonify('success')
+
+
+@app.route('/screening_request', methods=['POST'])
+@validate_model(ScreeningRequest)
+def screen_request(request_data: ScreeningRequest):
+
+    return jsonify(comply_advantage_search_request(
+        request_data.input_data,
+        request_data.config,
+        request_data.credentials,
+        request_data.is_demo
+    ))
+
+
+@app.errorhandler(400)
+def api_400(error):
+    return jsonify(errors=[error.description]), 400
+
+
+@app.errorhandler(500)
+def api_500(error):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[Error.from_exception(error)]), 500

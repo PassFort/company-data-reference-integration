@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: integrations-base
+  name: integrations-complyadvantage
 spec:
   replicas: 2
   strategy:
@@ -10,16 +10,16 @@ spec:
       maxUnavailable: 50%
   selector:
     matchLabels:
-      passfort: integrations-base
+      passfort: integrations-complyadvantage
   progressDeadlineSeconds: 240
   template:
     metadata:
-      name: integrations-base
+      name: integrations-complyadvantage
       labels:
-        passfort: integrations-base
+        passfort: integrations-complyadvantage
     spec:
       containers:
-      - name: integrations-base
+      - name: integrations-complyadvantage
         image: {container_uri}
         resources:
           requests:
@@ -42,10 +42,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: integrations-base
+  name: integrations-complyadvantage
 spec:
   ports:
     -
       port: 8001
   selector:
-    passfort: integrations-base
+    passfort: integrations-complyadvantage
