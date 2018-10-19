@@ -1,8 +1,10 @@
+import datetime
+
 from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, DateType, DecimalType, CompoundType
+from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType
 from schematics.exceptions import DataError, ValidationError
 
 
@@ -29,6 +31,15 @@ def validate_model(validation_model):
         return wrapped_fn
 
     return validates_model
+
+
+def validate_partial_date(value):
+    for fmt in ['%Y-%m-%d', '%Y-%m', '%Y']:
+        try:
+            return datetime.datetime.strptime(value, fmt)
+        except (ValueError, TypeError):
+            continue
+    raise ValidationError(f'Input is not valid date: {value}')
 
 
 @unique
@@ -86,7 +97,22 @@ class FullName(Model):
 
 class PersonalDetails(Model):
     name = ModelType(FullName, required=True)
-    dob = DateType(default=None, formats=['%Y', '%Y-%m', '%Y-%m-%d'])
+
+    # Store dob as string. dateType loses the information on whether it's a partial date or not
+    dob = StringType(default=None)
+
+    def validate_dob(self, data, value):
+        if value:
+            validate_partial_date(value)
+        return value
+
+    def year_from_dob(self):
+        if self.dob is None:
+            return None
+        try:
+            return datetime.datetime.strptime(self.dob, '%Y').date().year
+        except (ValueError, TypeError):
+            return None
 
 
 class CompanyMetadata(Model):
@@ -102,7 +128,15 @@ class MatchEvent(Model):
 
     # Match information
     match_name = StringType()
-    match_dates = ListType(DateType)
+    match_dates = ListType(StringType)
+
+    def validate_match_dates(self, data, value):
+        if value is None:
+            return None
+        for match_date in value:
+            validate_partial_date(match_date)
+
+        return value
 
     # Additional information
     aliases = ListType(StringType)
@@ -177,7 +211,7 @@ class ScreeningRequestData(Model):
         }
         if self.entity_type == 'INDIVIDUAL':
             if self.personal_details.dob:
-                base_format['filters']['birth_year'] = self.personal_details.dob.year
+                base_format['filters']['birth_year'] = self.personal_details.year_from_dob()
         return base_format
 
     class Options:
