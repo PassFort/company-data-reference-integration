@@ -27,10 +27,9 @@ def comply_advantage_search_request(
     # TODO paginate -> total_hits, offset, limit
     # TODO parse response into events
     raw_response = response.json()
-    response_model = ComplyAdvantageResponse().import_data(raw_response, apply_defaults=True)
-    response_model.validate()
+    response_model = ComplyAdvantageResponse.from_json(raw_response)
     return {
         "raw": raw_response,
         "errors": [],
-        "events": [e.as_validated_json() for e in response_model.content.data.to_events()]
+        "events": response_model.to_validated_events()
     }

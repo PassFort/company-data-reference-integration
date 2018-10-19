@@ -70,3 +70,13 @@ class ComplyAdvantageResponseContent(Model):
 
 class ComplyAdvantageResponse(Model):
     content = ModelType(ComplyAdvantageResponseContent, required=True)
+
+    @classmethod
+    def from_json(cls, data):
+        model = cls().import_data(data, apply_defaults=True)
+        model.validate()
+        return model
+
+    def to_validated_events(self):
+        events = self.content.data.to_events()
+        return [e.as_validated_json() for e in events]
