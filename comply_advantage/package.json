@@ -2,7 +2,7 @@
   "private": true,
   "license": "Private",
   "scripts": {
-    "unit": "pipenv run python -m unittest discover .",
+    "unit": "COVERAGE_FILE=/tmp/coverage_unit pipenv run coverage run --branch -m unittest discover .",
     "e2e": "pipenv run python -m unittest e2e.e2e",
     "coverage": "./coverage"
   }

@@ -43,34 +43,50 @@ aliases:
     - &unit
       docker:
         - image: passfort/python-builder
+      environment:
+        - COVERAGE_FILE: /tmp/coverage_unit
       steps:
         - checkout
         - *attach_to_workspace
         - *setup_gcp
         - setup_remote_docker:
             docker_layer_caching:
+        - run:
+            name: Update PATH and Define Environment Variable at Runtime
+            command: |
+              echo 'export INTEGRATION=$(cat workspace/integration_name)' >> $BASH_ENV
+              echo 'export VERSION=$(git cat-file -p HEAD | head -c12 | tail -c7)' >> $BASH_ENV
+              source $BASH_ENV
         - run: |
-            export INTEGRATION=`cat workspace/integration_name`
-            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
             gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
         - run: |
-            export INTEGRATION=`cat workspace/integration_name`
-            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
-            docker run eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+            docker run --name unit_$INTEGRATION eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+            docker cp unit_$INTEGRATION:/tmp/coverage_unit workspace/coverage_unit_$INTEGRATION
+        - persist_to_workspace:
+            root: workspace
+            paths:
+              - coverage_unit_$INTEGRATION
+
     - &e2e
       docker:
         - image: passfort/python-builder
+          environment:
+            - COVERAGE_FILE: /tmp/coverage_e2e
       steps:
         - checkout
         - *attach_to_workspace
         - *setup_gcp
         - setup_remote_docker:
             docker_layer_caching:
+        - run:
+            name: Update PATH and Define Environment Variable at Runtime
+            command: |
+              echo 'export INTEGRATION=$(cat workspace/integration_name)' >> $BASH_ENV
+              echo 'export VERSION=$(git cat-file -p HEAD | head -c12 | tail -c7)' >> $BASH_ENV
+              source $BASH_ENV
         - run: |
-            export INTEGRATION=`cat workspace/integration_name`
-            export VERSION=`git cat-file -p HEAD | head -c12 | tail -c7`
             gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-            docker run -ti --name integration \
+            docker run -ti --name e2e_$INTEGRATION \
             -e INTEGRATION=$INTEGRATION \
             -e CODECOV_TOKEN=$CODECOV_TOKEN \
             -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
@@ -78,6 +94,11 @@ aliases:
             -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
             eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION \
             yarn run coverage
+            docker cp e2e_$INTEGRATION:/tmp/coverage_e2e workspace/coverage_e2e_$INTEGRATION
+        - persist_to_workspace:
+            root: workspace
+            paths:
+              - coverage_e2e_$INTEGRATION
 
     - &deploy_staging_common
       docker:
@@ -249,6 +270,26 @@ jobs:
     deploy_worldcheck_production:
         <<: *deploy_production_common
 
+    coverage:
+        docker:
+          - image: passfort/python-builder
+        resource_class: small
+        steps:
+          - checkout
+          - run:
+            name: Setup
+            command: |
+              rm Pipfile Pipfile.lock
+          - run: pipenv install coverage codecov
+          - attach_workspace:
+              at: coverage
+          - run: pipenv run coverage combine coverage/coverage_unit_comply_advantage coverage/coverage_e2e_comply_advantage
+          - run: pipenv run codecov
+          - run: pipenv run coverage html --omit="python/tests/*"
+          - store_artifacts:
+              path: coverage.xml
+          - store_artifacts:
+              path: htmlcov
 workflows:
     version: 2
 
@@ -264,6 +305,10 @@ workflows:
             - e2e_comply_advantage:
                 requires:
                   - build_comply_advantage
+            - coverage:
+                requires:
+                  - unit_comply_advantage
+                  - e2e_comply_advantage
             - deploy_comply_advantage_staging:
                 requires:
                   - e2e_comply_advantage

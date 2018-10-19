@@ -1,5 +1,6 @@
 #!/bin/sh -i
-pipenv run coverage run --branch --omit='e2e/*','**/test_*' --source . main.py &
+echo $COVERAGE_FILE
+COVERAGE_FILE=/tmp/coverage_e2e pipenv run coverage run --branch --omit='e2e/*','**/test_*' --source . main.py &
 
 # Waiting for the server to start
 sleep 5
@@ -11,7 +12,7 @@ yarn e2e
 kill -INT $(jobs -p)
 
 # Wait for the .coverage file
-while [ ! -f .coverage ]; do sleep 1; done
+while [ ! -f /tmp/coverage_e2e ]; do sleep 1; done
 
 # Convert coverage report to XML
 pipenv run coverage xml -i
@@ -24,11 +25,4 @@ fi
 
 # We need to prepend the integration_name so that codecov can succesfully
 # match the coverage data with the files in the integrations monorepo
-sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml
-
-if [ -z "$CODECOV_TOKEN" ]; then
-    echo "Will not upload code coverage to codecov"
-    cat coverage.xml
-else
-    pipenv run codecov -F $integration_name -X search -f coverage.xml
-fi
+sed -i "s/filename=\"/filename=\"${integration_name}\//g" /tmp/coverage_e2e
