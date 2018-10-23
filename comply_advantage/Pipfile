@@ -15,4 +15,5 @@ raven = {extras = ["flask"]}
 mock = "*"
 coverage = "*"
 codecov = "*"
+responses = "*"
 schematics = "*"

@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 
 from .api.types import validate_model, ScreeningRequest, Error
-from .request_handler import comply_advantage_search_request
+from .request_handler import search_request
 
 
 app = Flask(__name__)
@@ -75,7 +75,7 @@ def health():
 @validate_model(ScreeningRequest)
 def screen_request(request_data: ScreeningRequest):
 
-    return jsonify(comply_advantage_search_request(
+    return jsonify(search_request(
         request_data.input_data,
         request_data.config,
         request_data.credentials,

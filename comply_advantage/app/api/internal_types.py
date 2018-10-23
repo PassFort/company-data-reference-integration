@@ -1,6 +1,6 @@
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType
+from schematics.types import StringType, BaseType, IntType
 
 from .types import ReferMatchEvent
 
@@ -63,13 +63,22 @@ class ComplyAdvantageResponseData(Model):
             events = events + hit.to_events()
         return events
 
+    def has_more_hits(self):
+        return self.total_hits > self.next_offset
+
+    @property
+    def next_offset(self):
+        return self.offset + self.limit
+
 
 class ComplyAdvantageResponseContent(Model):
     data = ModelType(ComplyAdvantageResponseData, required=True)
 
 
 class ComplyAdvantageResponse(Model):
-    content = ModelType(ComplyAdvantageResponseContent, required=True)
+    message = StringType()
+    errors = DictType(BaseType, default={})  # Any json
+    content = ModelType(ComplyAdvantageResponseContent, default=None)
 
     @classmethod
     def from_json(cls, data):
@@ -78,5 +87,7 @@ class ComplyAdvantageResponse(Model):
         return model
 
     def to_validated_events(self):
+        if self.content is None:
+            return []
         events = self.content.data.to_events()
         return [e.as_validated_json() for e in events]
