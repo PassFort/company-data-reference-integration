@@ -63,13 +63,6 @@ class ComplyAdvantageResponseData(Model):
             events = events + hit.to_events()
         return events
 
-    def has_more_hits(self):
-        return self.total_hits > self.next_offset
-
-    @property
-    def next_offset(self):
-        return self.offset + self.limit
-
 
 class ComplyAdvantageResponseContent(Model):
     data = ModelType(ComplyAdvantageResponseData, required=True)
