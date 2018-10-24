@@ -65,7 +65,7 @@ aliases:
         - persist_to_workspace:
             root: workspace
             paths:
-              - coverage_unit_$INTEGRATION
+              - coverage_unit_*
 
     - &e2e
       docker:
@@ -98,7 +98,7 @@ aliases:
         - persist_to_workspace:
             root: workspace
             paths:
-              - coverage_e2e_$INTEGRATION
+              - coverage_e2e_*
 
     - &deploy_staging_common
       docker:
