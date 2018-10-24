@@ -35,5 +35,5 @@ if [ -z "$CODECOV_TOKEN" ]; then
     echo "Will not upload code coverage to codecov"
     cat coverage.xml
 else
-    pipenv run codecov -F $integration_name -X search -f coverage.xml
+    pipenv run codecov -F $integration_name,e2e -X search -f coverage.xml
 fi
