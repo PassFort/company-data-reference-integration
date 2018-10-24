@@ -13,7 +13,8 @@ WORKDIR /src
 COPY Pipfile Pipfile.lock package.json yarn.lock /src/
 
 RUN mkdir /srv/logs/ && \
-    pip install pipenv && \
+    pip install pip==18.0 && \
+    pip install pipenv==2018.10.13 && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
@@ -27,6 +28,7 @@ COPY main.py /src
 COPY coverage /src
 COPY app /src/app
 COPY e2e /src/e2e
+COPY mock_data /src/mock_data
 
 # Ports.
 EXPOSE 8001

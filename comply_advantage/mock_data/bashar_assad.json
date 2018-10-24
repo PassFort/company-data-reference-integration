@@ -1,0 +1,1187 @@
+{
+  "code": 200,
+  "content": {
+    "data": {
+      "assignee_id": 3053,
+      "client_ref": null,
+      "created_at": "2018-10-19 11:15:53",
+      "filters": {
+        "entity_type": "person",
+        "exact_match": false,
+        "fuzziness": 0.5,
+        "types": [
+          "pep",
+          "sanction"
+        ]
+      },
+      "hits": [
+        {
+          "doc": {
+            "aka": [],
+            "associates": [
+              {
+                "name": "Asma al-Assad"
+              },
+              {
+                "name": "Assef Shawkat"
+              },
+              {
+                "name": "Bashar al-Assad"
+              },
+              {
+                "name": "Hafez al-Assad"
+              },
+              {
+                "name": "Karim al-Assad"
+              },
+              {
+                "name": "Zein al-Assad"
+              }
+            ],
+            "entity_type": "person",
+            "fields": [
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1960-10-24"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1960-10-24"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1960-10-24"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1960-10-24"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1960-10-24"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965-09-11"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965-09-11"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965-09-11"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965-09-11"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965-09-11"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1965-09-11"
+              },
+              {
+                "name": "Date of Birth",
+                "tag": "date_of_birth",
+                "value": "1966"
+              },
+              {
+                "locale": "en",
+                "name": "Related Url",
+                "source": "special-economic-measures-act",
+                "tag": "related_url",
+                "value": "http://laws-lois.justice.gc.ca/eng/regulations/SOR-2011-114/page-3.html#h-10"
+              },
+              {
+                "locale": "en",
+                "name": "Related Url",
+                "source": "complyadvantage",
+                "tag": "related_url",
+                "value": "http://www.theodora.com/wfbcurrent/syria/syria_chiefs.html"
+              },
+              {
+                "locale": "en",
+                "name": "Related Url",
+                "source": "complyadvantage",
+                "tag": "related_url",
+                "value": "https://www.cia.gov/library/publications/world-leaders-1/SY.html"
+              }
+            ],
+            "id": "187844Z8P762UU0",
+            "keywords": [
+              {
+                "keyword": "ambassador"
+              },
+              {
+                "keyword": "civil service"
+              },
+              {
+                "keyword": "congress"
+              },
+              {
+                "keyword": "council"
+              },
+              {
+                "keyword": "dictator"
+              },
+              {
+                "keyword": "diplomat"
+              },
+              {
+                "keyword": "envoy"
+              },
+              {
+                "keyword": "government"
+              },
+              {
+                "keyword": "judiciary"
+              },
+              {
+                "keyword": "military"
+              },
+              {
+                "keyword": "minister"
+              },
+              {
+                "keyword": "national"
+              },
+              {
+                "keyword": "official"
+              },
+              {
+                "keyword": "president"
+              },
+              {
+                "keyword": "secretary"
+              }
+            ],
+            "last_updated_utc": "2018-10-18T02:54:49Z",
+            "media": [
+              {
+                "date": "2018-10-15T00:00:00Z",
+                "snippet": "\"After we 've finished with the tail of the snake, we can get to its head, sitting in Tehran. \" \"Lowly murderers and leaders who seek the annihilation of Israel, like Assad and his handlers in Tehran -",
+                "title": "'Time to eliminate Assad' - Israel National News",
+                "url": "https://www.israelnationalnews.com/News/News.aspx/229717"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Sign up to our newsletter Email*Please enter a valid email addressSign up Please wait... We've got more newsletters we think you'll find interesting. Former peace envoy Lakhdar Brahimi, who stepped down at the end of May after the failure of peace talks in Geneva, said he had presented Assad with a list of prisoners whose release the opposition have demanded. \"He knows that there are 50,000 to 100,000 people in his jails and that some of them are tortured every day, \" Brahimi told the German magazine Der Spiegel in an interview published at the weekend.",
+                "title": "After victory Syria's Assad announces mass release of prisoners - Haaretz - Israel News | Haaretz.com",
+                "url": "https://www.haaretz.com/assad-announces-prisoner-release-1.5251266"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "\"Bachar el-Assad est la dernière personne sur la planète à pouvoir parler de liberté de décision. Que Bachar el-Assad arrête de fourrer son nez dans les affaires libanaises\", peut-on lire dans un communiqué. Inscrivez-vous à la Newsletter JE M'INSCRIS Inscription en cours",
+                "title": "Assad estime que Hariri \"n'est pas maître de sa décision\" - L'Orient-Le Jour",
+                "url": "https://www.lorientlejour.com/article/1084014/assad-estime-que-hariri-nest-pas-maitre-de-sa-decision.html"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Syria 's conflict erupted in March 2011 with widespread demonstrations but has since turned into a brutal multi-front war drawing in world powers. Many Western countries cut ties with Damascus in 2011 and have imposed crippling economic sanctions, but Assad said he remained open to better relations with them. \"We really do want ties with every country in the world, including the West, despite our previous knowledge of their hypocrisy, \" he said.",
+                "title": "Assad: Victory in Aleppo a 'huge step' towards ending the war - Israel National News",
+                "url": "http://www.israelnationalnews.com/News/News.aspx/221412"
+              },
+              {
+                "date": "2018-10-14T00:00:00Z",
+                "snippet": ": Russian Defence Ministry \"Rusia está en Siria para ayudar y no para mostrar la bandera\" El 30 de septiembre de 2015 Rusia empezó a petición del presidente Bashar Asad una campaña de bombardeos aéreos sobre las posiciones de Daesh (Estado Islámico), Frente al Nusra (Fatah al Sham) y otros grupos terroristas. La operaci ón en Siria, record ó Shoig ú, aport ó a los militares rusos la experiencia en el lanzamiento de misiles de alta precisi ón y largo alcance desde buques de superficie y submarinos emplazados en los mares Caspio y Mediterr áneo.",
+                "title": "Defensa rusa comenta el uso de novedosos misiles aire-tierra en Siria - Sputnik Mundo",
+                "url": "https://mundo.sputniknews.com/orientemedio/201610061063922413-rusia-siria-operacion/"
+              },
+              {
+                "date": "2018-10-15T00:00:00Z",
+                "snippet": "Germany and Italy vetoed the idea of targeting Russian and Syrian military leaders until an investigation has been carried out into who was to blame for last week 's gas attack in Idlib province. Alfano said Putin \"must not be pushed into a corner \", suggesting Italy may not support extra sanctions even if an investigation proves Assad was to blame. On Thursday night, the United States launched 59 Tomahawk cruise missiles at the Syrian military airfield in al-Shayrat, located about 40 kilometers (25 miles) from the city of Homs.",
+                "title": "Farsnews",
+                "url": "http://en.farsnews.com/newstext.aspx?nn=13960123001176"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Some leftists still claim Bashar al-Assad is a champion of socialism and \"national liberation.\" They appear to have conveniently forgotten how Gamal Nasser and Muammar Qaddafi , both one-time Arab world heroes of the hard left, drew  support from the anti-Semitic hoax, the Protocols of the Elders of Zion, the embrace of Nazi war criminals by Nasser, Qaddafi , and Assad's father, Hafez  - not to mention the Soviets' anti-Semitic campaigns and policies . If those horror stories of left-right syncretism are too far removed from the present, some of the same groups aligned with Assad and Putin will probably recall their own defense of Slobodan Milosevic last decade, well before Russian media gave left-wing groups a platform alongside the right to support Putin's Russia.",
+                "title": "How Assad's war crimes bring far left and right together - under Putin's benevolent gaze - Middle East News - Haaretz.com",
+                "url": "https://www.haaretz.com/middle-east-news/assad-s-war-crimes-bring-far-left-and-right-together-and-putin-smiles-1.6008713"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Some leftists still claim Bashar al-Assad is a champion of socialism and \"national liberation.\" They appear to have conveniently forgotten how Gamal Nasser and Muammar Qaddafi , both one-time Arab world heroes of the hard left, drew  support from the anti-Semitic hoax, the Protocols of the Elders of Zion, the embrace of Nazi war criminals by Nasser, Qaddafi , and Assad's father, Hafez  - not to mention the Soviets' anti-Semitic campaigns and policies . If those horror stories of left-right syncretism are too far removed from the present, some of the same groups aligned with Assad and Putin will probably recall their own defense of Slobodan Milosevic last decade, well before Russian media gave left-wing groups a platform alongside the right to support Putin's Russia.",
+                "title": "How Assad's war crimes bring far left and right together - under Putin's benevolent gaze - Middle East News - Israel News | Haaretz.com",
+                "url": "https://www.haaretz.com/opinion/assad-s-war-crimes-bring-far-left-and-right-together-and-putin-smiles-1.6008713"
+              },
+              {
+                "date": "2018-10-14T00:00:00Z",
+                "snippet": "Trump dijo que los objetivos de la ofensiva son las \"capacidades de armamento químico\" de Al Asad, al que acusa de haber perpetrado un ataque químico el pasado sábado en la ciudad de Duma. La ofensiva lanzada hoy por Estados Unidos, el Reino Unido y Francia contra el Gobierno de Bachar Al Asad combina ataques aéreos y misiles desde buques en el Mediterráneo, según fuentes militares citadas por la CNN. Portada lunes 15 de octubre de 2018 © 2018",
+                "title": "La ofensiva de EEUU, Francia y Reino Unido contra Al Asad \"en marcha ahora\"",
+                "url": "http://laestrella.com.pa/internacional/america/ofensiva-eeuu-francia-reino-unido-contra-asad-marcha-ahora/24058377"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "- Principaux développements depuis l'annonce par Donald Trump, dans la nuit de vendredi à samedi, d'une opération militaire américaine, française et britannique, contre le régime syrien de Bachar Al-Assad, accusé d'avoir mené le 7 avril une attaque chimique sur le bastion alors rebelle de Douma, près de Damas. «Frappes de précision» Vendredi à 21h00 heure de Washington (01h00 GMT samedi, 04h00 locales en Syrie), Donald Trump annonce une opération militaire en cours contre la Syrie, avec la France et le Royaume-Uni.",
+                "title": "La presse de Tunisie",
+                "url": "http://www.lapresse.tn/component/nationals/index.php?option=com_monde&task=article&id=146830"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "That attack prompted Trump to launch 59 cruise missiles at the base, in the first significant military intervention of his presidency. Four years ago, in August 2013, the United States and France promised to punish Assad's regime after it was accused of killing 1,400 people with sarin gas near Damascus. Then US-president Barack Obama had previously said the attack had crossed the \"red line\" that he had set as the trigger for US military intervention in the conflict.",
+                "title": "Macron and Trump's Syria pledge masks strategy void — analysts | Jordan Times",
+                "url": "http://jordantimes.com/node/295568"
+              },
+              {
+                "date": "2018-10-17T00:00:00Z",
+                "snippet": "If you didn't bother the Syrian regime they weren't going to bother you ,\" Sawer said. No one disputes that Hafez al-Assad was a ruthless leader, but while the words 'regime' and 'dictator' were repeated ad nauseam,   there was nothing in the program about the advances that Syria made under Assad and his son in the years 1970-2011. The way Christians and other religious minorities were protected by the secular government was ignored.",
+                "title": "New BBC documentary 'Dangerous Dynasty' ignores the West's role in destabilizing Syria — RT Op-ed",
+                "url": "https://www.rt.com/op-ed/441427-assad-bbc-propaganda-syria/"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "\"The next contact on trying to follow up on this is going to be immediately, because this is urgent, and we're not letting any grass grow under our feet.\" The talks come as Moscow faces growing criticism over its backing for Assad's assault in divided Aleppo. Airstrikes hit rebel-held parts of Aleppo again Saturday, according to the Syrian Observatory for Human Rights, a British-based watchdog with a network of sources on the ground.",
+                "title": "No breakthrough in Lausanne Syria talks | Arab News",
+                "url": "http://www.arabnews.com/node/998571/world"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "The White House compared Assad's tactics to those of World War II Nazi dictator Adolf Hitler, sparking widespread criticism for apparently ignoring the Holocaust. Putin, meanwhile, accused Assad's opponents of planning to stage chemical attacks to be blamed on Damascus in order to lure the United States deeper into the conflict. In a sign that the Kremlin is not set to drop its firm support for Assad, Syria's foreign minister is set to jet in to Moscow for talks with Lavrov on Thursday before a three-way meeting involving Iran's top diplomat on Friday.",
+                "title": "Putin meets Tillerson as US, Russia wrangle over Syria | Jordan Times",
+                "url": "http://www.jordantimes.com/node/292912"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Assad appears determined to crush the revolt, which is posing the most serious challenge to his family's 40-year rule. The harsh crackdown has triggered international outrage and U.S. and European sanctions, including an EU assets freeze and a visa ban on Assad and nine members of his regime. News Agencies News Agencies Your comment was successfully submitted and will be published in accordance with site policy.",
+                "title": "Syria forces kill two, wound dozens as anti-Assad protests persist - Haaretz - Israel News | Haaretz.com",
+                "url": "https://www.haaretz.com/1.5017503"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "pdf_url": "http://complyadvantage-asset-development.s3.amazonaws.com/2f0bc5dd-ac9a-41c2-bcc0-dfe5c76cf366.pdf",
+                "snippet": "- provides \"clear evidence \" of the starvation, strangulation and beating of detainees in President Bashar Assad 's prisons. The release of the report, which was first revealed by The Guardian newspaper, CNN and Turkey 's Anatolia news agency, came a day before talks were due to begin in Geneva aimed at negotiating an end to Syria 's bloody civil war.",
+                "title": "Syria photos prove 'industrial-scale' killings by regime — report | Jordan Times",
+                "url": "http://www.jordantimes.com/news/region/syria-photos-prove-industrial-scale%E2%80%99-killings-regime-%E2%80%94-report"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Russia wants Assad to stay in power and the goal is to give him a chance to win the civil war.\" Assad's other key ally, Iran, has hailed the victory and pledged its continued financial and military assistance. Hadi Al B ahra of the opposition National Coalition said if the regime had been serious, it would have stopped Daesh from taking Palmyra to begin with.",
+                "title": "Syria troops press advance after blow to Daesh in Palmyra | Jordan Times",
+                "url": "http://www.jordantimes.com/news/region/syria-troops-press-advance-after-blow-daesh-palmyra"
+              },
+              {
+                "date": "2018-10-13T00:00:00Z",
+                "snippet": "O secretario geral da NATO, Jens Stoltenberg, apoiou hoje o ataque conjunto dos EUA, Reino Unido e França a instalações de armas químicas na Síria. Stoltenber considerou que tal \"reduzirá a capacidade do regime\" de Asad de voltar a atacar a população com este tipo de armas. \"A NATO condenou sistematicamente o uso continuado por parte da Síria de armas químicas como uma clara violação das normas e acordos internacionais\", afirma o secretário geral numa declaração publicada na página da Internet da NATO.",
+                "title": "Síria: NATO apoia ataque conjunto dos EUA e aliados - Inforpress",
+                "url": "http://www.inforpress.publ.cv/siria-nato-apoia-ataque-conjunto-dos-eua-e-aliados/"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "defeating ISIS, deterring Assad's use of chemical weapons, creating a political transition in Damascus, and curbing \"Iranian malign influence in Syria so that it cannot threaten the region, to include ensuring the withdrawal of Iranian-backed forces from Syria.\" \"The United States will continue to seek to hold Assad accountable for his crimes,\" the official said. \"Pursuant to the National Defense Authorization Act for Fiscal Year 2018, the administration will soon submit to Congress a strategy for Syria that reflects the president's key priorities.\"",
+                "title": "Trump administration has new plan to drive Iran out of Syria",
+                "url": "https://www.nbcnews.com/news/investigations/trump-administration-has-new-plan-drive-iran-out-syria-n919596"
+              },
+              {
+                "date": "2018-10-14T00:00:00Z",
+                "snippet": "de l'attaque chimique présumée aux frappes occidentales De l'attaque chimique présumée contre Douma, le 7 avril, imputée au régime de Bachar al-Assad, à l'annonce par Donald Trump, des frappes occidentales contre la Syrie, rappel d'une semaine de menaces, de réactions et de préparatifs. La France, le Royaume-Uni et les Etats-Unis lancent des frappes ciblées en Syrie Les Etats-Unis, la France et le Royaume-Uni ont lancé samedi des frappes ciblées en Syrie pour punir le régime de Bachar al-Assad accusé par Donald Trump d'avoir mené des attaques chimiques «monstrueuses». Trump avertit la Russie de frappes imminentes contre la Syrie Le président américain Donald Trump a averti mercredi matin la Russie de frappes imminentes contre la Syrie, peu après que Moscou eut mis en garde contre tout acte pouvant «déstabiliser la situation déjà fragile dans la région».",
+                "title": "Trump fait planer la menace militaire en Syrie",
+                "url": "https://www.wort.lu/fr/international/trump-fait-planer-la-menace-militaire-en-syrie-5acc5987c1097cee25b87039?utm_campaign=magnet&utm_source=article_page&utm_medium=related_articles"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "Until recently, the council had been paralyzed on how to deal with the Syrian civil war. Russia, backed by China, had vetoed three resolutions since October 2011 that would have condemned Assad's government and threatened it with sanctions. Western powers on the Security Council conceded they had backed away from many of their initial demands during negotiations.",
+                "title": "U.N. Security Council demands elimination of Syria chemical arms - Business Intelligence Middle East - bi-me.com - News, analysis, reports",
+                "url": "http://www.bi-me.com/main.php?id=63413&t=1&c=26&cg=3&mset=1031"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "\"The European Union will continue to consider further restrictive measures against Syria as long as the repression continues,\" they said in a statement after their talks. The U.S. ambassador to the United Nations, Nikki Haley, said on Sunday the United States would announce new economic sanctions aimed at companies dealing with equipment related to Assad's alleged use of chemical weapons. DOMESTIC OPPOSITION The Western leaders also faced scrutiny at home over their actions.",
+                "title": "U.S. accuses Russia, Syria of tampering with Douma evidence, Moscow denies - Egypt Today",
+                "url": "http://www.egypttoday.com/Article/1/47988/U-S-accuses-Russia-Syria-of-tampering-with-Douma-evidence"
+              },
+              {
+                "date": "2018-10-15T00:00:00Z",
+                "snippet": "- U.S. to hit Russia with new sanctions for aiding Assad |",
+                "title": "U.S. to hit Russia with new sanctions for aiding Assad | News, Sports, Jobs - The Express",
+                "url": "http://www.lockhaven.com/uncategorized/2018/04/u-s-to-hit-russia-with-new-sanctions-for-aiding-assad/"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "The Zimbabwe Mail U.S., UK, France strike Syria to punish Assad for suspected poison gas use -",
+                "title": "U.S., UK, France strike Syria to punish Assad for suspected poison gas use – The Zimbabwe Mail",
+                "url": "http://www.thezimbabwemail.com/main/u-s-uk-france-strike-syria-to-punish-assad-for-suspected-poison-gas-use/"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "\"We always needed some help from Mr Kerry and Mr Lavrov because they proved in the past and I hope they will prove in the future that when they do have a common understanding, it helps enormously the process,\" De Mistura said. Russia, along with Iran, have been Assad's major allies in the conflict, while the United States and Gulf Arab powers have backed rebel forces to varying degrees. On Monday, the head of Syria's government delegation rejected any talk on the fate of Assad, reiterated that the Geneva talks must concentrate on counter-terrorism.",
+                "title": "UN envoy turns to US, Russia to give impetus to Syria talks | Jordan Times",
+                "url": "http://www.jordantimes.com/news/region/un-envoy-turns-us-russia-give-impetus-syria-talks"
+              },
+              {
+                "date": "2018-10-13T00:00:00Z",
+                "snippet": ": Le président al-Assad rejette les accusations sur sa responsabilité Violences en Syrie",
+                "title": "Violences en Syrie : Le président al-Assad rejette les accusations sur sa responsabilité",
+                "url": "http://www.elmoudjahid.com/fr/actualites/20575/?comopen"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "snippet": "\"He will be there because he is protected by those who have won the war on the ground, whether it's Iran or Russia.\" However, at some point, Macron said, Assad \"will have to respond to his crimes before his people, before the international courts\". \"France's plan is to win peace, de-mine the country, to de-militarise it and build a political solution that will allow a durable peace",
+                "title": "War against ISIS in Syria will be won by February, says France's Macron | News24",
+                "url": "https://www.news24.com/World/News/war-against-isis-in-syria-will-be-won-by-february-says-frances-macron-20171218"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "pdf_url": "http://complyadvantage-asset-development.s3.amazonaws.com/80e6f27e-ad80-4230-ac9b-5cb231b1e2e0.pdf",
+                "snippet": "The attack led the Trump administration to harden its attitude against Syrian President Bashar al-Assad weeks after top U.S. officials said they were more concerned with defeating Daesh militants than getting Assad out of power. \"I don't see a peaceful, stable Syria in the future that has Assad in charge,\" Spicer said. \"I don't see a future Syria that has (Assad) as the leader of that government.\"",
+                "title": "White House says Russia increasingly isolated over Syria | World | thenews.com.pk |",
+                "url": "https://www.thenews.com.pk/latest/197939-White-House-says-Russia-increasingly-isolated-over-Syria"
+              },
+              {
+                "date": "2018-10-15T00:00:00Z",
+                "snippet": "فهل لافروف والأسد يقرآن من الصفحة نفسها؟ وهل لافروف يدافع عن الأسد؟ ربما يقرآن من الصفحة نفسها، لكن الواضح هو أن الدوافع مختلفة. ويبدو أن لافروف لا يدافع عن مجرم دمشق بقدر ما يدافع عن روسيا التي تعهدت بإزالة ترسانة الأسد الكيماوية عام 2013، وبعد أن استخدمها ضد السوريين، وفعلت موسكو ذلك حينها لتجنب الأسد مغبة عواقب الخطوط الحمراء التي حددها الرئيس السابق أوباما، الذي تساهل حينها مع جريمة الأسد، وغض النظر عنها بحيلة روسية مفضوحة. اليوم اختلفت المعادلة، وتحديداً بعد الضربة الأميركية، كما أنه لم يعد بمقدور الروس لعب دور الوسيط النزيه بعد استخدام الأسد للأسلحة الكيماوية مجدداً، حيث لا يمكن التعويل على مصداقية الروس في سوريا.",
+                "title": "روسيا تدافع عن نفسها لا الأسد - العنكبوت | Alankabout - أخبار لبنان - أخبار أستراليا - أخبار الشرق الاوسط والعالم",
+                "url": "http://www.alankabout.com/articles/110322.html"
+              },
+              {
+                "date": "2018-10-16T00:00:00Z",
+                "pdf_url": "http://complyadvantage-asset-development.s3.amazonaws.com/cc5d56e8-dc40-414f-a7f2-f9305434944d.pdf",
+                "snippet": "- قال الرئيس الفرنسي نيكولا ساركوزي إن الرئيس السوري بشار الأسد ارتكب ما لا يمكن إصلاحه، في وقت أضافت فيه الولايات المتحدة ثلاث شخصيات سورية إلى قائمة مشمولة بالعقوبات الأميركية، واعتبرت تقريرا لمنظمة العفو الدولية عن الانتهاكات في سوريا دليلا آخر على عدم شرعية النظام هناك. وقال ساركوزي مخاطبا سفراء فرنسا في الخارج \"الرئيس السوري ارتكب ما لا يمكن إصلاحه",
+                "title": "ساركوزي: أخطاء الأسد لا يمكن إصلاحها - Trend.Az",
+                "url": "http://ar.trend.az/news/politics/1924945.html"
+              }
+            ],
+            "name": "Al Assad Bashar",
+            "source_notes": {
+              "company-am": {
+                "name": "company AM"
+              },
+              "complyadvantage": {
+                "name": "ComplyAdvantage PEP Data",
+                "url": "http://www.complyadvantage.com/"
+              },
+              "complyadvantage-adverse-media": {
+                "name": "ComplyAdvantage Adverse Media",
+                "url": "http://www.complyadvantage.com/"
+              },
+              "dfat-australia-list": {
+                "aml_types": [
+                  "sanction"
+                ],
+                "country_codes": [
+                  "AU"
+                ],
+                "listing_started_utc": "2018-02-02T00:00:00Z",
+                "name": "DFAT Australia List",
+                "url": "http://www.dfat.gov.au/sanctions/consolidated-list.html"
+              },
+              "europe-sanctions-list": {
+                "aml_types": [
+                  "sanction",
+                  "sanction"
+                ],
+                "country_codes": [
+                  "XX",
+                  "XX"
+                ],
+                "listing_started_utc": "2012-01-18T00:00:00Z",
+                "name": "Europe Sanctions List"
+              },
+              "hm-treasury-list": {
+                "aml_types": [
+                  "sanction"
+                ],
+                "country_codes": [
+                  "GB"
+                ],
+                "listing_started_utc": "2011-05-24T00:00:00Z",
+                "name": "HM Treasury List",
+                "url": "https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets"
+              },
+              "ofac-sdn-list": {
+                "aml_types": [
+                  "sanction"
+                ],
+                "country_codes": [
+                  "US"
+                ],
+                "name": "OFAC SDN List",
+                "url": "http://www.treasury.gov/resource-center/sanctions/SDN-List/Pages/default.aspx"
+              },
+              "special-economic-measures-act": {
+                "aml_types": [
+                  "sanction"
+                ],
+                "country_codes": [
+                  "CA"
+                ],
+                "name": "DFATD Canada Special Economic Measures Act Designations",
+                "url": "http://laws-lois.justice.gc.ca/eng/acts/S-14.5/"
+              },
+              "swiss-seco-list": {
+                "aml_types": [
+                  "sanction"
+                ],
+                "country_codes": [
+                  "CH"
+                ],
+                "name": "Swiss SECO List",
+                "url": "https://www.sesam.search.admin.ch/sesam-search-web/pages/downloadXmlGesamtliste.xhtml?lang=en&action=downloadXmlGesamtlisteAction"
+              },
+              "tresor-direction-generale": {
+                "aml_types": [
+                  "sanction"
+                ],
+                "country_codes": [
+                  "FR"
+                ],
+                "listing_started_utc": "2018-06-07T00:00:00Z",
+                "name": "France Liste Unique de Gels",
+                "url": "http://www.tresor.economie.gouv.fr/11448_liste-unique-de-gels"
+              },
+              "us-system-for-award-management-exclusions": {
+                "aml_types": [
+                  "fitness-probity"
+                ],
+                "country_codes": [
+                  "US"
+                ],
+                "listing_started_utc": "2017-01-04T00:00:00Z",
+                "name": "US System for Award Management Exclusions",
+                "url": "https://www.sam.gov/public-extracts/SAM-Public/SAM_Exclusions_Public_Extract_16324.ZIP"
+              }
+            },
+            "sources": [
+              "hm-treasury-list",
+              "europe-sanctions-list",
+              "complyadvantage",
+              "dfat-australia-list",
+              "company-am",
+              "tresor-direction-generale",
+              "special-economic-measures-act",
+              "ofac-sdn-list",
+              "swiss-seco-list",
+              "complyadvantage-adverse-media",
+              "us-system-for-award-management-exclusions"
+            ],
+            "types": [
+              "adverse-media",
+              "adverse-media-financial-crime",
+              "adverse-media-fraud",
+              "adverse-media-general",
+              "adverse-media-narcotics",
+              "adverse-media-sexual-crime",
+              "adverse-media-terrorism",
+              "adverse-media-violent-crime",
+              "fitness-probity",
+              "pep",
+              "pep-class-1",
+              "sanction"
+            ]
+          },
+          "match_types": [
+            "name_exact"
+          ],
+          "match_types_details": {
+            "A Bashar al Assad": {
+              "match_types": {
+                "assad": [
+                  "initial_name",
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Al Asad Bashar": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Al Assad Bashar": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "name"
+            },
+            "Al Assad Bashar Hafez": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Al Assad Bushra": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Assad Bashar": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Assad Bashar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Assad al Bashar": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bachar Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bachar al Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bachar al Asado": {
+              "match_types": {
+                "assad": [
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bachar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bachar el Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bachar el Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Basar Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Basar al Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Basar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Baschar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashaar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar Hafez al Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar Hafez al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar a Assad": {
+              "match_types": {
+                "assad": [
+                  "initial_name",
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar aAssad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al ASAD": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al Asaad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al Assa": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al Asssad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar al Azad": {
+              "match_types": {
+                "assad": [
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar el Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar el Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashar l Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Basher al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashir al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bashār al Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bassar al Asad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bassar el Aszad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Basshar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bechar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bushar Hafez al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bushra Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bushra al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Bushra al Assad Shawkat": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Béchar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "M Bashar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Will Bashar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "baashaar aal aasaad": {
+              "match_types": {
+                "assad": [
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "bshr al asd": {
+              "match_types": {
+                "assad": [
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "bshr al assaad": {
+              "match_types": {
+                "assad": [
+                  "name_fuzzy",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            },
+            "Â Bashar al Assad": {
+              "match_types": {
+                "assad": [
+                  "name_exact",
+                  "phonetic_name"
+                ],
+                "bashar": [
+                  "name_exact",
+                  "phonetic_name"
+                ]
+              },
+              "type": "aka"
+            }
+          },
+          "score": 158.68901
+        }
+      ],
+      "id": 80017938,
+      "limit": 100,
+      "match_status": "potential_match",
+      "offset": 0,
+      "ref": "1539944153-GK2t18rq",
+      "risk_level": "unknown",
+      "search_term": "Bashar Assad",
+      "searcher_id": 3053,
+      "submitted_term": "Bashar Assad",
+      "total_hits": 1
+    }
+  },
+  "status": "success"
+}
