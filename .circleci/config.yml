@@ -61,16 +61,6 @@ aliases:
             gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
         - run: |
             docker run --name unit_$INTEGRATION eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
-            docker cp unit_$INTEGRATION:/tmp/coverage_unit workspace/coverage_unit_$INTEGRATION
-        - run: |
-            rm Pipfile Pipfile.lock
-            pipenv install coverage codecov
-        - run: pipenv run coverage xml -i --include=/tmp/coverage_unit
-        - run: pipenv run codecov -cF complyadvantage -X search -f coverage.xml
-        - persist_to_workspace:
-            root: workspace
-            paths:
-              - coverage_unit_*
 
     - &e2e
       docker:
@@ -99,16 +89,6 @@ aliases:
             -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
             eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION \
             yarn run coverage
-            docker cp e2e_$INTEGRATION:/tmp/coverage_e2e workspace/coverage_e2e_$INTEGRATION
-        - run: |
-            rm Pipfile Pipfile.lock
-            pipenv install coverage codecov
-        - run: pipenv run coverage xml -i --include=/tmp/coverage_e2e
-        - run: pipenv run codecov -cF complyadvantage -X search -f coverage.xml
-        - persist_to_workspace:
-            root: workspace
-            paths:
-              - coverage_e2e_*
 
     - &deploy_staging_common
       docker:
@@ -280,24 +260,6 @@ jobs:
     deploy_worldcheck_production:
         <<: *deploy_production_common
 
-    coverage:
-        docker:
-          - image: passfort/python-builder
-        resource_class: small
-        steps:
-          - checkout
-          - run:
-              name: Setup
-              command: |
-                  rm Pipfile Pipfile.lock
-          - run: pipenv install coverage codecov
-          - attach_workspace:
-              at: coverage
-          - run: pipenv run coverage combine coverage/coverage_unit_comply_advantage coverage/coverage_e2e_comply_advantage
-          - run: pipenv run coverage xml -i
-          - run: pipenv run codecov -cF complyadvantage -X search -f coverage.xml
-          - store_artifacts:
-              path: coverage.xml
 workflows:
     version: 2
 
