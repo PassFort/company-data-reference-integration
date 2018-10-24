@@ -2,7 +2,7 @@
   "private": true,
   "license": "Private",
   "scripts": {
-    "unit": "pipenv run coverage run --source= --branch -m unittest discover . && pipenv run coverage xml -i && pipenv run codecov -F complyadvantage -X search -f coverage.xml",
+    "unit": "./unit_coverage",
     "e2e": "pipenv run python -m unittest e2e.e2e",
     "coverage": "./coverage"
   }

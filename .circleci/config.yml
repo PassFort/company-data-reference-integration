@@ -43,8 +43,6 @@ aliases:
     - &unit
       docker:
         - image: passfort/python-builder
-      environment:
-        - COVERAGE_FILE: /tmp/coverage_unit
       steps:
         - checkout
         - *attach_to_workspace
@@ -60,13 +58,16 @@ aliases:
         - run: |
             gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
         - run: |
-            docker run --name unit_$INTEGRATION eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+            docker run --name unit_$INTEGRATION \
+            -e CODECOV_TOKEN=$CODECOV_TOKEN \
+            -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
+            -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
+            -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
+            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
 
     - &e2e
       docker:
         - image: passfort/python-builder
-          environment:
-            - COVERAGE_FILE: /tmp/coverage_e2e
       steps:
         - checkout
         - *attach_to_workspace
@@ -275,10 +276,6 @@ workflows:
             - e2e_comply_advantage:
                 requires:
                   - build_comply_advantage
-            - coverage:
-                requires:
-                  - unit_comply_advantage
-                  - e2e_comply_advantage
             - deploy_comply_advantage_staging:
                 requires:
                   - e2e_comply_advantage

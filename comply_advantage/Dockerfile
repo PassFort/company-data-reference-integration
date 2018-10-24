@@ -26,6 +26,7 @@ RUN mkdir /srv/logs/ && \
 
 COPY main.py /src
 COPY coverage /src
+COPY unit_coverage /src
 COPY app /src/app
 COPY e2e /src/e2e
 COPY mock_data /src/mock_data
