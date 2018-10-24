@@ -56,6 +56,36 @@ class ErrorCode(Enum):
 class Error:
 
     @staticmethod
+    def from_provider_error(code: int, provider_message: str = None, errors={}):
+        message = {
+            400: 'Bad request submitted to provider',
+            401: 'The request could not be authorised',
+            404: 'Comply Advantage URL not found'
+        }.get(code, 'Provider unhandled error')
+        if provider_message:
+            message = message + ': ' + provider_message
+        internal_error_code = ErrorCode.MISCONFIGURATION_ERROR.value if code == 401 \
+            else ErrorCode.PROVIDER_UNKNOWN_ERROR.value
+
+        return {
+            'code': internal_error_code,
+            'source': 'PROVIDER',
+            'message': message,
+            'info': errors
+        }
+
+    @staticmethod
+    def provider_connection_error(e):
+        return {
+            'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': 'Connection error when contacting Comply Advantage',
+            'info': {
+                'raw': '{}'.format(e)
+            }
+        }
+
+    @staticmethod
     def from_exception(e):
         return {
             'code': ErrorCode.UNKNOWN_INTERNAL_ERROR.value,
