@@ -7,6 +7,7 @@ from simplejson import JSONDecodeError
 from typing import TYPE_CHECKING
 from .api.internal_types import ComplyAdvantageResponse, ComplyAdvantageException
 from .api.types import Error
+from .file_utils import get_response_from_file
 
 if TYPE_CHECKING:
     from .api.types import ScreeningRequestData, ComplyAdvantageConfig, ComplyAdvantageCredentials
@@ -35,14 +36,8 @@ def search_request(
         config: 'ComplyAdvantageConfig',
         credentials: 'ComplyAdvantageCredentials',
         is_demo=False):
-    # TODO use proper mock data
     if is_demo:
-        return {
-            "output_data": {},
-            "raw": {},
-            "errors": [],
-            "events": []
-        }
+        return get_demo_data(data)
     else:
         url = f'{credentials.base_url}/searches'
         return comply_advantage_search_request(url, data, config, credentials)
@@ -99,3 +94,18 @@ def comply_advantage_search_request(
 
     raise ComplyAdvantageException(f"Reached max limit of hits to process - "
                                    f"{data.to_provider_format(config)}")
+
+
+def get_demo_data(data: 'ScreeningRequestData'):
+    demo_name = data.search_term.lower().replace(' ', '_')
+    try:
+        raw_response = get_response_from_file(demo_name)
+    except Exception:
+        raw_response = {}
+
+    response_model = ComplyAdvantageResponse.from_json(raw_response)
+    return {
+        "raw": raw_response,
+        "errors": [],
+        "events": response_model.to_validated_events()
+    }
