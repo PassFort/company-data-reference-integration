@@ -5,8 +5,9 @@ from simplejson import JSONDecodeError
 
 
 from typing import TYPE_CHECKING
-from .api.internal_types import ComplyAdvantageResponse
+from .api.internal_types import ComplyAdvantageResponse, ComplyAdvantageException
 from .api.types import Error
+from .file_utils import get_response_from_file
 
 if TYPE_CHECKING:
     from .api.types import ScreeningRequestData, ComplyAdvantageConfig, ComplyAdvantageCredentials
@@ -35,14 +36,8 @@ def search_request(
         config: 'ComplyAdvantageConfig',
         credentials: 'ComplyAdvantageCredentials',
         is_demo=False):
-    # TODO use proper mock data
     if is_demo:
-        return {
-            "output_data": {},
-            "raw": {},
-            "errors": [],
-            "events": []
-        }
+        return get_demo_data(data)
     else:
         url = f'{credentials.base_url}/searches'
         return comply_advantage_search_request(url, data, config, credentials)
@@ -52,33 +47,68 @@ def comply_advantage_search_request(
         url: str,
         data: 'ScreeningRequestData',
         config: 'ComplyAdvantageConfig',
-        credentials: 'ComplyAdvantageCredentials'):
+        credentials: 'ComplyAdvantageCredentials',
+        offset=0,
+        limit=100,
+        max_hits=1000):
 
     authorized_url = f'{url}?api_key={credentials.api_key}'
 
-    # TODO paginate -> total_hits, offset, limit
-    try:
-        response = requests_retry_session().post(authorized_url, json=data.to_provider_format(config))
-    except Exception as e:
-        return {
-            "errors": [Error.provider_connection_error(e)]
-        }
+    all_raw_responses = []
+    all_events = []
 
-    raw_response = {}
-    errors = []
+    while offset < max_hits:
+        try:
+            session = requests_retry_session()
+            response = session.post(
+                authorized_url,
+                json=data.to_provider_format(config, offset=offset, limit=limit))
+        except Exception as e:
+            return {
+                "errors": [Error.provider_connection_error(e)]
+            }
+        finally:
+            session.close()
+
+        raw_response = {}
+        errors = []
+        try:
+            raw_response = response.json()
+        except JSONDecodeError:
+            pass
+
+        response_model = ComplyAdvantageResponse.from_json(raw_response)
+        if response.status_code != 200:
+            errors = [
+                Error.from_provider_error(response.status_code, response_model.message, response_model.errors)
+            ]
+
+        all_raw_responses.append(raw_response)
+        all_events = all_events + response_model.to_validated_events()
+
+        offset = offset + limit
+
+        if len(errors) > 0 or not response_model.has_more_pages():
+            return {
+                "raw": all_raw_responses,
+                "errors": errors,
+                "events": all_events
+            }
+
+    raise ComplyAdvantageException(f"Reached max limit of hits to process - "
+                                   f"{data.to_provider_format(config)}")
+
+
+def get_demo_data(data: 'ScreeningRequestData'):
+    demo_name = data.search_term.lower().replace(' ', '_')
     try:
-        raw_response = response.json()
-    except JSONDecodeError:
-        pass
+        raw_response = get_response_from_file(demo_name)
+    except Exception:
+        raw_response = {}
 
     response_model = ComplyAdvantageResponse.from_json(raw_response)
-    if response.status_code != 200:
-        errors = [
-            Error.from_provider_error(response.status_code, response_model.message, response_model.errors)
-        ]
-
     return {
         "raw": raw_response,
-        "errors": errors,
+        "errors": [],
         "events": response_model.to_validated_events()
     }

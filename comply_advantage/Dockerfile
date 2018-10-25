@@ -30,6 +30,7 @@ COPY unit_coverage /src
 COPY app /src/app
 COPY e2e /src/e2e
 COPY mock_data /src/mock_data
+COPY test_data /src/test_data
 
 # Ports.
 EXPOSE 8001

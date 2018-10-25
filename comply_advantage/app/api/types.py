@@ -225,7 +225,7 @@ class ScreeningRequestData(Model):
             return self.personal_details.name.combine()
         return self.metadata.name
 
-    def to_provider_format(self, config: ComplyAdvantageConfig):
+    def to_provider_format(self, config: ComplyAdvantageConfig, offset=0, limit=100):
         type_filter = ["pep", "sanction"]
 
         if config.include_adverse_media:
@@ -234,6 +234,8 @@ class ScreeningRequestData(Model):
         base_format = {
             "search_term": self.search_term,
             "fuzziness": config.fuzziness,
+            "offset": offset,
+            "limit": limit,
             "filters": {
                 "entity_type": self.comply_advantage_entity_type,
                 "types": type_filter

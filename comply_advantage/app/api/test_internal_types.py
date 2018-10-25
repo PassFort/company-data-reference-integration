@@ -1,12 +1,7 @@
 import unittest
 
 from .internal_types import ComplyAdvantageResponse
-
-
-def get_response_from_file(search_ref):
-    import json
-    with open(f'mock_data/{search_ref}.json', 'rb') as f:
-        return json.loads(f.read())
+from ..file_utils import get_response_from_file
 
 
 class TestConvertDataToEvents(unittest.TestCase):

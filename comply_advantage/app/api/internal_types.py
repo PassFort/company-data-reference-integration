@@ -5,6 +5,10 @@ from schematics.types import StringType, BaseType, IntType
 from .types import ReferMatchEvent
 
 
+class ComplyAdvantageException(Exception):
+    pass
+
+
 class ComplyAdvantageMatchField(Model):
     name = StringType()
     tag = StringType(default=None)
@@ -54,7 +58,10 @@ class ComplyAdvantageMatch(Model):
 
 
 class ComplyAdvantageResponseData(Model):
-    hits = ListType(ModelType(ComplyAdvantageMatch))
+    hits = ListType(ModelType(ComplyAdvantageMatch), default=[])
+    total_hits = IntType(default=0)
+    offset = IntType(default=0)
+    limit = IntType(default=0)
 
     def to_events(self):
         events = []
@@ -62,6 +69,9 @@ class ComplyAdvantageResponseData(Model):
         for hit in self.hits:
             events = events + hit.to_events()
         return events
+
+    def has_more_hits(self):
+        return self.offset + self.limit < self.total_hits
 
 
 class ComplyAdvantageResponseContent(Model):
@@ -84,3 +94,8 @@ class ComplyAdvantageResponse(Model):
             return []
         events = self.content.data.to_events()
         return [e.as_validated_json() for e in events]
+
+    def has_more_pages(self):
+        if self.content is None:
+            return False
+        return self.content.data.has_more_hits()
