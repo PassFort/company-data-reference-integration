@@ -59,13 +59,16 @@ def comply_advantage_search_request(
 
     while offset < max_hits:
         try:
-            response = requests_retry_session().post(
+            session = requests_retry_session()
+            response = session.post(
                 authorized_url,
                 json=data.to_provider_format(config, offset=offset, limit=limit))
         except Exception as e:
             return {
                 "errors": [Error.provider_connection_error(e)]
             }
+        finally:
+            session.close()
 
         raw_response = {}
         errors = []
