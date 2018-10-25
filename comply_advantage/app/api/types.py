@@ -4,7 +4,7 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType, UTCDateTimeType
+from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType, UTCDateTimeType, IntType
 from schematics.exceptions import DataError, ValidationError
 
 
@@ -152,6 +152,7 @@ class CompanyMetadata(Model):
 
 class PepData(Model):
     match = BooleanType()
+    tier = IntType(default=None)
 
 
 class SanctionData(Model):

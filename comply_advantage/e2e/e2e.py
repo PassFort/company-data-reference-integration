@@ -151,6 +151,10 @@ class TestEvents(unittest.TestCase):
             self.assertEqual(pep_event["event_type"], "PEP_FLAG")
             self.assertEqual(sanction_event["event_type"], "SANCTION_FLAG")
 
+            with self.subTest("returns pep tier"):
+                tier = pep_event["pep"]["tier"]
+                self.assertEqual(tier, 1)
+
             with self.subTest("returns sanction lists"):
                 sanction_list_names = sorted([s["list"] for s in sanction_event["sanctions"]])
                 self.assertEqual(
@@ -190,7 +194,7 @@ class TestEvents(unittest.TestCase):
         self.assertEqual(result["errors"], [])
         self.assertEqual(response.status_code, 200)
 
-        with self.subTest("Only returns pep and sanction events"):
+        with self.subTest("Also returns media"):
             self.assertEqual(len(result["events"]), 3)
             pep_event = result["events"][0]
             sanction_event = result["events"][1]
@@ -200,19 +204,5 @@ class TestEvents(unittest.TestCase):
             self.assertEqual(sanction_event["event_type"], "SANCTION_FLAG")
             self.assertEqual(media_event["event_type"], "ADVERSE_MEDIA_FLAG")
 
-            with self.subTest("returns sanction lists"):
-                sanction_list_names = sorted([s["list"] for s in sanction_event["sanctions"]])
-                self.assertEqual(
-                    sanction_list_names,
-                    [
-                        "DFAT Australia List",
-                        "DFATD Canada Special Economic Measures Act Designations",
-                        "Europe Sanctions List",
-                        "France Liste Unique de Gels",
-                        "HM Treasury List",
-                        "OFAC SDN List",
-                        "Swiss SECO List"
-                    ]
-                )
             with self.subTest("returns media"):
                 self.assertEqual(len(media_event["media"]), 30)

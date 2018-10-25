@@ -79,7 +79,7 @@ class ComplyAdvantageMatchData(Model):
 
         if is_pep:
             pep_result = PepMatchEvent().import_data({
-                "pep": {"match": True},
+                "pep": {"match": True, "tier": self.get_pep_tier()},
                 **base_data
             })
             events.append(pep_result)
@@ -102,6 +102,12 @@ class ComplyAdvantageMatchData(Model):
 
     def get_sanctions(self):
         return [note.as_sanction_data() for name, note in self.source_notes.items() if note.is_sanction()]
+
+    def get_pep_tier(self):
+        all_pep_types = sorted([t for t in self.types if t.startswith("pep-")])
+        if len(all_pep_types):
+            return int(all_pep_types[0].replace("pep-class-", ""))
+        return None
 
 
 class ComplyAdvantageMatch(Model):
