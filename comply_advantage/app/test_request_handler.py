@@ -11,7 +11,8 @@ import unittest
 
 from .request_handler import comply_advantage_search_request
 from .api.types import ScreeningRequestData, ComplyAdvantageConfig, ComplyAdvantageCredentials, ErrorCode
-from.file_utils import get_response_from_file
+from .api.internal_types import ComplyAdvantageException
+from .file_utils import get_response_from_file
 
 TEST_SCREENING_DATA = ScreeningRequestData({
     "entity_type": "INDIVIDUAL",
@@ -69,24 +70,24 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         self.assertEqual(result['errors'][0]['info'], {'a': 'b'})
 
 
+def paginated_request_callback(request):
+    payload = json.loads(request.body)
+
+    # See if a non default limit was used
+    if payload["limit"] != 100:
+        resp_body = get_response_from_file(f'paginate_test_{payload["offset"]}', folder='test_data')
+    else:
+        resp_body = get_response_from_file(f'paginate_test_full', folder='test_data')
+    return 200, {}, json.dumps(resp_body)
+
+
 class TestPagination(unittest.TestCase):
 
     @responses.activate
     def test_can_paginate(self):
-
-        def request_callback(request):
-            payload = json.loads(request.body)
-
-            # See if a non default limit was used
-            if payload["limit"] != 100:
-                resp_body = get_response_from_file(f'paginate_test_{payload["offset"]}', folder='test_data')
-            else:
-                resp_body = get_response_from_file(f'paginate_test_full', folder='test_data')
-            return 200, {}, json.dumps(resp_body)
-
         responses.add_callback(
             responses.POST, SEARCH_REQUEST_URL,
-            callback=request_callback,
+            callback=paginated_request_callback,
             content_type='application/json',
         )
 
@@ -115,3 +116,20 @@ class TestPagination(unittest.TestCase):
         with self.subTest('The 2 have the same number of events'):
             self.assertEqual(len(result['events']), len(result_from_non_paginated['events']))
             self.assertGreater(len(result['events']), 0)
+
+    @responses.activate
+    def test_raises_exception_if_max_hits_reached(self):
+        responses.add_callback(
+            responses.POST, SEARCH_REQUEST_URL,
+            callback=paginated_request_callback,
+            content_type='application/json',
+        )
+
+        with self.assertRaises(ComplyAdvantageException):
+            comply_advantage_search_request(
+                SEARCH_REQUEST_URL,
+                TEST_SCREENING_DATA,
+                ComplyAdvantageConfig(),
+                ComplyAdvantageCredentials({
+                    'api_key': 'TEST'
+                }), offset=0, limit=3, max_hits=3)

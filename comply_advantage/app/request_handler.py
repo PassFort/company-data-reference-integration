@@ -97,4 +97,5 @@ def comply_advantage_search_request(
                 "events": all_events
             }
 
-    raise ComplyAdvantageException(f"Reached max limit of hits to process - {data.to_provider_format(config)}")
+    raise ComplyAdvantageException(f"Reached max limit of hits to process - "
+                                   f"{data.to_provider_format(config)}")
