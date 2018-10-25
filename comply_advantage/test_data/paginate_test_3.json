@@ -1,0 +1,264 @@
+{
+  "code": 200,
+  "status": "success",
+  "content": {
+    "data": {
+      "id": 81076178,
+      "ref": "1540398906-n80nHgBK",
+      "searcher_id": 3053,
+      "assignee_id": 3053,
+      "filters": {
+        "entity_type": "person",
+        "types": [
+          "pep",
+          "sanction"
+        ],
+        "birth_year": 1956,
+        "exact_match": false,
+        "fuzziness": 0.8
+      },
+      "match_status": "potential_match",
+      "risk_level": "unknown",
+      "search_term": "Theresa May",
+      "submitted_term": "Theresa May",
+      "client_ref": null,
+      "total_hits": 7,
+      "updated_at": "2018-10-24 17:35:06",
+      "created_at": "2018-10-24 17:35:06",
+      "limit": 3,
+      "offset": 3,
+      "hits": [
+        {
+          "doc": {
+            "aka": [],
+            "associates": [],
+            "entity_type": "person",
+            "fields": [
+              {
+                "name": "Countries",
+                "tag": "country_names",
+                "value": "Canada"
+              },
+              {
+                "locale": "en",
+                "name": "Related Url",
+                "source": "complyadvantage",
+                "tag": "related_url",
+                "value": "http://www.ontariocourts.ca/ocj/ocj/judges-of-the-court/judges/"
+              }
+            ],
+            "id": "X27BAE6HZHY1X0F",
+            "keywords": [
+              {
+                "keyword": "judiciary"
+              }
+            ],
+            "last_updated_utc": "2018-02-21T17:54:11Z",
+            "name": "Mary Teresa E. Devlin",
+            "source_notes": {
+              "complyadvantage": {
+                "name": "ComplyAdvantage PEP Data",
+                "url": "http://www.complyadvantage.com/"
+              }
+            },
+            "sources": [
+              "complyadvantage"
+            ],
+            "types": [
+              "pep",
+              "pep-class-2"
+            ]
+          },
+          "match_types": [
+            "name_fuzzy"
+          ],
+          "match_types_details": {
+            "Mary Teresa E Devlin": {
+              "match_types": {
+                "may": [
+                  "name_fuzzy",
+                  "equivalent_name"
+                ],
+                "theresa": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "name"
+            }
+          },
+          "score": 20.930132
+        },
+        {
+          "doc": {
+            "aka": [],
+            "associates": [],
+            "entity_type": "person",
+            "fields": [
+              {
+                "name": "Countries",
+                "tag": "country_names",
+                "value": "United States, South Africa"
+              },
+              {
+                "locale": "en",
+                "name": "Related Url",
+                "source": "pep-us-local-courts-and-judges",
+                "tag": "related_url",
+                "value": "https://ballotpedia.org/Teresa_Mary_Pooler"
+              }
+            ],
+            "id": "8P3KUM64BH0U5I7",
+            "keywords": [
+              {
+                "keyword": "diplomat"
+              },
+              {
+                "keyword": "judiciary"
+              },
+              {
+                "keyword": "law enforcement"
+              }
+            ],
+            "last_updated_utc": "2018-10-13T01:11:51Z",
+            "media": [
+              {
+                "date": "2016-07-26T00:00:00Z",
+                "pdf_url": "http://complyadvantage-asset-development.s3.amazonaws.com/0bfd8809-ad7a-449f-979c-9c9bd3166ad6.pdf",
+                "snippet": "The Florida circuit court's ruling could lead to changes of Florida law, which needs a \"much-needed update,\" Pooler wrote in her opinion. The case at the center of Pooler's ruling involves Michell Espinoza, who was charged in 2014 with running an illegal money services business and with money laundering. He was arrested after selling bitcoins to an undercover police detective who told him he would be using them to buy stolen credit card numbers.",
+                "title": "Is bitcoin money? Are Airbnbs hotels? Why courts have trouble deciding. - CSMonitor.com",
+                "url": "http://www.csmonitor.com/Business/new-economy/2016/0726/Is-bitcoin-money-Are-Airbnbs-hotels-Why-courts-have-trouble-deciding"
+              },
+              {
+                "date": "2015-06-03T00:00:00Z",
+                "snippet": "The mother had assured Pooler her son would stay in the U.S. and show up for all hearings, but Pooler said it would be too easy for him to flee to Canada possibly by simply driving there. Pooler also said Canada would not extradite Wabafiyebazu because it does not recognize the crime of felony murder in circumstances such as his and because of his youth. In Florida, a person can be charged with murder, including a minor teenager, if someone is killed during the commission of another felony crime such as a robbery.",
+                "title": "No bail for Canadian diplomat\"s teen son in killings – The Ukiah Daily Journal",
+                "url": "https://www.ukiahdailyjournal.com/2015/06/03/no-bail-for-canadian-diplomats-teen-son-in-killings/"
+              },
+              {
+                "date": "2018-05-12T00:00:00Z",
+                "snippet": "In addition to boot camp, which will last about nine months, Wabafiyebazu must serve about two years of house arrest with an electronic ankle monitor followed by eight years of probation in the US. If he violates any of several probation conditions, Pooler could still send him to prison -",
+                "title": "Teen gets boot camp over drug shootings | News24",
+                "url": "https://www.news24.com/World/News/teen-gets-boot-camp-over-drug-shootings-20160219"
+              }
+            ],
+            "name": "Teresa Mary Pooler",
+            "source_notes": {
+              "complyadvantage-adverse-media": {
+                "name": "ComplyAdvantage Adverse Media",
+                "url": "http://www.complyadvantage.com/"
+              },
+              "pep-us-local-courts-and-judges": {
+                "aml_types": [
+                  "pep-class-4",
+                  "pep-class-4",
+                  "pep-class-4"
+                ],
+                "country_codes": [
+                  "US",
+                  "US",
+                  "US"
+                ],
+                "name": "PEP US Local Courts and Judges",
+                "url": "https://ballotpedia.org/Courts_and_judges_by_county"
+              }
+            },
+            "sources": [
+              "pep-us-local-courts-and-judges",
+              "complyadvantage-adverse-media"
+            ],
+            "types": [
+              "adverse-media",
+              "adverse-media-financial-crime",
+              "adverse-media-general",
+              "pep",
+              "pep-class-4"
+            ]
+          },
+          "match_types": [
+            "name_fuzzy"
+          ],
+          "match_types_details": {
+            "Teresa Mary Pooler": {
+              "match_types": {
+                "may": [
+                  "name_fuzzy"
+                ],
+                "theresa": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "name"
+            }
+          },
+          "score": 20.871853
+        },
+        {
+          "doc": {
+            "aka": [],
+            "associates": [],
+            "entity_type": "person",
+            "fields": [
+              {
+                "name": "Countries",
+                "tag": "country_names",
+                "value": "Canada"
+              },
+              {
+                "locale": "en",
+                "name": "Related Url",
+                "source": "complyadvantage",
+                "tag": "related_url",
+                "value": "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597053/London_Diplomatic_List_-_March_2017.pdf"
+              }
+            ],
+            "id": "E8CSPCBONN28ZAW",
+            "keywords": [
+              {
+                "keyword": "diplomat"
+              },
+              {
+                "keyword": "government"
+              },
+              {
+                "keyword": "secretary"
+              }
+            ],
+            "last_updated_utc": "2018-02-21T17:54:11Z",
+            "name": "Mary Teresa Glynn",
+            "source_notes": {
+              "complyadvantage": {
+                "name": "ComplyAdvantage PEP Data",
+                "url": "http://www.complyadvantage.com/"
+              }
+            },
+            "sources": [
+              "complyadvantage"
+            ],
+            "types": [
+              "pep",
+              "pep-class-2"
+            ]
+          },
+          "match_types": [
+            "name_fuzzy"
+          ],
+          "match_types_details": {
+            "Mary Teresa Glynn": {
+              "match_types": {
+                "may": [
+                  "name_fuzzy",
+                  "equivalent_name"
+                ],
+                "theresa": [
+                  "name_fuzzy"
+                ]
+              },
+              "type": "name"
+            }
+          },
+          "score": 20.871853
+        }
+      ]
+    }
+  }
+}
