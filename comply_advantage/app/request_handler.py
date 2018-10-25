@@ -37,7 +37,7 @@ def search_request(
         credentials: 'ComplyAdvantageCredentials',
         is_demo=False):
     if is_demo:
-        return get_demo_data(data)
+        return get_demo_data(data, config)
     else:
         url = f'{credentials.base_url}/searches'
         return comply_advantage_search_request(url, data, config, credentials)
@@ -84,7 +84,7 @@ def comply_advantage_search_request(
             ]
 
         all_raw_responses.append(raw_response)
-        all_events = all_events + response_model.to_validated_events()
+        all_events = all_events + response_model.to_validated_events(config)
 
         offset = offset + limit
 
@@ -99,7 +99,7 @@ def comply_advantage_search_request(
                                    f"{data.to_provider_format(config)}")
 
 
-def get_demo_data(data: 'ScreeningRequestData'):
+def get_demo_data(data: 'ScreeningRequestData', config: 'ComplyAdvantageConfig'):
     demo_name = data.search_term.lower().replace(' ', '_')
     try:
         raw_response = get_response_from_file(demo_name)
@@ -110,5 +110,5 @@ def get_demo_data(data: 'ScreeningRequestData'):
     return {
         "raw": raw_response,
         "errors": [],
-        "events": response_model.to_validated_events()
+        "events": response_model.to_validated_events(config)
     }

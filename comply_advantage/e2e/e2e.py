@@ -116,3 +116,103 @@ class TestApiValidation(unittest.TestCase):
                 ],
                 is_demo=True
             )
+
+
+class TestEvents(unittest.TestCase):
+
+    def test_on_peps_and_sanctions_only(self):
+        response = requests.post(
+            f'{API_URL}/screening_request',
+            json={
+                "credentials": {"api_key": "test"},
+                "config": {
+                },
+                "input_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "family_name": "Assad",
+                            "given_names": ["Bashar"]
+                        }
+                    }
+                },
+                "is_demo": True
+            })
+
+        result = response.json()
+        self.assertEqual(result["errors"], [])
+        self.assertEqual(response.status_code, 200)
+
+        with self.subTest("Only returns pep and sanction events"):
+            self.assertEqual(len(result["events"]), 2)
+            pep_event = result["events"][0]
+            sanction_event = result["events"][1]
+
+            self.assertEqual(pep_event["event_type"], "PEP_FLAG")
+            self.assertEqual(sanction_event["event_type"], "SANCTION_FLAG")
+
+            with self.subTest("returns sanction lists"):
+                sanction_list_names = sorted([s["list"] for s in sanction_event["sanctions"]])
+                self.assertEqual(
+                    sanction_list_names,
+                    [
+                        "DFAT Australia List",
+                        "DFATD Canada Special Economic Measures Act Designations",
+                        "Europe Sanctions List",
+                        "France Liste Unique de Gels",
+                        "HM Treasury List",
+                        "OFAC SDN List",
+                        "Swiss SECO List"
+                    ]
+                )
+
+    def test_on_peps_sanctions_and_media(self):
+        response = requests.post(
+            f'{API_URL}/screening_request',
+            json={
+                "credentials": {"api_key": "test"},
+                "config": {
+                    "include_adverse_media": True
+                },
+                "input_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "family_name": "Assad",
+                            "given_names": ["Bashar"]
+                        }
+                    }
+                },
+                "is_demo": True
+            })
+
+        result = response.json()
+        self.assertEqual(result["errors"], [])
+        self.assertEqual(response.status_code, 200)
+
+        with self.subTest("Only returns pep and sanction events"):
+            self.assertEqual(len(result["events"]), 3)
+            pep_event = result["events"][0]
+            sanction_event = result["events"][1]
+            media_event = result["events"][2]
+
+            self.assertEqual(pep_event["event_type"], "PEP_FLAG")
+            self.assertEqual(sanction_event["event_type"], "SANCTION_FLAG")
+            self.assertEqual(media_event["event_type"], "ADVERSE_MEDIA_FLAG")
+
+            with self.subTest("returns sanction lists"):
+                sanction_list_names = sorted([s["list"] for s in sanction_event["sanctions"]])
+                self.assertEqual(
+                    sanction_list_names,
+                    [
+                        "DFAT Australia List",
+                        "DFATD Canada Special Economic Measures Act Designations",
+                        "Europe Sanctions List",
+                        "France Liste Unique de Gels",
+                        "HM Treasury List",
+                        "OFAC SDN List",
+                        "Swiss SECO List"
+                    ]
+                )
+            with self.subTest("returns media"):
+                self.assertEqual(len(media_event["media"]), 30)

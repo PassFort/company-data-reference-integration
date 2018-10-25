@@ -1,6 +1,6 @@
 import unittest
 
-from .internal_types import ComplyAdvantageResponse
+from .internal_types import ComplyAdvantageResponse, ComplyAdvantageConfig
 from ..file_utils import get_response_from_file
 
 
@@ -8,9 +8,9 @@ class TestConvertDataToEvents(unittest.TestCase):
 
     def test_converts_to_expected_events(self):
         model = ComplyAdvantageResponse.from_json(get_response_from_file('bashar_assad'))
-        events = model.to_validated_events()
+        events = model.to_validated_events(ComplyAdvantageConfig())
 
-        self.assertEqual(len(events), 1)
+        self.assertEqual(len(events), 2)
 
         actual_event = events[0]
         with self.subTest('returns match id'):
