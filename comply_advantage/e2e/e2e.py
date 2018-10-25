@@ -105,7 +105,7 @@ class TestApiValidation(unittest.TestCase):
                             "input_data": {
                                 "personal_details": {
                                     "dob": [
-                                        "Could not parse 1989-00. Valid formats: %Y, %Y-%m, %Y-%m-%d"
+                                        "Input is not valid date: 1989-00"
                                     ]
                                 }
                             }

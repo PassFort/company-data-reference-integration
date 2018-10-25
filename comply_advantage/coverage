@@ -5,7 +5,9 @@ pipenv run coverage run --branch --omit='e2e/*','**/test_*' --source . main.py &
 sleep 5
 
 # Launch the e2e tests
-yarn e2e
+if ! yarn e2e; then
+  exit $?;
+fi;
 
 # Send SIGINT to all jobs to ask the server process to gracefully shutdown
 kill -INT $(jobs -p)
@@ -30,5 +32,6 @@ if [ -z "$CODECOV_TOKEN" ]; then
     echo "Will not upload code coverage to codecov"
     cat coverage.xml
 else
-    pipenv run codecov -F $integration_name -X search -f coverage.xml
+    pipenv run codecov -F $integration_name,e2e -X search -f coverage.xml
 fi
+
