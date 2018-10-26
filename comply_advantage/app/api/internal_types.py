@@ -1,8 +1,14 @@
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType
 
-from .types import ReferMatchEvent
+from typing import List, TYPE_CHECKING
+
+from .types import ReferMatchEvent, PepMatchEvent, SanctionsMatchEvent, SanctionData, AdverseMediaMatchEvent, \
+    MediaArticle, ComplyAdvantageConfig
+
+if TYPE_CHECKING:
+    from .types import MatchEvent
 
 
 class ComplyAdvantageException(Exception):
@@ -28,33 +34,93 @@ class ComplyAdvantageMatchTypeDetails(Model):
         return self.type == 'aka'
 
 
+class ComplyAdvantageSourceNote(Model):
+    name = StringType(default=None)
+    url = StringType(default=None)
+    aml_types = ListType(StringType, default=[])
+    country_codes = ListType(StringType)
+    listing_started_utc = UTCDateTimeType()
+    listing_ended_utc = UTCDateTimeType(default=None)
+
+    def is_sanction(self):
+        return len(self.aml_types) and "sanction" in self.aml_types
+
+    def as_sanction_data(self):
+        return SanctionData({
+            "type": "sanction",
+            "list": self.name,
+            "is_current": self.listing_ended_utc is None
+        })
+
+
 class ComplyAdvantageMatchData(Model):
     id = StringType(required=True)
     name = StringType(required=True)
     ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields")
+    types = ListType(StringType)
+    source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
+    media = ListType(ModelType(MediaArticle))  # Matches our structure exactly
 
-    def to_events(self, extra_fields):
+    def to_events(self, extra_fields: dict, config: ComplyAdvantageConfig) -> List['MatchEvent']:
+        events = []
         birth_dates = set(field.value for field in self.ca_fields if field.is_dob())
 
-        result = ReferMatchEvent().import_data({
+        is_pep = "pep" in self.types
+        is_sanction = "sanction" in self.types
+        has_adverse_media = "adverse-media" in self.types
+
+        base_data = {
             "match_id": self.id,
             "match_name": self.name,
             "provider_name": "Comply Advantage",
             "match_dates": list(birth_dates),
             **extra_fields
-        })
-        return [result]
+        }
+
+        if is_pep:
+            pep_result = PepMatchEvent().import_data({
+                "pep": {"match": True, "tier": self.get_pep_tier()},
+                **base_data
+            })
+            events.append(pep_result)
+        if is_sanction:
+            sanction_result = SanctionsMatchEvent().import_data({
+                "sanctions": self.get_sanctions(),
+                **base_data
+            })
+            events.append(sanction_result)
+        if config.include_adverse_media and has_adverse_media:
+            adverse_media_result = AdverseMediaMatchEvent().import_data({
+                "media": self.media,
+                **base_data
+            })
+            events.append(adverse_media_result)
+
+        if len(events) == 0:
+            events.append(ReferMatchEvent().import_data(base_data))
+        return events
+
+    def get_sanctions(self):
+        return [note.as_sanction_data() for name, note in self.source_notes.items() if note.is_sanction()]
+
+    def get_pep_tier(self):
+        all_pep_types = sorted([t for t in self.types if t.startswith("pep-")])
+        if len(all_pep_types):
+            return int(all_pep_types[0].replace("pep-class-", ""))
+        return None
 
 
 class ComplyAdvantageMatch(Model):
     doc = ModelType(ComplyAdvantageMatchData, required=True)
     match_types_details = DictType(ModelType(ComplyAdvantageMatchTypeDetails), default={})
 
-    def to_events(self):
+    def to_events(self, config: ComplyAdvantageConfig):
         aliases = set(k for k, v in self.match_types_details.items() if v.is_aka())
-        return self.doc.to_events({
-            'aliases': aliases
-        })
+        return self.doc.to_events(
+            {
+                'aliases': aliases
+            },
+            config)
 
 
 class ComplyAdvantageResponseData(Model):
@@ -63,11 +129,11 @@ class ComplyAdvantageResponseData(Model):
     offset = IntType(default=0)
     limit = IntType(default=0)
 
-    def to_events(self):
+    def to_events(self, config: ComplyAdvantageConfig):
         events = []
 
         for hit in self.hits:
-            events = events + hit.to_events()
+            events = events + hit.to_events(config)
         return events
 
     def has_more_hits(self):
@@ -89,10 +155,10 @@ class ComplyAdvantageResponse(Model):
         model.validate()
         return model
 
-    def to_validated_events(self):
+    def to_validated_events(self, config: ComplyAdvantageConfig):
         if self.content is None:
             return []
-        events = self.content.data.to_events()
+        events = self.content.data.to_events(config)
         return [e.as_validated_json() for e in events]
 
     def has_more_pages(self):

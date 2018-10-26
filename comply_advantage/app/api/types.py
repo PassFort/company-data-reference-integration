@@ -4,7 +4,7 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType
+from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType, UTCDateTimeType, IntType
 from schematics.exceptions import DataError, ValidationError
 
 
@@ -150,8 +150,29 @@ class CompanyMetadata(Model):
     country_of_incorporation = StringType(default=None)
 
 
+class PepData(Model):
+    match = BooleanType()
+    tier = IntType(default=None)
+
+
+class SanctionData(Model):
+    type = StringType(required=True)
+    list = StringType()
+    name = StringType()
+    issuer = StringType()
+    is_current = BooleanType()
+
+
+class MediaArticle(Model):
+    url = StringType(default=None)
+    pdf_url = StringType(default=None)
+    title = StringType(default=None)
+    snippet = StringType(default=None)
+    date = UTCDateTimeType(default=None)
+
+
 class MatchEvent(Model):
-    event_type = StringType(required=True, choices=['PEP_FLAG', 'SANCTION_FLAG', 'REFER_FLAG'])
+    event_type = StringType(required=True, choices=['PEP_FLAG', 'SANCTION_FLAG', 'REFER_FLAG', 'ADVERSE_MEDIA_FLAG'])
     match_id = StringType(required=True)
 
     provider_name = StringType()
@@ -182,6 +203,42 @@ class ReferMatchEvent(MatchEvent):
     @classmethod
     def _claim_polymorphic(cls, data):
         return data.get('event_type') == 'REFER_FLAG'
+
+    class Options:
+        serialize_when_none = False
+
+
+class PepMatchEvent(MatchEvent):
+    event_type = StringType(required=True, choices=['PEP_FLAG'], default='PEP_FLAG')
+    pep = ModelType(PepData)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get('event_type') == 'PEP_FLAG'
+
+    class Options:
+        serialize_when_none = False
+
+
+class SanctionsMatchEvent(MatchEvent):
+    event_type = StringType(required=True, choices=['SANCTION_FLAG'], default='SANCTION_FLAG')
+    sanctions = ListType(ModelType(SanctionData))
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get('event_type') == 'SANCTION_FLAG'
+
+    class Options:
+        serialize_when_none = False
+
+
+class AdverseMediaMatchEvent(MatchEvent):
+    event_type = StringType(required=True, choices=['ADVERSE_MEDIA_FLAG'], default='ADVERSE_MEDIA_FLAG')
+    media = ListType(ModelType(MediaArticle))
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get('event_type') == 'SANCTION_FLAG'
 
     class Options:
         serialize_when_none = False
