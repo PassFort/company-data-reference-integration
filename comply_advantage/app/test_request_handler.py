@@ -101,6 +101,7 @@ class TestPagination(unittest.TestCase):
 
         with self.subTest('Parses 3 responses'):
             self.assertEqual(len(result['raw']), 3)
+            self.assertEqual(result["search_ids"], [81075653, 81076178, 81088222])
 
         result_from_non_paginated = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
@@ -112,6 +113,7 @@ class TestPagination(unittest.TestCase):
 
         with self.subTest('Parses 1 response'):
             self.assertEqual(len(result_from_non_paginated['raw']), 1)
+            self.assertEqual(result_from_non_paginated["search_ids"], [81081935])
 
         with self.subTest('The 2 have the same number of events'):
             self.assertEqual(len(result['events']), len(result_from_non_paginated['events']))
