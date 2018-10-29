@@ -4,7 +4,7 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType, UTCDateTimeType, IntType
+from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType, DateType, IntType
 from schematics.exceptions import DataError, ValidationError
 
 
@@ -168,7 +168,7 @@ class MediaArticle(Model):
     pdf_url = StringType(default=None)
     title = StringType(default=None)
     snippet = StringType(default=None)
-    date = UTCDateTimeType(default=None)
+    date = DateType(default=None)
 
 
 class MatchEvent(Model):
