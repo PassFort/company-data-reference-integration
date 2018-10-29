@@ -1,6 +1,6 @@
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, NumberType, UnionType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType
 
 from typing import List, TYPE_CHECKING
 
@@ -53,13 +53,30 @@ class ComplyAdvantageSourceNote(Model):
         })
 
 
+class ComplyAdvantageMediaData(Model):
+    url = StringType(default=None)
+    pdf_url = StringType(default=None)
+    title = StringType(default=None)
+    snippet = StringType(default=None)
+    date = UTCDateTimeType(default=None)
+
+    def as_media_article(self):
+        return MediaArticle({
+            'url': self.url,
+            'pdf_url': self.pdf_url,
+            'title': self.title,
+            'snippet': self.snippet,
+            'date': self.date and self.date.date()
+        })
+
+
 class ComplyAdvantageMatchData(Model):
     id = StringType(required=True)
     name = StringType(required=True)
     ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields")
     types = ListType(StringType)
     source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
-    media = ListType(ModelType(MediaArticle))  # Matches our structure exactly
+    media = ListType(ModelType(ComplyAdvantageMediaData))
 
     def to_events(self, extra_fields: dict, config: ComplyAdvantageConfig) -> List['MatchEvent']:
         events = []
@@ -91,7 +108,7 @@ class ComplyAdvantageMatchData(Model):
             events.append(sanction_result)
         if config.include_adverse_media and has_adverse_media:
             adverse_media_result = AdverseMediaMatchEvent().import_data({
-                "media": self.media,
+                "media": [m.as_media_article() for m in self.media],
                 **base_data
             })
             events.append(adverse_media_result)
