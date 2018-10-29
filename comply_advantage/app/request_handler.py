@@ -56,6 +56,7 @@ def comply_advantage_search_request(
 
     all_raw_responses = []
     all_events = []
+    search_ids = []
 
     while offset < max_hits:
         try:
@@ -86,10 +87,14 @@ def comply_advantage_search_request(
         all_raw_responses.append(raw_response)
         all_events = all_events + response_model.to_validated_events(config)
 
+        if response_model.search_id is not None:
+            search_ids.append(response_model.search_id)
+
         offset = offset + limit
 
         if len(errors) > 0 or not response_model.has_more_pages():
             return {
+                "search_ids": search_ids,
                 "raw": all_raw_responses,
                 "errors": errors,
                 "events": all_events
@@ -108,6 +113,7 @@ def get_demo_data(data: 'ScreeningRequestData', config: 'ComplyAdvantageConfig')
 
     response_model = ComplyAdvantageResponse.from_json(raw_response)
     return {
+        "search_ids": [response_model.search_id],
         "raw": raw_response,
         "errors": [],
         "events": response_model.to_validated_events(config)
