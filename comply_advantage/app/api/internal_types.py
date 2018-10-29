@@ -1,6 +1,6 @@
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType, UTCDateTimeType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, NumberType, UnionType
 
 from typing import List, TYPE_CHECKING
 
@@ -112,10 +112,18 @@ class ComplyAdvantageMatchData(Model):
 
 class ComplyAdvantageMatch(Model):
     doc = ModelType(ComplyAdvantageMatchData, required=True)
-    match_types_details = DictType(ModelType(ComplyAdvantageMatchTypeDetails), default={})
+    # comply advantage returns empty list if no details are present.
+    match_types_details = UnionType(
+        (
+            DictType(ModelType(ComplyAdvantageMatchTypeDetails), default={}),
+            ListType
+        ), field=BaseType)
 
     def to_events(self, config: ComplyAdvantageConfig):
-        aliases = set(k for k, v in self.match_types_details.items() if v.is_aka())
+        if self.match_types_details:
+            aliases = set(k for k, v in self.match_types_details.items() if v.is_aka())
+        else:
+            aliases = set()
         return self.doc.to_events(
             {
                 'aliases': aliases
@@ -128,6 +136,7 @@ class ComplyAdvantageResponseData(Model):
     total_hits = IntType(default=0)
     offset = IntType(default=0)
     limit = IntType(default=0)
+    search_id = IntType(required=True, serialized_name="id")
 
     def to_events(self, config: ComplyAdvantageConfig):
         events = []
@@ -165,3 +174,9 @@ class ComplyAdvantageResponse(Model):
         if self.content is None:
             return False
         return self.content.data.has_more_hits()
+
+    @property
+    def search_id(self):
+        if self.content is None:
+            return None
+        return self.content.data.search_id

@@ -141,6 +141,7 @@ class TestEvents(unittest.TestCase):
 
         result = response.json()
         self.assertEqual(result["errors"], [])
+        self.assertEqual(result["search_ids"], [80017938])
         self.assertEqual(response.status_code, 200)
 
         with self.subTest("Only returns pep and sanction events"):
