@@ -108,7 +108,7 @@ class ComplyAdvantageCredentials(Model):
 
     @property
     def base_url(self):
-        return "https://api.complyadvantage.com/"
+        return "https://api.complyadvantage.com"
 
 
 class ComplyAdvantageConfig(Model):
@@ -314,3 +314,17 @@ class ScreeningRequest(Model):
     input_data = ModelType(ScreeningRequestData, required=True)
 
     is_demo = BooleanType(default=False)
+
+
+class ScreeningResultRequest(Model):
+    config = ModelType(ComplyAdvantageConfig, required=True)
+    credentials = ModelType(ComplyAdvantageCredentials, required=True)
+
+    search_ids = ListType(IntType, required=True)
+
+
+class UpdateMonitoringConfigurationRequest(Model):
+    credentials = ModelType(ComplyAdvantageCredentials, required=True)
+
+    search_ids = ListType(IntType, required=True)
+    monitored = BooleanType(required=True)

@@ -1,11 +1,10 @@
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from simplejson import JSONDecodeError
 
 
-from typing import TYPE_CHECKING
-from .api.internal_types import ComplyAdvantageResponse, ComplyAdvantageException
+from typing import TYPE_CHECKING, List
+from .api.internal_types import ComplyAdvantageResponse, ComplyAdvantageException, ComplyAdvantageMonitorResponse
 from .api.types import Error
 from .file_utils import get_response_from_file
 
@@ -43,6 +42,65 @@ def search_request(
         return comply_advantage_search_request(url, data, config, credentials)
 
 
+def get_result_by_search_ids(
+        config: 'ComplyAdvantageConfig',
+        credentials: 'ComplyAdvantageCredentials',
+        search_ids: List[int]):
+
+    errors = []
+    events = []
+    session = requests_retry_session()
+    try:
+        for search_id in search_ids:
+            url = f'{credentials.base_url}/searches/{search_id}/details?api_key={credentials.api_key}'
+            response = session.get(url)
+
+            errors = []
+            raw_response, response_model = ComplyAdvantageResponse.from_raw(response)
+            if response.status_code != 200 or response_model is None:
+                errors.append(Error.from_provider_error(
+                    response.status_code,
+                    response_model and response_model.message,
+                    response_model and response_model.errors))
+            else:
+                events = events + response_model.to_validated_events(config)
+    except Exception as e:
+        errors = [Error.provider_connection_error(e)]
+
+    session.close()
+    return {
+        'errors': errors,
+        'events': events
+    }
+
+
+def update_monitoring_request(
+        credentials: 'ComplyAdvantageCredentials',
+        search_ids: List[int],
+        monitored: bool) -> dict:
+    session = requests_retry_session()
+    errors = []
+    try:
+        for search_id in search_ids:
+            url = f'{credentials.base_url}/searches/{search_id}/monitors?api_key={credentials.api_key}'
+            response = session.patch(url, json={"is_monitored": monitored})
+
+            response_model = ComplyAdvantageMonitorResponse.from_json(response.json())
+            if response.status_code != 200 or response_model.monitor_status != monitored:
+                errors = [
+                    Error.from_provider_error(response.status_code,
+                                              f'Unable to update monitoring for {search_id}: {response_model.message}')
+                ]
+                break
+    except Exception as e:
+        errors = [Error.provider_connection_error(e)]
+
+    session.close()
+    return {
+        "errors" : errors
+    }
+
+
 def comply_advantage_search_request(
         url: str,
         data: 'ScreeningRequestData',
@@ -71,17 +129,14 @@ def comply_advantage_search_request(
         finally:
             session.close()
 
-        raw_response = {}
         errors = []
-        try:
-            raw_response = response.json()
-        except JSONDecodeError:
-            pass
-
-        response_model = ComplyAdvantageResponse.from_json(raw_response)
-        if response.status_code != 200:
+        raw_response, response_model = ComplyAdvantageResponse.from_raw(response)
+        if response.status_code != 200 or response_model is None:
             errors = [
-                Error.from_provider_error(response.status_code, response_model.message, response_model.errors)
+                Error.from_provider_error(
+                    response.status_code,
+                    response_model and response_model.message,
+                    response_model and response_model.errors)
             ]
 
         all_raw_responses.append(raw_response)
