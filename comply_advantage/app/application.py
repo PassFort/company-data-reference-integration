@@ -4,8 +4,9 @@ import traceback
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 
-from .api.types import validate_model, ScreeningRequest, Error
-from .request_handler import search_request
+from .api.types import validate_model, ScreeningRequest, Error, UpdateMonitoringConfigurationRequest, \
+    ScreeningResultRequest
+from .request_handler import search_request, update_monitoring_request, get_result_by_search_ids
 
 
 app = Flask(__name__)
@@ -74,13 +75,29 @@ def health():
 @app.route('/screening_request', methods=['POST'])
 @validate_model(ScreeningRequest)
 def screen_request(request_data: ScreeningRequest):
-
     return jsonify(search_request(
         request_data.input_data,
         request_data.config,
         request_data.credentials,
         request_data.is_demo
     ))
+
+
+@app.route('/screening_result', methods=['POST'])
+@validate_model(ScreeningResultRequest)
+def screening_result(request_data: ScreeningResultRequest):
+    """
+    To be used for ongoing monitoring, but can equally be used to retrieve the results of any previous search
+    """
+    return jsonify(get_result_by_search_ids(request_data.config, request_data.credentials, request_data.search_ids))
+
+
+@app.route('/config/monitoring', methods=['POST'])
+@validate_model(UpdateMonitoringConfigurationRequest)
+def update_monitoring_config(request_data: UpdateMonitoringConfigurationRequest):
+    return jsonify(
+        update_monitoring_request(request_data.credentials, request_data.search_ids, request_data.monitored)
+    )
 
 
 @app.errorhandler(400)

@@ -1,6 +1,8 @@
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType
+
+from simplejson import JSONDecodeError
 
 from typing import List, TYPE_CHECKING
 
@@ -181,6 +183,14 @@ class ComplyAdvantageResponse(Model):
         model.validate()
         return model
 
+    @classmethod
+    def from_raw(cls, response):
+        try:
+            raw_response = response.json()
+            return raw_response, cls.from_json(raw_response)
+        except JSONDecodeError:
+            return {}, None
+
     def to_validated_events(self, config: ComplyAdvantageConfig):
         if self.content is None:
             return []
@@ -197,3 +207,25 @@ class ComplyAdvantageResponse(Model):
         if self.content is None:
             return None
         return self.content.data.search_id
+
+
+class ComplyAdvantageMonitorContent(Model):
+    is_monitored = BooleanType(required=True)
+
+
+class ComplyAdvantageMonitorResponse(Model):
+    message = StringType(default="")
+    errors = DictType(BaseType, default={})  # Any json
+    content = ModelType(ComplyAdvantageMonitorContent, default=None)
+
+    @classmethod
+    def from_json(cls, data):
+        model = cls().import_data(data, apply_defaults=True)
+        model.validate()
+        return model
+
+    @property
+    def monitor_status(self):
+        if self.content is None:
+            return None
+        return self.content.is_monitored
