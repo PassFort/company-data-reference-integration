@@ -9,7 +9,7 @@ import responses
 import unittest
 
 
-from .request_handler import comply_advantage_search_request
+from .request_handler import comply_advantage_search_request, get_result_by_search_ids
 from .api.types import ScreeningRequestData, ComplyAdvantageConfig, ComplyAdvantageCredentials, ErrorCode
 from .api.internal_types import ComplyAdvantageException
 from .file_utils import get_response_from_file
@@ -135,3 +135,43 @@ class TestPagination(unittest.TestCase):
                 ComplyAdvantageCredentials({
                     'api_key': 'TEST'
                 }), offset=0, limit=3, max_hits=3)
+
+
+class TestGetResults(unittest.TestCase):
+
+    @responses.activate
+    def test_returns_events_from_existing_searches(self):
+        search_ids = []
+        for index in [0, 3, 6]:
+            mock_response = get_response_from_file(f'paginate_test_{index}', folder='test_data')
+            search_id = mock_response["content"]["data"]["id"]
+            search_ids.append(search_id)
+            responses.add(
+                responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}/details', json=mock_response
+            )
+
+        with self.subTest('without adverse media'):
+            result = get_result_by_search_ids(
+                ComplyAdvantageConfig(),
+                ComplyAdvantageCredentials({
+                    'api_key': 'TEST'
+                }),
+                search_ids
+            )
+
+            self.assertEqual(result['errors'], [])
+            self.assertEqual(len(result['events']), 7)
+
+        with self.subTest('with adverse media'):
+            result = get_result_by_search_ids(
+                ComplyAdvantageConfig({
+                    'include_adverse_media': True
+                }),
+                ComplyAdvantageCredentials({
+                    'api_key': 'TEST'
+                }),
+                search_ids
+            )
+
+            self.assertEqual(result['errors'], [])
+            self.assertEqual(len(result['events']), 9)
