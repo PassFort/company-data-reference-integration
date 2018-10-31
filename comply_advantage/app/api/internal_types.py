@@ -7,7 +7,7 @@ from simplejson import JSONDecodeError
 from typing import List, TYPE_CHECKING
 
 from .types import ReferMatchEvent, PepMatchEvent, SanctionsMatchEvent, SanctionData, AdverseMediaMatchEvent, \
-    MediaArticle, ComplyAdvantageConfig
+    MediaArticle, ComplyAdvantageConfig, Associate
 
 if TYPE_CHECKING:
     from .types import MatchEvent
@@ -15,6 +15,15 @@ if TYPE_CHECKING:
 
 class ComplyAdvantageException(Exception):
     pass
+
+
+class ComplyAdvantageAssociate(Model):
+    name = StringType(required=True)
+
+    def as_associate(self):
+        return Associate({
+            'name': self.name
+        })
 
 
 class ComplyAdvantageMatchField(Model):
@@ -75,6 +84,7 @@ class ComplyAdvantageMediaData(Model):
 class ComplyAdvantageMatchData(Model):
     id = StringType(required=True)
     name = StringType(required=True)
+    associates = ListType(ModelType(ComplyAdvantageAssociate), default=[])
     ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields")
     types = ListType(StringType)
     source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
@@ -93,6 +103,7 @@ class ComplyAdvantageMatchData(Model):
             "match_name": self.name,
             "provider_name": "Comply Advantage",
             "match_dates": list(birth_dates),
+            "associates": [a.as_associate() for a in self.associates],
             **extra_fields
         }
 

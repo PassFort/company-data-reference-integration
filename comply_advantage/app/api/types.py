@@ -150,6 +150,10 @@ class CompanyMetadata(Model):
     country_of_incorporation = StringType(default=None)
 
 
+class Associate(Model):
+    name = StringType(required=True)
+
+
 class PepData(Model):
     match = BooleanType()
     tier = IntType(default=None)
@@ -191,6 +195,7 @@ class MatchEvent(Model):
 
     # Additional information
     aliases = ListType(StringType)
+    associates = ListType(ModelType(Associate))
 
     def as_validated_json(self):
         self.validate()
