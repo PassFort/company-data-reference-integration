@@ -193,6 +193,17 @@ class MatchEvent(Model):
 
         return value
 
+    deceased_dates = ListType(StringType)
+    deceased = BooleanType()
+
+    def validate_deceased_dates(self, data, value):
+        if value is None:
+            return None
+        for d_date in value:
+            validate_partial_date(d_date)
+
+        return value
+
     # Additional information
     aliases = ListType(StringType)
     associates = ListType(ModelType(Associate))
@@ -201,6 +212,8 @@ class MatchEvent(Model):
         self.validate()
         return self.to_primitive()
 
+    class Options:
+        serialize_when_none = False
 
 class ReferMatchEvent(MatchEvent):
     event_type = StringType(required=True, choices=['REFER_FLAG'], default='REFER_FLAG')

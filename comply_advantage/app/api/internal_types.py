@@ -32,7 +32,10 @@ class ComplyAdvantageMatchField(Model):
     value = StringType()
 
     def is_dob(self):
-        return self.tag == "date_of_birth"
+        return self.tag == 'date_of_birth'
+
+    def is_dod(self):
+        return self.tag == 'date_of_death'
 
     class Options:
         serialize_when_none = False
@@ -93,6 +96,7 @@ class ComplyAdvantageMatchData(Model):
     def to_events(self, extra_fields: dict, config: ComplyAdvantageConfig) -> List['MatchEvent']:
         events = []
         birth_dates = set(field.value for field in self.ca_fields if field.is_dob())
+        death_dates = set(field.value for field in self.ca_fields if field.is_dod())
 
         is_pep = "pep" in self.types
         is_sanction = "sanction" in self.types
@@ -103,9 +107,13 @@ class ComplyAdvantageMatchData(Model):
             "match_name": self.name,
             "provider_name": "Comply Advantage",
             "match_dates": list(birth_dates),
+            "deceased_dates": list(death_dates),
             "associates": [a.as_associate() for a in self.associates],
             **extra_fields
         }
+
+        if len(death_dates) > 0:
+            base_data["deceased"] = True
 
         if is_pep:
             pep_result = PepMatchEvent().import_data({
