@@ -43,10 +43,12 @@ class TestConvertDataToEvents(unittest.TestCase):
         chavez_model = ComplyAdvantageResponse.from_json(get_response_from_file('hugo_chavez'))
         chavez_events = chavez_model.to_validated_events(ComplyAdvantageConfig())
 
-        print(chavez_events)
-
         with self.subTest('returns a deceased match'):
             self.assertTrue(any([
                 event.get('deceased') and event['deceased_dates'] == ['2013-03-05']
                 for event in chavez_events
             ]))
+
+        with self.subTest('returns other details'):
+            self.assertEqual(len(actual_event['details']), 1)  # Only 1, as they are grouped by name
+            self.assertEqual(actual_event['details']['title'], 'Related Url')

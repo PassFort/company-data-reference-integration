@@ -154,6 +154,11 @@ class Associate(Model):
     name = StringType(required=True)
 
 
+class Detail(Model):
+    title = StringType(required=True)
+    text = StringType(required=True)
+
+
 class PepData(Model):
     match = BooleanType()
     tier = IntType(default=None)
@@ -207,6 +212,7 @@ class MatchEvent(Model):
     # Additional information
     aliases = ListType(StringType)
     associates = ListType(ModelType(Associate))
+    details = ListType(ModelType(Detail))
 
     def as_validated_json(self):
         self.validate()

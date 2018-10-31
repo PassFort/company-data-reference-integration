@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
 from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType
@@ -7,7 +9,7 @@ from simplejson import JSONDecodeError
 from typing import List, TYPE_CHECKING
 
 from .types import ReferMatchEvent, PepMatchEvent, SanctionsMatchEvent, SanctionData, AdverseMediaMatchEvent, \
-    MediaArticle, ComplyAdvantageConfig, Associate
+    MediaArticle, ComplyAdvantageConfig, Associate, Detail
 
 if TYPE_CHECKING:
     from .types import MatchEvent
@@ -27,15 +29,18 @@ class ComplyAdvantageAssociate(Model):
 
 
 class ComplyAdvantageMatchField(Model):
-    name = StringType()
+    name = StringType(default='Other')
     tag = StringType(default=None)
-    value = StringType()
+    value = StringType(required=True)
 
     def is_dob(self):
         return self.tag == 'date_of_birth'
 
     def is_dod(self):
         return self.tag == 'date_of_death'
+
+    def is_detail(self):
+        return not self.is_dob() and not self.is_dod()
 
     class Options:
         serialize_when_none = False
@@ -88,7 +93,7 @@ class ComplyAdvantageMatchData(Model):
     id = StringType(required=True)
     name = StringType(required=True)
     associates = ListType(ModelType(ComplyAdvantageAssociate), default=[])
-    ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields")
+    ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields", default=[])
     types = ListType(StringType)
     source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
     media = ListType(ModelType(ComplyAdvantageMediaData))
@@ -109,6 +114,7 @@ class ComplyAdvantageMatchData(Model):
             "match_dates": list(birth_dates),
             "deceased_dates": list(death_dates),
             "associates": [a.as_associate() for a in self.associates],
+            "details": self.get_details(),
             **extra_fields
         }
 
@@ -146,6 +152,14 @@ class ComplyAdvantageMatchData(Model):
         if len(all_pep_types):
             return int(all_pep_types[0].replace("pep-class-", ""))
         return None
+
+    def get_details(self):
+        grouped_detail_fields = defaultdict(set)
+        for field in self.ca_fields:
+            if field.is_detail():
+                grouped_detail_fields[field.name].add(field.value)
+
+        return [Detail({'title': name, 'text': '; '.join(values)}) for name, values in grouped_detail_fields.items()]
 
 
 class ComplyAdvantageMatch(Model):
