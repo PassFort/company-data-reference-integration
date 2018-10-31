@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
 from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType
@@ -7,7 +9,7 @@ from simplejson import JSONDecodeError
 from typing import List, TYPE_CHECKING
 
 from .types import ReferMatchEvent, PepMatchEvent, SanctionsMatchEvent, SanctionData, AdverseMediaMatchEvent, \
-    MediaArticle, ComplyAdvantageConfig, Associate
+    MediaArticle, ComplyAdvantageConfig, Associate, Detail, Source, TimePeriod
 
 if TYPE_CHECKING:
     from .types import MatchEvent
@@ -27,15 +29,33 @@ class ComplyAdvantageAssociate(Model):
 
 
 class ComplyAdvantageMatchField(Model):
-    name = StringType()
+    name = StringType(default='Other')
     tag = StringType(default=None)
-    value = StringType()
+    value = StringType(required=True)
+    source = StringType(default=None)
 
     def is_dob(self):
         return self.tag == 'date_of_birth'
 
     def is_dod(self):
         return self.tag == 'date_of_death'
+
+    def is_related_url(self):
+        return self.tag == 'related_url'
+
+    def is_detail(self):
+        return not self.is_dob() and not self.is_dod() and not self.is_related_url()
+
+    def as_source(self):
+        if self.is_related_url():
+            return Source({
+                'name': self.name,
+                'url': self.value,
+            })
+        return Source({
+            'name': self.name,
+            'description': self.value
+        })
 
     class Options:
         serialize_when_none = False
@@ -52,18 +72,40 @@ class ComplyAdvantageSourceNote(Model):
     name = StringType(default=None)
     url = StringType(default=None)
     aml_types = ListType(StringType, default=[])
-    country_codes = ListType(StringType)
-    listing_started_utc = UTCDateTimeType()
+    country_codes = ListType(StringType, default=[])
+    listing_started_utc = UTCDateTimeType(default=None)
     listing_ended_utc = UTCDateTimeType(default=None)
 
     def is_sanction(self):
         return len(self.aml_types) and "sanction" in self.aml_types
 
+    def is_current(self):
+        return self.listing_ended_utc is None
+
     def as_sanction_data(self):
         return SanctionData({
-            "type": "sanction",
-            "list": self.name,
-            "is_current": self.listing_ended_utc is None
+            'type': 'sanction',
+            'list': self.name,  # Name is actually the list name
+            'name': self.url,
+            'issuer': ', '.join(set(self.country_codes)),
+            'is_current': self.is_current(),
+            'time_periods': [
+                TimePeriod({
+                    'from_date': self.listing_started_utc.date() if self.listing_started_utc else None,
+                    'to_date': self.listing_ended_utc.date() if self.listing_ended_utc else None
+                })
+            ]
+        })
+
+    def as_source(self):
+        description = None
+        if self.listing_ended_utc:
+            description = f'Ended on {self.listing_ended_utc.date()}'
+
+        return Source({
+            'name': self.name or 'Other',
+            'url': self.url,
+            'description': description
         })
 
 
@@ -88,7 +130,7 @@ class ComplyAdvantageMatchData(Model):
     id = StringType(required=True)
     name = StringType(required=True)
     associates = ListType(ModelType(ComplyAdvantageAssociate), default=[])
-    ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields")
+    ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields", default=[])
     types = ListType(StringType)
     source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
     media = ListType(ModelType(ComplyAdvantageMediaData))
@@ -97,6 +139,8 @@ class ComplyAdvantageMatchData(Model):
         events = []
         birth_dates = set(field.value for field in self.ca_fields if field.is_dob())
         death_dates = set(field.value for field in self.ca_fields if field.is_dod())
+        sources_from_source_notes = [s.as_source() for k, s in self.source_notes.items() if not s.is_sanction()]
+        sources_from_fields = [s.as_source() for s in self.ca_fields if s.is_related_url()]
 
         is_pep = "pep" in self.types
         is_sanction = "sanction" in self.types
@@ -109,6 +153,8 @@ class ComplyAdvantageMatchData(Model):
             "match_dates": list(birth_dates),
             "deceased_dates": list(death_dates),
             "associates": [a.as_associate() for a in self.associates],
+            "details": self.get_details(),
+            "sources": sources_from_source_notes + sources_from_fields,
             **extra_fields
         }
 
@@ -146,6 +192,14 @@ class ComplyAdvantageMatchData(Model):
         if len(all_pep_types):
             return int(all_pep_types[0].replace("pep-class-", ""))
         return None
+
+    def get_details(self):
+        grouped_detail_fields = defaultdict(set)
+        for field in self.ca_fields:
+            if field.is_detail():
+                grouped_detail_fields[field.name].add(field.value)
+
+        return [Detail({'title': name, 'text': '; '.join(values)}) for name, values in grouped_detail_fields.items()]
 
 
 class ComplyAdvantageMatch(Model):
