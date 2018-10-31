@@ -30,3 +30,23 @@ class TestConvertDataToEvents(unittest.TestCase):
             # Check an alias that is different from the actual name
             self.assertTrue('Al Assad Bushra' in actual_event['aliases'])
             self.assertEqual(actual_event['match_name'], "Al Assad Bashar")
+
+        with self.subTest('returns associates'):
+            self.assertEqual(
+                sorted(actual_event['associates'], key=lambda x: x['name'])[0]['name'],
+                'Asma al-Assad')
+
+        with self.subTest('is not deceased'):
+            self.assertNotIn('deceased', actual_event)
+            self.assertNotIn('deceased_dates', actual_event)
+
+        chavez_model = ComplyAdvantageResponse.from_json(get_response_from_file('hugo_chavez'))
+        chavez_events = chavez_model.to_validated_events(ComplyAdvantageConfig())
+
+        print(chavez_events)
+
+        with self.subTest('returns a deceased match'):
+            self.assertTrue(any([
+                event.get('deceased') and event['deceased_dates'] == ['2013-03-05']
+                for event in chavez_events
+            ]))
