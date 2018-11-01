@@ -154,6 +154,25 @@ class Associate(Model):
     name = StringType(required=True)
 
 
+class Detail(Model):
+    title = StringType(required=True)
+    text = StringType(required=True)
+
+
+class Source(Model):
+    name = StringType(required=True)
+    description = StringType()
+    url = StringType()
+
+
+class TimePeriod(Model):
+    from_date = DateType(default=None)
+    to_date = DateType(default=None)
+
+    class Options:
+        serialize_when_none = False
+
+
 class PepData(Model):
     match = BooleanType()
     tier = IntType(default=None)
@@ -165,6 +184,7 @@ class SanctionData(Model):
     name = StringType()
     issuer = StringType()
     is_current = BooleanType()
+    time_periods = ListType(ModelType(TimePeriod))
 
 
 class MediaArticle(Model):
@@ -207,6 +227,8 @@ class MatchEvent(Model):
     # Additional information
     aliases = ListType(StringType)
     associates = ListType(ModelType(Associate))
+    details = ListType(ModelType(Detail))
+    sources = ListType(ModelType(Source))
 
     def as_validated_json(self):
         self.validate()
@@ -214,6 +236,7 @@ class MatchEvent(Model):
 
     class Options:
         serialize_when_none = False
+
 
 class ReferMatchEvent(MatchEvent):
     event_type = StringType(required=True, choices=['REFER_FLAG'], default='REFER_FLAG')
