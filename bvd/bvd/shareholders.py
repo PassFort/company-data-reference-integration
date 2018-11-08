@@ -55,7 +55,7 @@ class Shareholding(BaseObject):
 
 def format_shareholdings(raw_data: Dict[str, str]) -> List[Shareholding]:
     shareholding = Shareholding(raw_data)
-    if shareholding.percentage:
+    if shareholding.percentage is not None:
         return [shareholding]
     return []
 
