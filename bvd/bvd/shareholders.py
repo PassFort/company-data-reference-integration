@@ -53,6 +53,13 @@ class Shareholding(BaseObject):
         self.percentage = format_percentage(raw_data['direct'])
 
 
+def format_shareholdings(raw_data: Dict[str, str]) -> List[Shareholding]:
+    shareholding = Shareholding(raw_data)
+    if shareholding.percentage is not None:
+        return [shareholding]
+    return []
+
+
 class Shareholder(BaseObject):
     bvd_id: str
     bvd9: str
@@ -78,7 +85,7 @@ class Shareholder(BaseObject):
         first_names, last_name = format_shareholders_names(shareholder.type, raw_data)
         shareholder.first_names = first_names
         shareholder.last_name = last_name
-        shareholder.shareholdings = [Shareholding(raw_data)]
+        shareholder.shareholdings = format_shareholdings(raw_data)
         return shareholder
 
 
