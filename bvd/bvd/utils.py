@@ -197,3 +197,24 @@ def get_demo_data(
 
     with open(join(demo_files_path, demo_file_name), 'r') as file:
         return json.load(file)
+
+
+def get_demo_search_data(country_code: str = None, ) -> dict:
+    demo_files_path = join(
+        dirname(dirname(abspath(__file__))), 'demo_data', 'search')
+
+    available_files = [filename for filename in listdir(demo_files_path)]
+    if not available_files:
+        raise BvDServiceException(500, 'Missing demo files')
+
+    demo_file_name = None
+    # Return the matching country.json if it exists, else anything
+    for filename in available_files:
+        if filename[:-5] == country_code:
+            demo_file_name = filename
+            break
+    if demo_file_name is None:
+        demo_file_name = available_files[-1]
+
+    with open(join(demo_files_path, demo_file_name), 'r') as file:
+        return json.load(file)
