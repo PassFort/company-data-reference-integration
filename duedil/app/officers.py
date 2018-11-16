@@ -32,6 +32,9 @@ def request_officers(country_code, company_number, credentials):
 
     status_code, json = base_request(url, credentials, get)
 
+    if status_code == 404:
+        return None, None
+
     if status_code >= 400 and status_code <= 499:
         raise DueDilServiceException(f'received {status_code} error from DueDil')
 

@@ -105,6 +105,13 @@ class TestOfficers(unittest.TestCase):
             request_officers('gb', '100', {})
 
     @responses.activate
+    def test_it_does_not_raise_on_404_status_code(self):
+        url = "/company/gb/100/officers.json"
+        self.mock_get(url=url, json={}, status=404)
+        _, officers = request_officers('gb', '100', {})
+        Assert.equal(None, officers)
+
+    @responses.activate
     def test_formats_officers(self):
         url = "/company/gb/100/officers.json"
         self.mock_get(url=url, json=create_officers_response())

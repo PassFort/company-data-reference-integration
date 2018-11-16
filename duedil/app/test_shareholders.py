@@ -95,6 +95,13 @@ class TestShareholders(unittest.TestCase):
             request_shareholders('gb', '100', {})
 
     @responses.activate
+    def test_does_not_raise_on_404_status_code(self):
+        url = "/company/gb/100/shareholders.json"
+        self.mock_get(url=url, json={}, status=404)
+        _, shareholders = request_shareholders('gb', '100', {})
+        Assert.equal(shareholders, [])
+
+    @responses.activate
     def test_it_raises_on_500_status_code(self):
         url = "/company/gb/100/shareholders.json"
         self.mock_get(url=url, json={}, status=500)

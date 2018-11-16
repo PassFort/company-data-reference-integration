@@ -37,6 +37,9 @@ def request_shareholders(country_code, company_number, credentials):
 
     status_code, json = base_request(url, credentials, get)
 
+    if status_code == 404:
+        return [], []
+
     if status_code >= 400 and status_code <= 499:
         raise(DueDilServiceException(f'Received a {status_code} error from DueDil'))
 
