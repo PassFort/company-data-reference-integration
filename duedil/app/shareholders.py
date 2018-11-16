@@ -35,20 +35,15 @@ def request_shareholders(country_code, company_number, credentials):
 
     url = f'/company/{country_code}/{company_number}/shareholders.json'
 
-    def make_request(**kwargs):
-        status_code, json = base_request(
-            make_url(country_code, company_number, 'shareholders', **kwargs),
-            credentials,
-            get
-        )
-        return status_code, json, json['shareholders']
-
     status_code, json = base_request(url, credentials, get)
-    shareholders = json['shareholders']
+
+    if status_code >= 400 and status_code <= 499:
+        raise(DueDilServiceException(f'Received a {status_code} error from DueDil'))
 
     if status_code != 200:
         return [], []
 
+    shareholders = json['shareholders']
     pagination = json.get('pagination') or {}
 
     pages = paginate(url, pagination, credentials)
