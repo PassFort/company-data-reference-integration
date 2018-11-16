@@ -44,11 +44,14 @@ def request_shareholders(country_code, company_number, credentials):
         return status_code, json, json['shareholders']
 
     status_code, json = base_request(url, credentials, get)
-    shareholders = json['shareholders']
+
+    if status_code >= 400 and status_code <= 499:
+        raise(DueDilServiceException(f'Received a {status_code} error from DueDil'))
 
     if status_code != 200:
         return [], []
 
+    shareholders = json['shareholders']
     pagination = json.get('pagination') or {}
 
     pages = paginate(url, pagination, credentials)
