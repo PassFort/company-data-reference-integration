@@ -6,7 +6,7 @@ from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.entity_type import EntityType
 from passfort_data_structure.entities.role import Role
 
-from app.utils import paginate, base_request, get, DueDilServiceException
+from app.utils import paginate, base_request, get
 
 
 def request_officers(country_code, company_number, credentials):
@@ -31,9 +31,6 @@ def request_officers(country_code, company_number, credentials):
     url = f'/company/{country_code}/{company_number}/officers.json'
 
     status_code, json = base_request(url, credentials, get)
-
-    if status_code >= 400 and status_code <= 499:
-        raise DueDilServiceException(f'received {status_code} error from DueDil')
 
     if status_code != 200:
         return None, None
