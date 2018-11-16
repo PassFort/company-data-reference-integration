@@ -135,18 +135,15 @@ def ownership_check():
 @app.route('/search', methods=['POST'])
 def company_search():
     req_body = request.json
+    input_data = req_body['input_data']
     credentials = req_body['credentials']
-    country = req_body.get('country')
-    query = req_body.get('query')
     is_demo = req_body.get('is_demo')
+
     raw_data = []
     if is_demo:
-        raw_data = get_demo_search_data(country)
+        raw_data = get_demo_search_data(input_data['country'])
     else:
-        raw_data = match(credentials, {
-            'country': country,
-            'query': query,
-        })
+        raw_data = match(credentials, input_data)
 
     candidates = [{
         'name': company['Name'],
