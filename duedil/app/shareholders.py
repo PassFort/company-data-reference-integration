@@ -35,6 +35,14 @@ def request_shareholders(country_code, company_number, credentials):
 
     url = f'/company/{country_code}/{company_number}/shareholders.json'
 
+    def make_request(**kwargs):
+        status_code, json = base_request(
+            make_url(country_code, company_number, 'shareholders', **kwargs),
+            credentials,
+            get
+        )
+        return status_code, json, json['shareholders']
+
     status_code, json = base_request(url, credentials, get)
 
     if status_code >= 400 and status_code <= 499:
