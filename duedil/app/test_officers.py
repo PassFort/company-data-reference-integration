@@ -4,12 +4,10 @@ import responses  # type: ignore
 import requests
 
 from flask import json
-from requests.exceptions import HTTPError
 from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.role import Role
 from passfort_data_structure.entities.entity_type import EntityType
 from app.officers import request_officers
-from app.utils import DueDilServiceException
 from dassert import Assert
 
 
@@ -82,27 +80,6 @@ class TestOfficers(unittest.TestCase):
 
         request_officers('gb', '100', {})
         Assert.equal(len(responses.calls), 5)
-
-    @responses.activate
-    def test_it_raises_on_5xx_status_codes(self):
-        url = "/company/gb/100/officers.json"
-        self.mock_get(url=url, json={}, status=500)
-        with self.assertRaises(HTTPError):
-            request_officers('gb', '100', {})
-
-    @responses.activate
-    def test_it_raises_on_403_status_code(self):
-        url = "/company/gb/100/officers.json"
-        self.mock_get(url=url, json={}, status=403)
-        with self.assertRaises(DueDilServiceException):
-            request_officers('gb', '100', {})
-
-    @responses.activate
-    def test_it_raises_on_401_status_code(self):
-        url = "/company/gb/100/officers.json"
-        self.mock_get(url=url, json={}, status=401)
-        with self.assertRaises(DueDilServiceException):
-            request_officers('gb', '100', {})
 
     @responses.activate
     def test_formats_officers(self):
