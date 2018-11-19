@@ -5,7 +5,7 @@ from functools import reduce
 from passfort_data_structure.companies.ownership import Shareholder
 from passfort_data_structure.entities.entity_type import EntityType
 
-from app.utils import get, get_entity_type, DueDilServiceException, convert_country_code, make_url, \
+from app.utils import get, get_entity_type, DueDilAuthException, DueDilServiceException, convert_country_code, make_url, \
     paginate, base_request, send_exception
 
 
@@ -39,6 +39,9 @@ def request_shareholders(country_code, company_number, credentials):
 
     if status_code == 404:
         return [], []
+
+    if status_code == 401 or status_code == 403:
+        raise DueDilAuthException()
 
     if status_code >= 400 and status_code <= 499:
         raise(DueDilServiceException(f'Received a {status_code} error from DueDil'))
