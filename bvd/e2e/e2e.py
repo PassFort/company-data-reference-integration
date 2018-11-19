@@ -290,7 +290,7 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         result = response.json()
 
-        self.assertEqual(len(result), 4)
+        self.assertEqual(len(result), 3)
         passfort_results = [x for x in result if x['NationalId'] == '09565115']
         self.assertEqual(len(passfort_results), 1)
         self.assertEqual(passfort_results[0]['Name'], 'PASSFORT LIMITED')
