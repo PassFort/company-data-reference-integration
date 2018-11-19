@@ -5,7 +5,7 @@ from raven.contrib.flask import Sentry
 from bvd.format_utils import CustomJSONEncoder
 from bvd.utils import match, get_data, get_query_string, BvDServiceException, \
     REQUEST_EXCEPTIONS, BvDEmptyResponseException, BvDError, \
-    get_demo_data, get_demo_search_data, match
+    get_demo_data, get_demo_search_data, match, country_alpha2to3
 from bvd.registry import format_registry_data
 from bvd.ownership import format_ownership_data
 
@@ -147,7 +147,7 @@ def company_search():
     candidates = [{
         'name': company['Name'],
         'number': company['NationalId'],
-        'country': company['Country'],
+        'country': country_alpha2to3(company['Country']),
         'bvd_id': company['BvDID'],
         'bvd9': company['BvD9'],
         'status': company.get('Status', 'Unknown'),

@@ -276,3 +276,25 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
 
         self.assertTrue(len(shareholders) > 0)
+
+    def test_sucess_demo_company_search(self):
+        response = requests.post(API_URL + '/search', json={
+            'input_data': {
+                'country': 'GBR',
+                'query': 'Passfort',
+            },
+            'credentials': CREDENTIALS,
+            'is_demo': True,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+
+        self.assertEqual(len(result), 4)
+        passfort_results = [x for x in result if x['NationalId'] == '09565115']
+        self.assertEqual(len(passfort_results), 1)
+        self.assertEqual(passfort_results[0]['Name'], 'PASSFORT LIMITED')
+        self.assertEqual(passfort_results[0]['City'], 'LONDON')
+        self.assertEqual(passfort_results[0]['Country'], 'GB')
+        self.assertEqual(passfort_results[0]['Status'], 'Active')
+

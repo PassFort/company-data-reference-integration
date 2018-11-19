@@ -8,6 +8,7 @@ from json import JSONDecodeError
 from os import listdir
 from os.path import dirname, abspath, join, splitext
 from datetime import datetime
+from pycountry import countries
 
 from bvd.format_utils import BaseObject
 
@@ -218,3 +219,13 @@ def get_demo_search_data(country_code: str = None, ) -> dict:
 
     with open(join(demo_files_path, demo_file_name), 'r') as file:
         return json.load(file)
+
+
+def country_alpha2to3(alpha2):
+    """Convert an alpha2 country code to alpha3"""
+    try:
+        country = countries.get(alpha_2=alpha2)
+        return country.alpha_3
+    except KeyError:
+        return None
+    
