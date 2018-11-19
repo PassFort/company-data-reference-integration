@@ -281,7 +281,7 @@ class EndToEndTests(unittest.TestCase):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
                 'country': 'GBR',
-                'query': 'Passfort',
+                'name': 'Passfort',
             },
             'credentials': CREDENTIALS,
             'is_demo': True,
@@ -301,7 +301,7 @@ class EndToEndTests(unittest.TestCase):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
                 'country': 'SAU',
-                'query': 'Passfort',
+                'name': 'Passfort',
             },
             'credentials': CREDENTIALS,
             'is_demo': True,
@@ -316,7 +316,7 @@ class EndToEndTests(unittest.TestCase):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
                 'country': 'GB',
-                'query': 'Passfort',
+                'name': 'Passfort',
             },
             'credentials': CREDENTIALS,
             'is_demo': False,
@@ -336,7 +336,7 @@ class EndToEndTests(unittest.TestCase):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
                 'country': 'SAU',
-                'query': 'QWERTYQWERTYQWERTY',
+                'name': 'QWERTYQWERTYQWERTY',
             },
             'credentials': CREDENTIALS,
             'is_demo': False,
@@ -351,7 +351,7 @@ class EndToEndTests(unittest.TestCase):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
                 'country': 'GBR',
-                'query': 'Passfort',
+                'name': 'Passfort',
             },
             'credentials': BAD_CREDENTIALS,
             'is_demo': False,
