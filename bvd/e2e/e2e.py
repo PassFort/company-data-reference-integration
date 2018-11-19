@@ -291,12 +291,11 @@ class EndToEndTests(unittest.TestCase):
         result = response.json()['output_data']
 
         self.assertEqual(len(result), 3)
-        passfort_results = [x for x in result if x['NationalId'] == '09565115']
+        passfort_results = [x for x in result if x['number'] == '09565115']
         self.assertEqual(len(passfort_results), 1)
-        self.assertEqual(passfort_results[0]['Name'], 'PASSFORT LIMITED')
-        self.assertEqual(passfort_results[0]['City'], 'LONDON')
-        self.assertEqual(passfort_results[0]['Country'], 'GB')
-        self.assertEqual(passfort_results[0]['Status'], 'Active')
+        self.assertEqual(passfort_results[0]['name'], 'PASSFORT LIMITED')
+        self.assertEqual(passfort_results[0]['country'], 'GBR')
+        self.assertEqual(passfort_results[0]['status'], 'Active')
 
     def test_failure_demo_company_search(self):
         response = requests.post(API_URL + '/search', json={
@@ -311,12 +310,12 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         result = response.json()['output_data']
 
-        self.assertEqual(len(result), 0)
+        self.assertEqual(len(result), 3)
 
     def test_success_company_search(self):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
-                'country': 'GBR',
+                'country': 'GB',
                 'query': 'Passfort',
             },
             'credentials': CREDENTIALS,
@@ -327,12 +326,11 @@ class EndToEndTests(unittest.TestCase):
         result = response.json()['output_data']
 
         self.assertGreater(len(result), 0)
-        passforts = [x for x in result if x['NationalId'] == '09565115']
+        passforts = [x for x in result if x['number'] == '09565115']
         self.assertEqual(len(passforts), 1)
-        self.assertEqual(passforts[0]['Name'], 'PASSFORT LIMITED')
-        self.assertEqual(passforts[0]['City'], 'LONDON')
-        self.assertEqual(passforts[0]['Country'], 'GB')
-        self.assertEqual(passforts[0]['Status'], 'Active')
+        self.assertEqual(passforts[0]['name'], 'PASSFORT LIMITED')
+        self.assertEqual(passforts[0]['country'], 'GBR')
+        self.assertEqual(passforts[0]['status'], 'Active')
 
     def test_failure_company_search(self):
         response = requests.post(API_URL + '/search', json={

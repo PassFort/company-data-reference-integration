@@ -140,11 +140,16 @@ def company_search():
 
     raw_data = []
     error = None
+
+    query_data = {
+        'name': input_data['query'],
+        'country': input_data['country'],
+    }
     if is_demo:
         raw_data = get_demo_search_data(input_data['country'])
     else:
         try:
-            raw_data = match(credentials, input_data)
+            raw_data = match(credentials, query_data)
         except Exception as e:
             error = BvDError(e)
 
