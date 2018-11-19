@@ -6,6 +6,10 @@ from passfort_data_structure.entities.entity_type import EntityType
 BASE_API = 'https://duedil.io/v4'
 
 
+class DueDilAuthException(Exception):
+    pass
+
+
 class DueDilServiceException(Exception):
     pass
 

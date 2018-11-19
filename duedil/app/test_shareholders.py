@@ -7,7 +7,7 @@ from flask import json
 from requests.exceptions import HTTPError
 from passfort_data_structure.companies.ownership import Shareholder
 from app.shareholders import request_shareholders
-from app.utils import DueDilServiceException
+from app.utils import DueDilAuthException, DueDilServiceException
 from dassert import Assert
 
 
@@ -84,14 +84,14 @@ class TestShareholders(unittest.TestCase):
     def test_it_raises_on_401_status_code(self):
         url = "/company/gb/100/shareholders.json"
         self.mock_get(url=url, json={}, status=401)
-        with self.assertRaises(DueDilServiceException):
+        with self.assertRaises(DueDilAuthException):
             request_shareholders('gb', '100', {})
 
     @responses.activate
     def test_it_raises_on_403_status_code(self):
         url = "/company/gb/100/shareholders.json"
         self.mock_get(url=url, json={}, status=403)
-        with self.assertRaises(DueDilServiceException):
+        with self.assertRaises(DueDilAuthException):
             request_shareholders('gb', '100', {})
 
     @responses.activate

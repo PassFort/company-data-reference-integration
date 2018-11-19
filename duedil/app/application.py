@@ -13,7 +13,7 @@ from app.companies import request_company_search
 from app.officers import request_officers
 from app.metadata import get_metadata, CompanyTypeError
 from app.shareholders import request_shareholders
-from app.utils import DueDilServiceException
+from app.utils import DueDilAuthException, DueDilServiceException
 from app.charities import get_charity
 
 app = Flask(__name__)
@@ -110,7 +110,11 @@ def registry_check():
     try:
         if metadata is not None:
             raw_officers, officers = request_officers(country_code, company_number, credentials)
-    except base_request_exceptions as e:
+    except DueDilAuthException:
+        errors.append(
+            ProviderError.provider_connection_error('DueDil', 'Failed to authorise for officers request')
+        )
+    except base_request_exceptions:
         errors.append(
             ProviderError.provider_connection_error('DueDil', 'Officers request failed')
         )
@@ -165,6 +169,10 @@ def ownership_check():
 
     try:
         raw_shareholders, shareholders = request_shareholders(country_code, company_number, credentials)
+    except DueDilAuthException:
+        return jsonify(errors=coerce_untracked([
+            ProviderError.provider_connection_error('DueDil', 'Failed to authorise for officers request')
+        ]))
     except base_request_exceptions:
         return jsonify(errors=coerce_untracked([
             ProviderError.provider_connection_error('DueDil', '- Shareholders request failed')
