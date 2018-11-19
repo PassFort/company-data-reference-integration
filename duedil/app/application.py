@@ -156,7 +156,7 @@ def ownership_check():
         _, metadata = get_metadata(country_code, company_number, credentials)
         if not metadata:
             return jsonify(output_data=None, raw=None, errors=None, price=0)
-    except base_request_exceptions as e:
+    except base_request_exceptions:
         return jsonify(errors=coerce_untracked([
             ProviderError.provider_connection_error('DueDil', '- Company metdata request failed')
         ]))
