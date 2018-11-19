@@ -139,10 +139,14 @@ def company_search():
     is_demo = req_body.get('is_demo')
 
     raw_data = []
+    error = None
     if is_demo:
         raw_data = get_demo_search_data(input_data['country'])
     else:
-        raw_data = match(credentials, input_data)
+        try:
+            raw_data = match(credentials, input_data)
+        except Exception as e:
+            error = BvDError(e)
 
     candidates = [{
         'name': company['Name'],
@@ -156,7 +160,7 @@ def company_search():
     returnval = jsonify(
         output_data=candidates,
         raw=raw_data,
-        errors=[]
+        errors=[error] if error else [],
     )
 
     return returnval

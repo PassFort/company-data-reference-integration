@@ -277,7 +277,7 @@ class EndToEndTests(unittest.TestCase):
 
         self.assertTrue(len(shareholders) > 0)
 
-    def test_sucess_demo_company_search(self):
+    def test_success_demo_company_search(self):
         response = requests.post(API_URL + '/search', json={
             'input_data': {
                 'country': 'GBR',
@@ -288,7 +288,7 @@ class EndToEndTests(unittest.TestCase):
         })
 
         self.assertEqual(response.status_code, 200)
-        result = response.json()
+        result = response.json()['output_data']
 
         self.assertEqual(len(result), 3)
         passfort_results = [x for x in result if x['NationalId'] == '09565115']
@@ -298,3 +298,74 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(passfort_results[0]['Country'], 'GB')
         self.assertEqual(passfort_results[0]['Status'], 'Active')
 
+    def test_failure_demo_company_search(self):
+        response = requests.post(API_URL + '/search', json={
+            'input_data': {
+                'country': 'SAU',
+                'query': 'Passfort',
+            },
+            'credentials': CREDENTIALS,
+            'is_demo': True,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()['output_data']
+
+        self.assertEqual(len(result), 0)
+
+    def test_success_company_search(self):
+        response = requests.post(API_URL + '/search', json={
+            'input_data': {
+                'country': 'GBR',
+                'query': 'Passfort',
+            },
+            'credentials': CREDENTIALS,
+            'is_demo': False,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()['output_data']
+
+        self.assertGreater(len(result), 0)
+        passforts = [x for x in result if x['NationalId'] == '09565115']
+        self.assertEqual(len(passforts), 1)
+        self.assertEqual(passforts[0]['Name'], 'PASSFORT LIMITED')
+        self.assertEqual(passforts[0]['City'], 'LONDON')
+        self.assertEqual(passforts[0]['Country'], 'GB')
+        self.assertEqual(passforts[0]['Status'], 'Active')
+
+    def test_failure_company_search(self):
+        response = requests.post(API_URL + '/search', json={
+            'input_data': {
+                'country': 'SAU',
+                'query': 'QWERTYQWERTYQWERTY',
+            },
+            'credentials': CREDENTIALS,
+            'is_demo': False,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()['output_data']
+
+        self.assertEqual(len(result), 0)
+
+    def test_error_company_search(self):
+        response = requests.post(API_URL + '/search', json={
+            'input_data': {
+                'country': 'GBR',
+                'query': 'Passfort',
+            },
+            'credentials': BAD_CREDENTIALS,
+            'is_demo': False,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+
+        self.assertEqual(len(result['errors']), 1)
+
+        error = result['errors'][0]
+        # Has connection_error error code
+        self.assertEqual(error['code'], 302)
+        self.assertEqual(error['source'], 'PROVIDER')
+        self.assertEqual(error['info']['provider'], 'BvD')
