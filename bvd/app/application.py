@@ -1,5 +1,4 @@
 import os
-import logging
 from flask import Flask, jsonify, request
 from raven.contrib.flask import Sentry
 
@@ -151,7 +150,13 @@ def company_search():
         'country': company['Country'],
         'bvd_id': company['BvDID'],
         'bvd9': company['BvD9'],
-        'status': company['status'],
+        'status': company.get('Status', 'Unknown'),
     } for company in raw_data if company.get('NationalId')]
 
-    return jsonify(candidates)
+    returnval = jsonify(
+        output_data=candidates,
+        raw=raw_data,
+        errors=[]
+    )
+
+    return returnval
