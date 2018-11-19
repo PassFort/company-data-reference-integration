@@ -21,9 +21,7 @@ class BvDServiceException(Exception):
 
 
 class BvDAuthException(BvDServiceException):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
+    pass
 
 CompanyRawData = Dict[str, Optional[Any]]
 MatchCriteria = Dict[str, str]
