@@ -9,7 +9,7 @@ from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.role import Role
 from passfort_data_structure.entities.entity_type import EntityType
 from app.officers import request_officers
-from app.utils import DueDilServiceException
+from app.utils import DueDilAuthException, DueDilServiceException
 from dassert import Assert
 
 
@@ -94,14 +94,14 @@ class TestOfficers(unittest.TestCase):
     def test_it_raises_on_403_status_code(self):
         url = "/company/gb/100/officers.json"
         self.mock_get(url=url, json={}, status=403)
-        with self.assertRaises(DueDilServiceException):
+        with self.assertRaises(DueDilAuthException):
             request_officers('gb', '100', {})
 
     @responses.activate
     def test_it_raises_on_401_status_code(self):
         url = "/company/gb/100/officers.json"
         self.mock_get(url=url, json={}, status=401)
-        with self.assertRaises(DueDilServiceException):
+        with self.assertRaises(DueDilAuthException):
             request_officers('gb', '100', {})
 
     @responses.activate
