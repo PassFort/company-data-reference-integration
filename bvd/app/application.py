@@ -157,7 +157,7 @@ def company_search():
         'bvd_id': company['BvDID'],
         'bvd9': company['BvD9'],
         'status': company.get('Status', 'Unknown'),
-    } for company in raw_data if company.get('NationalId')]
+    } for company in raw_data if company.get('BvDID')]
 
     returnval = jsonify(
         output_data=candidates,
