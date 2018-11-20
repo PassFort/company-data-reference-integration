@@ -20,6 +20,9 @@ class BvDServiceException(Exception):
         self.message = message
 
 
+class BvDAuthException(BvDServiceException):
+    pass
+
 CompanyRawData = Dict[str, Optional[Any]]
 MatchCriteria = Dict[str, str]
 BvDConfig = Dict[str, str]
@@ -47,7 +50,9 @@ class BvDError(BaseObject):
 
     def __init__(self, e):
         self.source = 'PROVIDER'
-        if isinstance(e, REQUEST_EXCEPTIONS) or isinstance(e, BvDInvalidConfigException):
+        if isinstance(e, REQUEST_EXCEPTIONS)\
+           or isinstance(e, BvDInvalidConfigException)\
+           or isinstance(e, BvDAuthException):
             self.code = BvDErrorConnectionError
         else:
             self.code = BvDErrorUnknownError
@@ -125,6 +130,9 @@ def send_request(config: BvDConfig, url: str, payload: Optional[dict]) -> List[C
         lambda: post(full_url, headers=headers, json=payload, timeout=30),
         (RequestException, JSONDecodeError)
     )
+
+    if response.status_code in {401, 403}:
+        raise BvDAuthException(response.status_code, 'Failed to authorise for BvD request')
 
     if response.status_code >= 400:
         raise make_response_exception(response)
