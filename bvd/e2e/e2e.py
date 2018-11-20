@@ -290,7 +290,7 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         result = response.json()['output_data']
 
-        self.assertEqual(len(result), 3)
+        self.assertEqual(len(result), 4)
         passfort_results = [x for x in result if x['number'] == '09565115']
         self.assertEqual(len(passfort_results), 1)
         self.assertEqual(passfort_results[0]['name'], 'PASSFORT LIMITED')
@@ -310,7 +310,7 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         result = response.json()['output_data']
 
-        self.assertEqual(len(result), 3)
+        self.assertEqual(len(result), 4)
 
     def test_success_company_search(self):
         response = requests.post(API_URL + '/search', json={
