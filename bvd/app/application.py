@@ -1,4 +1,5 @@
 import os
+import logging
 from flask import Flask, jsonify, request
 from raven.contrib.flask import Sentry
 
