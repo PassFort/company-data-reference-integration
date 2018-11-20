@@ -1,7 +1,8 @@
 from unittest import TestCase
 from mock import patch
 
-from bvd.utils import send_request, BvDServiceException, match, BvDInvalidConfigException, get_data
+from bvd.utils import send_request, BvDServiceException, match, BvDInvalidConfigException, get_data, \
+    get_demo_search_data
 
 
 class MockResponse:
@@ -121,3 +122,17 @@ class TestUtils(TestCase):
 
                 self.assertEqual(status, 200)
                 self.assertEqual(retval, empty_response)
+
+    def test_get_demo_search_data(self):
+        demo_data = get_demo_search_data('GBR')
+        self.assertTrue(len(demo_data) > 0)
+
+        passfort = [x for x in demo_data
+                    if x['Name'] == 'PASSFORT LIMITED'
+                    and x['NationalId'] is not None]
+
+        self.assertEqual(len(passfort), 1)
+        passfort = passfort[0]
+
+        self.assertEqual(passfort['NationalId'], '09565115')
+        
