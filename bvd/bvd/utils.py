@@ -8,6 +8,7 @@ from json import JSONDecodeError
 from os import listdir
 from os.path import dirname, abspath, join, splitext
 from datetime import datetime
+from pycountry import countries
 
 from bvd.format_utils import BaseObject
 
@@ -19,6 +20,9 @@ class BvDServiceException(Exception):
         self.status_code = status_code
         self.message = message
 
+
+class BvDAuthException(BvDServiceException):
+    pass
 
 CompanyRawData = Dict[str, Optional[Any]]
 MatchCriteria = Dict[str, str]
@@ -47,7 +51,9 @@ class BvDError(BaseObject):
 
     def __init__(self, e):
         self.source = 'PROVIDER'
-        if isinstance(e, REQUEST_EXCEPTIONS) or isinstance(e, BvDInvalidConfigException):
+        if isinstance(e, REQUEST_EXCEPTIONS)\
+           or isinstance(e, BvDInvalidConfigException)\
+           or isinstance(e, BvDAuthException):
             self.code = BvDErrorConnectionError
         else:
             self.code = BvDErrorUnknownError
@@ -126,6 +132,9 @@ def send_request(config: BvDConfig, url: str, payload: Optional[dict]) -> List[C
         (RequestException, JSONDecodeError)
     )
 
+    if response.status_code in {401, 403}:
+        raise BvDAuthException(response.status_code, 'Failed to authorise for BvD request')
+
     if response.status_code >= 400:
         raise make_response_exception(response)
 
@@ -197,3 +206,34 @@ def get_demo_data(
 
     with open(join(demo_files_path, demo_file_name), 'r') as file:
         return json.load(file)
+
+
+def get_demo_search_data(country_code: str = None, ) -> dict:
+    demo_files_path = join(
+        dirname(dirname(abspath(__file__))), 'demo_data', 'search')
+
+    available_files = [filename for filename in listdir(demo_files_path)]
+    if not available_files:
+        raise BvDServiceException(500, 'Missing demo files')
+
+    demo_file_name = None
+    # Return the matching country.json if it exists, else anything
+    for filename in available_files:
+        if filename[:-5] == country_code:
+            demo_file_name = filename
+            break
+    if demo_file_name is None:
+        demo_file_name = available_files[-1]
+
+    with open(join(demo_files_path, demo_file_name), 'r') as file:
+        return json.load(file)
+
+
+def country_alpha2to3(alpha2):
+    """Convert an alpha2 country code to alpha3"""
+    try:
+        country = countries.get(alpha_2=alpha2)
+        return country.alpha_3
+    except KeyError:
+        return None
+    

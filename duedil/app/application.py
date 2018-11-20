@@ -112,7 +112,7 @@ def registry_check():
             raw_officers, officers = request_officers(country_code, company_number, credentials)
     except DueDilAuthException:
         errors.append(
-            ProviderError.provider_connection_error('DueDil', 'Failed to authorise for officers request')
+            ProviderError.provider_connection_error('DueDil', '- Failed to authorise for officers request')
         )
     except base_request_exceptions:
         errors.append(
@@ -171,7 +171,7 @@ def ownership_check():
         raw_shareholders, shareholders = request_shareholders(country_code, company_number, credentials)
     except DueDilAuthException:
         return jsonify(errors=coerce_untracked([
-            ProviderError.provider_connection_error('DueDil', 'Failed to authorise for officers request')
+            ProviderError.provider_connection_error('DueDil', '- Failed to authorise for shareholders request')
         ]))
     except base_request_exceptions:
         return jsonify(errors=coerce_untracked([

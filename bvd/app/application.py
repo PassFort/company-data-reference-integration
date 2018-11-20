@@ -5,7 +5,8 @@ from raven.contrib.flask import Sentry
 
 from bvd.format_utils import CustomJSONEncoder
 from bvd.utils import match, get_data, get_query_string, BvDServiceException, \
-    REQUEST_EXCEPTIONS, BvDEmptyResponseException, BvDError, get_demo_data
+    REQUEST_EXCEPTIONS, BvDEmptyResponseException, BvDError, \
+    get_demo_data, get_demo_search_data, match, country_alpha2to3
 from bvd.registry import format_registry_data
 from bvd.ownership import format_ownership_data
 
@@ -129,3 +130,39 @@ def ownership_check():
         errors=[error] if error else [],
         price=0,
     )
+
+
+@app.route('/search', methods=['POST'])
+def company_search():
+    req_body = request.json
+    input_data = req_body['input_data']
+    credentials = req_body['credentials']
+    is_demo = req_body.get('is_demo')
+
+    raw_data = []
+    error = None
+
+    if is_demo:
+        raw_data = get_demo_search_data(input_data['country'])
+    else:
+        try:
+            raw_data = match(credentials, input_data)
+        except Exception as e:
+            error = BvDError(e)
+
+    candidates = [{
+        'name': company['Name'],
+        'number': company['NationalId'],
+        'country': country_alpha2to3(company['Country']),
+        'bvd_id': company['BvDID'],
+        'bvd9': company['BvD9'],
+        'status': company.get('Status', 'Unknown'),
+    } for company in raw_data if company.get('NationalId')]
+
+    returnval = jsonify(
+        output_data=candidates,
+        raw=raw_data,
+        errors=[error] if error else [],
+    )
+
+    return returnval
