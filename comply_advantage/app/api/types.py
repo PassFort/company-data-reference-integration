@@ -335,7 +335,6 @@ class ScreeningRequestData(Model):
             "offset": offset,
             "limit": limit,
             "filters": {
-                "entity_type": self.comply_advantage_entity_type,
                 "types": type_filter
             }
         }
