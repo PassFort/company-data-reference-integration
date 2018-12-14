@@ -173,7 +173,7 @@ def comply_advantage_search_request(
             }
 
     raise ComplyAdvantageException(f"Reached max limit of hits to process - "
-                                   f"{formatted_data}")
+                                   f"{search_request_data.search_format} - {offset} - {limit}")
 
 
 def get_demo_data(data: 'ScreeningRequestData', config: 'ComplyAdvantageConfig'):

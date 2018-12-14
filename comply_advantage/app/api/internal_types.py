@@ -2,8 +2,7 @@ from collections import defaultdict
 
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType, DecimalType, \
-    NumberType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType, DecimalType
 
 from simplejson import JSONDecodeError
 
@@ -227,7 +226,7 @@ class ComplyAdvantageMatch(Model):
 class ComplyAdvantageFilters(Model):
     types = ListType(StringType, required=True)
     fuzziness = DecimalType(required=True)
-    birth_year = NumberType(default=None)
+    birth_year = IntType(default=None)
 
 
 class ComplyAdvantageResponseData(Model):
