@@ -323,26 +323,6 @@ class ScreeningRequestData(Model):
             return self.personal_details.name.combine()
         return self.metadata.name
 
-    def to_provider_format(self, config: ComplyAdvantageConfig, offset=0, limit=100):
-        type_filter = ["pep", "sanction"]
-
-        if config.include_adverse_media:
-            type_filter = type_filter + ["adverse-media", "warning", "fitness-probity"]
-
-        base_format = {
-            "search_term": self.search_term,
-            "fuzziness": config.fuzziness,
-            "offset": offset,
-            "limit": limit,
-            "filters": {
-                "types": type_filter
-            }
-        }
-        if self.entity_type == 'INDIVIDUAL':
-            if self.personal_details.dob:
-                base_format['filters']['birth_year'] = self.personal_details.year_from_dob()
-        return base_format
-
     class Options:
         serialize_when_none = False
 

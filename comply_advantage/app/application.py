@@ -102,6 +102,7 @@ def update_monitoring_config(request_data: UpdateMonitoringConfigurationRequest)
 
 @app.errorhandler(400)
 def api_400(error):
+    logging.error(error.description)
     return jsonify(errors=[error.description]), 400
 
 

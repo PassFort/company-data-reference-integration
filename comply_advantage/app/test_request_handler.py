@@ -11,7 +11,7 @@ import unittest
 
 from .request_handler import comply_advantage_search_request, get_result_by_search_ids
 from .api.types import ScreeningRequestData, ComplyAdvantageConfig, ComplyAdvantageCredentials, ErrorCode
-from .api.internal_types import ComplyAdvantageException
+from .api.internal_types import ComplyAdvantageException, ComplyAdvantageSearchRequest
 from .file_utils import get_response_from_file
 
 TEST_SCREENING_DATA = ScreeningRequestData({
@@ -32,7 +32,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
     def test_bad_key_resturns_configuration_error(self):
         result = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
-            TEST_SCREENING_DATA,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
             ComplyAdvantageConfig(),
             ComplyAdvantageCredentials({
                 'api_key': 'TEST'
@@ -44,7 +44,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         # Not setting a response will make the unreachable
         result = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
-            TEST_SCREENING_DATA,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
             ComplyAdvantageConfig(),
             ComplyAdvantageCredentials({
                 'api_key': 'TEST'
@@ -63,7 +63,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
             status=400)
         result = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
-            TEST_SCREENING_DATA,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
             ComplyAdvantageConfig(),
             credentials)
         self.assertEqual(result['errors'][0]['code'], ErrorCode.PROVIDER_UNKNOWN_ERROR.value)
@@ -93,7 +93,7 @@ class TestPagination(unittest.TestCase):
 
         result = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
-            TEST_SCREENING_DATA,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
             ComplyAdvantageConfig(),
             ComplyAdvantageCredentials({
                 'api_key': 'TEST'
@@ -105,7 +105,7 @@ class TestPagination(unittest.TestCase):
 
         result_from_non_paginated = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
-            TEST_SCREENING_DATA,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
             ComplyAdvantageConfig(),
             ComplyAdvantageCredentials({
                 'api_key': 'TEST'
@@ -130,7 +130,7 @@ class TestPagination(unittest.TestCase):
         with self.assertRaises(ComplyAdvantageException):
             comply_advantage_search_request(
                 SEARCH_REQUEST_URL,
-                TEST_SCREENING_DATA,
+                ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
                 ComplyAdvantageConfig(),
                 ComplyAdvantageCredentials({
                     'api_key': 'TEST'
@@ -142,13 +142,16 @@ class TestGetResults(unittest.TestCase):
     @responses.activate
     def test_returns_events_from_existing_searches(self):
         search_ids = []
-        for index in [0, 3, 6]:
-            mock_response = get_response_from_file(f'paginate_test_{index}', folder='test_data')
-            search_id = mock_response["content"]["data"]["id"]
-            search_ids.append(search_id)
-            responses.add(
-                responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}/details', json=mock_response
-            )
+
+        mock_response = get_response_from_file(f'paginate_test_full', folder='test_data')
+        search_id = mock_response["content"]["data"]["id"]
+        search_ids.append(search_id)
+        responses.add(
+            responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}', json=mock_response
+        )
+        responses.add(
+            responses.POST, f'{SEARCH_REQUEST_URL}', json=mock_response
+        )
 
         with self.subTest('without adverse media'):
             result = get_result_by_search_ids(

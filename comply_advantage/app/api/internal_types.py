@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType, DecimalType
 
 from simplejson import JSONDecodeError
 
@@ -12,7 +12,7 @@ from .types import ReferMatchEvent, PepMatchEvent, SanctionsMatchEvent, Sanction
     MediaArticle, ComplyAdvantageConfig, Associate, Detail, Source, TimePeriod
 
 if TYPE_CHECKING:
-    from .types import MatchEvent
+    from .types import MatchEvent, ScreeningRequestData
 
 
 class ComplyAdvantageException(Exception):
@@ -223,12 +223,21 @@ class ComplyAdvantageMatch(Model):
             config)
 
 
+class ComplyAdvantageFilters(Model):
+    types = ListType(StringType, required=True)
+    fuzziness = DecimalType(required=True)
+    birth_year = IntType(default=None)
+
+
 class ComplyAdvantageResponseData(Model):
     hits = ListType(ModelType(ComplyAdvantageMatch), default=[])
     total_hits = IntType(default=0)
     offset = IntType(default=0)
     limit = IntType(default=0)
     search_id = IntType(required=True, serialized_name="id")
+
+    filters = ModelType(ComplyAdvantageFilters, default={})
+    search_term = StringType(default=None)
 
     def to_events(self, config: ComplyAdvantageConfig):
         events = []
@@ -239,6 +248,52 @@ class ComplyAdvantageResponseData(Model):
 
     def has_more_hits(self):
         return self.offset + self.limit < self.total_hits
+
+
+class ComplyAdvantageSearchRequest:
+
+    def __init__(self, search_format):
+        self.search_format = search_format
+
+    @classmethod
+    def build_request(cls, search_term, fuzziness, type_filter, birth_year=None):
+        base_format = {
+            "search_term": search_term,
+            "fuzziness": fuzziness,
+            "filters": {
+                "types": type_filter
+            }
+        }
+        if birth_year:
+            base_format['filters']['birth_year'] = birth_year
+        return cls(base_format)
+
+    @classmethod
+    def from_input_data(cls, input_data: 'ScreeningRequestData', config: ComplyAdvantageConfig):
+        type_filter = ["pep", "sanction"]
+
+        if config.include_adverse_media:
+            type_filter = type_filter + ["adverse-media", "warning", "fitness-probity"]
+
+        birth_year = None
+        if input_data.entity_type == 'INDIVIDUAL':
+            if input_data.personal_details.dob:
+                birth_year = input_data.personal_details.year_from_dob()
+
+        return cls.build_request(input_data.search_term, config.fuzziness, type_filter, birth_year)
+
+    @classmethod
+    def from_response_data(cls, response_data: ComplyAdvantageResponseData):
+        return cls.build_request(
+            response_data.search_term,
+            response_data.filters.fuzziness,
+            response_data.filters.types,
+            response_data.filters.birth_year)
+
+    def paginate(self, offset, limit):
+        self.search_format['offset'] = offset
+        self.search_format['limit'] = limit
+        return self.search_format
 
 
 class ComplyAdvantageResponseContent(Model):
