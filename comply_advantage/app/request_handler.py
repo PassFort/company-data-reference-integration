@@ -4,7 +4,8 @@ from requests.packages.urllib3.util.retry import Retry
 
 
 from typing import TYPE_CHECKING, List
-from .api.internal_types import ComplyAdvantageResponse, ComplyAdvantageException, ComplyAdvantageMonitorResponse
+from .api.internal_types import ComplyAdvantageResponse, ComplyAdvantageException, ComplyAdvantageMonitorResponse, \
+    ComplyAdvantageSearchRequest
 from .api.types import Error
 from .file_utils import get_response_from_file
 
@@ -39,7 +40,12 @@ def search_request(
         return get_demo_data(data, config)
     else:
         url = f'{credentials.base_url}/searches'
-        return comply_advantage_search_request(url, data, config, credentials)
+        return comply_advantage_search_request(
+            url,
+            ComplyAdvantageSearchRequest.from_input_data(data, config),
+            config,
+            credentials
+        )
 
 
 def get_result_by_search_ids(
@@ -51,27 +57,37 @@ def get_result_by_search_ids(
     events = []
     session = requests_retry_session()
     try:
-        for search_id in search_ids:
-            url = f'{credentials.base_url}/searches/{search_id}/details?api_key={credentials.api_key}'
+        if len(search_ids):
+            url = f'{credentials.base_url}/searches/{search_ids[0]}?api_key={credentials.api_key}'
             response = session.get(url)
 
             errors = []
-            raw_response, response_model = ComplyAdvantageResponse.from_raw(response)
-            if response.status_code != 200 or response_model is None:
+            raw_response, search_model = ComplyAdvantageResponse.from_raw(response)
+            if response.status_code != 200 or search_model is None:
                 errors.append(Error.from_provider_error(
                     response.status_code,
-                    response_model and response_model.message,
-                    response_model and response_model.errors))
-            else:
-                events = events + response_model.to_validated_events(config)
+                    search_model and search_model.message,
+                    search_model and search_model.errors))
+
     except Exception as e:
         errors = [Error.provider_connection_error(e)]
 
     session.close()
-    return {
-        'errors': errors,
-        'events': events
-    }
+
+    if errors:
+        return {
+            'errors': errors,
+            'events': events
+        }
+    else:
+        # Run a new search, because the Comply Advantage api does not return the new entities otherwise
+        # (to be fixed early 2019_
+        return comply_advantage_search_request(
+            f'{credentials.base_url}/searches',
+            ComplyAdvantageSearchRequest.from_response_data(search_model.content.data),
+            config,
+            credentials
+        )
 
 
 def update_monitoring_request(
@@ -103,7 +119,7 @@ def update_monitoring_request(
 
 def comply_advantage_search_request(
         url: str,
-        data: 'ScreeningRequestData',
+        search_request_data: ComplyAdvantageSearchRequest,
         config: 'ComplyAdvantageConfig',
         credentials: 'ComplyAdvantageCredentials',
         offset=0,
@@ -121,7 +137,8 @@ def comply_advantage_search_request(
             session = requests_retry_session()
             response = session.post(
                 authorized_url,
-                json=data.to_provider_format(config, offset=offset, limit=limit))
+                json=search_request_data.paginate(offset, limit)
+            )
         except Exception as e:
             return {
                 "errors": [Error.provider_connection_error(e)]
@@ -156,7 +173,7 @@ def comply_advantage_search_request(
             }
 
     raise ComplyAdvantageException(f"Reached max limit of hits to process - "
-                                   f"{data.to_provider_format(config)}")
+                                   f"{search_request_data.search_format} - {offset} - {limit}")
 
 
 def get_demo_data(data: 'ScreeningRequestData', config: 'ComplyAdvantageConfig'):
