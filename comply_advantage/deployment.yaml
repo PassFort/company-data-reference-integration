@@ -51,7 +51,7 @@ metadata:
   name: integrations-complyadvantage
 spec:
   ports:
-    -
+    - name: http
       port: 8001
   selector:
     passfort: integrations-complyadvantage

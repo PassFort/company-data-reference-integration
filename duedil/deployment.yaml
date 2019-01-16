@@ -45,7 +45,7 @@ metadata:
   name: integrations-duedil
 spec:
   ports:
-    -
+    - name: http
       port: 8001
   selector:
     passfort: integrations-duedil
