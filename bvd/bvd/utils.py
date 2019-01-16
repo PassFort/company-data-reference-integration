@@ -202,7 +202,7 @@ def get_demo_data(
 
     if demo_file_name is None:
         # If no match return anything
-        demo_file_name = cast(str, available_files[-1])
+        demo_file_name = cast(str, available_files[-1][3])
 
     with open(join(demo_files_path, demo_file_name), 'r') as file:
         return json.load(file)
