@@ -37,6 +37,7 @@ aliases:
         - setup_remote_docker:
             docker_layer_caching:
         - run: |
+            sudo pip install pipenv==2018.5.18
             pipenv --three
             pipenv install
             pipenv run python deploy.py -bs `cat workspace/integration_name` staging
