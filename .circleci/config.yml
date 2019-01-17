@@ -5,7 +5,7 @@ default_setup: &default_setup
     - add_ssh_keys:
         fingerprints:
             - "e4:b4:92:9b:6a:57:f5:8a:5d:ee:0a:29:b4:6a:cf:65"
-    - run: sudo pip install pipenv
+    - run: sudo pip install pipenv==2018.7.1
 
 
 aliases:
@@ -37,6 +37,7 @@ aliases:
         - setup_remote_docker:
             docker_layer_caching:
         - run: |
+            sudo pip install pipenv==2018.5.18
             pipenv --three
             pipenv install
             pipenv run python deploy.py -bs `cat workspace/integration_name` staging
