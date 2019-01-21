@@ -45,7 +45,7 @@ metadata:
   name: integrations-base
 spec:
   ports:
-    -
+    - name: http
       port: 8001
   selector:
     passfort: integrations-base
