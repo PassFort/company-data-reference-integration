@@ -47,6 +47,7 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
+    'Other': StructuredCompanyType({})
 }
 
 
