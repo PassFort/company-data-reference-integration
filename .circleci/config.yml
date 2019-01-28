@@ -144,6 +144,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_equifax:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo equifax > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     set_integration_onfido:
         docker:
             - image: circleci/python
@@ -183,6 +194,9 @@ jobs:
     build_duedil:
         <<: *build
 
+    build_equifax:
+        <<: *build
+
     build_onfido:
         <<: *build
 
@@ -208,6 +222,9 @@ jobs:
         <<: *unit
 
     unit_duedil:
+        <<: *unit
+
+    unit_equifax:
         <<: *unit
 
     unit_onfido:
@@ -240,6 +257,9 @@ jobs:
     deploy_duedil_staging:
         <<: *deploy_staging_common
 
+    deploy_equifax_staging:
+        <<: *deploy_staging_common
+
     deploy_onfido_staging:
         <<: *deploy_staging_common
 
@@ -253,6 +273,9 @@ jobs:
       <<: *deploy_production_common
 
     deploy_duedil_production:
+        <<: *deploy_production_common
+
+    deploy_equifax_production:
         <<: *deploy_production_common
 
     deploy_onfido_production:
@@ -323,6 +346,30 @@ workflows:
                     branches:
                         only:
                           - master
+
+    equifax:
+        jobs:
+            - set_integration_equifax
+            - build_equifax:
+                requires:
+                  - set_integration_equifax
+            - unit_equifax:
+                requires:
+                  - build_equifax
+            - deploy_equifax_staging:
+                requires:
+                  - unit_equifax
+                filters:
+                    branches:
+                        only:
+                            - staging
+            - deploy_equifax_production:
+                requires:
+                   - unit_equifax
+                filters:
+                    branches:
+                        only:
+                            - master
 
     onfido:
         jobs:
