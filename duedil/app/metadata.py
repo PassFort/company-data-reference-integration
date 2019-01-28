@@ -34,7 +34,20 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'is_public': tagged(False),
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.PARTNERSHIP)
-    })
+    }),
+    'Private limited by guarantee without share capital':
+    StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
+    'Private limited by guarantee without share capital, exempt from using "Limited"':
+    StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
+    'Other': StructuredCompanyType({})
 }
 
 
