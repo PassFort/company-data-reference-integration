@@ -13,8 +13,8 @@ WORKDIR /src
 COPY Pipfile Pipfile.lock package.json yarn.lock /src/
 
 RUN mkdir /srv/logs/ && \
-    pip install pipenv==2018.5.18 && \
-    pip install pipenv && \
+    pip install pip==18.0 && \	    
+    pip install pipenv==2018.7.1 && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
