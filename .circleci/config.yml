@@ -242,6 +242,9 @@ jobs:
     e2e_duedil:
         <<: *e2e
 
+    e2e_equifax:
+        <<: *e2e
+
     e2e_onfido:
         <<: *e2e
 
@@ -356,9 +359,13 @@ workflows:
             - unit_equifax:
                 requires:
                   - build_equifax
+            - e2e_equifax:
+                requires:
+                  - build_equifax
             - deploy_equifax_staging:
                 requires:
                   - unit_equifax
+                  - e2e_equifax
                 filters:
                     branches:
                         only:
@@ -366,6 +373,7 @@ workflows:
             - deploy_equifax_production:
                 requires:
                    - unit_equifax
+                   - e2e_equifax
                 filters:
                     branches:
                         only:
