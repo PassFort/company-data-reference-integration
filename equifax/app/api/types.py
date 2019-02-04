@@ -1,10 +1,11 @@
+import datetime
 from enum import unique, Enum
 from flask import abort, request
 from functools import wraps
 
 from schematics import Model
 from schematics.exceptions import DataError
-from schematics.types import ModelType, BooleanType, StringType
+from schematics.types import ModelType, BooleanType, StringType, ListType, DateType
 
 
 def validate_model(validation_model):
@@ -84,6 +85,71 @@ class Error:
         }
 
 
+def validate_partial_date(value):
+    for fmt in ['%Y-%m-%d', '%Y-%m', '%Y']:
+        try:
+            return datetime.datetime.strptime(value, fmt)
+        except (ValueError, TypeError):
+            continue
+    raise ValidationError(f'Input is not valid date: {value}')
+
+
+class FullName(Model):
+    given_names = ListType(StringType, required=True)
+    family_name = StringType(required=True, min_length=1)
+
+
+class PersonalDetails(Model):
+    name = ModelType(FullName, required=True)
+    # Store dob as string. dateType loses the information on whether it's a partial date or not
+    dob = StringType(required=True)
+
+    def validate_dob(self, data, value):
+        if value:
+            validate_partial_date(value)
+        return value
+
+
+class StructuredAddress(Model):
+    postal_code = StringType(required=True)
+    state_province = StringType(required=True)
+    postal_town = StringType(required=True)
+    street_number = StringType(default=None)
+    route = StringType(default=None)
+
+    def as_equifax_address(self):
+        from collections import OrderedDict
+        return OrderedDict([
+            ('@addressType', 'CURR'),
+            ('CivicNumber', self.street_number),
+            ('StreetName', self.route),
+            ('City', self.postal_town),
+            ('Province', OrderedDict([('@code', self.state_province)])),
+            ('PostalCode', self.postal_code)
+        ])
+
+
+class AddressHistory(Model):
+    current = ModelType(StructuredAddress, required=True)
+
+
+class IndividualData(Model):
+    personal_details = ModelType(PersonalDetails, required=True)
+    address_history = ModelType(AddressHistory, required=True)
+
+    @property
+    def first_name(self):
+        return self.personal_details.name.given_names[0] if len(self.personal_details.name.given_names) else ''
+
+    @property
+    def last_name(self):
+        return self.personal_details.name.family_name
+
+    @property
+    def dob(self):
+        return self.personal_details.dob
+
+
 class EquifaxCredentials(Model):
     customer_code = StringType(required=True)
     customer_number = StringType(required=True)
@@ -98,7 +164,9 @@ class EquifaxCredentials(Model):
         else:
             return 'https://www.equifax.ca'
 
+
 class EKYCRequest(Model):
+    input_data = ModelType(IndividualData, required=True)
     credentials = ModelType(EquifaxCredentials, required=True)
 
     is_demo = BooleanType(default=False)

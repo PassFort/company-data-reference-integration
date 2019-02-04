@@ -1,5 +1,5 @@
 from schematics.models import Model
-from schematics.types import ModelType, ListType, StringType
+from schematics.types import ModelType, ListType, StringType, UnionType
 
 from .types import ErrorCode
 
@@ -25,7 +25,19 @@ class EquifaxErrorDetails(Model):
 
 
 class EquifaxError(Model):
-    error = ModelType(EquifaxErrorDetails, serialized_name='Error', default=None)
+    error = UnionType(
+        (
+            ModelType(EquifaxErrorDetails, default=None),
+            ListType
+        ),
+        field=ModelType(EquifaxErrorDetails),
+        serialized_name='Error')
+
+    def as_passfort_errors(self):
+        if isinstance(self.error, list):
+            return [e.as_passfort_error() for e in self.error]
+        else:
+            return [self.error.as_passfort_error()]
 
 
 class EquifaxErrorReport(Model):
@@ -37,7 +49,7 @@ class EquifaxResponse(Model):
 
     def get_errors(self):
         if self.error_report and self.error_report.errors and self.error_report.errors.error:
-            return [self.error_report.errors.error.as_passfort_error()]
+            return self.error_report.errors.as_passfort_errors()
         return []
 
 

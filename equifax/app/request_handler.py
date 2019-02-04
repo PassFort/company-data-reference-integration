@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from xmltodict import unparse, parse
 from xml.parsers.expat import ExpatError
 from zeep import Transport, Client
@@ -23,18 +24,38 @@ def equifax_client(credentials):
 
 
 def generate_input_segment(request_data):
-    return unparse({
-        'CNCustTransmitToEfx': {
-            'CNCustomerInfo': {
-                'CustomerCode': request_data.credentials.customer_code,
-                'CustomerInfo': {
-                    'CustomerNumber': request_data.credentials.customer_number,
-                    'SecurityCode': request_data.credentials.security_code
-                }
-            },
-            'CNRequests': {}
-        }
-    })
+    root = OrderedDict()
+    auth_dict = OrderedDict([
+        ('CustomerCode', request_data.credentials.customer_code),
+        ('CustomerInfo', OrderedDict([
+            ('CustomerNumber', request_data.credentials.customer_number),
+            ('SecurityCode', request_data.credentials.security_code)
+        ]))
+    ])
+    request_dict = OrderedDict([
+        ('CNConsumerRequests', OrderedDict([
+            ('CNConsumerRequest', OrderedDict([
+                ('Subjects', OrderedDict([
+                    ('Subject', OrderedDict([
+                        ('@subjectType', 'SUBJ'),
+                        ('SubjectName', OrderedDict([
+                            ('LastName', request_data.input_data.last_name),
+                            ('FirstName', request_data.input_data.first_name)
+                        ])),
+                        ('DateOfBirth', request_data.input_data.dob)
+                    ])),
+                    ('Addresses', OrderedDict([
+                        ('Address', request_data.input_data.address_history.current.as_equifax_address())
+                    ]))
+                ]))  # May need to also send ('CreditFileRequest', 0) once Dual Source is configured
+            ]))
+        ]))
+    ])
+    root['CNCustTransmitToEfx'] = OrderedDict([
+        ('CNCustomerInfo', auth_dict),
+        ('CNRequests', request_dict)
+    ])
+    return unparse(root)
 
 
 def process_equifax_response(raw_response):
