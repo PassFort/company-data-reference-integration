@@ -5,8 +5,13 @@ pipenv run coverage run --branch --omit='e2e/*','**/test_*' --source . main.py &
 sleep 5
 
 # Launch the e2e tests
-if ! yarn e2e; then
-  exit $?;
+yarn e2e
+
+return=$?
+
+# Bail if E2E test failed
+if [[ ${return} -ne 0 ]]; then
+  exit ${return};
 fi;
 
 # Send SIGINT to all jobs to ask the server process to gracefully shutdown
