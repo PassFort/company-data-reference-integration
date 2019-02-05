@@ -44,6 +44,31 @@ success_response = '<?xml version="1.0" encoding="UTF-8" ?>' \
                    '<CNSignonAcknowledgement signonStatus=\'OK\' /></EfxReport></EfxTransmit>'
 
 
+bad_province_and_city = '<?xml version="1.0" encoding="UTF-8" ?>' \
+                        '<EfxTransmit xmlns="http://www.equifax.ca/XMLSchemas/EfxToCust" ' \
+                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' \
+                        'xsi:schemaLocation="http://www.equifax.ca/XMLSchemas/EfxToCust ' \
+                        'http://www.equifax.ca/XMLSchemas/UAT/CNEfxTransmitToCust.xsd" >' \
+                        '<CNErrorReport>' \
+                        '<SegmentId>SERXM</SegmentId>' \
+                        '<VersionNumber>010</VersionNumber>' \
+                        '<CustomerCode>R147</CustomerCode>' \
+                        '<CustomerNumber>999FX00333</CustomerNumber><TransactionReferenceNumber>' \
+                        '</TransactionReferenceNumber>' \
+                        '<Errors>' \
+                        '<Error>' \
+                        '<SourceCode>SAC00</SourceCode>' \
+                        '<ErrorCode>EV304</ErrorCode>' \
+                        '<Description>Invalid city name</Description>' \
+                        '</Error>' \
+                        '<Error>' \
+                        '<SourceCode>SAC00</SourceCode>' \
+                        '<ErrorCode>EV305</ErrorCode>' \
+                        '<Description>Invalid province code</Description>' \
+                        '</Error>' \
+                        '</Errors></CNErrorReport></EfxTransmit>'
+
+
 class TestErrorProcessing(unittest.TestCase):
     def test_expose_bad_configuration(self):
         actual = process_equifax_response(bad_security_code)
@@ -68,6 +93,26 @@ class TestErrorProcessing(unittest.TestCase):
                     {
                         "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
                         "message": "Invalid xml formatted input - missing xml tag (CustomerInfo)",
+                        "source": "PROVIDER"
+                    }
+                ]
+            }
+        )
+
+    def test_process_multiple_errors(self):
+        actual = process_equifax_response(bad_province_and_city)
+        self.assertEqual(
+            actual,
+            {
+                'errors': [
+                    {
+                        "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                        "message": "Invalid city name",
+                        "source": "PROVIDER"
+                    },
+                    {
+                        "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                        "message": "Invalid province code",
                         "source": "PROVIDER"
                     }
                 ]
