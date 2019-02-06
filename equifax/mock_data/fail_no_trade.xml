@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EfxTransmit xmlns="http://www.equifax.ca/XMLSchemas/EfxToCust"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.equifax.ca/XMLSchemas/EfxToCust http://www.equifax.ca/XMLSchemas/UAT/CNEfxTransmitToCust.xsd">
+    <EfxReport requestNumber="1" reportId="CNCONSUMERCREDITFILE">
+        <CNConsumerCreditReports>
+            <CNConsumerCreditReport subjectType="SUBJECT" multipleNumber="1">
+                <CNHeader>
+                    <Request>
+                        <Protocol>COND</Protocol>
+                        <CustomerNumber>999FX00333</CustomerNumber>
+                        <LanguageIndicator>E</LanguageIndicator>
+                        <InquiryType>I</InquiryType>
+                        <OutputFormatCode>X</OutputFormatCode>
+                    </Request>
+                    <CreditFile>
+                        <UniqueNumber>0054243589</UniqueNumber>
+                        <FileSinceDate>2018-10-23</FileSinceDate>
+                        <DateOfLastActivity>2019-01-04</DateOfLastActivity>
+                        <DateOfRequest>2019-02-05</DateOfRequest>
+                        <FileOwner>
+                            <BureauCode>004</BureauCode>
+                            <BureauContactInformation>Equifax inc.</BureauContactInformation>
+                        </FileOwner>
+                        <HitCode code="1" description="HIT"/>
+                        <HitStrengthIndicator code="03" description="Regular hit"/>
+                    </CreditFile>
+                    <Subject>
+                        <SubjectName>
+                            <LastName>ALVAREZ</LastName>
+                            <FirstName>ANDREW</FirstName>
+                        </SubjectName>
+                    </Subject>
+                </CNHeader>
+                <CNAddresses>
+                    <CNAddress code="CA" description="Current Address">
+                        <DateReported>2019-02</DateReported>
+                        <CivicNumber>91</CivicNumber>
+                        <StreetName>LEMARCHANT ROAD</StreetName>
+                        <City code="SJON">ST JOHNS</City>
+                        <Province code="NL" description="NEW FOUNDLAND"/>
+                        <PostalCode>A1C2H1</PostalCode>
+                        <UpdateSource code="C" description="Crt rptd"/>
+                    </CNAddress>
+                    <CNAddress code="FA" description="Former Address">
+                        <DateReported>2019-02</DateReported>
+                        <CivicNumber>64</CivicNumber>
+                        <StreetName>WHITE BLVD</StreetName>
+                        <City code="THO">THORNHILL</City>
+                        <Province code="ON" description="ONTARIO"/>
+                        <PostalCode>L4J5Z7</PostalCode>
+                        <UpdateSource code="C" description="Crt rptd"/>
+                    </CNAddress>
+                    <CNAddress code="F2" description="Second Former Address">
+                        <DateReported>2019-02</DateReported>
+                        <CivicNumber>62</CivicNumber>
+                        <StreetName>WHITE BLVD</StreetName>
+                        <City code="THO">THORNHILL</City>
+                        <Province code="ON" description="ONTARIO"/>
+                        <PostalCode>L4J5Z7</PostalCode>
+                        <UpdateSource code="C" description="Crt rptd"/>
+                    </CNAddress>
+                </CNAddresses>
+                <CNDateOfBirths>
+                    <CNDateOfBirth>
+                        <DateOfBirth type="DATE">1962-12-01</DateOfBirth>
+                    </CNDateOfBirth>
+                </CNDateOfBirths>
+                <CNEquifaxCoreServices>
+                    <CSProduct>
+                        <CSItem name="ProductType">AML</CSItem>
+                        <CSSection>
+                            <CSItem name="SubProductType" value="Header">
+                                <CSItem name="SingleSourceHit" maxLength="001">N</CSItem>
+                                <CSItem name="DualSourceHit" maxLength="001">N</CSItem>
+                                <CSItem name="WaterfallProcess" maxLength="001">N</CSItem>
+                                <CSItem name="DualSourceDecision" maxLength="001">N</CSItem>
+                                <CSItem name="InputDateOfBirth" maxLength="025">19621201</CSItem>
+                                <CSItem name="InputName" maxLength="250">ALVAREZ,ANDREW,,</CSItem>
+                                <CSItem name="InputAddress" maxLength="250">91,LE MARCHANT ROAD,ST JOHN&apos;S,NL,A1C2H1
+                                </CSItem>
+                            </CSItem>
+                        </CSSection>
+                    </CSProduct>
+                </CNEquifaxCoreServices>
+            </CNConsumerCreditReport>
+        </CNConsumerCreditReports>
+    </EfxReport>
+</EfxTransmit>
