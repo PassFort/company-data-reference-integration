@@ -135,7 +135,7 @@ class ComplyAdvantageMatchData(Model):
     source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
     media = ListType(ModelType(ComplyAdvantageMediaData))
 
-    def to_events(self, extra_fields: dict, config: ComplyAdvantageConfig) -> List['MatchEvent']:
+    def to_events(self, share_url: StringType, extra_fields: dict, config: ComplyAdvantageConfig) -> List['MatchEvent']:
         events = []
         birth_dates = set(field.value for field in self.ca_fields if field.is_dob())
         death_dates = set(field.value for field in self.ca_fields if field.is_dod())
@@ -154,7 +154,7 @@ class ComplyAdvantageMatchData(Model):
             "deceased_dates": list(death_dates),
             "associates": [a.as_associate() for a in self.associates],
             "details": self.get_details(),
-            "sources": sources_from_source_notes + sources_from_fields,
+            "sources": [self.comply_advantage_entity_source(share_url)] + sources_from_source_notes + sources_from_fields,
             **extra_fields
         }
 
@@ -184,6 +184,13 @@ class ComplyAdvantageMatchData(Model):
             events.append(ReferMatchEvent().import_data(base_data))
         return events
 
+    def comply_advantage_entity_source(self, share_url: StringType):
+        url = share_url.replace("search", "entity", 1) + "/" + self.id
+        return Source({
+            'name': "ComplyAdvantage Entity",
+            'url': url,
+        })
+
     def get_sanctions(self):
         return [note.as_sanction_data() for name, note in self.source_notes.items() if note.is_sanction()]
 
@@ -211,12 +218,13 @@ class ComplyAdvantageMatch(Model):
             ListType
         ), field=BaseType)
 
-    def to_events(self, config: ComplyAdvantageConfig):
+    def to_events(self, share_url: StringType, config: ComplyAdvantageConfig):
         if self.match_types_details:
             aliases = set(k for k, v in self.match_types_details.items() if v.is_aka())
         else:
             aliases = set()
         return self.doc.to_events(
+            share_url,
             {
                 'aliases': aliases
             },
@@ -238,12 +246,13 @@ class ComplyAdvantageResponseData(Model):
 
     filters = ModelType(ComplyAdvantageFilters, default={})
     search_term = StringType(default=None)
+    share_url = StringType(default=None)
 
     def to_events(self, config: ComplyAdvantageConfig):
         events = []
 
         for hit in self.hits:
-            events = events + hit.to_events(config)
+            events = events + hit.to_events(self.share_url, config)
         return events
 
     def has_more_hits(self):
@@ -262,7 +271,8 @@ class ComplyAdvantageSearchRequest:
             "fuzziness": fuzziness,
             "filters": {
                 "types": type_filter
-            }
+            },
+            "share_url": True,
         }
         if birth_year:
             base_format['filters']['birth_year'] = birth_year
