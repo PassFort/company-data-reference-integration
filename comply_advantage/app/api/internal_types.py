@@ -154,7 +154,8 @@ class ComplyAdvantageMatchData(Model):
             "deceased_dates": list(death_dates),
             "associates": [a.as_associate() for a in self.associates],
             "details": self.get_details(),
-            "sources": [self.comply_advantage_entity_source(share_url)] + sources_from_source_notes + sources_from_fields,
+            "sources": [self.comply_advantage_entity_source(share_url)] +
+            sources_from_source_notes + sources_from_fields,
             **extra_fields
         }
 
@@ -185,11 +186,12 @@ class ComplyAdvantageMatchData(Model):
         return events
 
     def comply_advantage_entity_source(self, share_url: StringType):
-        url = share_url.replace("search", "entity", 1) + "/" + self.id
-        return Source({
-            'name': "ComplyAdvantage Entity",
-            'url': url,
-        })
+        if share_url:
+            url = share_url.replace("search", "entity", 1) + "/" + self.id
+            return Source({
+                'name': "ComplyAdvantage Entity",
+                'url': url,
+            })
 
     def get_sanctions(self):
         return [note.as_sanction_data() for name, note in self.source_notes.items() if note.is_sanction()]
