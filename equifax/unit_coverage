@@ -1,6 +1,6 @@
 #!/bin/sh
 
-integration_name="comply_advantage"
+integration_name="equifax"
 
 pipenv run coverage run --source=app --omit=./**/test_** --branch -m unittest discover . && \
 pipenv run coverage xml -i && \
