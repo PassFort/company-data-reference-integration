@@ -53,7 +53,7 @@ def generate_input_segment(request_data):
     ])
     root['CNCustTransmitToEfx'] = OrderedDict([
         ('CNCustomerInfo', auth_dict),
-        ('CNRequests', request_dict),
+        ('CNRequests', request_dict)
     ])
     return unparse(root)
 
@@ -64,6 +64,7 @@ def process_equifax_response(raw_response):
         response_model = EquifaxResponseWithRoot.from_json(response)
 
         return {
+            'raw': response,
             'output_data': response_model.root.efx_report.get_ekyc_result() if response_model.root.efx_report else None,
             'errors': response_model.get_errors()
         }

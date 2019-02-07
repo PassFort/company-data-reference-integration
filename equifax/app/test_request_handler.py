@@ -119,6 +119,78 @@ class TestErrorProcessing(unittest.TestCase):
         self.assertEqual(actual['errors'], [])
 
 
+class TestUnexpectedXml(unittest.TestCase):
+
+    def test_extra_elements(self):
+        two_errors_with_extra_elem = '<?xml version="1.0" encoding="UTF-8" ?>' \
+                                     '<EfxTransmit xmlns="http://www.equifax.ca/XMLSchemas/EfxToCust" ' \
+                                     'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' \
+                                     'xsi:schemaLocation="http://www.equifax.ca/XMLSchemas/EfxToCust ' \
+                                     'http://www.equifax.ca/XMLSchemas/UAT/CNEfxTransmitToCust.xsd" >' \
+                                     '  <CNErrorReport>' \
+                                     '    <SegmentId>SERXM</SegmentId>' \
+                                     '    <VersionNumber>010</VersionNumber>' \
+                                     '    <CustomerCode>R147</CustomerCode>' \
+                                     '    <CustomerNumber>999FX00333</CustomerNumber><TransactionReferenceNumber>' \
+                                     '    </TransactionReferenceNumber>' \
+                                     '    <Errors>' \
+                                     '      <Error>' \
+                                     '        <SourceCode>SAC00</SourceCode>' \
+                                     '        <ErrorCode>EV304</ErrorCode>' \
+                                     '        <Description>Invalid city name</Description>' \
+                                     '      </Error>' \
+                                     '      <Extra>TEST_TEXT_HERE</Extra>' \
+                                     '      <Error>' \
+                                     '        <SourceCode>SAC00</SourceCode>' \
+                                     '        <ErrorCode>EV305</ErrorCode>' \
+                                     '        <Description>Invalid province code</Description>' \
+                                     '      </Error>' \
+                                     '    </Errors>' \
+                                     '  </CNErrorReport>' \
+                                     '</EfxTransmit>'
+
+        actual = process_equifax_response(two_errors_with_extra_elem)
+        self.assertEqual(len(actual['errors']), 2)
+        error_list = actual['raw']['EfxTransmit']['CNErrorReport']['Errors']['Error']
+        self.assertEqual(len(error_list), 2)
+        extra_element = actual['raw']['EfxTransmit']['CNErrorReport']['Errors']['Extra']
+        self.assertEqual(extra_element, 'TEST_TEXT_HERE')
+
+    def test_extra_elements(self):
+        two_errors_with_extra_name = '<?xml version="1.0" encoding="UTF-8" ?>' \
+                                     '<EfxTransmit xmlns="http://www.equifax.ca/XMLSchemas/EfxToCust" ' \
+                                     'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' \
+                                     'xsi:schemaLocation="http://www.equifax.ca/XMLSchemas/EfxToCust ' \
+                                     'http://www.equifax.ca/XMLSchemas/UAT/CNEfxTransmitToCust.xsd" >' \
+                                     '  <CNErrorReport>' \
+                                     '    <SegmentId>SERXM</SegmentId>' \
+                                     '    <VersionNumber>010</VersionNumber>' \
+                                     '    <CustomerCode>R147</CustomerCode>' \
+                                     '    <CustomerNumber>999FX00333</CustomerNumber><TransactionReferenceNumber>' \
+                                     '    </TransactionReferenceNumber>' \
+                                     '    <Errors name=\'TEST_NAME_HERE\'>' \
+                                     '      <Error>' \
+                                     '        <SourceCode>SAC00</SourceCode>' \
+                                     '        <ErrorCode>EV304</ErrorCode>' \
+                                     '        <Description>Invalid city name</Description>' \
+                                     '      </Error>' \
+                                     '      <Error>' \
+                                     '        <SourceCode>SAC00</SourceCode>' \
+                                     '        <ErrorCode>EV305</ErrorCode>' \
+                                     '        <Description>Invalid province code</Description>' \
+                                     '      </Error>' \
+                                     '    </Errors>' \
+                                     '  </CNErrorReport>' \
+                                     '</EfxTransmit>'
+
+        actual = process_equifax_response(two_errors_with_extra_name)
+        self.assertEqual(len(actual['errors']), 2)
+        error_list = actual['raw']['EfxTransmit']['CNErrorReport']['Errors']['Error']
+        self.assertEqual(len(error_list), 2)
+        extra_element = actual['raw']['EfxTransmit']['CNErrorReport']['Errors']['@name']
+        self.assertEqual(extra_element, 'TEST_NAME_HERE')
+
+
 class TestResultProcessing(unittest.TestCase):
 
     def get_and_assert_active_rule(self, rules, expected_active_index):
