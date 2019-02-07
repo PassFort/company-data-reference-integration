@@ -4,7 +4,7 @@ from flask import abort, request
 from functools import wraps
 
 from schematics import Model
-from schematics.exceptions import DataError
+from schematics.exceptions import DataError, ValidationError
 from schematics.types import ModelType, BooleanType, StringType, ListType, DateType
 
 
@@ -32,6 +32,7 @@ def validate_model(validation_model):
 
     return validates_model
 
+
 @unique
 class ErrorCode(Enum):
     INVALID_INPUT_DATA = 201
@@ -41,6 +42,21 @@ class ErrorCode(Enum):
     PROVIDER_UNKNOWN_ERROR = 303
 
     UNKNOWN_INTERNAL_ERROR = 401
+
+
+@unique
+class MatchField(Enum):
+    FORENAME = "FORENAME"
+    SURNAME = "SURNAME"
+    ADDRESS = "ADDRESS"
+    DOB = "DOB"
+
+
+@unique
+class DatabaseType(Enum):
+    CIVIL = "CIVIL"
+    CREDIT = "CREDIT"
+    MORTALITY = "MORTALITY"
 
 
 class Error:
