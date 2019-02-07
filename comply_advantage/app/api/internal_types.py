@@ -141,6 +141,7 @@ class ComplyAdvantageMatchData(Model):
         death_dates = set(field.value for field in self.ca_fields if field.is_dod())
         sources_from_source_notes = [s.as_source() for k, s in self.source_notes.items() if not s.is_sanction()]
         sources_from_fields = [s.as_source() for s in self.ca_fields if s.is_related_url()]
+        entity_sources = self.comply_advantage_entity_sources(share_url)
 
         is_pep = "pep" in self.types
         is_sanction = "sanction" in self.types
@@ -154,8 +155,7 @@ class ComplyAdvantageMatchData(Model):
             "deceased_dates": list(death_dates),
             "associates": [a.as_associate() for a in self.associates],
             "details": self.get_details(),
-            "sources": [self.comply_advantage_entity_source(share_url)] +
-            sources_from_source_notes + sources_from_fields,
+            "sources": entity_sources + sources_from_source_notes + sources_from_fields,
             **extra_fields
         }
 
@@ -185,13 +185,15 @@ class ComplyAdvantageMatchData(Model):
             events.append(ReferMatchEvent().import_data(base_data))
         return events
 
-    def comply_advantage_entity_source(self, share_url: StringType):
+    def comply_advantage_entity_sources(self, share_url: StringType):
         if share_url:
             url = share_url.replace("search", "entity", 1) + "/" + self.id
-            return Source({
+            return [Source({
                 'name': "ComplyAdvantage Entity",
                 'url': url,
-            })
+            })]
+        else:
+            return []
 
     def get_sanctions(self):
         return [note.as_sanction_data() for name, note in self.source_notes.items() if note.is_sanction()]
