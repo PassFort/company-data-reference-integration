@@ -61,8 +61,12 @@ def generate_input_segment(request_data):
 def process_equifax_response(raw_response):
     try:
         response = dict(parse(raw_response))
+        response_model = EquifaxResponseWithRoot.from_json(response)
+
         return {
-            'errors': EquifaxResponseWithRoot.from_json(response).get_errors()
+            'raw': response,
+            'output_data': response_model.root.efx_report.get_ekyc_result() if response_model.root.efx_report else None,
+            'errors': response_model.get_errors()
         }
     except ExpatError:
         # This means we didn't get an xml back
