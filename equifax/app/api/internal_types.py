@@ -204,6 +204,7 @@ class EquifaxProduct(Model):
         {
             'name': 'A name and address match plus a name and DOB match',
             'is_active': False,
+            'database_types': [DatabaseType.CREDIT.value],
             'requires': [
                 {
                     'matched_fields': [MatchField.FORENAME.value, MatchField.SURNAME.value, MatchField.ADDRESS.value],
@@ -219,6 +220,7 @@ class EquifaxProduct(Model):
         {
             'name': 'A name and address match',
             'is_active': False,
+            'database_types': [DatabaseType.CREDIT.value],
             'requires': [
                 {
                     'matched_fields': [MatchField.FORENAME.value, MatchField.SURNAME.value, MatchField.ADDRESS.value],
@@ -230,6 +232,7 @@ class EquifaxProduct(Model):
         {
             'name': 'A name and DOB match',
             'is_active': False,
+            'database_types': [DatabaseType.CREDIT.value],
             'requires': [
                 {
                     'matched_fields': [MatchField.FORENAME.value, MatchField.SURNAME.value, MatchField.DOB.value],
@@ -240,7 +243,9 @@ class EquifaxProduct(Model):
         },
         {
             'name': 'No address or DOB match',
+            'database_types': [DatabaseType.CREDIT.value],
             'is_active': False,
+            'requires': [],
             'result': 'Fail'
         }
     ]
