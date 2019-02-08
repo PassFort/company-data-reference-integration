@@ -337,10 +337,10 @@ class FileOwner(Model):
 
 
 class CreditFile(Model):
-    unique_number = XMLTagBaseType(EquifaxItem, default=None, serialized_name='UniqueNumber')
-    file_since_date = XMLTagBaseType(EquifaxItem, default=None, serialized_name='FileSinceDate')
-    date_of_last_activity = XMLTagBaseType(EquifaxItem, default=None, serialized_name='DateOfLastActivity')
-    date_of_request = XMLTagBaseType(EquifaxItem, default=None, serialized_name='DateOfRequest')
+    unique_number = XMLTagBaseType(EquifaxItem, default={}, serialized_name='UniqueNumber')
+    file_since_date = XMLTagBaseType(EquifaxItem, default={}, serialized_name='FileSinceDate')
+    date_of_last_activity = XMLTagBaseType(EquifaxItem, default={}, serialized_name='DateOfLastActivity')
+    date_of_request = XMLTagBaseType(EquifaxItem, default={}, serialized_name='DateOfRequest')
     file_owner = ModelType(FileOwner, default=None, serialized_name='FileOwner')
     hit_code = ModelType(CodeItem, serialized_name='HitCode', required=True)
     hit_strength_indicator = ModelType(CodeItem, serialized_name='HitStrengthIndicator')
