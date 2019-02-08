@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+import os
+import logging
+>>>>>>> Stashed changes
 from collections import OrderedDict
 from xmltodict import unparse, parse
 from xml.parsers.expat import ExpatError
@@ -16,7 +21,15 @@ class EquifaxProviderError(Exception):
 
 
 def equifax_client(credentials):
-    transport = Transport(timeout=10, operation_timeout=10)
+    transport = Transport(timeout=10, operation_timeout=15)
+    proxy_url = os.environ.get('EQUIFAX_PROXY_URL')
+    if proxy_url:
+        logging.info(f'Proxy url: {proxy_url}')
+        transport.session.proxies = {
+            'https': proxy_url
+        }
+    else:
+        logging.info('No proxy')
     return Client(f'{credentials.root_url}/efxws/STSRequest.asmx?WSDL',
                   transport=transport,
                   service_name='STSRequest',
