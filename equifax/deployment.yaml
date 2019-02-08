@@ -32,6 +32,11 @@ spec:
           value: {cluster}
         - name: SENTRY_URL
           value: {sentry_url}
+        - name: EQUIFAX_PROXY_URL
+          valueFrom:
+            secretKeyRef:
+              name: webhooks
+              key: proxy_url
         readinessProbe:
           httpGet:
             path: '/health'
