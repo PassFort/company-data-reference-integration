@@ -1,3 +1,4 @@
+import os
 from collections import OrderedDict
 from xmltodict import unparse, parse
 from xml.parsers.expat import ExpatError
@@ -16,7 +17,12 @@ class EquifaxProviderError(Exception):
 
 
 def equifax_client(credentials):
-    transport = Transport(timeout=10, operation_timeout=10)
+    transport = Transport(timeout=10, operation_timeout=15)
+    proxy_url = os.environ.get('EQUIFAX_PROXY_URL')
+    if proxy_url:
+        transport.session.proxies = {
+            'https': proxy_url
+        }
     return Client(f'{credentials.root_url}/efxws/STSRequest.asmx?WSDL',
                   transport=transport,
                   service_name='STSRequest',
