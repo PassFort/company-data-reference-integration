@@ -196,9 +196,9 @@ class TestResultProcessing(unittest.TestCase):
     def get_and_assert_active_rule(self, rules, expected_active_index):
         for index, rule in enumerate(rules):
             if index == expected_active_index:
-                self.assertTrue(rule['is_active'])
+                self.assertTrue(rule['active'])
             else:
-                self.assertFalse(rule['is_active'])
+                self.assertFalse(rule['active'])
         return rules[expected_active_index]
 
     def test_process_successful_response_2_plus_2(self):
