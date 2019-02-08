@@ -60,10 +60,10 @@ SUPPORTED_IDENTITY_DATABASES = {
 
 
 class CommaSeparatedList(BaseType):
-    def to_native(self, value):
+    def to_native(self, value, context=None):
         return value.split(', ')
 
-    def to_primitive(self, value):
+    def to_primitive(self, value, context=None):
         return ', '.join(value)
 
 
@@ -74,13 +74,13 @@ class Applicant(Model):
 
 class IdentityReportItemPropertiesUK(Model):
     # The docs say it's this
-    number_of_agencies = IntType()
+    number_of_agencies = IntType(default=None)
     # But it's actually this...
-    number_of_credit_agencies = IntType()
+    number_of_credit_agencies = IntType(default=None)
 
 
 class IdentityReportItemPropertiesNonUK(Model):
-    sources = CommaSeparatedList()
+    sources = CommaSeparatedList(default=None)
 
 
 class IdentityReportItem(Model):
@@ -88,40 +88,32 @@ class IdentityReportItem(Model):
 
 
 class IdentityReportItemUK(IdentityReportItem):
-    properties = ModelType(IdentityReportItemPropertiesUK)
+    properties = ModelType(IdentityReportItemPropertiesUK, default=IdentityReportItemPropertiesUK)
 
     def compute_matches(self, database_name, database_type, matched_fields):
+        if self.result != 'clear':
+            return []
+
         result = {
             'database_type': database_type,
+            'matched_fields': matched_fields,
+            'count': 1,
         }
-        if self.result == 'clear':
-            result['matched_fields'] = matched_fields
-            result['count'] = 1
-
-            if database_type == 'CREDIT':
-                num_matches = self.properties.number_of_agencies or self.properties.number_of_credit_agencies or 1
-                return [{
-                    'database_name': onfido_credit_source_name(i),
-                    **result
-                } for i in range(num_matches)]
+        if database_type == 'CREDIT':
+            num_matches = self.properties.number_of_agencies or self.properties.number_of_credit_agencies or 1
+            return [{
+                'database_name': onfido_credit_source_name(i),
+                **result
+            } for i in range(num_matches)]
         else:
-            result['matched_fields'] = []
-            result['count'] = 0
-
-            if database_type == 'CREDIT':
-                return [{
-                    'database_name': onfido_credit_source_name(None),
-                    **result
-                }]
-
-        return [{
-            'database_name': database_name,
-            **result
-        }]
+            return [{
+                'database_name': database_name,
+                **result
+            }]
 
 
 class IdentityReportItemNonUK(IdentityReportItem):
-    properties = ModelType(IdentityReportItemPropertiesNonUK)
+    properties = ModelType(IdentityReportItemPropertiesNonUK, default=IdentityReportItemPropertiesNonUK)
 
     def compute_matches(self, matched_fields):
         if self.result != 'clear':
@@ -152,9 +144,9 @@ class IdentityReportInnerBreakdown(Model):
 
 
 class IdentityReportInnerBreakdownUK(IdentityReportInnerBreakdown):
-    credit_agencies = ModelType(IdentityReportItemUK)
-    voting_register = ModelType(IdentityReportItemUK)
-    telephone_database = ModelType(IdentityReportItemUK)
+    credit_agencies = ModelType(IdentityReportItemUK, default=None)
+    voting_register = ModelType(IdentityReportItemUK, default=None)
+    telephone_database = ModelType(IdentityReportItemUK, default=None)
 
     @staticmethod
     def _claim_polymorphic(data):
@@ -172,8 +164,8 @@ class IdentityReportInnerBreakdownUK(IdentityReportInnerBreakdown):
 
 
 class IdentityReportInnerBreakdownNonUK(IdentityReportInnerBreakdown):
-    date_of_birth_matched = ModelType(IdentityReportItemNonUK)
-    address_matched = ModelType(IdentityReportItemNonUK)
+    date_of_birth_matched = ModelType(IdentityReportItemNonUK, default=None)
+    address_matched = ModelType(IdentityReportItemNonUK, default=None)
 
     @staticmethod
     def _claim_polymorphic(data):
@@ -189,8 +181,8 @@ class IdentityReportInnerBreakdownNonUK(IdentityReportInnerBreakdown):
 
 
 class IdentityReportInnerBreakdownSSN(IdentityReportInnerBreakdown):
-    last_4_digits_match = ModelType(IdentityReportItem)
-    full_match = ModelType(IdentityReportItem)
+    last_4_digits_match = ModelType(IdentityReportItem, default=None)
+    full_match = ModelType(IdentityReportItem, default=None)
 
     @staticmethod
     def _claim_polymorphic(data):
@@ -224,10 +216,10 @@ class IdentityReportBreakdownItem(Model):
 
 
 class IdentityReportBreakdown(Model):
-    mortality = ModelType(IdentityReportItem)
-    address = ModelType(IdentityReportBreakdownItem)
-    date_of_birth = ModelType(IdentityReportBreakdownItem)
-    ssn = ModelType(IdentityReportBreakdownItem)
+    mortality = ModelType(IdentityReportItem, default=None)
+    address = ModelType(IdentityReportBreakdownItem, default=None)
+    date_of_birth = ModelType(IdentityReportBreakdownItem, default=None)
+    ssn = ModelType(IdentityReportBreakdownItem, default=None)
 
     def compute_matches(self, country_code):
         matches = []
@@ -246,7 +238,7 @@ class IdentityReportBreakdown(Model):
             matches.extend(self.date_of_birth.compute_matches(['FORENAME', 'SURNAME', 'DOB']))
 
         if self.ssn is not None:
-            matches.extend(self.ssn.compute_matches(['FORNAME', 'SURNAME', 'ADDRESS']))
+            matches.extend(self.ssn.compute_matches(['FORENAME', 'SURNAME', 'ADDRESS']))
 
         all_databases = {match['database_name'] for match in matches}
         if onfido_credit_source_name(0) in all_databases:

@@ -1,4 +1,4 @@
-from app.mock_data.mock_responses import mock_uk_response, mock_uk_response_fail, mock_uk_response_one_plus_one, \
+from app.mock_data.mock_responses import mock_uk_matches, mock_uk_response_fail, mock_uk_response_one_plus_one, \
     mock_watchlist_consider, mock_watchlist_pass
 
 
@@ -11,7 +11,11 @@ def get_demo_ekyc_response(name):
         return mock_uk_response_one_plus_one
 
     # Return data which will trigger a 2+2 on the stage
-    return mock_uk_response
+    return {
+        'output_data': {
+            'matches': mock_uk_matches
+        }
+    }
 
 
 def get_demo_watchlist_response(name):

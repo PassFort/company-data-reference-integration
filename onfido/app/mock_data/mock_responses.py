@@ -1,263 +1,41 @@
-mock_uk_response = {
-    'errors': [],
-    'output_data': {
-        'credit_ref': {
-            'dob': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'exact': {
-                'v': {
-                    'count': 3,
-                    'match': True
-                }
-            },
-            'partial': {
-                'v': {
-                    'count': 3,
-                    'match': True
-                }
-            }
-        },
-        'db_matches': {
-            'business_registration_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'business_registration_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'business_registration_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'commercial_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'commercial_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'commercial_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'consumer_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'consumer_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'consumer_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'electoral_dob': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'electoral_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'electoral_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'government_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'government_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'government_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'onfido_proprietary_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'onfido_proprietary_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'onfido_proprietary_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'postal_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'postal_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'postal_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'telephone_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'telephone_exact': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'telephone_partial': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'utility_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'utility_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'utility_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            }
-        }
+mock_uk_matches = [
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #1)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
     },
-    'price': 0,
-    'raw': {
-        'applicant': {
-            'id': 'some_id'
-        },
-        'check': {
-            'created_at': '2018-02-21T15:39:46Z',
-            'download_uri': 'https://onfido.com/dashboard/pdf/information_requests/8916590',
-            'form_uri': None,
-            'href': '/v2/applicants/ef72bcbc-08b1-40bc-aa83-ac4c80d5aa72/checks/277756dd-84d0-4c08-96fe-c8d9391b74d4',
-            'id': '277756dd-84d0-4c08-96fe-c8d9391b74d4',
-            'paused': False,
-            'redirect_uri': None,
-            'report_type_groups': ['3766'],
-            'reports': [{
-                'breakdown': {
-                    'address': {
-                        'breakdown': {
-                            'credit_agencies': {
-                                'properties': {
-                                    'number_of_credit_agencies': '3'
-                                },
-                                'result': 'clear'
-                            },
-                            'telephone_database': {
-                                'properties': {},
-                                'result': 'clear'
-                            },
-                            'voting_register': {
-                                'properties': {},
-                                'result': 'unidentified'
-                            }
-                        },
-                        'result': 'clear'
-                    },
-                    'date_of_birth': {
-                        'breakdown': {
-                            'credit_agencies': {
-                                'properties': {},
-                                'result': 'clear'
-                            },
-                            'voting_register': {
-                                'properties': {},
-                                'result': 'clear'
-                            }
-                        },
-                        'result': 'clear'
-                    },
-                    'mortality': {
-                        'result': 'clear'
-                    }
-                },
-                'created_at': '2018-02-21T15:39:46Z',
-                'href': '/v2/checks/277756dd-84d0-4c08-96fe-c8d9391b74d4/reports/9e2e1bda-1b9a-48e9-87dd-c23d079c948a',
-                'id': '9e2e1bda-1b9a-48e9-87dd-c23d079c948a',
-                'name': 'identity',
-                'properties': {},
-                'result': 'clear',
-                'status': 'complete',
-                'sub_result': None,
-                'variant': 'kyc'
-            }],
-            'result': 'clear',
-            'results_uri': 'https://onfido.com/dashboard/information_requests/8916590',
-            'sandbox': True,
-            'status': 'complete',
-            'tags': [],
-            'type': 'express',
-            'version': '2.0'
-        }
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #2)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
+    },
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #3)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
+    },
+    {
+        'count': 1,
+        'database_name': 'Telephone Database',
+        'database_type': 'CIVIL',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
+    },
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #1)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'DOB']
+    },
+    {
+        'count': 1,
+        'database_name': 'Voting Register',
+        'database_type': 'CIVIL',
+        'matched_fields': ['FORENAME', 'SURNAME', 'DOB']
     }
-}
+]
 
 mock_uk_response_one_plus_one = {
     'errors': [],
@@ -1392,261 +1170,50 @@ mock_fail = {
     }
 }
 
-mock_usa_response = {
-    'errors': [],
-    'output_data': {
-        'credit_ref': {
-            'exact': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'partial': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'dob': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            }
-        },
-        'db_matches': {
-            'business_registration_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'business_registration_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'business_registration_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'commercial_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'commercial_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'commercial_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'consumer_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'consumer_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'consumer_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'electoral_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'electoral_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'electoral_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'government_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'government_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'government_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'onfido_proprietary_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'onfido_proprietary_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'onfido_proprietary_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'postal_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'postal_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'postal_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'ssn_exact': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'ssn_partial': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'telephone_exact': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'telephone_partial': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'telephone_dob': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'utility_dob': {
-                'v': {
-                    'count': 1,
-                    'match': True
-                }
-            },
-            'utility_partial': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            },
-            'utility_exact': {
-                'v': {
-                    'count': 0,
-                    'match': False
-                }
-            }
-        }
+mock_usa_matches = [
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #1)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
     },
-    'price': 0,
-    'raw': {
-        'applicant': {
-            'id': 'some_id'
-        },
-        'check': {
-            'reports': [{
-                'breakdown': {
-                    'address': {
-                        'breakdown': {
-                            'address_matched': {
-                                'properties': {
-                                    'sources': 'Credit Agencies, Telephone Database'
-                                },
-                                'result': 'clear'
-                            }
-                        },
-                        'result': 'clear'
-                    },
-                    'date_of_birth': {
-                        'breakdown': {
-                            'date_of_birth_matched': {
-                                'properties': {
-                                    'sources': 'Credit Agencies, Utility Registration'
-                                },
-                                'result': 'clear'
-                            }
-                        },
-                        'result': 'clear'
-                    },
-                    'properties': {},
-                    'ssn': {
-                        'breakdown': {
-                            'full_match': {
-                                'properties': {},
-                                'result': 'clear'
-                            },
-                            'last_4_digits_match': {
-                                'properties': {},
-                                'result': 'clear'
-                            }
-                        },
-                        'result': 'clear'
-                    }
-                },
-                'created_at': '2014-05-23T13:50:33Z',
-                'href': '/v2/checks/8546922-234234-234234/reports/6951786-234234-316712',
-                'id': '6951786-234234-316712',
-                'name': 'identity',
-                'result': 'clear',
-                'status': 'complete'
-            }]
-        }
+    {
+        'count': 1,
+        'database_name': 'Telephone Database',
+        'database_type': 'CIVIL',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
+    },
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #1)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'DOB']
+    },
+    {
+        'count': 1,
+        'database_name': 'Utility Registration',
+        'database_type': 'CIVIL',
+        'matched_fields': ['FORENAME', 'SURNAME', 'DOB']
+    },
+    {
+        'count': 1,
+        'database_name': 'Social Security Database',
+        'database_type': 'CIVIL',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
+    },
+    {
+        'count': 0,
+        'database_name': 'Voting Register',
+        'database_type': 'CIVIL',
+        'matched_fields': []
+    },
+    {
+        'count': 0,
+        'database_name': 'Government',
+        'database_type': 'CIVIL',
+        'matched_fields': []
     }
-}
+]
 
 mock_watchlist_consider = {
     'error': [],

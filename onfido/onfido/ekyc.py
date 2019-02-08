@@ -4,7 +4,7 @@ import logging
 from functools import partial
 from typing import List
 
-from onfido.onfido.models import Applicant, Check, IdentityReport
+from onfido.models import Applicant, Check, IdentityReport
 
 
 def stage_error_from_onfido_response(response, connection_error_message):
@@ -20,8 +20,8 @@ def stage_error_from_onfido_response(response, connection_error_message):
 
 
 def onfido_check_to_individual(applicant_json, check_json):
-    applicant = Applicant().import_data(applicant_json)
-    check = Check().import_data(check_json)
+    applicant = Applicant().import_data(applicant_json, apply_defaults=True)
+    check = Check().import_data(check_json, apply_defaults=True)
 
     matches = []
     for report in check.reports:

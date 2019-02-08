@@ -4,7 +4,7 @@ from onfido.mock_data.ekyc import mock_usa_check, mock_uk_check
 from flask import json
 from app.application import app
 import json
-from app.mock_data.mock_responses import mock_uk_response, mock_usa_response
+from app.mock_data.mock_responses import mock_uk_matches, mock_usa_matches
 from app.mock_data.mock_request import mock_request, mock_fail_applicant_response
 
 
@@ -21,7 +21,8 @@ class TestApplication(unittest.TestCase):
             responses.POST,
             'https://api.onfido.com/v2/applicants',
             json={
-                'id': 'some_id'
+                'id': 'some_id',
+                'country': 'usa',
             }
         )
 
@@ -36,7 +37,7 @@ class TestApplication(unittest.TestCase):
                                          content_type='application/json',
                                          )
         json_data = json.loads(response.get_data(as_text=True))
-        self.assertEqual(mock_usa_response, json_data)
+        self.assertEqual(mock_usa_matches, json_data['output_data']['matches'])
 
     @responses.activate
     def test_uk_applicant_check(self):
@@ -44,7 +45,8 @@ class TestApplication(unittest.TestCase):
             responses.POST,
             'https://api.onfido.com/v2/applicants',
             json={
-                'id': 'some_id'
+                'id': 'some_id',
+                'country': 'gbr',
             }
         )
 
@@ -59,7 +61,8 @@ class TestApplication(unittest.TestCase):
                                          content_type='application/json',
                                          )
         json_data = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_data, mock_uk_response)
+        self.maxDiff = None
+        self.assertEqual(mock_uk_matches, json_data['output_data']['matches'])
 
     @responses.activate
     def test_failed_applicant(self):
