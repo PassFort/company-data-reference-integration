@@ -7,6 +7,20 @@ from schematics.types import ModelType, ListType, StringType, UnionType
 from .types import ErrorCode, MatchField, DatabaseType
 
 
+class XMLTagBaseType(ModelType):
+    def convert(self, value, context=None):
+
+        if isinstance(value, dict):
+            to_convert = value
+        elif isinstance(value, str):
+            to_convert = {
+                '#text': value
+            }
+        else:
+            return value
+        return super().convert(to_convert, context)
+
+
 class OneOrMoreType(ListType):
 
     def convert(self, value, context=None):
@@ -205,6 +219,7 @@ class EquifaxProduct(Model):
             'name': 'A name and address match plus a name and DOB match',
             'is_active': False,
             'database_types': [DatabaseType.CREDIT.value],
+            'distinct_sources': True,
             'requires': [
                 {
                     'matched_fields': [MatchField.FORENAME.value, MatchField.SURNAME.value, MatchField.ADDRESS.value],
@@ -221,6 +236,7 @@ class EquifaxProduct(Model):
             'name': 'A name and address match',
             'is_active': False,
             'database_types': [DatabaseType.CREDIT.value],
+            'distinct_sources': True,
             'requires': [
                 {
                     'matched_fields': [MatchField.FORENAME.value, MatchField.SURNAME.value, MatchField.ADDRESS.value],
@@ -233,6 +249,7 @@ class EquifaxProduct(Model):
             'name': 'A name and DOB match',
             'is_active': False,
             'database_types': [DatabaseType.CREDIT.value],
+            'distinct_sources': True,
             'requires': [
                 {
                     'matched_fields': [MatchField.FORENAME.value, MatchField.SURNAME.value, MatchField.DOB.value],
@@ -244,6 +261,7 @@ class EquifaxProduct(Model):
         {
             'name': 'No address or DOB match',
             'database_types': [DatabaseType.CREDIT.value],
+            'distinct_sources': True,
             'is_active': False,
             'requires': [],
             'result': 'Fail'
@@ -295,10 +313,8 @@ class EquifaxProduct(Model):
         matched_rule['is_active'] = True
         matched_rule['satisfied_by'] = satisfied_requirements
         return {
-            'electronic_id_check': {
-                'matches': matches,
-                'rules': rules
-            }
+            'matches': matches,
+            'rules': rules
         }
 
 
@@ -306,8 +322,86 @@ class EquifaxCoreServices(Model):
     product = ModelType(EquifaxProduct, serialized_name='CSProduct')
 
 
+class CodeItem(Model):
+    code = StringType(required=True, serialized_name='@code')
+    description = StringType(default=None, serialized_name='@description')
+
+
+class FileOwner(Model):
+    bureau_code = XMLTagBaseType(EquifaxItem, required=True, serialized_name='BureauCode')
+    bureau_contact = XMLTagBaseType(EquifaxItem, default=None, serialized_name='BureauContactInformation')
+
+    @property
+    def name(self):
+        return self.bureau_contact.text if self.bureau_contact is not None else self.bureau_code.text
+
+
+class CreditFile(Model):
+    unique_number = XMLTagBaseType(EquifaxItem, default=None, serialized_name='UniqueNumber')
+    file_since_date = XMLTagBaseType(EquifaxItem, default=None, serialized_name='FileSinceDate')
+    date_of_last_activity = XMLTagBaseType(EquifaxItem, default=None, serialized_name='DateOfLastActivity')
+    date_of_request = XMLTagBaseType(EquifaxItem, default=None, serialized_name='DateOfRequest')
+    file_owner = ModelType(FileOwner, default=None, serialized_name='FileOwner')
+    hit_code = ModelType(CodeItem, serialized_name='HitCode', required=True)
+    hit_strength_indicator = ModelType(CodeItem, serialized_name='HitStrengthIndicator')
+
+    def as_credit_file_match(self):
+        extra_fields = [
+            {
+                'name': attr_name,
+                'value': getattr(self, attr_name).text
+            }
+            for attr_name in [
+                'file_since_date',
+                'date_of_last_activity',
+                'date_of_request'
+            ]
+        ] + [
+            {
+                'name': 'bureau_code',
+                'value': self.file_owner.bureau_code.text if self.file_owner else None
+            },
+            {
+                'name': 'hit_code_value',
+                'value': self.hit_code.code
+            },
+            {
+                'name': 'hit_code_description',
+                'value': self.hit_code.description
+            },
+            {
+                'name': 'hit_strength_value',
+                'value': self.hit_strength_indicator.code if self.hit_strength_indicator else None
+            },
+            {
+                'name': 'hit_code_description',
+                'value': self.hit_strength_indicator.description if self.hit_strength_indicator else None
+            }
+        ]
+        return {
+            'unique_number': self.unique_number.text,
+            'bureau_name': self.file_owner.name if self.file_owner else 'Equifax',
+            'extra': extra_fields
+        }
+
+
+class EquifaxConsumerReportHeader(Model):
+    credit_files = OneOrMoreType(ModelType(CreditFile), serialized_name='CreditFile', default=[])
+
+    def credit_file_matches(self):
+        return [credit_file.as_credit_file_match() for credit_file in self.credit_files]
+
+
 class EquifaxConsumerReport(Model):
-    efx_core_svc = ModelType(EquifaxCoreServices, serialized_name='CNEquifaxCoreServices')
+    efx_core_svc = ModelType(EquifaxCoreServices, serialized_name='CNEquifaxCoreServices', required=True)
+    header = ModelType(EquifaxConsumerReportHeader, serialized_name='CNHeader', required=True)
+
+    def as_ekyc_result(self):
+        core_result = self.efx_core_svc.product.as_ekyc_result()
+        return {
+            **core_result,
+            'credit_files': self.header.credit_file_matches()
+        }
 
 
 class EquifaxConsumerReports(Model):
@@ -315,10 +409,19 @@ class EquifaxConsumerReports(Model):
 
 
 class EquifaxReport(Model):
-    efx_consumer_reports = ModelType(EquifaxConsumerReports, serialized_name='CNConsumerCreditReports')
+    efx_consumer_reports = ModelType(EquifaxConsumerReports, serialized_name='CNConsumerCreditReports', default=None)
+    request_number = StringType(required=True, serialized_name='@requestNumber')
 
     def get_ekyc_result(self):
-        return self.efx_consumer_reports.efx_consumer_report.efx_core_svc.product.as_ekyc_result()
+        if self.efx_consumer_reports:
+            consumer_report = self.efx_consumer_reports.efx_consumer_report.as_ekyc_result()
+            return {
+                'electronic_id_check': {
+                    **consumer_report,
+                    'provider_reference_number': self.request_number
+                }
+            }
+        return None
 
 
 class EquifaxResponse(Model):
@@ -329,10 +432,6 @@ class EquifaxResponse(Model):
         if self.error_report and self.error_report.main and self.error_report.main.errors:
             return self.error_report.main.as_passfort_errors()
         return []
-
-    def get_matches(self):
-        if self.efx_report:
-            return self.efx_report.get_matches()
 
 
 class EquifaxResponseWithRoot(Model):
@@ -346,3 +445,9 @@ class EquifaxResponseWithRoot(Model):
 
     def get_errors(self):
         return self.root.get_errors()
+
+    def get_ekyc_result(self):
+        if self.root.efx_report:
+            return self.root.efx_report.get_ekyc_result()
+        return None
+
