@@ -61,7 +61,6 @@ class TestApplication(unittest.TestCase):
                                          content_type='application/json',
                                          )
         json_data = json.loads(response.get_data(as_text=True))
-        self.maxDiff = None
         self.assertEqual(mock_uk_matches, json_data['output_data']['matches'])
 
     @responses.activate

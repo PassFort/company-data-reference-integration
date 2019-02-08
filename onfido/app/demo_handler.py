@@ -1,19 +1,20 @@
-from app.mock_data.mock_responses import mock_uk_matches, mock_uk_response_fail, mock_uk_response_one_plus_one, \
+from app.mock_data.mock_responses import mock_uk_matches, mock_uk_matches_fail, mock_uk_matches_one_plus_one, \
     mock_watchlist_consider, mock_watchlist_pass
 
 
 def get_demo_ekyc_response(name):
+    matches = mock_uk_matches
     if 'fail' in " ".join(name['given_names']).lower() or 'fail' in name['family_name'].lower():
         # Return data which will trigger a fail on the stage
-        return mock_uk_response_fail
+        matches = mock_uk_matches_fail
     elif '1+1' in " ".join(name['given_names']).lower() or '1+1' in name['family_name'].lower():
         # Return data which will trigger a 1+1 on the stage
-        return mock_uk_response_one_plus_one
+        matches = mock_uk_matches_one_plus_one
 
     # Return data which will trigger a 2+2 on the stage
     return {
         'output_data': {
-            'matches': mock_uk_matches
+            'matches': matches
         }
     }
 
