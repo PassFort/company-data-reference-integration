@@ -45,7 +45,7 @@ def generate_input_segment(request_data):
                         ('DateOfBirth', request_data.input_data.dob)
                     ])),
                     ('Addresses', OrderedDict([
-                        ('Address', request_data.input_data.address_history.current.as_equifax_address())
+                        ('Address', request_data.input_data.current_address.as_equifax_address())
                     ]))
                 ]))  # May need to also send ('CreditFileRequest', 0) once Dual Source is configured
             ]))

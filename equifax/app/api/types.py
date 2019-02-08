@@ -146,13 +146,13 @@ class StructuredAddress(Model):
         ])
 
 
-class AddressHistory(Model):
-    current = ModelType(StructuredAddress, required=True)
+class AddressWrapper(Model):
+    address = ModelType(StructuredAddress, required=True)
 
 
 class IndividualData(Model):
     personal_details = ModelType(PersonalDetails, required=True)
-    address_history = ModelType(AddressHistory, required=True)
+    address_history = ListType(ModelType(AddressWrapper), required=True, min_size=1)
 
     @property
     def first_name(self):
@@ -165,6 +165,10 @@ class IndividualData(Model):
     @property
     def dob(self):
         return self.personal_details.dob
+
+    @property
+    def current_address(self):
+        return self.address_history[0].address
 
 
 class EquifaxCredentials(Model):
