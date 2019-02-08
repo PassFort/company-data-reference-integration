@@ -217,7 +217,7 @@ class EquifaxProduct(Model):
     rules = [
         {
             'name': 'A name and address match plus a name and DOB match',
-            'is_active': False,
+            'active': False,
             'database_types': [DatabaseType.CREDIT.value],
             'distinct_sources': True,
             'requires': [
@@ -234,7 +234,7 @@ class EquifaxProduct(Model):
         },
         {
             'name': 'A name and address match',
-            'is_active': False,
+            'active': False,
             'database_types': [DatabaseType.CREDIT.value],
             'distinct_sources': True,
             'requires': [
@@ -247,7 +247,7 @@ class EquifaxProduct(Model):
         },
         {
             'name': 'A name and DOB match',
-            'is_active': False,
+            'active': False,
             'database_types': [DatabaseType.CREDIT.value],
             'distinct_sources': True,
             'requires': [
@@ -262,7 +262,7 @@ class EquifaxProduct(Model):
             'name': 'No address or DOB match',
             'database_types': [DatabaseType.CREDIT.value],
             'distinct_sources': True,
-            'is_active': False,
+            'active': False,
             'requires': [],
             'result': 'Fail'
         }
@@ -310,7 +310,7 @@ class EquifaxProduct(Model):
             assert len(matches) > 1 and len(satisfied_requirements) == 2
 
         matched_rule = self.matched_rule(rules, satisfied_requirements)
-        matched_rule['is_active'] = True
+        matched_rule['active'] = True
         matched_rule['satisfied_by'] = satisfied_requirements
         return {
             'matches': matches,
