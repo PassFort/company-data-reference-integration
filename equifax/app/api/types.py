@@ -129,7 +129,8 @@ class PersonalDetails(Model):
 class StructuredAddress(Model):
     postal_code = StringType(required=True)
     state_province = StringType(required=True)
-    postal_town = StringType(required=True)
+    postal_town = StringType(default=None)
+    locality = StringType(default=None)
     street_number = StringType(default=None)
     route = StringType(default=None)
 
@@ -139,7 +140,7 @@ class StructuredAddress(Model):
             ('@addressType', 'CURR'),
             ('CivicNumber', self.street_number),
             ('StreetName', self.route),
-            ('City', self.postal_town),
+            ('City', self.locality or self.postal_town),
             ('Province', OrderedDict([('@code', self.state_province)])),
             ('PostalCode', self.postal_code)
         ])

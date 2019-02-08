@@ -65,7 +65,7 @@ def process_equifax_response(raw_response):
 
         return {
             'raw': response,
-            'output_data': response_model.root.efx_report.get_ekyc_result() if response_model.root.efx_report else None,
+            'output_data': response_model.get_ekyc_result(),
             'errors': response_model.get_errors()
         }
     except ExpatError:

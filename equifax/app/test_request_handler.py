@@ -196,9 +196,9 @@ class TestResultProcessing(unittest.TestCase):
     def get_and_assert_active_rule(self, rules, expected_active_index):
         for index, rule in enumerate(rules):
             if index == expected_active_index:
-                self.assertTrue(rule['is_active'])
+                self.assertTrue(rule['active'])
             else:
-                self.assertFalse(rule['is_active'])
+                self.assertFalse(rule['active'])
         return rules[expected_active_index]
 
     def test_process_successful_response_2_plus_2(self):
@@ -281,3 +281,58 @@ class TestResultProcessing(unittest.TestCase):
         active_rule = self.get_and_assert_active_rule(rules, 3)
         self.assertEqual(active_rule['result'], 'Fail')
         self.assertEqual(len(active_rule['satisfied_by']), 0)
+
+
+class TestRecordKeeping(unittest.TestCase):
+    def test_surfaces_record_keeping_fields(self):
+        with open('mock_data/2_plus_2.xml', 'rb') as f:
+            test_input = f.read()
+        actual = process_equifax_response(test_input)
+        self.assertEqual(actual['errors'], [])
+
+        self.assertEqual(actual['output_data']['electronic_id_check']['provider_reference_number'], '1')
+
+        credit_file_data = actual['output_data']['electronic_id_check']['credit_files']
+
+        self.assertEqual(len(credit_file_data), 1)
+        self.assertEqual(credit_file_data[0]['unique_number'], '0050165588')
+        self.assertEqual(credit_file_data[0]['bureau_name'], 'Equifax inc.')
+
+        self.assertListEqual(
+            credit_file_data[0]['extra'],
+            [
+                {'name': 'file_since_date', 'value': '2010-01-01'},
+                {'name': 'date_of_last_activity', 'value': '2019-01-04'},
+                {'name': 'date_of_request', 'value': '2019-02-05'},
+                {'name': 'bureau_code', 'value': '065'},
+                {'name': 'hit_code_value', 'value': '1'},
+                {'name': 'hit_code_description', 'value': 'HIT'},
+                {'name': 'hit_strength_value', 'value': '11'},
+                {'name': 'hit_code_description', 'value': 'Regular hit'}
+            ]
+        )
+
+        matches = actual['output_data']['electronic_id_check']['matches']
+        self.assertEqual(len(matches), 2)
+
+        self.assertListEqual(
+            matches[0]['extra'],
+            [
+                {'name': 'member_number', 'value': '650ON42725'},
+                {'name': 'account_number', 'value': '123456789044423'},
+                {'name': 'date_opened', 'value': '20161003'},
+                {'name': 'date_last_reported', 'value': '20190129'},
+                {'name': 'institution_name', 'value': 'TD CREDIT CARDS'}
+            ]
+        )
+
+        self.assertListEqual(
+            matches[1]['extra'],
+            [
+                {'name': 'member_number', 'value': '650BB31015'},
+                {'name': 'account_number', 'value': '123456789033323'},
+                {'name': 'date_opened', 'value': '20161003'},
+                {'name': 'date_last_reported', 'value': '20190129'},
+                {'name': 'institution_name', 'value': 'SIMPLII FI CIBC'}
+            ]
+        )
