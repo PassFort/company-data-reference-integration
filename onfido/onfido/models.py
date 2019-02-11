@@ -194,14 +194,14 @@ class IdentityReportInnerBreakdownSSN(IdentityReportInnerBreakdown):
             matches.append({
                 'database_name': f'Social Security Database',
                 'database_type': 'CIVIL',
-                'matched_fields': matched_fields,
+                'matched_fields': matched_fields + ['IDENTITY_NUMBER_SUFFIX'],
                 'count': 1,
             })
         if self.full_match is not None and self.full_match == 'clear':
             matches.append({
                 'database_name': f'Social Security Database',
                 'database_type': 'CIVIL',
-                'matched_fields': matched_fields,
+                'matched_fields': matched_fields + ['IDENTITY_NUMBER'],
                 'count': 1,
             })
         return matches
