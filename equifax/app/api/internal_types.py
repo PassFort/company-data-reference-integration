@@ -142,6 +142,7 @@ class TradeItem(Model):
             'database_name': self.database_name,
             'database_type': DatabaseType.CREDIT.value,
             'matched_fields': matched_fields,
+            'count': 1,
             'extra': extra_fields
         }
 
