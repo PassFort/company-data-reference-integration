@@ -238,7 +238,7 @@ class IdentityReportBreakdown(Model):
             matches.extend(self.date_of_birth.compute_matches(['FORENAME', 'SURNAME', 'DOB']))
 
         if self.ssn is not None:
-            matches.extend(self.ssn.compute_matches(['FORENAME', 'SURNAME', 'ADDRESS']))
+            matches.extend(self.ssn.compute_matches(['FORENAME', 'SURNAME']))
 
         all_databases = {match['database_name'] for match in matches}
         if onfido_credit_source_name(0) in all_databases:
