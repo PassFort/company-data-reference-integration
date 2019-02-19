@@ -108,7 +108,13 @@ mock_usa_matches = [
         'count': 1,
         'database_name': 'Social Security Database',
         'database_type': 'CIVIL',
-        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS']
+        'matched_fields': ['FORENAME', 'SURNAME', 'IDENTITY_NUMBER_SUFFIX']
+    },
+    {
+        'count': 1,
+        'database_name': 'Social Security Database',
+        'database_type': 'CIVIL',
+        'matched_fields': ['FORENAME', 'SURNAME', 'IDENTITY_NUMBER']
     },
     {
         'count': 0,

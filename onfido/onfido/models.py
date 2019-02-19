@@ -197,7 +197,7 @@ class IdentityReportInnerBreakdownSSN(IdentityReportInnerBreakdown):
                 'matched_fields': matched_fields + ['IDENTITY_NUMBER_SUFFIX'],
                 'count': 1,
             })
-        if self.full_match is not None and self.full_match == 'clear':
+        if self.full_match is not None and self.full_match.result == 'clear':
             matches.append({
                 'database_name': f'Social Security Database',
                 'database_type': 'CIVIL',
