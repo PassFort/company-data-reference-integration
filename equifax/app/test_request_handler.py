@@ -241,7 +241,7 @@ class TestResultProcessing(unittest.TestCase):
         self.assertEqual(active_rule['result'], '1+1')
         self.assertEqual(len(active_rule['satisfied_by']), 1)
         self.assertEqual(
-            sorted(active_rule['satisfied_by'][0]['matched_fields']),
+            sorted(active_rule['satisfied_by'][0]['required_fields']),
             ['ADDRESS', 'FORENAME', 'SURNAME'])
 
     def test_process_1_plus_1_dob(self):
@@ -265,7 +265,12 @@ class TestResultProcessing(unittest.TestCase):
         self.assertEqual(len(active_rule['satisfied_by']), 1)
         self.assertEqual(
             sorted(active_rule['satisfied_by'][0]['matched_fields']),
+            ['ADDRESS', 'DOB', 'FORENAME', 'SURNAME'])
+        self.assertEqual(
+            sorted(active_rule['satisfied_by'][0]['required_fields']),
             ['DOB', 'FORENAME', 'SURNAME'])
+
+
 
     def test_process_fail_no_trade(self):
         with open('mock_data/fail_no_trade.xml', 'rb') as f:

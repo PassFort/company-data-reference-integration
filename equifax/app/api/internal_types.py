@@ -93,7 +93,7 @@ class TradeItem(Model):
 
     @property
     def database_name(self):
-        return self.item_content('FamilyName') or self.item_content('InstitutionName') or 'Credit'
+        return self.item_content('FamilyName') or self.item_content('InstitutionName') or 'Unknown Credit Database'
 
     @property
     def matched_requirement(self):
@@ -105,7 +105,8 @@ class TradeItem(Model):
             raise NotImplementedError('Qualifying trade should match on DOB or address')
         return {
             'database_name': self.database_name,
-            'matched_fields': matched_required_fields,
+            'matched_fields': self.match_data['matched_fields'],
+            'required_fields': matched_required_fields,
             'count': 1
         }
 
@@ -287,7 +288,7 @@ class EquifaxProduct(Model):
         return next((s.main_item for s in self.sections if isinstance(s.main_item, DualSourceItem)), None)
 
     def matched_rule(self, rules, satisfied_requirements):
-        satisfied_req_set = set(frozenset(r['matched_fields']) for r in satisfied_requirements)
+        satisfied_req_set = set(frozenset(r['required_fields']) for r in satisfied_requirements)
 
         for rule in rules:
             requirements = rule.get('requires', [])
