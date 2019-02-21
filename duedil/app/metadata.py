@@ -174,11 +174,11 @@ def get_metadata(country_code, company_number, credentials):
             'reference_number': auth['referenceNumber'],
             'status': auth['status'],
             'status_description': auth['statusDescription'],
-            'effective_date': auth['effectiveDate'],
+            'effective_date': datetime.strptime(auth['effectiveDate'], '%Y-%m-%d'),
             'permissions': [{
                 'activity_category': perm['activityCategory'],
                 'activity_description': perm['activityDescription'],
             } for perm in auth['permissions']],
-            'updated_from_source': auth['updatedFromSource'],
+            'updated_from_source': datetime.strptime(auth['updatedFromSource'], '%Y-%m-%d'),
         } for auth in fca_authorisations] if fca_authorisations is not None else None
     })
