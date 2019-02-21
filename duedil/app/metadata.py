@@ -5,9 +5,8 @@ from passfort_data_structure.companies.metadata import CompanyMetadata, Structur
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
-from app.utils import get, make_url, base_request, DueDilServiceException,\
-    convert_country_code, tagged, send_exception
-
+from app.utils import get, make_url, base_request, DueDilServiceException, \
+    convert_country_code, tagged, send_exception, get_all_results, company_url
 
 STRUCTURED_COMPANY_TYPE_MAP = {
     'Private limited with share capital': StructuredCompanyType({
@@ -74,6 +73,7 @@ def structure_company_type(type_):
         send_exception(exc, custom_data={'company_type': type_})
         return StructuredCompanyType()
 
+
 def request_phonenumbers(country_code, company_number, credentials):
     return base_request(
         make_url(country_code, company_number, 'telephone-numbers', limit=1),
@@ -88,6 +88,14 @@ def request_websites(country_code, company_number, credentials):
         credentials,
         get
     )
+
+
+def request_fca_authorisations(country_code, company_number, credentials):
+    return get_all_results(
+        company_url(country_code, company_number, '/fca-authorisations'),
+        'fcaAuthorisations',
+        credentials
+    )['fcaAuthorisations']
 
 
 def get_metadata(country_code, company_number, credentials):
@@ -121,7 +129,12 @@ def get_metadata(country_code, company_number, credentials):
     except (RequestException, HTTPError, JSONDecodeError):
         phone_number = None
 
-    is_active = { 'Active': True, 'Inactive': False }.get(company_json.get('simplifiedStatus'))
+    try:
+        fca_authorisations = request_fca_authorisations(country_code, company_number, credentials)
+    except (RequestException, HTTPError, JSONDecodeError):
+        fca_authorisations = None
+
+    is_active = {'Active': True, 'Inactive': False}.get(company_json.get('simplifiedStatus'))
 
     return company_json, CompanyMetadata({
         'name': tagged(company_json.get('name')),
@@ -153,5 +166,19 @@ def get_metadata(country_code, company_number, credentials):
         'contact_details': {
             'url': tagged(website),
             'phone_number': tagged(phone_number),
-        } if phone_number or website else None
+        } if phone_number or website else None,
+        'regulatory_authorisations': [{
+            'authority': 'FCA',
+            'source_name': auth['sourceName'],
+            'firm_type': auth['firmType'],
+            'reference_number': auth['referenceNumber'],
+            'status': auth['status'],
+            'status_description': auth['statusDescription'],
+            'effective_date': auth['effectiveDate'],
+            'permissions': [{
+                'activity_category': perm['activityCategory'],
+                'activity_description': perm['activityDescription'],
+            } for perm in auth['permissions']],
+            'updated_from_source': auth['updatedFromSource'],
+        } for auth in fca_authorisations] if fca_authorisations is not None else None
     })
