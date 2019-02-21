@@ -58,6 +58,12 @@ SUPPORTED_IDENTITY_DATABASES = {
     }
 }
 
+SSN_DATABASES = {
+    'Social Security Database': {
+        'USA'
+    }
+}
+
 
 class CommaSeparatedList(BaseType):
     def to_native(self, value, context=None):
@@ -67,9 +73,15 @@ class CommaSeparatedList(BaseType):
         return ', '.join(value)
 
 
+class IdNumber(Model):
+    type = StringType(default=None)
+    value = StringType(default=None)
+
+
 class Applicant(Model):
     id = StringType(required=True)
     country = StringType()
+    id_numbers = ListType(IdNumber, default=[])
 
 
 class IdentityReportItemPropertiesUK(Model):
@@ -221,7 +233,22 @@ class IdentityReportBreakdown(Model):
     date_of_birth = ModelType(IdentityReportBreakdownItem, default=None)
     ssn = ModelType(IdentityReportBreakdownItem, default=None)
 
-    def compute_matches(self, country_code):
+    @staticmethod
+    def add_missing_matches(country_code, all_databases, matches, expected_matches):
+        for k, v in expected_matches.items():
+            if country_code in v and k not in all_databases:
+                if k == onfido_credit_source_name(None):
+                    database_type = 'CREDIT'
+                else:
+                    database_type = 'CIVIL'
+                matches.append({
+                    'database_name': k,
+                    'database_type': database_type,
+                    'matched_fields': [],
+                    'count': 0,
+                })
+
+    def compute_matches(self, country_code, has_ssn):
         matches = []
         if self.mortality is not None and self.mortality.result != 'clear':
             matches.append({
@@ -245,18 +272,9 @@ class IdentityReportBreakdown(Model):
             all_databases.add(onfido_credit_source_name(None))
 
         # Add mismatches
-        for k, v in SUPPORTED_IDENTITY_DATABASES.items():
-            if country_code in v and k not in all_databases:
-                if k == onfido_credit_source_name(None):
-                    database_type = 'CREDIT'
-                else:
-                    database_type = 'CIVIL'
-                matches.append({
-                    'database_name': k,
-                    'database_type': database_type,
-                    'matched_fields': [],
-                    'count': 0,
-                })
+        self.add_missing_matches(country_code, all_databases, matches, SUPPORTED_IDENTITY_DATABASES)
+        if has_ssn:
+            self.add_missing_matches(country_code, all_databases, matches, SSN_DATABASES)
 
         return matches
 
@@ -282,8 +300,8 @@ class IdentityReport(Report):
     def _claim_polymorphic(data):
         return data['name'] == 'identity'
 
-    def compute_matches(self, country_code):
-        return self.breakdown.compute_matches(country_code)
+    def compute_matches(self, country_code, has_ssn=False):
+        return self.breakdown.compute_matches(country_code, has_ssn)
 
 
 class Check(Model):

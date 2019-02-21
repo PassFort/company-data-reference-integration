@@ -23,10 +23,12 @@ def onfido_check_to_individual(applicant_json, check_json):
     applicant = Applicant().import_data(applicant_json, apply_defaults=True)
     check = Check().import_data(check_json, apply_defaults=True)
 
+    has_ssn = len(applicant.id_numbers) > 0
+
     matches = []
     for report in check.reports:
         if isinstance(report, IdentityReport):
-            matches = report.compute_matches(applicant.country.upper())
+            matches = report.compute_matches(applicant.country.upper(), has_ssn)
             break
 
     config = {
