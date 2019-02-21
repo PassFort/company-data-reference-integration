@@ -138,6 +138,14 @@ class TestMetadata(unittest.TestCase):
         Assert.equal(metadata.structured_company_type, company_type)
 
     @responses.activate
+    def test_it_retrieves_lei_number(self):
+        url = '/company/gb/100.json'
+        self.mock_get(url=url, json=create_metadata_response())
+
+        _, metadata = get_metadata('gb', '100', {})
+        Assert.equal(metadata.lei.v, '213800L79TM117EYOL08')
+
+    @responses.activate
     def test_it_stores_company_type_wholesale(self):
         url = "/company/gb/100.json"
         self.mock_get(url=url, json=create_anpartsselskab_response())
