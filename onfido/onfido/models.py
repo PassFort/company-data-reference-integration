@@ -81,7 +81,7 @@ class IdNumber(Model):
 class Applicant(Model):
     id = StringType(required=True)
     country = StringType()
-    id_numbers = ListType(IdNumber, default=[])
+    id_numbers = ListType(ModelType(IdNumber), default=[])
 
 
 class IdentityReportItemPropertiesUK(Model):
