@@ -93,7 +93,7 @@ class TradeItem(Model):
 
     @property
     def database_name(self):
-        return self.item_content('FamilyName') or self.item_content('InstitutionName') or 'Credit',
+        return self.item_content('FamilyName') or self.item_content('InstitutionName') or 'Credit'
 
     @property
     def matched_requirement(self):
