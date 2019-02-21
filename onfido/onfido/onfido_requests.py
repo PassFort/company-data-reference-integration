@@ -61,8 +61,18 @@ def create_applicant(requestor, input_data):
     applicant['last_name'] = input_data['personal_details']['name']['v']['family_name']
     applicant['middle_name'] = " ".join(given_names[1:len(given_names)])
     applicant['dob'] = input_data['personal_details']['dob']['v']
-    if input_data['personal_details'].get('nationality ') is not None:
-        applicant['nationality'] = input_data['personal_details']['nationality']['v']
+
+    personal_details = input_data['personal_details']
+    if personal_details.get('nationality') is not None:
+        applicant['nationality'] = personal_details['nationality']['v']
+    if personal_details.get('national_identity_number'):
+        nin = personal_details['national_identity_number']
+        if nin.get('USA'):
+            applicant['id_numbers'] = [{
+                'type': 'ssn',
+                'value': nin['USA']['v'],
+            }]
+
     if input_data['address_history'].get('current', {}).get('country', {}):
         applicant['country'] = input_data['address_history']['current']['country']
     applicant['addresses'] = list(filter(None, [

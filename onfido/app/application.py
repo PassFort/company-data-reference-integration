@@ -44,7 +44,7 @@ def ekyc_check():
         if check_status < 400:
             logging.info({'message': 'Check successful', 'response': created_check})
             return jsonify(
-                output_data=onfido_check_to_individual(created_check),
+                output_data=onfido_check_to_individual(created_applicant, created_check),
                 raw={'applicant': created_applicant, 'check': created_check},
                 errors=[],
                 price=0,
