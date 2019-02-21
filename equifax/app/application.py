@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 import app.json_logger
 from app.api.types import validate_model, EKYCRequest, Error
-from .request_handler import ekyc_request, EquifaxProviderError, EquifaxConnectionError
+from .request_handler import ekyc_request, EquifaxProviderError, get_demo_response
 
 app = Flask(__name__)
 
@@ -25,7 +25,10 @@ def health():
 @app.route('/ekyc-check', methods=['POST'])
 @validate_model(EKYCRequest)
 def run_ekyc_check(request_data):
-    return jsonify(ekyc_request(request_data))
+    if request_data.is_demo:
+        return jsonify(get_demo_response(request_data))
+    else:
+        return jsonify(ekyc_request(request_data))
 
 
 @app.errorhandler(400)
