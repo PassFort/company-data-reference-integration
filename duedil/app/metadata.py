@@ -150,6 +150,7 @@ def get_metadata(country_code, company_number, credentials):
         'incorporation_date': tagged(incorporation_date),
         'company_type': tagged(company_json.get('type')),
         'structured_company_type': structure_company_type(company_json.get('type')),
+        'lei': tagged(get_in(company_json, ['legalEntityIdentifier', 'lei'])),
         'contact_details': {
             'url': tagged(website),
             'phone_number': tagged(phone_number),
