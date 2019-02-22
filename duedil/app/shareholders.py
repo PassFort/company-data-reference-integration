@@ -41,6 +41,38 @@ def request_shareholders(country_code, company_number, credentials):
     return shareholders, format_shareholders(total_company_shares, shareholders)
 
 
+def request_pscs(country_code, company_number, credentials):
+    """Fetches all pscs for a given company.
+    Args:
+        - country_code: iso2 country code
+        - company_number: string
+        - credentials: object
+    Returns:
+        - raw_pscs: object
+        - pscs: Shareholder[]
+
+    Shareholder {
+        first_names: string,
+        last_name: string,
+        resolver_id: uuid1,
+        provider_name: duedil,
+        shareholding: {
+            share_class: string,
+            amount: int,
+            percentage: int,
+            currency: "GBP"
+        }
+    }
+    """
+
+    json = get_all_results(company_url(country_code, company_number, '/persons-significant-control'), 'personsOfSignificantControl', credentials)
+
+    pscs = json['personsOfSignificantControl']
+    statements = json['statements']
+
+    return pscs, format_pscs(statements, pscs)
+
+
 def format_fullname(entity_type, full_name):
     ''' Format names for storing purposes by concatenating them with underscores
 
