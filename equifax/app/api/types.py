@@ -170,6 +170,17 @@ class IndividualData(Model):
     def current_address(self):
         return self.address_history[0].address
 
+    @property
+    def demo_key(self):
+        full_name_key = ' '.join(self.personal_details.name.given_names + [self.personal_details.name.family_name])
+        if '1+1' in full_name_key:
+            return '1+1'
+
+        if 'Fail' in full_name_key:
+            return 'Fail'
+
+        return '2+2'
+
 
 class EquifaxCredentials(Model):
     customer_code = StringType(required=True)

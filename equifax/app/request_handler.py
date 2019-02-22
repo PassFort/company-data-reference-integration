@@ -100,3 +100,17 @@ def ekyc_request(request_data: EKYCRequest):
     raw_response = client.service.Submit(InputSegment=xml_input)
 
     return process_equifax_response(raw_response)
+
+
+def get_demo_response(request_data: EKYCRequest):
+    demo_key = request_data.input_data.demo_key
+
+    demo_file = {
+        '1+1': '1_plus_1_address.xml',
+        'Fail': 'fail_no_trade.xml'
+    }.get(demo_key, '2_plus_2.xml')
+
+    with open(f'mock_data/{demo_file}', 'rb') as f:
+        demo_input = f.read()
+
+    return process_equifax_response(demo_input)
