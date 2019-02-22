@@ -90,14 +90,6 @@ def request_websites(country_code, company_number, credentials):
     )
 
 
-def request_fca_authorisations(country_code, company_number, credentials):
-    return get_all_results(
-        company_url(country_code, company_number, '/fca-authorisations'),
-        'fcaAuthorisations',
-        credentials
-    )['fcaAuthorisations']
-
-
 def get_metadata(country_code, company_number, credentials):
     status_code, company_json = base_request(
         f'/company/{country_code}/{company_number}.json',
@@ -128,11 +120,6 @@ def get_metadata(country_code, company_number, credentials):
         phone_number = get_in(telephone_json, ['telephoneNumbers', 0, 'telephoneNumber'])
     except (RequestException, HTTPError, JSONDecodeError):
         phone_number = None
-
-    try:
-        fca_authorisations = request_fca_authorisations(country_code, company_number, credentials)
-    except (RequestException, HTTPError, JSONDecodeError):
-        fca_authorisations = None
 
     is_active = {'Active': True, 'Inactive': False}.get(company_json.get('simplifiedStatus'))
 
@@ -167,18 +154,4 @@ def get_metadata(country_code, company_number, credentials):
             'url': tagged(website),
             'phone_number': tagged(phone_number),
         } if phone_number or website else None,
-        'regulatory_authorisations': [{
-            'authority': 'FCA',
-            'source_name': auth['sourceName'],
-            'firm_type': auth['firmType'],
-            'reference_number': auth['referenceNumber'],
-            'status': auth['status'],
-            'status_description': auth['statusDescription'],
-            'effective_date': datetime.strptime(auth['effectiveDate'], '%Y-%m-%d'),
-            'permissions': [{
-                'activity_category': perm['activityCategory'],
-                'activity_description': perm['activityDescription'],
-            } for perm in auth['permissions']],
-            'updated_from_source': datetime.strptime(auth['updatedFromSource'], '%Y-%m-%d'),
-        } for auth in fca_authorisations] if fca_authorisations is not None else None
     })
