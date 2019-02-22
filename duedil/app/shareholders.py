@@ -36,6 +36,9 @@ def request_shareholders(country_code, company_number, credentials):
     json = get_all_results(company_url(country_code, company_number, '/shareholders'), 'shareholders', credentials)
 
     shareholders = json['shareholders']
+    if shareholders is None:
+        return [], []
+
     total_company_shares = json['totalCompanyShares']
 
     return shareholders, format_shareholders(total_company_shares, shareholders)

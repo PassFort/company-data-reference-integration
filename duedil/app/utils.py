@@ -50,7 +50,7 @@ def get_all_results(url, property, credentials) -> Dict[str, Any]:
     status_code, result = base_request(url, credentials, get)
 
     if status_code == 404:
-        return {property: []}
+        return {property: None}
 
     if status_code == 401 or status_code == 403:
         raise DueDilAuthException()
@@ -61,11 +61,12 @@ def get_all_results(url, property, credentials) -> Dict[str, Any]:
     if 500 <= status_code <= 599:
         raise DueDilServiceException(f'Internal error from DueDil: {status_code}')
 
-    pagination = result['pagination']
-    pages = paginate(url, pagination, credentials)
+    pagination = result.get('pagination') or {}
+    pages = [(status_code, result)]
+    pages.extend(paginate(url, pagination, credentials))
 
-    pagination['limit'] = pagination['total']
-    result[property] = [item for page in pages for item in page[property]]
+    pagination['limit'] = pagination.get('total')
+    result[property] = [item for _, page in pages for item in page[property]]
     return result
 
 

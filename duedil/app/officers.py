@@ -90,4 +90,4 @@ def format_officers(officers):
 
         return officer
 
-    return [format_officer(entry) for entry in officers]
+    return [format_officer(entry) for entry in officers] if officers is not None else None

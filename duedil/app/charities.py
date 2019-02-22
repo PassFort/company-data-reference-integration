@@ -14,7 +14,8 @@ nameparser.config.CONSTANTS.suffix_acronyms.add('dl')
 
 
 def request_paginated_property(country_code, charity_id, credentials, endpoint, property):
-    return get_all_results(charity_url(country_code, charity_id, endpoint), property, credentials)[property]
+    json = get_all_results(charity_url(country_code, charity_id, endpoint), property, credentials)
+    return json, json[property]
 
 
 def request_vitals(country_code, charity_id, credentials):

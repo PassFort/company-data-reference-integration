@@ -6,7 +6,7 @@ from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
 from app.utils import get, make_url, base_request, DueDilServiceException, \
-    convert_country_code, tagged, send_exception, get_all_results, company_url
+    convert_country_code, tagged, send_exception
 
 STRUCTURED_COMPANY_TYPE_MAP = {
     'Private limited with share capital': StructuredCompanyType({
