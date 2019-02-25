@@ -6,6 +6,9 @@ from json import JSONDecodeError
 from app.utils import get_all_results, company_url
 
 
+SUPPORTED_COUNTRY_CODES = {'gb'}
+
+
 def request_fca_authorisations(country_code, company_number, credentials):
     return get_all_results(
         company_url(country_code, company_number, '/fca-authorisations'),
@@ -15,6 +18,9 @@ def request_fca_authorisations(country_code, company_number, credentials):
 
 
 def get_authorisations(country_code, company_number, credentials):
+    if country_code not in SUPPORTED_COUNTRY_CODES:
+        return None, None
+
     try:
         raw_fca_authorisations = request_fca_authorisations(country_code, company_number, credentials)
     except (RequestException, HTTPError, JSONDecodeError):
