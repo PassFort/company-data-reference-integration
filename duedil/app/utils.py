@@ -56,10 +56,10 @@ def get_all_results(url, property, credentials) -> Dict[str, Any]:
         raise DueDilAuthException()
 
     if 400 <= status_code <= 499:
-        raise DueDilServiceException(f'Received a {status_code} error from DueDil')
+        raise DueDilServiceException(f'Received a {status_code} error from DueDil: {result}')
 
     if 500 <= status_code <= 599:
-        raise DueDilServiceException(f'Internal error from DueDil: {status_code}')
+        raise DueDilServiceException(f'Internal {status_code} error from DueDil: {result}')
 
     pagination = result.get('pagination') or {}
     pages = [(status_code, result)]
@@ -119,16 +119,12 @@ def make_url(country_code, company_number, endpoint, offset=0, limit=10):
 
 
 def base_request(url, credentials, method=get, json_data=None):
-    response = None
-    json = None
-
     response = retry(lambda: method(url, credentials, json_data), (RequestException, HTTPError))
-    json = response.json()
 
     if response.status_code != 200:
-        return response.status_code, {}
+        return response.status_code, response.text
 
-    return response.status_code, json
+    return response.status_code, response.json()
 
 
 def get_entity_type(duedil_type):
