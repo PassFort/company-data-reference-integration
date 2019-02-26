@@ -5,52 +5,33 @@ from schemad_types.utils import get_in
 from requests.exceptions import RequestException, HTTPError
 from functools import reduce
 
-from app.utils import paginate, base_request, DueDilServiceException, convert_country_code,\
-    send_exception, retry, BASE_API, string_compare
-
+from app.utils import paginate, base_request, DueDilServiceException, convert_country_code, \
+    send_exception, retry, BASE_API, string_compare, get_all_results, charity_url
 
 nameparser.config.CONSTANTS.suffix_acronyms.add('jp')
 nameparser.config.CONSTANTS.suffix_acronyms.add('cc')
 nameparser.config.CONSTANTS.suffix_acronyms.add('dl')
 
 
-def make_charity_url(country_code, charity_id, endpoint):
-    return f'/charity/{country_code}/{charity_id}{endpoint}.json'
-
-
-def request_paginated_attribute(url, attribute, credentials):
-    status_code, json = base_request(url, credentials)
-
-    if status_code != 200:
-        return None, None
-
-    values = json[attribute]
-    pagination = json.get('pagination') or {}
-
-    pages = paginate(url, pagination, credentials)
-    values_pages = [json[attribute] for _, json in pages]
-    values = reduce(lambda x, y: x + y, values_pages, values)
-
-    return json, values
+def request_paginated_property(country_code, charity_id, credentials, endpoint, property):
+    json = get_all_results(charity_url(country_code, charity_id, endpoint), property, credentials)
+    return json, json[property]
 
 
 def request_vitals(country_code, charity_id, credentials):
-    return base_request(make_charity_url(country_code, charity_id, ''), credentials)
+    return base_request(charity_url(country_code, charity_id, ''), credentials)
 
 
 def request_trustees(country_code, charity_id, credentials):
-    url = make_charity_url(country_code, charity_id, '/trustees')
-    return request_paginated_attribute(url, 'trustees', credentials)
+    return request_paginated_property(country_code, charity_id, credentials, '/trustees', 'trustees')
 
 
 def request_classifiers(country_code, charity_id, credentials):
-    url = make_charity_url(country_code, charity_id, '/classifiers')
-    return request_paginated_attribute(url, 'classifiers', credentials)
+    return request_paginated_property(country_code, charity_id, credentials, '/classifiers', 'classifiers')
 
 
 def request_areas_of_activity(country_code, charity_id, credentials):
-    url = make_charity_url(country_code, charity_id, '/areas-of-activity')
-    return request_paginated_attribute(url, 'areasOfActivity', credentials)
+    return request_paginated_property(country_code, charity_id, credentials, '/areas-of-activity', 'areasOfActivity')
 
 
 def perform_search(country_code, search_term, credentials):

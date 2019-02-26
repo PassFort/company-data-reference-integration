@@ -6,7 +6,7 @@ from passfort_data_structure.companies.ownership import Shareholder
 from passfort_data_structure.entities.entity_type import EntityType
 
 from app.utils import get, get_entity_type, DueDilAuthException, DueDilServiceException, convert_country_code, make_url, \
-    paginate, base_request, send_exception
+    paginate, base_request, send_exception, get_all_results, company_url
 
 
 def request_shareholders(country_code, company_number, credentials):
@@ -33,30 +33,15 @@ def request_shareholders(country_code, company_number, credentials):
     }
     """
 
-    url = f'/company/{country_code}/{company_number}/shareholders.json'
-
-    status_code, json = base_request(url, credentials, get)
-
-    if status_code == 404:
-        return [], []
-
-    if status_code == 401 or status_code == 403:
-        raise DueDilAuthException()
-
-    if status_code >= 400 and status_code <= 499:
-        raise(DueDilServiceException(f'Received a {status_code} error from DueDil'))
-
-    if status_code != 200:
-        return [], []
+    json = get_all_results(company_url(country_code, company_number, '/shareholders'), 'shareholders', credentials)
 
     shareholders = json['shareholders']
-    pagination = json.get('pagination') or {}
+    if shareholders is None:
+        return [], []
 
-    pages = paginate(url, pagination, credentials)
-    shareholder_pages = [json['shareholders'] for _, json in pages]
-    shareholders = reduce(lambda x, y: x + y, shareholder_pages, shareholders)
+    total_company_shares = json['totalCompanyShares']
 
-    return shareholders, format_shareholders(json['totalCompanyShares'], shareholders)
+    return shareholders, format_shareholders(total_company_shares, shareholders)
 
 
 def format_fullname(entity_type, full_name):
