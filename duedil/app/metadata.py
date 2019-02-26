@@ -68,7 +68,7 @@ def search_country_by_name(q):
 
 def structure_company_type(type_):
     if type_ is None:
-        return None
+        return StructuredCompanyType({})
     try:
         return STRUCTURED_COMPANY_TYPE_MAP[type_]
     except (KeyError, ValueError):
