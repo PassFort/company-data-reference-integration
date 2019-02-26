@@ -5,9 +5,8 @@ from passfort_data_structure.companies.metadata import CompanyMetadata, Structur
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
-from app.utils import get, make_url, base_request, DueDilServiceException,\
+from app.utils import get, make_url, base_request, DueDilServiceException, \
     convert_country_code, tagged, send_exception
-
 
 STRUCTURED_COMPANY_TYPE_MAP = {
     'Private limited with share capital': StructuredCompanyType({
@@ -76,6 +75,7 @@ def structure_company_type(type_):
         send_exception(exc, custom_data={'company_type': type_})
         return StructuredCompanyType()
 
+
 def request_phonenumbers(country_code, company_number, credentials):
     return base_request(
         make_url(country_code, company_number, 'telephone-numbers', limit=1),
@@ -123,7 +123,7 @@ def get_metadata(country_code, company_number, credentials):
     except (RequestException, HTTPError, JSONDecodeError):
         phone_number = None
 
-    is_active = { 'Active': True, 'Inactive': False }.get(company_json.get('simplifiedStatus'))
+    is_active = {'Active': True, 'Inactive': False}.get(company_json.get('simplifiedStatus'))
 
     return company_json, CompanyMetadata({
         'name': tagged(company_json.get('name')),
@@ -156,5 +156,5 @@ def get_metadata(country_code, company_number, credentials):
         'contact_details': {
             'url': tagged(website),
             'phone_number': tagged(phone_number),
-        } if phone_number or website else None
+        } if phone_number or website else None,
     })

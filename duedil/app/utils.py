@@ -1,3 +1,5 @@
+from typing import List, Any, Dict
+
 import pycountry
 import requests
 from requests.exceptions import RequestException, HTTPError
@@ -42,6 +44,32 @@ def paginate(url, pagination, credentials):
     return [base_request(url, credentials, get) for url in urls]
 
 
+# Makes multiple requests to the given paginated resources, combines the results, and gives back
+# a response which appears as though a single request had been made with `limit == total`
+def get_all_results(url, property, credentials) -> Dict[str, Any]:
+    status_code, result = base_request(url, credentials, get)
+
+    if status_code == 404:
+        return {property: None}
+
+    if status_code == 401 or status_code == 403:
+        raise DueDilAuthException()
+
+    if 400 <= status_code <= 499:
+        raise DueDilServiceException(f'Received a {status_code} error from DueDil: {result}')
+
+    if 500 <= status_code <= 599:
+        raise DueDilServiceException(f'Internal {status_code} error from DueDil: {result}')
+
+    pagination = result.get('pagination') or {}
+    pages = [(status_code, result)]
+    pages.extend(paginate(url, pagination, credentials))
+
+    pagination['limit'] = pagination.get('total')
+    result[property] = [item for _, page in pages for item in page[property]]
+    return result
+
+
 def retry(f, excs, attempts=3):
     while True:
         try:
@@ -78,21 +106,25 @@ def post(url, credentials, json_data):
     return response
 
 
+def company_url(country_code, company_number, endpoint):
+    return f'/company/{country_code}/{company_number}{endpoint}.json'
+
+
+def charity_url(country_code, charity_id, endpoint):
+    return f'/charity/{country_code}/{charity_id}{endpoint}.json'
+
+
 def make_url(country_code, company_number, endpoint, offset=0, limit=10):
     return f'/company/{country_code}/{company_number}/{endpoint}.json?offset={offset}&limit={limit}'
 
 
 def base_request(url, credentials, method=get, json_data=None):
-    response = None
-    json = None
-
     response = retry(lambda: method(url, credentials, json_data), (RequestException, HTTPError))
-    json = response.json()
 
     if response.status_code != 200:
-        return response.status_code, {}
+        return response.status_code, response.text
 
-    return response.status_code, json
+    return response.status_code, response.json()
 
 
 def get_entity_type(duedil_type):

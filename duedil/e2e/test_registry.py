@@ -54,8 +54,8 @@ class RegistryTests(unittest.TestCase):
             "config": GLOBAL_COVERAGE,
             "credentials": CREDENTIALS,
         })
-        result = response.json()
         self.assertEqual(response.status_code, 200)
+        result = response.json()
         self.assertEqual(result['output_data']['metadata']['incorporation_date']['v'], '1957-01-01')
         self.assertTrue(len(result['output_data']['officers']['directors']), 3)
 
@@ -74,8 +74,8 @@ class RegistryTests(unittest.TestCase):
             "config": {},
             "credentials": CREDENTIALS,
         })
-        result = response.json()
         self.assertEqual(response.status_code, 200)
+        result = response.json()
         self.assertEqual(result['output_data']['metadata']['incorporation_date']['v'], '1992-10-21')
         self.assertTrue(len(result['output_data']['officers']['directors']), 3)
 
@@ -94,8 +94,8 @@ class RegistryTests(unittest.TestCase):
             "config": {},
             "credentials": CREDENTIALS,
         })
-        result = response.json()
         self.assertEqual(response.status_code, 200)
+        result = response.json()
         self.assertIs(result.get('output_data', None), None)
         self.assertIs(result.get('raw', None), None)
 
@@ -114,8 +114,8 @@ class RegistryTests(unittest.TestCase):
             "config": {},
             "credentials": CREDENTIALS,
         })
-        result = response.json()
         self.assertEqual(response.status_code, 200)
+        result = response.json()
         self.assertEqual(
             result['errors'][0]['message'],
             'Country \'FRA\' is not supported by the provider for this stage'
@@ -136,6 +136,6 @@ class RegistryTests(unittest.TestCase):
             "config": GLOBAL_COVERAGE,
             "credentials": CREDENTIALS,
         })
-        result = response.json()
         self.assertEqual(response.status_code, 200)
+        result = response.json()
         self.assertEqual(len(result['errors']), 0)
