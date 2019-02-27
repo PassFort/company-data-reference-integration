@@ -6,7 +6,7 @@ from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
 
 from app.utils import get, make_url, base_request, DueDilServiceException, \
-    convert_country_code, tagged, send_exception, get_all_results, company_url
+    convert_country_code, tagged, send_exception
 
 STRUCTURED_COMPANY_TYPE_MAP = {
     'Private limited with share capital': StructuredCompanyType({
@@ -66,6 +66,8 @@ def search_country_by_name(q):
 
 
 def structure_company_type(type_):
+    if type_ is None:
+        return StructuredCompanyType({})
     try:
         return STRUCTURED_COMPANY_TYPE_MAP[type_]
     except (KeyError, ValueError):
@@ -88,14 +90,6 @@ def request_websites(country_code, company_number, credentials):
         credentials,
         get
     )
-
-
-def request_fca_authorisations(country_code, company_number, credentials):
-    return get_all_results(
-        company_url(country_code, company_number, '/fca-authorisations'),
-        'fcaAuthorisations',
-        credentials
-    )['fcaAuthorisations']
 
 
 def get_metadata(country_code, company_number, credentials):
@@ -129,11 +123,6 @@ def get_metadata(country_code, company_number, credentials):
     except (RequestException, HTTPError, JSONDecodeError):
         phone_number = None
 
-    try:
-        fca_authorisations = request_fca_authorisations(country_code, company_number, credentials)
-    except (RequestException, HTTPError, JSONDecodeError):
-        fca_authorisations = None
-
     is_active = {'Active': True, 'Inactive': False}.get(company_json.get('simplifiedStatus'))
 
     return company_json, CompanyMetadata({
@@ -163,22 +152,9 @@ def get_metadata(country_code, company_number, credentials):
         'incorporation_date': tagged(incorporation_date),
         'company_type': tagged(company_json.get('type')),
         'structured_company_type': structure_company_type(company_json.get('type')),
+        'lei': tagged(get_in(company_json, ['legalEntityIdentifier', 'lei'])),
         'contact_details': {
             'url': tagged(website),
             'phone_number': tagged(phone_number),
         } if phone_number or website else None,
-        'regulatory_authorisations': [{
-            'authority': 'FCA',
-            'source_name': auth['sourceName'],
-            'firm_type': auth['firmType'],
-            'reference_number': auth['referenceNumber'],
-            'status': auth['status'],
-            'status_description': auth['statusDescription'],
-            'effective_date': datetime.strptime(auth['effectiveDate'], '%Y-%m-%d'),
-            'permissions': [{
-                'activity_category': perm['activityCategory'],
-                'activity_description': perm['activityDescription'],
-            } for perm in auth['permissions']],
-            'updated_from_source': datetime.strptime(auth['updatedFromSource'], '%Y-%m-%d'),
-        } for auth in fca_authorisations] if fca_authorisations is not None else None
     })

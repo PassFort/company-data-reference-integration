@@ -9,6 +9,7 @@ from schemad_types.serialization import coerce_untracked
 from passfort_data_structure.entities.company_data import CompanyData
 from passfort_data_structure.misc.errors import EngineError, ProviderError
 
+from app.authorisations import get_authorisations
 from app.companies import request_company_search
 from app.officers import request_officers
 from app.metadata import get_metadata, CompanyTypeError
@@ -104,7 +105,7 @@ def registry_check():
         )
     except base_request_exceptions as e:
         errors.append(
-            ProviderError.provider_connection_error('DueDil', 'Company metdata request failed')
+            ProviderError.provider_connection_error('DueDil', 'Company metadata request failed')
         )
 
     try:
@@ -119,14 +120,27 @@ def registry_check():
             ProviderError.provider_connection_error('DueDil', 'Officers request failed')
         )
 
+    try:
+        raw_auths, auths = get_authorisations(country_code, company_number, credentials)
+    except CompanyTypeError as e:
+        errors.append(
+            ProviderError.provider_unknown_error('DueDil', e.args[0])
+        )
+    except base_request_exceptions as e:
+        errors.append(
+            ProviderError.provider_connection_error('DueDil', 'Company authorisations request failed')
+        )
+
     raw_response = {
         'metadata': raw_metadata,
         'directors': raw_officers,
+        'authorisations': raw_auths,
     } if raw_metadata else None
 
     response = CompanyData(
         metadata=metadata,
         officers={'directors': officers} if officers else None,
+        regulatory_authorisations=auths,
     ) if metadata else None
 
     return jsonify(
