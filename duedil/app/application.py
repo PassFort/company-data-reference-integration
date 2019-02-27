@@ -13,7 +13,7 @@ from app.authorisations import get_authorisations
 from app.companies import request_company_search
 from app.officers import request_officers
 from app.metadata import get_metadata, CompanyTypeError
-from app.shareholders import request_shareholders
+from app.shareholders import request_shareholders, request_pscs
 from app.utils import DueDilAuthException, DueDilServiceException
 from app.charities import get_charity
 
@@ -179,8 +179,6 @@ def ownership_check():
             ProviderError.provider_connection_error('DueDil', '- Company metdata request failed')
         ]))
 
-    raw_shareholders, shareholders = None, None
-
     try:
         raw_shareholders, shareholders = request_shareholders(country_code, company_number, credentials)
     except DueDilAuthException:
@@ -192,13 +190,25 @@ def ownership_check():
             ProviderError.provider_connection_error('DueDil', '- Shareholders request failed')
         ]))
 
+    try:
+        raw_pscs, pscs = request_pscs(country_code, company_number, credentials)
+    except DueDilAuthException:
+        return jsonify(errors=coerce_untracked([
+            ProviderError.provider_connection_error('DueDil', '- Failed to authorise for pscs request')
+        ]))
+    except base_request_exceptions:
+        return jsonify(errors=coerce_untracked([
+            ProviderError.provider_connection_error('DueDil', '- Pscs request failed')
+        ]))
+
     raw_response = {
         'shareholders': raw_shareholders,
+        'pscs': raw_pscs,
     }
 
     response = CompanyData(
         ownership_structure={
-            'shareholders': shareholders,
+            'shareholders': shareholders + pscs,
         }
     )
 
