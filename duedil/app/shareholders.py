@@ -1,12 +1,15 @@
 from schemad_types.utils import get_in
 from uuid import uuid1
-from functools import reduce
+from functools import wraps
 
 from passfort_data_structure.companies.ownership import Shareholder
 from passfort_data_structure.entities.entity_type import EntityType
 
-from app.utils import get, get_entity_type, DueDilAuthException, DueDilServiceException, convert_country_code, make_url, \
-    paginate, base_request, send_exception, get_all_results, company_url
+from app.utils import DueDilServiceException, convert_country_code, send_exception, get_all_results, company_url
+
+
+HONORIFICS = {'mr', 'mrs', 'miss', 'ms', 'mx', 'master', 'sir', 'madam', 'mdm', 'lord', 'lady', 'sire', 'dame', 'dr',
+              'prof', 'professor'}
 
 
 def request_shareholders(country_code, company_number, credentials):
@@ -59,16 +62,14 @@ def request_pscs(country_code, company_number, credentials):
         last_name: string,
         resolver_id: uuid1,
         provider_name: duedil,
-        shareholding: {
-            share_class: string,
-            amount: int,
-            percentage: int,
-            currency: "GBP"
-        }
     }
     """
 
-    json = get_all_results(company_url(country_code, company_number, '/persons-significant-control'), 'personsOfSignificantControl', credentials)
+    json = get_all_results(
+        company_url(country_code, company_number, '/persons-significant-control'),
+        'personsOfSignificantControl',
+        credentials
+    )
 
     pscs = json['personsOfSignificantControl']
     statements = json['statements']
@@ -76,96 +77,102 @@ def request_pscs(country_code, company_number, credentials):
     return pscs, format_pscs(statements, pscs)
 
 
-def format_fullname(entity_type, full_name):
+def format_fullname(full_name):
     ''' Format names for storing purposes by concatenating them with underscores
 
     Args:
-        entity_type: EntityType
-        full_name: Stringg
+        full_name: String
 
     Returns:
-        forenames: Forenames if a person
-        surname: Surname if a person
+        title: Title
+        forenames: Forenames
+        surname: Surname
     '''
-    if entity_type == EntityType.COMPANY:
-        return None, full_name
-
+    title = None
     names = full_name.split(' ')
     if len(names) == 1:
-        return names[0], None
+        return title, names[0], None
+    elif len(names) > 1:
+        potential_title = names[0].strip(' -.\',').lower()
+        if potential_title in HONORIFICS:
+            title = names[0]
+            names = names[1:]
+
+        return title, ' '.join(names[:-1]), names[-1]
     else:
-        return ' '.join(names[:-1]), names[-1]
+        return None, None, None
 
 
-def get_shareholder_entity_type(shareholder):
-    not_matched = shareholder.get('notMatched')
-    if not_matched is not None:
-        return get_entity_type(not_matched.get('suspectedType'))
+def find_best_matches(obj, known_match):
+    exact_matches = get_in(obj, ['exactMatches']) or []
+    possible_matches = get_in(obj, ['possibleMatches']) or []
+    ordered_matches = list(filter(None, exact_matches + [known_match] + possible_matches))
 
-    possible_match = get_in(shareholder, ['possibleMatches', 0])
-    if possible_match is not None:
-        return get_entity_type(possible_match.get('type'))
+    suspected_type = get_in(obj, ['notMatched', 'suspectedType'])
+    if suspected_type:
+        ordered_matches.append({suspected_type: {'present': True}})
 
-    exact_match = get_in(shareholder, ['exactMatches', 0])
-    if exact_match is not None:
-        return get_entity_type(exact_match.get('type'))
+    matches_with_type = [match for match in ordered_matches if match.get('person') or match.get('company')]
+
+    if len(matches_with_type) == 0:
+        return None, None
+
+    if matches_with_type[0].get('person'):
+        actual_type = 'person'
+    else:
+        actual_type = 'company'
+
+    filtered_matches = [
+        match.get(actual_type) or match.get('unknown')
+        for match in ordered_matches
+        if match.get(actual_type) or match.get('unknown')
+    ]
+
+    # Avoid mixing more than one other data source with the known match
+    return actual_type, filtered_matches[:2]
 
 
-def format_shareholders(total_shares, shareholders):
-    '''
-    Formats a DuedilShareholder into a Shareholder.
-    Args:
-        total_shares: int - the total shares of the company
-        shareholders: list(DuedilShareholder)
+def get_first_match_or_none(fn):
+    @wraps(fn)
+    def wrapped_fn(ordered_matches):
+        for match in ordered_matches:
+            result = fn(match)
+            if result is not None:
+                return result
+        return None
 
-    Returns:
-        list(Shareholder)
+    return wrapped_fn
 
-    '''
-    from functools import wraps
 
-    def get_first_match_or_none(fn):
-        @wraps(fn)
-        def wrapped_fn(exact_matches):
-            if exact_matches is None or exact_matches is []:
-                return None
-            # Only process it there is one match. Not clear how to merge multiple matches yet.
-            if len(exact_matches) == 1:
-                return fn(exact_matches[0])
-
+def build_individual_shareholder(matches):
+    @get_first_match_or_none
+    def individual_get_names(match):
+        if match.get('firstName') or match.get('lastName'):
+            first_names = (match.get('firstName') or '').split(' ')
+            middle_names = (match.get('middleName') or '').split(' ')
+            given_names = [name for name in first_names + middle_names if name]
+            return match.get('honorific'), given_names, match.get('lastName')
+        elif match.get('sourceName'):
+            return format_fullname(match['sourceName'])
+        else:
             return None
 
-        return wrapped_fn
-
-    def format_shareholding(shareholding):
-        number_of_shares = int(shareholding.get('numberOfShares'))
-        return {
-            'v': {
-                'share_class': shareholding.get('class'),
-                'amount': number_of_shares,
-                'percentage': number_of_shares / total_shares,
-                'currency': get_in(shareholding, ['nominalValue', 'currency']),
-                'provider_name': 'DueDil'
-            }
-        }
-
     @get_first_match_or_none
-    def format_dob(exact_match):
+    def individual_get_dob(match):
         from passfort_data_structure.misc.formatted_date import SchemadPartialDate
 
-        year = get_in(exact_match, ['person', 'dateOfBirth', 'year'])
-        month = get_in(exact_match, ['person', 'dateOfBirth', 'month'])
-        day = get_in(exact_match, ['person', 'dateOfBirth', 'day'])
+        year = get_in(match, ['dateOfBirth', 'year'])
+        month = get_in(match, ['dateOfBirth', 'month'])
+        day = get_in(match, ['dateOfBirth', 'day'])
         if year or month or day:
             return SchemadPartialDate(year=year, month=month, day=day)
 
         return None
 
     @get_first_match_or_none
-    def format_nationality(exact_match):
-        nationalities = get_in(exact_match, ['person', 'nationalities'])
-
-        if nationalities is None or nationalities is []:
+    def individual_get_nationality(match):
+        nationalities = match.get('nationalities')
+        if not nationalities:
             return None
 
         # Only return first nationality
@@ -181,13 +188,30 @@ def format_shareholders(total_shares, shareholders):
 
         return None
 
+    names = individual_get_names(matches)
+    if names:
+        title, first_names, last_name = names
+    else:
+        title, first_names, last_name = None, None, None
+
+    return Shareholder(
+        title=title,
+        first_names=first_names,
+        last_name=last_name,
+        dob=individual_get_dob(matches),
+        nationality=individual_get_nationality(matches),
+        type=EntityType.INDIVIDUAL
+    )
+
+
+def build_company_shareholder(matches):
     @get_first_match_or_none
-    def format_title(exact_match):
-        return get_in(exact_match, ['person', 'honorific'])
+    def company_get_name(match):
+        return match.get('sourceName') or match.get('name')
 
     @get_first_match_or_none
-    def format_company_country_of_incorporation(exact_match):
-        country_code = get_in(exact_match, ['company', 'countryCode'])
+    def company_get_country_of_incorporation(match):
+        country_code = match.get('countryCode')
         if country_code is not None and len(country_code) == 2:
             try:
                 return convert_country_code(country_code)
@@ -199,26 +223,66 @@ def format_shareholders(total_shares, shareholders):
         return None
 
     @get_first_match_or_none
-    def format_company_number(exact_match):
-        return get_in(exact_match, ['company', 'companyId'])
+    def company_get_number(match):
+        return match.get('companyId') or match.get('registrationNumber')
 
-    def format_shareholder(shareholder):
-        entity_type = get_shareholder_entity_type(shareholder)
-        first_names, surname = format_fullname(entity_type, shareholder.get('sourceName', ''))
+    return Shareholder(
+        last_name=company_get_name(matches),
+        country_of_incorporation=company_get_country_of_incorporation(matches),
+        company_number=company_get_number(matches),
+        type=EntityType.COMPANY
+    )
 
-        shareholder_matches = shareholder.get('exactMatches')
-        return Shareholder({
-            'title': format_title(shareholder_matches),
-            'first_names': {'v': first_names},
-            'last_name': {'v': surname},
-            'dob': {'v': format_dob(shareholder_matches)},
-            'nationality': {'v': format_nationality(shareholder_matches)},
-            'company_number': format_company_number(shareholder_matches),
-            'country_of_incorporation': format_company_country_of_incorporation(shareholder_matches),
-            'resolver_id': uuid1(),
-            'provider_name': 'DueDil',
-            'type': {'v': entity_type},
-            'shareholdings': list(map(format_shareholding, shareholder.get('shareholdings', [])))
-        })
 
-    return list(map(format_shareholder, shareholders))
+def build_shareholder(total_shares, obj):
+    def format_shareholding(shareholding):
+        number_of_shares = int(shareholding.get('numberOfShares'))
+        return {
+            'v': {
+                'share_class': shareholding.get('class'),
+                'amount': number_of_shares,
+                'percentage': number_of_shares / total_shares,
+                'currency': get_in(shareholding, ['nominalValue', 'currency']),
+                'provider_name': 'DueDil'
+            }
+        }
+
+    type, matches = find_best_matches(obj, {'unknown': obj})
+    if type is None:
+        return None
+
+    if type == 'person':
+        shareholder = build_individual_shareholder(matches)
+    else:
+        shareholder = build_company_shareholder(matches)
+
+    shareholder.resolver_id = uuid1()
+    shareholder.provider_name = 'DueDil'
+    shareholder.shareholdings = list(map(format_shareholding, obj.get('shareholdings', [])))
+    return shareholder
+
+
+def format_shareholders(total_shares, objs):
+    result = [build_shareholder(total_shares, obj) for obj in objs]
+    return list(filter(None, result))
+
+
+def build_psc(obj):
+    type, matches = find_best_matches(obj, obj)
+    if type is None:
+        return None
+
+    if type == 'person':
+        shareholder = build_individual_shareholder(matches)
+    else:
+        shareholder = build_company_shareholder(matches)
+
+    shareholder.resolver_id = uuid1()
+    shareholder.provider_name = 'DueDil'
+    return shareholder
+
+
+def format_pscs(_statements, objs):
+    result = [build_psc(obj) for obj in objs]
+    return list(filter(None, result))
+
