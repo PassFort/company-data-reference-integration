@@ -122,7 +122,7 @@ class TestShareholders(unittest.TestCase):
         Assert.equal(len(shareholders), 20)
         Assert.isinstance(shareholders[0], Shareholder)
         Assert.equal(shareholders[0].first_names.v, 'Henry Charles')
-        Assert.equal(shareholders[2].last_name.v, 'Episode 1 Investments Lp')
+        Assert.equal(shareholders[2].last_name.v, 'Episode 1 Investments LP')
         Assert.equal(shareholders[0].shareholdings[0].v.share_class, 'Ordinary')
         Assert.equal(shareholders[0].shareholdings[0].v.currency, 'GBP')
 
@@ -133,9 +133,9 @@ class TestShareholders(unittest.TestCase):
             Assert.equal(shareholders[0].nationality.v, 'GBR')
             Assert.equal(shareholders[0].title, 'Mr')
 
-            Assert.equal(shareholders[2].dob.v, None)
-            Assert.equal(shareholders[2].nationality.v, None)
-            Assert.equal(shareholders[2].title, None)
+            Assert.is_(shareholders[2].dob, None)
+            Assert.is_(shareholders[2].nationality, None)
+            Assert.is_(shareholders[2].title, None)
 
         with self.subTest('formats company id and country of incorporation for companies only'):
             Assert.equal(shareholders[0].company_number, None)

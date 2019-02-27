@@ -103,6 +103,10 @@ def format_fullname(full_name):
         return None, None, None
 
 
+def tag(v):
+    return {'v': v} if v is not None else None
+
+
 def find_best_matches(obj, known_match):
     exact_matches = get_in(obj, ['exactMatches']) or []
     possible_matches = get_in(obj, ['possibleMatches']) or []
@@ -151,7 +155,7 @@ def build_individual_shareholder(matches):
             first_names = (match.get('firstName') or '').split(' ')
             middle_names = (match.get('middleName') or '').split(' ')
             given_names = [name for name in first_names + middle_names if name]
-            return match.get('honorific'), given_names, match.get('lastName')
+            return match.get('honorific'), ' '.join(given_names), match.get('lastName')
         elif match.get('sourceName'):
             return format_fullname(match['sourceName'])
         else:
@@ -196,11 +200,11 @@ def build_individual_shareholder(matches):
 
     return Shareholder(
         title=title,
-        first_names=first_names,
-        last_name=last_name,
-        dob=individual_get_dob(matches),
-        nationality=individual_get_nationality(matches),
-        type=EntityType.INDIVIDUAL
+        first_names=tag(first_names),
+        last_name=tag(last_name),
+        dob=tag(individual_get_dob(matches)),
+        nationality=tag(individual_get_nationality(matches)),
+        type=tag(EntityType.INDIVIDUAL)
     )
 
 
@@ -227,10 +231,10 @@ def build_company_shareholder(matches):
         return match.get('companyId') or match.get('registrationNumber')
 
     return Shareholder(
-        last_name=company_get_name(matches),
+        last_name=tag(company_get_name(matches)),
         country_of_incorporation=company_get_country_of_incorporation(matches),
         company_number=company_get_number(matches),
-        type=EntityType.COMPANY
+        type=tag(EntityType.COMPANY)
     )
 
 
