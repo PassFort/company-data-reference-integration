@@ -6,7 +6,6 @@ import requests
 from flask import json
 from requests.exceptions import HTTPError
 from passfort_data_structure.companies.officers import Officer
-from passfort_data_structure.entities.role import Role
 from passfort_data_structure.entities.entity_type import EntityType
 from app.officers import request_officers
 from app.utils import DueDilAuthException, DueDilServiceException
