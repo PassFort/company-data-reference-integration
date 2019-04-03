@@ -6,7 +6,6 @@ import requests
 from flask import json
 from requests.exceptions import HTTPError
 from passfort_data_structure.companies.officers import Officer
-from passfort_data_structure.entities.role import Role
 from passfort_data_structure.entities.entity_type import EntityType
 from app.officers import request_officers
 from app.utils import DueDilAuthException, DueDilServiceException
@@ -134,9 +133,9 @@ class TestOfficers(unittest.TestCase):
             Assert.equal(donald.type.v, EntityType.INDIVIDUAL)
             Assert.equal(company.type.v, EntityType.COMPANY)
 
-        with self.subTest('sets role'):
-            Assert.equal(donald.role.v, Role.INDIVIDUAL_DIRECTOR)
-            Assert.equal(company.role.v, Role.COMPANY_DIRECTOR)
+        with self.subTest('sets original role'):
+            Assert.equal(donald.original_role.v, 'Director')
+            Assert.equal(company.original_role.v, 'Director')
 
 
 def create_officers_response(with_pagination=False, pagination=None):
