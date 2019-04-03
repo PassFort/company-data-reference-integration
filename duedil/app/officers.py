@@ -4,7 +4,6 @@ from functools import reduce
 
 from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.entity_type import EntityType
-from passfort_data_structure.entities.role import Role
 
 from app.utils import paginate, base_request, get, DueDilAuthException, DueDilServiceException, get_all_results, \
     company_url
@@ -39,6 +38,7 @@ def request_officers(country_code, company_number, credentials):
 def format_officers(officers):
     def format_officer(elem):
         officer = None
+
         if elem['type'] == "person":
             first_name = get_in(elem, ['person', 'firstName'], default='').split(' ')
             middle_name = get_in(elem, ['person', 'middleName'], default='').split(' ')
@@ -48,15 +48,10 @@ def format_officers(officers):
             first_names.extend(middle_name)
             first_names = filter(bool, first_names)
 
-            is_officer = get_in(elem, ['appointments', 0, 'officialRole']) == 'Director'
-            role = Role.INDIVIDUAL_DIRECTOR if is_officer else Role.INDIVIDUAL_COMPANY_SECRETARY
-
             officer = Officer({
                 "first_names": {"v": " ".join(first_names)},
                 "last_name": {"v": get_in(elem, ['person', 'lastName'], '')},
-                "provider_name": 'DueDil',
                 "type": {"v": EntityType.INDIVIDUAL},
-                "role": {"v": role},
             })
 
             dobMonth = get_in(elem, ['person', 'dateOfBirth', 'month'])
@@ -69,16 +64,18 @@ def format_officers(officers):
                 officer.dob = {"v": dob}
 
         elif elem['type'] == "company":
-            is_officer = get_in(
-                elem, ['appointments', 0, 'officialRole']) == 'Director'
-            role = Role.COMPANY_DIRECTOR if is_officer else Role.COMPANY_COMPANY_SECRETARY
             officer = Officer({
                 "last_name": {"v": get_in(elem, ['company', 'name'])},
                 "type": {"v": EntityType.COMPANY},
-                "role": {"v": role}
             })
 
         if officer:
+            officer.provider_name = 'DueDil'
+
+            official_role = get_in(elem, ['appointments', 0, 'officialRole'])
+            if official_role:
+                officer.original_role = {'v': official_role}
+
             start_date = get_in(elem, ['appointments', 0, 'startDate'])
             if start_date:
                 officer.appointed_on = {
