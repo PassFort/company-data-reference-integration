@@ -14,6 +14,7 @@ integrations = {
     'duedil': './duedil',
     'equifax': './equifax',
     'onfido': './onfido',
+    'vsure': './vsure',
     'bvd': './bvd',
     'worldcheck': './worldcheck',
 }
