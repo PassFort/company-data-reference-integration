@@ -10,7 +10,7 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /src
 
-COPY Pipfile Pipfile.lock package.json yarn.lock /src/
+COPY Pipfile Pipfile.lock package.json /src/
 
 RUN mkdir /srv/logs/ && \
     pip install pip==18.0 && \	    
