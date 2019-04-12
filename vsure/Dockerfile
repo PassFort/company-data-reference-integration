@@ -18,7 +18,7 @@ RUN mkdir /srv/logs/ && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
-    apk add --no-cache yarn openssh-client git build-base python3-dev libxml2-dev libxslt-dev && \
+    apk add --no-cache yarn openssh-client git && \
     pipenv run pip install --upgrade wheel && \
     pipenv install && \
     yarn && \
@@ -26,10 +26,7 @@ RUN mkdir /srv/logs/ && \
 
 COPY main.py /src
 COPY coverage /src
-COPY unit_coverage /src
 COPY app /src/app
-COPY e2e /src/e2e
-COPY mock_data /src/mock_data
 
 # Ports.
 EXPOSE 8001
