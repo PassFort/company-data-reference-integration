@@ -166,6 +166,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_vsure:
+        docker:
+          - image: circleci/python
+        steps:
+          - run: mkdir -p workspace
+          - run: echo vsure > workspace/integration_name
+          - persist_to_workspace:
+              root: workspace
+              paths:
+                  - integration_name
+
     set_integration_bvd:
         docker:
             - image: circleci/python
@@ -200,6 +211,9 @@ jobs:
     build_onfido:
         <<: *build
 
+    build_vsure:
+        <<: *build
+
     build_bvd:
         <<: *build
 
@@ -228,6 +242,9 @@ jobs:
         <<: *unit
 
     unit_onfido:
+        <<: *unit
+
+    unit_vsure:
         <<: *unit
 
     unit_bvd:
@@ -266,6 +283,9 @@ jobs:
     deploy_onfido_staging:
         <<: *deploy_staging_common
 
+    deploy_vsure_staging:
+        <<: *deploy_staging_common
+
     deploy_bvd_staging:
         <<: *deploy_staging_common
 
@@ -282,6 +302,9 @@ jobs:
         <<: *deploy_production_common
 
     deploy_onfido_production:
+        <<: *deploy_production_common
+
+    deploy_vsure_production:
         <<: *deploy_production_common
 
     deploy_bvd_production:
@@ -407,6 +430,30 @@ workflows:
                     branches:
                         only:
                           - master
+
+    vsure:
+        jobs:
+            - set_integration_vsure
+            - build_vsure:
+                requires:
+                  - set_integration_vsure
+            - unit_vsure:
+                requires:
+                  - build_vsure
+            - deploy_vsure_staging:
+                requires:
+                  - unit_vsure
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_vsure_production:
+                requires:
+                  - unit_vsure
+                filters:
+                  branches:
+                      only:
+                        - master
 
     bvd:
         jobs:
