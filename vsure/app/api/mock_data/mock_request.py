@@ -8,10 +8,10 @@ mock_request = {
             'country_code': 'IND'
         }],
         'personal_details': {
-            'dob': '2001-01-01',
+            'dob': '2000-01-01',
             'name': {
-                'family_name': 'John',
-                'given_names': ['Smith']
+                'family_name': 'Smith',
+                'given_names': ['John']
             }
         }
     },

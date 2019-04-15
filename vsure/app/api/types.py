@@ -105,29 +105,26 @@ class DocumentMetadata(Model):
     country_code = StringType(required=True)
 
 
+class VisaHolderData(Model):
+    given_names = StringType(required=True)
+    family_name = StringType(required=True)
+    date_of_birth = StringType(required=True)
+    passport_id = StringType(required=True)
+    country = StringType(required=True)
+
+
 class IndividualData(Model):
     personal_details = ModelType(PersonalDetails, required=True)
     documents_metadata = ListType(ModelType(DocumentMetadata), required=True, min_size=1)
 
-    @property
-    def given_names(self):
-        return ' '.join(self.personal_details.name.given_names)
-
-    @property
-    def family_name(self):
-        return self.personal_details.name.family_name
-
-    @property
-    def date_of_birth(self):
-        return self.personal_details.dob
-
-    @property
-    def passport_id(self):
-        return self.documents_metadata[0].number
-
-    @property
-    def country(self):
-        return self.documents_metadata[0].country_code
+    def as_visa_holder_data(self):
+        return VisaHolderData({
+            'given_names': ' '.join(self.personal_details.name.given_names),
+            'family_name': self.personal_details.name.family_name,
+            'date_of_birth': self.personal_details.dob,
+            'passport_id': self.documents_metadata[0].number,
+            'country': self.documents_metadata[0].country_code
+        })
 
 
 class VisaCheckRequest(Model):

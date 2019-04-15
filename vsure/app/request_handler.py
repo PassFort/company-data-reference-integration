@@ -5,7 +5,7 @@ from requests.packages.urllib3.util.retry import Retry
 from schematics import Model
 from schematics.types import ModelType, StringType
 
-from .api.types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, Error
+from .api.types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, Error, VisaHolderData
 
 
 def requests_retry_session(
@@ -27,7 +27,7 @@ def requests_retry_session(
 
 
 class VSureVisaCheckRequest(Model):
-    visaholder = ModelType(IndividualData, required=True)
+    visaholder = ModelType(VisaHolderData, required=True)
     key = StringType(required=True)
     visachecktype = StringType(choices=["work", "study"], required=True)
 
@@ -37,17 +37,17 @@ def vsure_request(request_data: VisaCheckRequest):
 
 
 def visa_request(
-        visa_holder: 'IndividualData',
+        individual_data: 'IndividualData',
         config: 'VSureConfig',
         credentials: 'VSureCredentials',
         is_demo=False):
 
     model = VSureVisaCheckRequest({
-        'visaholder': visa_holder,
+        'visaholder': individual_data.as_visa_holder_data(),
         'key': credentials.api_key,
         'visachecktype': config.visa_check_type})
 
-    url = f'{credentials.base_url}/visacheck?type=json&json={json.dumps(model.to_primitive())}'
+    url = f'{credentials.base_url}visacheck?type=json&json={json.dumps(model.to_primitive())}'
 
     session = requests_retry_session()
     try:
