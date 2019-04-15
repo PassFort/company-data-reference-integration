@@ -2,7 +2,6 @@ mock_request = {
     'config': {'visa_check_type': 'WORK'},
     'credentials': {'api_key': 'JtGXbnOxncr1MZZ'},
     'input_data': {
-        '_cls': 'python.models.entities.IndividualData.IndividualData',
         'documents_metadata': [{
             'document_type': 'PASSPORT',
             'number': '77777777',
