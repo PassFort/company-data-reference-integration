@@ -1,7 +1,10 @@
-import os
-import logging
 from flask import Flask, jsonify
+import logging
+import os
 from raven.contrib.flask import Sentry
+
+from .api.types import validate_model, VisaCheckRequest
+from .request_handler import visa_request, vsure_request
 
 app = Flask(__name__)
 
@@ -17,3 +20,9 @@ if sentry_url:
 @app.route('/health')
 def health():
 	return jsonify('success')
+
+
+@app.route('/visa-check', methods=["POST"])
+@validate_model(VisaCheckRequest)
+def run_visa_check(request_data):
+	return jsonify(vsure_request(request_data))
