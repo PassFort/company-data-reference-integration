@@ -19,7 +19,7 @@ class TestHandleVisaRequest(unittest.TestCase):
     @responses.activate
     def test_successful_post(self):
         responses.add(responses.POST,
-            'https://api.vsure.com.au/v1/visacheck?type=json&json={"key":"JtGXbnOxncr1MZZ","visachecktype":"WORK",visaholder":{"given_names":"John","family_name":"Smith","date_of_birth": "2000-01-01","passport_id":"77777777","country": "IND"}}'
+            'https://api.vsure.com.au/v1/visacheck?type=json&json={"visaholder": {"given_names": "John", "family_name": "Smith", "date_of_birth": "2000-01-01", "passport_id": "77777777", "country": "IND"}, "key": "JtGXbnOxncr1MZZ", "visachecktype": "work"}'
         )
 
         response = self.testing_app.post('/visa-check',
