@@ -70,7 +70,7 @@ class VSureCredentials(Model):
 
     @property
     def base_url(self):
-    	return "https://api.vsure.com.au/v1/"
+        return "https://api.vsure.com.au/v1/"
 
 
 def validate_partial_date(value):
@@ -99,50 +99,41 @@ class StructuredAddress(Model):
     country = StringType(required=True)
 
 
-class AddressWrapper(Model):
-    current = ModelType(StructuredAddress, required=True)
-
-
 class DocumentMetadata(Model):
-	document_type = StringType(required=True)
-	number = StringType(required=True)
-
-	def validation_document_type(self, data, value):
-		if value != 'PASSPORT':
-			raise ValidationError('This visa check requires the document to be a passport.')
+    document_type = StringType(choices=["PASSPORT"], required=True)
+    number = StringType(required=True)
+    country_code = StringType(required=True)
 
 
 class IndividualData(Model):
-	personal_details = ModelType(PersonalDetails, required=True)
-	address_history = ModelType(AddressWrapper, required=True)
-	documents_metadata = ListType(ModelType(DocumentMetadata), required=True, min_size=1)
+    personal_details = ModelType(PersonalDetails, required=True)
+    documents_metadata = ListType(ModelType(DocumentMetadata), required=True, min_size=1)
 
-	@property
-	def given_names(self):
-		return self.personal_details.name.given_names[0] if len(self.personal_details.name.given_names) else ''
+    @property
+    def given_names(self):
+        return ' '.join(self.personal_details.name.given_names)
 
-	@property
-	def family_name(self):
-		return self.personal_details.name.family_name
-	
-	@property
-	def date_of_birth(self):
-		return self.personal_details.dob
-	
-	@property
-	def passport_id(self):
-		return self.documents_metadata[0].number
+    @property
+    def family_name(self):
+        return self.personal_details.name.family_name
 
-	@property
-	def country(self):
-		return self.address_history.current.country
+    @property
+    def date_of_birth(self):
+        return self.personal_details.dob
+
+    @property
+    def passport_id(self):
+        return self.documents_metadata[0].number
+
+    @property
+    def country(self):
+        return self.documents_metadata[0].country_code
 
 
 class VisaCheckRequest(Model):
     config = ModelType(VSureConfig, required=True)
     credentials = ModelType(VSureCredentials, required=True)
-    
-    input_data = ModelType(IndividualData, required=True)
-    
-    is_demo = BooleanType(default=False)
 
+    input_data = ModelType(IndividualData, required=True)
+
+    is_demo = BooleanType(default=False)
