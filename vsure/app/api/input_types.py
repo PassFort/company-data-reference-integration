@@ -1,5 +1,4 @@
 import datetime
-from enum import unique, Enum
 from flask import request, abort
 from functools import wraps
 from schematics import Model
@@ -31,34 +30,6 @@ def validate_model(validation_model):
 
     return validates_model
 
-
-@unique
-class ErrorCode(Enum):
-    INVALID_INPUT_DATA = 201
-    PROVIDER_CONNECTION_ERROR = 302
-
-
-class Error(object):
-
-    @staticmethod
-    def bad_api_request(e):
-        return {
-            'code': ErrorCode.INVALID_INPUT_DATA.value,
-            'source': 'API',
-            'message': 'Bad API request',
-            'info': e.to_primitive()
-        }
-
-    @staticmethod
-    def provider_connection_error(e):
-        return {
-            'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
-            'source': 'PROVIDER',
-            'message': 'Connection error when contacting vSure',
-            'info': {
-                'raw': '{}'.format(e)
-            }
-        }
 
 
 class VSureConfig(Model):
