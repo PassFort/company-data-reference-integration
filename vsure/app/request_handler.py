@@ -5,7 +5,9 @@ from requests.packages.urllib3.util.retry import Retry
 from schematics import Model
 from schematics.types import ModelType, StringType
 
-from .api.types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, Error, VisaHolderData
+from .api.input_types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, VisaHolderData
+from .api.errors import VSureServiceException, Error
+from .api.output_types import VSureVisaCheckResponse, VisaCheck
 
 
 def requests_retry_session(
@@ -33,7 +35,7 @@ class VSureVisaCheckRequest(Model):
 
 
 def vsure_request(request_data: VisaCheckRequest):
-    visa_request(request_data.input_data, request_data.config, request_data.credentials)
+    return visa_request(request_data.input_data, request_data.config, request_data.credentials)
 
 
 def visa_request(
@@ -59,4 +61,14 @@ def visa_request(
     finally:
         session.close()
 
-    return {}
+    raw_response, response_model = VSureVisaCheckResponse.from_raw(response)
+
+    if not response_model.output:
+        raise VSureServiceException(response_model.error)
+
+    visa_check = VisaCheck.from_raw_data(response_model, config.visa_check_type)
+
+    return {
+        'raw': response.json(),
+        'output_data': visa_check.to_primitive()
+    }
