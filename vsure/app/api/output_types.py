@@ -1,4 +1,5 @@
 from enum import unique
+from json import JSONDecodeError
 from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, DateType, ListType, DictType
 from .errors import VSureServiceException

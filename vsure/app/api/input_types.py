@@ -4,6 +4,7 @@ from functools import wraps
 from schematics import Model
 from schematics.exceptions import DataError
 from schematics.types import BooleanType, StringType, ModelType, DateType, ListType
+from .errors import Error
 
 
 def validate_model(validation_model):
