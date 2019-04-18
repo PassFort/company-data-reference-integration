@@ -33,7 +33,7 @@ def requests_retry_session(
 class VSureVisaCheckRequest(Model):
     visaholder = ModelType(VisaHolderData, required=True)
     key = StringType(required=True)
-    visachecktype = StringType(choices=["WORK", "STUDY"], required=True)
+    visachecktype = StringType(choices=["work", "study"], required=True)
 
 
 def vsure_request(request_data: VisaCheckRequest):
@@ -49,7 +49,7 @@ def visa_request(
     request_model = VSureVisaCheckRequest({
         'visaholder': individual_data.as_visa_holder_data(),
         'key': credentials.api_key,
-        'visachecktype': config.visa_check_type})
+        'visachecktype': config.visa_check_type.lower()})
 
     try:
         request_model.validate()

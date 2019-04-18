@@ -62,25 +62,25 @@ successful_work_response = {
 }
 
 successful_study_response = {
+    "failure_reason": "",
     "visas": [{
-        'full_name': 'John Smith',
-        'dob': '1999-01-01',
-        "grant_date": "2014-03-14",
-        "expiry_date": None,
-        "name": "Partner",
-        "entitlement": "STUDY",
         "details": [
-            {"name": "Work Entitlement Description", "value": "The visa holder has unlimited right to work in Australia."},
+            {"name": "Study Condition", "value": "No limitations on study."},
             {"name": "Visa Applicant", "value": "Primary"},
             {"name": "Visa Class", "value": "SI"},
-            {"name": "Visa Type", "value": "820"},
-            {"name": "Visa Type Details", "value": "For partners of Australian citizens and permanent residents"},
+            {"name": "Visa Type", "value": "457"},
+            {"name": "Visa Type Details", "value": "For people sponsored by an employer previously named Business (Long Stay)"},
         ],
+        'dob': '1999-01-01',
         'document_checked': {
-            'document_type': 'PASSPORT',
-            'country_code': 'FIN',
-            'number': '37373737',
-        }
-    }],
-    "failure_reason": ""
+           'country_code': 'IND',
+           'document_type': 'PASSPORT',
+           'number': '77777777'
+        },
+        'entitlement': 'STUDY',
+        'expiry_date': '2019-10-22',
+        'full_name': 'Student Visa',
+        'grant_date': '2015-10-22',
+        'name': 'Temporary Work (Skilled)'
+    }]
 }
