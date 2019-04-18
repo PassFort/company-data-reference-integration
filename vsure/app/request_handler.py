@@ -1,8 +1,10 @@
 import json
 import requests
+from flask import abort
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from schematics import Model
+from schematics.exceptions import DataError
 from schematics.types import ModelType, StringType
 
 from .api.input_types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, VisaHolderData
@@ -31,7 +33,7 @@ def requests_retry_session(
 class VSureVisaCheckRequest(Model):
     visaholder = ModelType(VisaHolderData, required=True)
     key = StringType(required=True)
-    visachecktype = StringType(choices=["work", "study"], required=True)
+    visachecktype = StringType(choices=["WORK", "STUDY"], required=True)
 
 
 def vsure_request(request_data: VisaCheckRequest):
@@ -44,12 +46,17 @@ def visa_request(
         credentials: 'VSureCredentials',
         is_demo=False):
 
-    model = VSureVisaCheckRequest({
+    request_model = VSureVisaCheckRequest({
         'visaholder': individual_data.as_visa_holder_data(),
         'key': credentials.api_key,
         'visachecktype': config.visa_check_type})
 
-    url = f'{credentials.base_url}visacheck?type=json&json={json.dumps(model.to_primitive())}'
+    try:
+        request_model.validate()
+    except DataError as e:
+        raise VSureServiceException('{}'.format(e), raw_response)
+
+    url = f'{credentials.base_url}visacheck?type=json&json={json.dumps(request_model.to_primitive())}'
 
     session = requests_retry_session()
     try:
@@ -61,14 +68,17 @@ def visa_request(
     finally:
         session.close()
 
-    raw_response, response_model = VSureVisaCheckResponse.from_raw(response)
+    raw_response, response_model = VSureVisaCheckResponse.from_raw(response.json())
 
     if not response_model.output:
-        raise VSureServiceException(response_model.error)
+        raise VSureServiceException(response_model.error, raw_response)
 
-    visa_check = VisaCheck.from_raw_data(response_model, config.visa_check_type)
+    try:
+        visa_check = VisaCheck.from_raw_data(response_model, config.visa_check_type)
+    except DataError as e:
+        raise VSureServiceException('{}'.format(e), raw_response)
 
     return {
-        'raw': response.json(),
+        'raw': raw_response,
         'output_data': visa_check.to_primitive()
     }

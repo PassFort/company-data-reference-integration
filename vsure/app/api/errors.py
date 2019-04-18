@@ -8,6 +8,11 @@ class ErrorCode(Enum):
 
 
 class VSureServiceException(Exception):
+    def __init__(self, message: str, raw_output: str):
+        self.message = message
+        self.raw_output = raw_output
+
+class InputDataException(Exception):
     def __init__(self, message: str):
         self.message = message
 
