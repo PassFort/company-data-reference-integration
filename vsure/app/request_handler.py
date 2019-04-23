@@ -59,8 +59,16 @@ def visa_request(
     url = f'{credentials.base_url}visacheck?type=json&json={json.dumps(request_model.to_primitive())}'
 
     session = requests_retry_session()
+
+    proxy_url = os.environ.get('VSURE_PROXY_URL')
+    proxies = {}
+    if proxy_url:
+        proxies = {
+            'https': proxy_url
+        }
+
     try:
-        response = session.post(url)
+        response = session.post(url, proxies=proxies)
     except Exception as e:
         return {
             "errors": [Error.provider_connection_error(e)]
