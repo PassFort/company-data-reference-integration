@@ -265,6 +265,9 @@ jobs:
     e2e_onfido:
         <<: *e2e
 
+    e2e_vsure:
+        <<: *e2e
+
     e2e_bvd:
         <<: *e2e
 
@@ -440,8 +443,12 @@ workflows:
             - unit_vsure:
                 requires:
                   - build_vsure
+            - e2e_vsure:
+                requires:
+                  - build_vsure
             - deploy_vsure_staging:
                 requires:
+                  - e2e_vsure
                   - unit_vsure
                 filters:
                     branches:
@@ -449,6 +456,7 @@ workflows:
                           - staging
             - deploy_vsure_production:
                 requires:
+                  - e2e_vsure
                   - unit_vsure
                 filters:
                   branches:
