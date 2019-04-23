@@ -68,13 +68,21 @@ def visa_request(
     finally:
         session.close()
 
-    raw_response, response_model = VSureVisaCheckResponse.from_raw(response.json())
+    try:
+        response_json = response.json()
+    except JSONDecodeError:
+        return {
+            'raw': {},
+            'output_data': None
+        }
+
+    raw_response, response_model = VSureVisaCheckResponse.from_json(response_json)
 
     if not response_model.output:
         raise VSureServiceException(response_model.error, raw_response)
 
     try:
-        visa_check = VisaCheck.from_raw_data(response_model, config.visa_check_type)
+        visa_check = VisaCheck.from_visa_check_response(response_model, config.visa_check_type)
     except DataError as e:
         raise VSureServiceException('{}'.format(e), raw_response)
 

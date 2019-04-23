@@ -49,25 +49,25 @@ class VSureVisaCheckResponse(Model):
     output = ModelType(VisaCheckResponseOutput)
 
     @classmethod
-    def from_raw(cls, response):
-        try:
-            if response['error'] and not response['output']:
-                raise VSureServiceException(response['error'], response)
+    def from_json(cls, response):
+        if response.get('error') and not response.get('output'):
+            raise VSureServiceException(response['error'], response)
 
-            return response, cls.from_json(response)
-        except JSONDecodeError:
-            return {}, None
-
-    @classmethod
-    def from_json(cls, data):
-        model = cls().import_data(data, apply_defaults=True)
+        model = cls().import_data(response, apply_defaults=True)
         model.validate()
-        return model
+
+        return response, model
+
+
+
+class VisaHolder(Model):
+    full_name = StringType()
+    dob = StringType()
+    document_checked = ModelType(DocumentMetadata)
 
 
 class Visa(Model):
-    full_name = StringType()
-    dob = StringType()
+    holder = ModelType(VisaHolder)
     country_code = 'AUS'
     grant_date = StringType()
     expiry_date = StringType()
@@ -75,7 +75,6 @@ class Visa(Model):
     entitlement = StringType(choices=['WORK', 'STUDY'], required=True)
     source = 'VEVO'
     details = ListType(ModelType(NameValueType))
-    document_checked = ModelType(DocumentMetadata)
 
     def add_details(self, output):
         self.details = []
@@ -106,7 +105,7 @@ class VisaCheck(Model):
     failure_reason = StringType()
 
     @staticmethod
-    def from_raw_data(raw_data: VSureVisaCheckResponse, visa_check_type):
+    def from_visa_check_response(raw_data: VSureVisaCheckResponse, visa_check_type):
         if raw_data.output.result == 'Error':
             raise VSureServiceException(raw_data.output.status, json.dumps(raw_data.to_primitive()))
 
@@ -114,16 +113,17 @@ class VisaCheck(Model):
 
         visa.grant_date = format_date(raw_data.output.visa_details['Grant Date'])
         visa.expiry_date = format_date(raw_data.output.visa_details['Expiry Date'])
-        visa.full_name = raw_data.output.person_checked.name
-        visa.dob = format_date(raw_data.output.person_checked.dob)
-        visa.document_checked = {
-            'document_type': 'PASSPORT',
-            'number': raw_data.output.person_checked.passport_id,
-            'country_code': raw_data.output.person_checked.nationality
+        visa.holder = {
+            'full_name': raw_data.output.person_checked.name,
+            'dob': format_date(raw_data.output.person_checked.dob),
+            'document_checked': {
+                'document_type': 'PASSPORT',
+                'number': raw_data.output.person_checked.passport_id,
+                'country_code': raw_data.output.person_checked.nationality
+            }
         }
 
-        if 'Visa Type Name' in raw_data.output.visa_details:
-            visa.name = raw_data.output.visa_details['Visa Type Name']
+        visa.name = raw_data.output.visa_details.get('Visa Type Name') or visa_check_type
         visa.entitlement = visa_check_type
         visa.add_details(raw_data.output)
 

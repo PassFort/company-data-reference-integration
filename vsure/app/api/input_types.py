@@ -2,9 +2,9 @@ import datetime
 from flask import request, abort
 from functools import wraps
 from schematics import Model
-from schematics.exceptions import DataError
+from schematics.exceptions import DataError, ValidationError
 from schematics.types import BooleanType, StringType, ModelType, DateType, ListType
-from .errors import Error, InputDataException
+from .errors import Error
 
 
 def validate_model(validation_model):
@@ -49,7 +49,7 @@ def validate_partial_date(value):
     try:
         return datetime.datetime.strptime(value, '%Y-%m-%d')
     except (ValueError, TypeError):
-        raise InputDataException(f'Input is not valid date: {value}')
+        raise ValidationError(f'Input is not valid date: {value}')
 
 
 class FullName(Model):

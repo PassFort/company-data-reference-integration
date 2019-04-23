@@ -1,9 +1,10 @@
-from app.api.errors import InputDataException, VSureServiceException
+from app.api.errors import VSureServiceException
 from app.api.input_types import IndividualData
 from app.api.output_types import VSureVisaCheckResponse, VisaCheck
 from app.application import app
 import json
 import responses
+from schematics.exceptions import DataError
 import unittest
 
 
@@ -19,10 +20,6 @@ class TestInputData(unittest.TestCase):
         self.assertEqual(400, response.status_code)
 
     def test_date_format(self):
-        response = self.testing_app.post('/visa-check')
-
-        self.assertEqual(400, response.status_code)
-
         individual_data = IndividualData({
             'personal_details': {
                 'name': {
@@ -38,7 +35,7 @@ class TestInputData(unittest.TestCase):
             }]
         })
 
-        with self.assertRaises(InputDataException):
+        with self.assertRaises(DataError):
             individual_data.validate()
 
     def test_as_visa_holder_data(self):
@@ -100,14 +97,21 @@ class TestOutputData(unittest.TestCase):
             "error": ""
         }
 
-        raw_response, response_model = VSureVisaCheckResponse.from_raw(test_response)
+        raw_response, response_model = VSureVisaCheckResponse.from_json(test_response)
 
-        visa_check = VisaCheck.from_raw_data(response_model, "STUDY")
+        visa_check = VisaCheck.from_visa_check_response(response_model, "STUDY")
 
         expected_output = {
             "visas": [{
-                "full_name": "John Smith",
-                "dob":  "1993-07-06",
+                'holder': {
+                    "full_name": "John Smith",
+                    "dob": "1993-07-06",
+                    'document_checked': {
+                        'document_type': 'PASSPORT',
+                        'number': '12345678989',
+                        'country_code': 'FRA'
+                    }
+                },
                 "grant_date": "2009-06-07",
                 "expiry_date": "2019-06-07",
                 "name": "Higher Education Sector",
@@ -120,12 +124,7 @@ class TestOutputData(unittest.TestCase):
                     {"name": "Visa Type Details", "value": "Visa type details"},
                     {"name": "Visa Conditions", "value": "8202,8533"},
                     {"name": "Conditions", "value": "here are some conditions"}
-                ],
-                'document_checked': {
-                    'document_type': 'PASSPORT',
-                    'number': '12345678989',
-                    'country_code': 'FRA'
-                }
+                ]
             }],
             "failure_reason": ""
         }
@@ -161,34 +160,31 @@ class TestOutputData(unittest.TestCase):
             "error": "Error: Does not hold a valid visa"
         }
 
-        raw_response, response_model = VSureVisaCheckResponse.from_raw(failed_response)
+        raw_response, response_model = VSureVisaCheckResponse.from_json(failed_response)
 
-        visa_check = VisaCheck.from_raw_data(response_model, "WORK")
+        visa_check = VisaCheck.from_visa_check_response(response_model, "WORK")
 
         expected_output = {
             "visas": [{
-                "full_name": "John Smith",
-                "dob": "2000-03-12",
+                'holder': {
+                    "full_name": "John Smith",
+                    "dob": "2000-03-12",
+                    'document_checked': {
+                        'document_type': 'PASSPORT',
+                        'number': '1212121212',
+                        'country_code': 'FIN',
+                    }
+                },
                 "grant_date": None,
                 "expiry_date": None,
-                "name": None,
+                "name": "WORK",
                 "entitlement": "WORK",
                 "details": [
                     {"name": "Visa Type", "value": "0"}
-                ],
-                 'document_checked': {
-                    'document_type': 'PASSPORT',
-                    'number': '1212121212',
-                    'country_code': 'FIN',
-                }
+                ]
             }],
             "failure_reason": "Error: Does not hold a valid visa"
         }
-
-        print("expected")
-        print(expected_output)
-        print("actual")
-        print(visa_check.to_primitive())
 
         self.assertEqual(expected_output, visa_check.to_primitive())
 
@@ -200,4 +196,4 @@ class TestOutputData(unittest.TestCase):
         }
 
         with self.assertRaises(VSureServiceException):
-            raw_response, response_model = VSureVisaCheckResponse.from_raw(error_response)
+            raw_response, response_model = VSureVisaCheckResponse.from_json(error_response)
