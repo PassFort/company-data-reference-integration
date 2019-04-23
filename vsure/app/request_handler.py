@@ -70,11 +70,8 @@ def visa_request(
 
     try:
         response_json = response.json()
-    except JSONDecodeError:
-        return {
-            'raw': {},
-            'output_data': None
-        }
+    except JSONDecodeError as e:
+        raise VSureServiceException('{}'.format(e), response)
 
     raw_response, response_model = VSureVisaCheckResponse.from_json(response_json)
 
