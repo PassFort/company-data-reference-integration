@@ -8,7 +8,7 @@ from app.api.mock_data.mock_responses import unidentified_person_response, no_vi
 
 API_URL = 'http://localhost:8001'
 
-
+@unittest.skip
 class Test(unittest.TestCase):
 
     def test_successful_response(self):
