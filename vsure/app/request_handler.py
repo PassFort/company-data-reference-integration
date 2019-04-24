@@ -96,5 +96,7 @@ def visa_request(
 
     return {
         'raw': raw_response,
-        'output_data': visa_check.to_primitive()
+        'output_data': {
+            'visa_check': visa_check.to_primitive()
+        }
     }

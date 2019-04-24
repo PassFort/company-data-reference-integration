@@ -1,6 +1,6 @@
 import json
 from .api.mock_data.demo_responses import get_demo_work_visa, get_demo_study_visa, \
-    get_demo_no_visa_response
+    get_demo_no_visa_response, get_demo_not_found_response
 from .api.output_types import VSureVisaCheckResponse, VisaCheck
 
 

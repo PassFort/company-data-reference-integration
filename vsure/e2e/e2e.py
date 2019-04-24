@@ -20,40 +20,39 @@ class VSureTestExamples(unittest.TestCase):
 
         response_json = json.loads(response.data)
 
-        self.assertEqual(successful_work_response, response_json['output_data'])
+        self.assertEqual(successful_work_response, response_json['output_data']['visa_check'])
 
     def test_successful_study_response(self):
         response = self.testing_app.post('/visa-check', content_type='application/json', json=successful_study_request)
 
         response_json = json.loads(response.data)
 
-        self.assertEqual(successful_study_response, response_json['output_data'])
+        self.assertEqual(successful_study_response, response_json['output_data']['visa_check'])
 
-    @unittest.skip  # skip for now as logic is changing
     def test_unidentified_person(self):
         response = self.testing_app.post('/visa-check', content_type='application/json', json=unidentified_person_request)
 
         response_json = json.loads(response.data)
 
-        self.assertEqual(unidentified_person_response, response_json['output_data'])
+        self.assertEqual(unidentified_person_response, response_json['output_data']['visa_check'])
 
     def test_no_visa(self):
         response = self.testing_app.post('/visa-check', content_type='application/json', json=no_visa_request)
 
         response_json = json.loads(response.data)
 
-        self.assertEqual(no_visa_response, response_json['output_data'])
+        self.assertEqual(no_visa_response, response_json['output_data']['visa_check'])
 
     def test_no_expiry_visa(self):
         response = self.testing_app.post('/visa-check', content_type='application/json', json=no_expiry_request)
 
         response_json = json.loads(response.data)
 
-        self.assertEqual(no_expiry_response, response_json['output_data'])
+        self.assertEqual(no_expiry_response, response_json['output_data']['visa_check'])
 
     def test_expired_visa(self):
         response = self.testing_app.post('/visa-check', content_type='application/json', json=expired_request)
 
         response_json = json.loads(response.data)
 
-        self.assertEqual(expired_response, response_json['output_data'])
+        self.assertEqual(expired_response, response_json['output_data']['visa_check'])
