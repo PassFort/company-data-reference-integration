@@ -1,6 +1,6 @@
 from datetime import datetime
 
-def get_demo_work_visa(visa_holder, expiry_date='22 Oct 2030'):
+def get_demo_work_visa(visa_holder, expiry_date):
     return {
         "output": {
             "id": "123456",
@@ -31,7 +31,7 @@ def get_demo_work_visa(visa_holder, expiry_date='22 Oct 2030'):
         "error": ""
     }
 
-def get_demo_study_visa(visa_holder, expiry_date='22 Oct 2030'):
+def get_demo_study_visa(visa_holder, expiry_date):
     return {
         "output": {
             "id": "245645",

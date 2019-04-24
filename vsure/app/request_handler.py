@@ -40,16 +40,14 @@ class VSureVisaCheckRequest(Model):
 
 
 def vsure_request(request_data: VisaCheckRequest):
-    if request_data.is_demo:
-        return get_demo_response(request_data.input_data, request_data.config)
-
-    return visa_request(request_data.input_data, request_data.config, request_data.credentials)
+    return visa_request(request_data.input_data, request_data.config, request_data.credentials, request_data.is_demo)
 
 
 def visa_request(
         individual_data: 'IndividualData',
         config: 'VSureConfig',
-        credentials: 'VSureCredentials'):
+        credentials: 'VSureCredentials',
+        is_demo=False):
 
     request_model = VSureVisaCheckRequest({
         'visaholder': individual_data.as_visa_holder_data(),
@@ -72,19 +70,22 @@ def visa_request(
             'https': proxy_url
         }
 
-    try:
-        response = session.post(url, proxies=proxies)
-    except Exception as e:
-        return {
-            "errors": [Error.provider_connection_error(e)]
-        }
-    finally:
-        session.close()
+    if is_demo:
+        response_json = get_demo_response(request_model.visaholder, request_model.visachecktype)
+    else:
+        try:
+            response = session.post(url, proxies=proxies)
+        except Exception as e:
+            return {
+                "errors": [Error.provider_connection_error(e)]
+            }
+        finally:
+            session.close()
 
-    try:
-        response_json = response.json()
-    except JSONDecodeError as e:
-        raise VSureServiceException('{}'.format(e))
+        try:
+            response_json = response.json()
+        except JSONDecodeError as e:
+            raise VSureServiceException('{}'.format(e))
 
     raw_response, response_model = VSureVisaCheckResponse.from_json(response_json)
 
