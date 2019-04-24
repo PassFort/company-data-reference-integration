@@ -1,9 +1,8 @@
 from datetime import datetime
 from enum import unique
 import json
-from json import JSONDecodeError
 from schematics import Model
-from schematics.exceptions import DataError
+from schematics.exceptions import DataError, ValidationError
 from schematics.types import BooleanType, StringType, ModelType, DateType, ListType, DictType
 from .errors import VSureServiceException
 from .input_types import DocumentMetadata
@@ -16,7 +15,7 @@ def format_date(value):
         date = datetime.strptime(value, '%d %b %Y')
         return date.strftime('%Y-%m-%d')
     except (ValueError, TypeError):
-        raise VSureServiceException(f'Input is not valid date: {value}')
+        raise ValidationError(f'Input is not valid date: {value}')
 
 
 class PersonChecked(Model):

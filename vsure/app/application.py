@@ -1,12 +1,15 @@
-from flask import Flask, jsonify
 import logging
 import os
+import traceback
+from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
+from werkzeug.exceptions import HTTPException
 
 import app.json_logger
 from .api.input_types import validate_model, VisaCheckRequest
 from .api.errors import VSureServiceException, Error
 from .request_handler import visa_request, vsure_request
+
 
 app = Flask(__name__)
 
@@ -32,12 +35,19 @@ def run_visa_check(request_data):
 
 @app.errorhandler(400)
 def api_400(error):
-    return jsonify(errors=['{}'.format(error)]), 400
+    logging.error(error.description)
+    return jsonify(errors=[error.description]), 400
 
-@app.errorhandler(500)
-def api_500(error):
-    return jsonify(errors=['{}'.format(error)]), 500
 
 @app.errorhandler(VSureServiceException)
 def api_provider_error(error):
     return jsonify(errors=[Error.provider_unknown_error(error)], raw=error.raw_output), 500
+
+
+@app.errorhandler(Exception)
+def handle_exceptions(error):
+    logging.error(traceback.format_exc())
+    code = 500
+    if isinstance(error, HTTPException):
+        code = error.code
+    return jsonify(errors=[Error.from_exception(error)]), code

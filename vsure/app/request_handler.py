@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from flask import abort
+from json import JSONDecodeError
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from schematics import Model
@@ -11,6 +12,7 @@ from schematics.types import ModelType, StringType
 from .api.input_types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, VisaHolderData
 from .api.errors import VSureServiceException, Error
 from .api.output_types import VSureVisaCheckResponse, VisaCheck
+from .demo_handler import get_demo_response
 
 
 def requests_retry_session(
@@ -38,14 +40,16 @@ class VSureVisaCheckRequest(Model):
 
 
 def vsure_request(request_data: VisaCheckRequest):
+    if request_data.is_demo:
+        return get_demo_response(request_data.input_data, request_data.config)
+
     return visa_request(request_data.input_data, request_data.config, request_data.credentials)
 
 
 def visa_request(
         individual_data: 'IndividualData',
         config: 'VSureConfig',
-        credentials: 'VSureCredentials',
-        is_demo=False):
+        credentials: 'VSureCredentials'):
 
     request_model = VSureVisaCheckRequest({
         'visaholder': individual_data.as_visa_holder_data(),
@@ -55,7 +59,7 @@ def visa_request(
     try:
         request_model.validate()
     except DataError as e:
-        raise VSureServiceException('{}'.format(e), raw_response)
+        abort(400, Error.bad_api_request(e))
 
     url = f'{credentials.base_url}visacheck?type=json&json={json.dumps(request_model.to_primitive())}'
 
@@ -80,12 +84,9 @@ def visa_request(
     try:
         response_json = response.json()
     except JSONDecodeError as e:
-        raise VSureServiceException('{}'.format(e), response)
+        raise VSureServiceException('{}'.format(e))
 
     raw_response, response_model = VSureVisaCheckResponse.from_json(response_json)
-
-    if not response_model.output:
-        raise VSureServiceException(response_model.error, raw_response)
 
     try:
         visa_check = VisaCheck.from_visa_check_response(response_model, config.visa_check_type)

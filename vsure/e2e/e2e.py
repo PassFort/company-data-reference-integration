@@ -3,13 +3,13 @@ import unittest
 import json
 from app.api.mock_data.mock_requests import successful_work_request, successful_study_request, \
     unidentified_person_request, no_visa_request, login_error_request
-from app.api.mock_data.mock_responses import unidentified_person_response, no_visa_response, login_error_response, \
+from app.api.mock_data.mock_responses import no_visa_response, login_error_response, \
      successful_work_response, successful_study_response
 
 API_URL = 'http://localhost:8001'
 
 @unittest.skip
-class Test(unittest.TestCase):
+class VSureTestExamples(unittest.TestCase):
 
     def test_successful_response(self):
         response = requests.post(f'{API_URL}/visa-check', json=successful_work_request)

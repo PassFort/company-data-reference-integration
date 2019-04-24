@@ -1,12 +1,3 @@
-unidentified_person_response = {
-    'errors': [{
-        'code': 303,
-        'info': {'raw': 'Error: VEVO cannot identify the person'},
-        'message': 'Error: VEVO cannot identify the person',
-        'source': 'PROVIDER'
-    }]
-}
-
 no_visa_response = {
     "failure_reason": "Error: Does not hold a valid visa",
     "visas": [{
