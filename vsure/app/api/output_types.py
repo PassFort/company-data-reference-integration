@@ -36,7 +36,7 @@ class VisaCheckResponseOutput(Model):
     result = StringType(choices=['OK', 'Error'])
     status = StringType()
     person_checked = ModelType(PersonChecked, deserialize_from='Person Checked')
-    visa_details = DictType(StringType, deserialize_from='Visa Details')
+    visa_details = DictType(StringType, deserialize_from='Visa Details', default=None)
     work_entitlement = StringType(deserialize_from='Work Entitlement', default=None)
     study_condition = StringType(deserialize_from='Study Condition', default=None)
     visa_conditions = StringType(deserialize_from='Visa Conditions')
@@ -106,12 +106,25 @@ class VisaCheck(Model):
     @staticmethod
     def from_visa_check_response(raw_data: VSureVisaCheckResponse, visa_check_type):
         if raw_data.output.result == 'Error':
-            raise VSureServiceException(raw_data.output.status, json.dumps(raw_data.to_primitive()))
+            # We want this error to be a "failure" instead of an error, we check on this string as vSure don't send error codes
+            if raw_data.output.status == 'Could not complete visa check - The Department has not been able to identify the person. Please check that the details you entered in are correct.':
+                visa_check = VisaCheck({
+                    'visas': [],
+                    'failure_reason': raw_data.output.status
+                })
+                visa_check.validate()
+                return visa_check
+            else:
+                raise VSureServiceException(raw_data.output.status, json.dumps(raw_data.to_primitive()))
 
         visa = Visa()
 
-        visa.grant_date = format_date(raw_data.output.visa_details['Grant Date'])
-        visa.expiry_date = format_date(raw_data.output.visa_details['Expiry Date'])
+        if raw_data.output.visa_details:
+            visa.grant_date = format_date(raw_data.output.visa_details.get('Grant Date'))
+            visa.expiry_date = format_date(raw_data.output.visa_details.get('Expiry Date'))
+            visa.name = raw_data.output.visa_details.get('Visa Type Name') or visa_check_type
+            visa.add_details(raw_data.output)
+
         visa.holder = {
             'full_name': raw_data.output.person_checked.name,
             'dob': format_date(raw_data.output.person_checked.dob),
@@ -122,14 +135,15 @@ class VisaCheck(Model):
             }
         }
 
-        visa.name = raw_data.output.visa_details.get('Visa Type Name') or visa_check_type
         visa.entitlement = visa_check_type
-        visa.add_details(raw_data.output)
 
         visa.validate()
 
-        visa_check = VisaCheck()
-        visa_check.visas = [visa]
-        visa_check.failure_reason = raw_data.error
+        visa_check = VisaCheck({
+            'visas': [visa],
+            'failure_reason': raw_data.error
+        })
+
+        visa_check.validate()
 
         return visa_check

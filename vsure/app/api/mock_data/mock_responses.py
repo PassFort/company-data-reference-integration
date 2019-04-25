@@ -136,5 +136,6 @@ no_expiry_response = {
 }
 
 unidentified_person_response = {
-
+    'failure_reason': 'Could not complete visa check - The Department has not been able to identify the person. Please check that the details you entered in are correct.',
+    'visas': []
 }
