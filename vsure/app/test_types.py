@@ -14,8 +14,26 @@ class TestInputData(unittest.TestCase):
         app.testing = True
         self.testing_app = app.test_client()
 
-    def test_no_input(self):
-        response = self.testing_app.post('/visa-check')
+    def test_invalid_input(self):
+        response = self.testing_app.post('/visa-check', content_type='application/json', json={
+            'config': {'visa_check_type': 'WORK'},
+            'credentials': {'api_key': 'JtGXbnOxncr1MZZ'},
+            'input_data': {
+                'documents_metadata': [{
+                    'document_type': 'PASSPORT',
+                    'number': '123134235',
+                    'country_code': 'IND'
+                }],
+                'personal_details': {
+                    'dob': 'invalid date',
+                    'name': {
+                        'family_name': 'Smith',
+                        'given_names': ['John']
+                    }
+                }
+            },
+            'is_demo': False
+        })
 
         self.assertEqual(400, response.status_code)
 
