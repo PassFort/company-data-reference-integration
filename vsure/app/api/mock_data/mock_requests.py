@@ -15,7 +15,7 @@ successful_work_request = {
             }
         }
     },
-    'is_demo': False
+    'is_demo': True
 }
 
 successful_study_request = {
@@ -35,9 +35,8 @@ successful_study_request = {
             }
         }
     },
-    'is_demo': False
+    'is_demo': True
 }
-
 
 unidentified_person_request = {
     'config': {'visa_check_type': 'WORK'},
@@ -52,11 +51,11 @@ unidentified_person_request = {
             'dob': '2000-11-11',
             'name': {
                 'family_name': 'Smith',
-                'given_names': ['John']
+                'given_names': ['NOT_FOUND']
             }
         }
     },
-    'is_demo': False
+    'is_demo': True
 }
 
 no_visa_request = {
@@ -72,29 +71,49 @@ no_visa_request = {
             'dob': '2000-12-12',
             'name': {
                 'family_name': 'Smith',
-                'given_names': ['John']
+                'given_names': ['NO_VISA']
             }
         }
     },
-    'is_demo': False
+    'is_demo': True
 }
 
-login_error_request = {
+expired_request = {
+    'config': {'visa_check_type': 'STUDY'},
+    'credentials': {'api_key': 'JtGXbnOxncr1MZZ'},
+    'input_data': {
+        'documents_metadata': [{
+            'document_type': 'PASSPORT',
+            'number': '467567r67',
+            'country_code': 'FRA'
+        }],
+        'personal_details': {
+            'dob': '2000-12-12',
+            'name': {
+                'family_name': 'Smith',
+                'given_names': ['EXPIRED']
+            }
+        }
+    },
+    'is_demo': True
+}
+
+no_expiry_request = {
     'config': {'visa_check_type': 'WORK'},
     'credentials': {'api_key': 'JtGXbnOxncr1MZZ'},
     'input_data': {
         'documents_metadata': [{
             'document_type': 'PASSPORT',
-            'number': '37373737',
-            'country_code': 'GAB'
+            'number': '1237687263',
+            'country_code': 'IND'
         }],
         'personal_details': {
-            'dob': '2000-07-07',
+            'dob': '2000-12-12',
             'name': {
                 'family_name': 'Smith',
-                'given_names': ['John']
+                'given_names': ['NO_EXPIRY']
             }
         }
     },
-    'is_demo': False
+    'is_demo': True
 }

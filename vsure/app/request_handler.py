@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from flask import abort
+from json import JSONDecodeError
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from schematics import Model
@@ -11,6 +12,7 @@ from schematics.types import ModelType, StringType
 from .api.input_types import IndividualData, VSureConfig, VSureCredentials, VisaCheckRequest, VisaHolderData
 from .api.errors import VSureServiceException, Error
 from .api.output_types import VSureVisaCheckResponse, VisaCheck
+from .demo_handler import get_demo_response
 
 
 def requests_retry_session(
@@ -38,7 +40,7 @@ class VSureVisaCheckRequest(Model):
 
 
 def vsure_request(request_data: VisaCheckRequest):
-    return visa_request(request_data.input_data, request_data.config, request_data.credentials)
+    return visa_request(request_data.input_data, request_data.config, request_data.credentials, request_data.is_demo)
 
 
 def visa_request(
@@ -55,7 +57,7 @@ def visa_request(
     try:
         request_model.validate()
     except DataError as e:
-        raise VSureServiceException('{}'.format(e), raw_response)
+        abort(400, Error.bad_api_request(e))
 
     url = f'{credentials.base_url}visacheck?type=json&json={json.dumps(request_model.to_primitive())}'
 
@@ -68,24 +70,24 @@ def visa_request(
             'https': proxy_url
         }
 
-    try:
-        response = session.post(url, proxies=proxies)
-    except Exception as e:
-        return {
-            "errors": [Error.provider_connection_error(e)]
-        }
-    finally:
-        session.close()
+    if is_demo:
+        response_json = get_demo_response(request_model.visaholder, request_model.visachecktype)
+    else:
+        try:
+            response = session.post(url, proxies=proxies)
+        except Exception as e:
+            return {
+                "errors": [Error.provider_connection_error(e)]
+            }
+        finally:
+            session.close()
 
-    try:
-        response_json = response.json()
-    except JSONDecodeError as e:
-        raise VSureServiceException('{}'.format(e), response)
+        try:
+            response_json = response.json()
+        except JSONDecodeError as e:
+            raise VSureServiceException('{}'.format(e))
 
     raw_response, response_model = VSureVisaCheckResponse.from_json(response_json)
-
-    if not response_model.output:
-        raise VSureServiceException(response_model.error, raw_response)
 
     try:
         visa_check = VisaCheck.from_visa_check_response(response_model, config.visa_check_type)
@@ -94,5 +96,7 @@ def visa_request(
 
     return {
         'raw': raw_response,
-        'output_data': visa_check.to_primitive()
+        'output_data': {
+            'visa_check': visa_check.to_primitive()
+        }
     }
