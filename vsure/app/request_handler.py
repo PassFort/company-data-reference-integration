@@ -1,6 +1,8 @@
 import json
 import os
 import requests
+import logging
+
 from flask import abort
 from json import JSONDecodeError
 from requests.adapters import HTTPAdapter
@@ -76,6 +78,7 @@ def visa_request(
         try:
             response = session.post(url, proxies=proxies)
         except Exception as e:
+            logging.warning('{}'.format(e))
             return {
                 "errors": [Error.provider_connection_error(e)]
             }
