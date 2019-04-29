@@ -130,6 +130,7 @@ class TestOutputData(unittest.TestCase):
                         'country_code': 'FRA'
                     }
                 },
+                "country_code": "AUS",
                 "grant_date": "2009-06-07",
                 "expiry_date": "2019-06-07",
                 "name": "Higher Education Sector",
@@ -193,6 +194,7 @@ class TestOutputData(unittest.TestCase):
                         'country_code': 'FIN',
                     }
                 },
+                "country_code": 'AUS',
                 "grant_date": None,
                 "expiry_date": None,
                 "name": "WORK",
