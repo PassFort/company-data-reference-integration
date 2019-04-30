@@ -67,7 +67,7 @@ class VisaHolder(Model):
 
 class Visa(Model):
     holder = ModelType(VisaHolder)
-    country_code = 'AUS'
+    country_code = StringType(choices=['AUS'], required=True, default='AUS')
     grant_date = StringType()
     expiry_date = StringType()
     name = StringType()
