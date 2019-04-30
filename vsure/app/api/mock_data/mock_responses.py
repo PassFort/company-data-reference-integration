@@ -1,6 +1,7 @@
 no_visa_response = {
     'failure_reason': 'Error: Does not hold a valid visa',
     'visas': [{
+        'country_code': 'AUS',
         'details': [{
             'name': 'Visa Type',
             'value': '0'
@@ -33,6 +34,7 @@ login_error_response = {
 successful_work_response = {
     'failure_reason': '',
     'visas': [{
+        'country_code': 'AUS',
         'details': [
             {'name': 'Work Entitlement Description', 'value': 'The visa holder has unlimited right to work in Australia.'},
             {'name': 'Visa Applicant', 'value': 'Primary'},
@@ -59,6 +61,7 @@ successful_work_response = {
 successful_study_response = {
     'failure_reason': '',
     'visas': [{
+        'country_code': 'AUS',
         'details': [
             {"name": "Study Condition", "value": "No limitations on study."},
             {"name": "Visa Applicant", "value": "Primary"},
@@ -86,6 +89,7 @@ successful_study_response = {
 expired_response = {
     'failure_reason': '',
     'visas': [{
+        'country_code': 'AUS',
         'details': [
             {'name': 'Study Condition', 'value': 'No limitations on study.'},
             {'name': 'Visa Applicant', 'value': 'Primary'},
@@ -112,6 +116,7 @@ expired_response = {
 no_expiry_response = {
     'failure_reason': '',
     'visas': [{
+        'country_code': 'AUS',
         'details': [
             {'name': 'Work Entitlement Description', 'value': 'The visa holder has unlimited right to work in Australia.'},
             {'name': 'Visa Applicant', 'value': 'Primary'},
