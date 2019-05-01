@@ -243,6 +243,10 @@ class ComplyAdvantageFilters(Model):
 
 class ComplyAdvantageResponseData(Model):
     hits = ListType(ModelType(ComplyAdvantageMatch), default=[])
+    # This field does not actually contain the *total* number of hits, it currently
+    # contains the number of hits returned on this page of search results.
+    # Do not rely on it for this either, as the behaviour may be fixed in the future.
+    # Instead, measure the length of the "hits" array directly.
     total_hits = IntType(default=0)
     offset = IntType(default=0)
     limit = IntType(default=0)
@@ -259,8 +263,8 @@ class ComplyAdvantageResponseData(Model):
             events = events + hit.to_events(self.share_url, config)
         return events
 
-    def has_more_hits(self):
-        return self.offset + self.limit < self.total_hits
+    def might_have_more_hits(self):
+        return len(self.hits) >= self.limit
 
 
 class ComplyAdvantageSearchRequest:
@@ -339,10 +343,10 @@ class ComplyAdvantageResponse(Model):
         events = self.content.data.to_events(config)
         return [e.as_validated_json() for e in events]
 
-    def has_more_pages(self):
+    def might_have_more_pages(self):
         if self.content is None:
             return False
-        return self.content.data.has_more_hits()
+        return self.content.data.might_have_more_hits()
 
     @property
     def search_id(self):

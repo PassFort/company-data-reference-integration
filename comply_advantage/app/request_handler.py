@@ -140,6 +140,9 @@ def comply_advantage_search_request(
                 json=search_request_data.paginate(offset, limit)
             )
         except Exception as e:
+            if search_ids:
+                # Try to disable monitoring if we've already created some searches
+                update_monitoring_request(credentials, search_ids, False)
             return {
                 "errors": [Error.provider_connection_error(e)]
             }
@@ -164,7 +167,10 @@ def comply_advantage_search_request(
 
         offset = offset + limit
 
-        if len(errors) > 0 or not response_model.has_more_pages():
+        if len(errors) > 0 or not response_model.might_have_more_pages():
+            # Disable monitoring - if this fails there's not really much we can do,
+            # as the searches already succeeded, so just return success.
+            update_monitoring_request(credentials, search_ids, False)
             return {
                 "search_ids": search_ids,
                 "raw": all_raw_responses,
