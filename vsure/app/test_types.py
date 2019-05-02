@@ -145,7 +145,7 @@ class TestOutputData(unittest.TestCase):
                     {"name": "Conditions", "value": "here are some conditions"}
                 ]
             }],
-            "failure_reason": ""
+            "failure_reason": None
         }
 
         self.assertEqual(expected_output, visa_check.to_primitive())
@@ -184,25 +184,7 @@ class TestOutputData(unittest.TestCase):
         visa_check = VisaCheck.from_visa_check_response(response_model, "WORK")
 
         expected_output = {
-            "visas": [{
-                'holder': {
-                    "full_name": "John Smith",
-                    "dob": "2000-03-12",
-                    'document_checked': {
-                        'document_type': 'PASSPORT',
-                        'number': '1212121212',
-                        'country_code': 'FIN',
-                    }
-                },
-                "country_code": 'AUS',
-                "grant_date": None,
-                "expiry_date": None,
-                "name": "WORK",
-                "entitlement": "WORK",
-                "details": [
-                    {"name": "Visa Type", "value": "0"}
-                ]
-            }],
+            "visas": [],
             "failure_reason": "Error: Does not hold a valid visa"
         }
 

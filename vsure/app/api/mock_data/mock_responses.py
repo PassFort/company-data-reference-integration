@@ -1,25 +1,6 @@
 no_visa_response = {
     'failure_reason': 'Error: Does not hold a valid visa',
-    'visas': [{
-        'country_code': 'AUS',
-        'details': [{
-            'name': 'Visa Type',
-            'value': '0'
-        }],
-        'entitlement': 'WORK',
-        'expiry_date': None,
-        'grant_date': None,
-        'holder': {
-            'dob': '2000-12-12',
-            'document_checked': {
-                'country_code': 'FIN',
-                'document_type': 'PASSPORT',
-                'number': '37373737'
-            },
-            'full_name': 'NO_VISA Smith'
-        },
-        'name': 'WORK'
-    }]
+    'visas': []
 }
 
 login_error_response = {
@@ -32,7 +13,7 @@ login_error_response = {
 }
 
 successful_work_response = {
-    'failure_reason': '',
+    'failure_reason': None,
     'visas': [{
         'country_code': 'AUS',
         'details': [
@@ -59,7 +40,7 @@ successful_work_response = {
 }
 
 successful_study_response = {
-    'failure_reason': '',
+    'failure_reason': None,
     'visas': [{
         'country_code': 'AUS',
         'details': [
@@ -87,7 +68,7 @@ successful_study_response = {
 
 
 expired_response = {
-    'failure_reason': '',
+    'failure_reason': None,
     'visas': [{
         'country_code': 'AUS',
         'details': [
@@ -114,7 +95,7 @@ expired_response = {
 }
 
 no_expiry_response = {
-    'failure_reason': '',
+    'failure_reason': None,
     'visas': [{
         'country_code': 'AUS',
         'details': [

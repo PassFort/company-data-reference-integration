@@ -117,6 +117,14 @@ class VisaCheck(Model):
             else:
                 raise VSureServiceException(raw_data.output.status, json.dumps(raw_data.to_primitive()))
 
+        if raw_data.error:
+            visa_check = VisaCheck({
+                'visas': [],
+                'failure_reason': raw_data.error
+            })
+            visa_check.validate()
+            return visa_check
+
         visa = Visa()
 
         if raw_data.output.visa_details:
@@ -140,8 +148,7 @@ class VisaCheck(Model):
         visa.validate()
 
         visa_check = VisaCheck({
-            'visas': [visa],
-            'failure_reason': raw_data.error
+            'visas': [visa]
         })
 
         visa_check.validate()
