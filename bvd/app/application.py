@@ -32,7 +32,12 @@ def get_bvd_id(credentials, input_data):
         if error:
             return error, result
         elif result:
+            assert country_alpha2to3(result['Country']) == input_data['country_of_incorporation'], \
+                "result should have the same country"
+            assert result['NationalId'] == input_data['number'], "result should have the same number"
             return None, result['BvDID']
+        else:
+            return None, None
 
     return None, bvd_id
 
@@ -40,8 +45,9 @@ def get_bvd_id(credentials, input_data):
 def run_check(executor):
     try:
         results = executor()
-        raw_data = results[0]
-        return None, raw_data
+        assert len(results) <= 1, 'The check should return at most 1 result'
+
+        return None, results[0] if len(results) == 1 else None
     except REQUEST_EXCEPTIONS as e:
         return BvDError(e), None
     except BvDServiceException as e:
