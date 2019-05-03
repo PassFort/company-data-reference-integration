@@ -95,7 +95,10 @@ class TestUtils(TestCase):
                 mock_send.assert_called_with(
                     credentials,
                     'match',
-                    criteria,
+                    {
+                        'Country': 'GB',
+                        'Name': 'PassFort',
+                    }
                 )
 
                 self.assertEqual(status, 200)

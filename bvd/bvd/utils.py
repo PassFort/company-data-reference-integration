@@ -153,7 +153,7 @@ def get_data(config: BvDConfig, bvd_ids: List[str], query: str) -> List[CompanyR
 
 
 def match(config: BvDConfig, criteria: MatchCriteria) -> List[CompanyRawData]:
-    return send_request(config, 'match', criteria)
+    return send_request(config, 'match', bvd_criteria_format(criteria))
 
 
 def get_query_string(name: str) -> str:
@@ -236,4 +236,13 @@ def country_alpha2to3(alpha2):
         return country.alpha_3
     except KeyError:
         return None
-    
+
+
+def bvd_criteria_value_format(key, value):
+    if key.lower() == 'country' and len(value) == 3:
+        return countries.get(alpha_3=value).alpha_2
+    return value
+
+
+def bvd_criteria_format(input_criteria):
+    return {k: bvd_criteria_value_format(k, v) for k,v in input_criteria.items()}
