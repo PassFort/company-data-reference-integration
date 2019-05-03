@@ -6,7 +6,7 @@ from raven.contrib.flask import Sentry
 from bvd.format_utils import CustomJSONEncoder
 from bvd.utils import match, get_data, get_query_string, BvDServiceException, \
     REQUEST_EXCEPTIONS, BvDEmptyResponseException, BvDError, \
-    get_demo_data, get_demo_search_data, match, country_alpha2to3
+    get_demo_data, get_demo_search_data, match, country_alpha2to3, send_sentry_exception
 from bvd.registry import format_registry_data
 from bvd.ownership import format_ownership_data
 
@@ -45,9 +45,14 @@ def get_bvd_id(credentials, input_data):
 def run_check(executor):
     try:
         results = executor()
-        assert len(results) <= 1, 'The check should return at most 1 result'
+        if len(results) > 1:
+            # Monitor these exceptions and change this to an assertion if all good
+            send_sentry_exception(
+                AssertionError('More than 1 result returned from BVD'),
+                custom_data={'results': results}
+            )
 
-        return None, results[0] if len(results) == 1 else None
+        return None, results[0] if len(results) != 0 else None
     except REQUEST_EXCEPTIONS as e:
         return BvDError(e), None
     except BvDServiceException as e:
