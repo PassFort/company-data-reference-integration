@@ -133,13 +133,13 @@ def registry_check():
 
     raw_response = {
         'metadata': raw_metadata,
-        'directors': raw_officers,
+        'officers': raw_officers,
         'authorisations': raw_auths,
     } if raw_metadata else None
 
     response = CompanyData(
         metadata=metadata,
-        officers={'directors': officers} if officers else None,
+        officers=officers if officers else None,
         regulatory_authorisations=auths,
     ) if metadata else None
 
