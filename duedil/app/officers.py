@@ -1,12 +1,22 @@
 from datetime import datetime
 from schemad_types.utils import get_in
 from functools import reduce
+from copy import deepcopy
 
 from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.entity_type import EntityType
 
 from app.utils import paginate, base_request, get, DueDilAuthException, DueDilServiceException, get_all_results, \
     company_url
+
+
+def provider_role_to_key_mapping(officialRole):
+    return {
+        'director': 'directors',
+        'secretary': 'secretaries',
+        'llp_member': 'partners',
+        'llp_designated_member': 'partners'
+    }.get(officialRole.lower(), 'other')
 
 
 def request_officers(country_code, company_number, credentials):
@@ -35,56 +45,84 @@ def request_officers(country_code, company_number, credentials):
     return officers, format_officers(officers)
 
 
+def format_officer_data(elem):
+    officer = None
+    if elem['type'] == "person":
+        first_name = get_in(elem, ['person', 'firstName'], default='').split(' ')
+        middle_name = get_in(elem, ['person', 'middleName'], default='').split(' ')
+
+        first_names = []
+        first_names.extend(first_name)
+        first_names.extend(middle_name)
+        first_names = filter(bool, first_names)
+
+        officer = {
+            "first_names": {"v": " ".join(first_names)},
+            "last_name": {"v": get_in(elem, ['person', 'lastName'], '')},
+            "type": {"v": EntityType.INDIVIDUAL},
+        }
+
+        dobMonth = get_in(elem, ['person', 'dateOfBirth', 'month'])
+        dobYear = get_in(elem, ['person', 'dateOfBirth', 'year'])
+        if dobMonth and dobYear:
+            dob = datetime.strptime("{}-{}".format(dobYear, dobMonth), "%Y-%m")
+            officer['dob'] = {"v": dob}
+        elif dobYear:
+            dob = datetime.strptime("{}".format(dobYear), "%Y")
+            officer['dob'] = {"v": dob}
+
+    elif elem['type'] == "company":
+        officer = {
+            "last_name": {"v": get_in(elem, ['company', 'name'])},
+            "type": {"v": EntityType.COMPANY},
+        }
+
+    return officer
+
+
 def format_officers(officers):
-    def format_officer(elem):
-        officer = None
+    def add_officer_roles_to_result(result, elem):
 
-        if elem['type'] == "person":
-            first_name = get_in(elem, ['person', 'firstName'], default='').split(' ')
-            middle_name = get_in(elem, ['person', 'middleName'], default='').split(' ')
+        officer_data = format_officer_data(elem)
+        officer = Officer(officer_data)
 
-            first_names = []
-            first_names.extend(first_name)
-            first_names.extend(middle_name)
-            first_names = filter(bool, first_names)
+        if officer_data:
+            appointments = elem.get('appointments') or []
 
-            officer = Officer({
-                "first_names": {"v": " ".join(first_names)},
-                "last_name": {"v": get_in(elem, ['person', 'lastName'], '')},
-                "type": {"v": EntityType.INDIVIDUAL},
-            })
+            for appt in appointments:
+                # Required fields
+                officer_with_role = deepcopy(officer)
+                officer_with_role.original_role = {'v': appt['officialRole']}
+                officer_with_role.provider_name = 'Duedil'
 
-            dobMonth = get_in(elem, ['person', 'dateOfBirth', 'month'])
-            dobYear = get_in(elem, ['person', 'dateOfBirth', 'year'])
-            if dobMonth and dobYear:
-                dob = datetime.strptime("{}-{}".format(dobYear, dobMonth), "%Y-%m")
-                officer.dob = {"v": dob}
-            elif dobYear:
-                dob = datetime.strptime("{}".format(dobYear), "%Y")
-                officer.dob = {"v": dob}
+                start_date = appt['startDate']
+                if start_date:
+                    officer_with_role.appointed_on = {
+                        'v': datetime.strptime(start_date, "%Y-%m-%d")
+                    }
+                end_date = appt['endDate']
+                if end_date:
+                    officer_with_role.resigned_on = {
+                        'v': datetime.strptime(end_date, "%Y-%m-%d")
+                    }
 
-        elif elem['type'] == "company":
-            officer = Officer({
-                "last_name": {"v": get_in(elem, ['company', 'name'])},
-                "type": {"v": EntityType.COMPANY},
-            })
+                passfort_role_key = provider_role_to_key_mapping(
+                    officer_with_role.original_role.v
+                ) if appt['officialRole'] else 'other'
 
-        if officer:
-            officer.provider_name = 'DueDil'
+                result[passfort_role_key].append(officer_with_role)
 
-            official_role = get_in(elem, ['appointments', 0, 'officialRole'])
-            if official_role:
-                officer.original_role = {'v': official_role}
+                if officer_with_role.resigned_on and officer_with_role.resigned_on.v < datetime.now():
+                    result['resigned'].append(officer_with_role)
 
-            start_date = get_in(elem, ['appointments', 0, 'startDate'])
-            if start_date:
-                officer.appointed_on = {
-                    "v": datetime.strptime(start_date, "%Y-%m-%d")}
-            end_date = get_in(elem, ['appointments', 0, 'endDate'])
-            if end_date:
-                officer.resigned_on = {
-                    "v": datetime.strptime(end_date, "%Y-%m-%d")}
+        return result
 
-        return officer
+    result_by_role = {
+        'directors': [],
+        'secretaries': [],
+        'partners': [],
+        'resigned': [],
+        'other': []
+    }
 
-    return [format_officer(entry) for entry in officers] if officers is not None else None
+    return reduce(add_officer_roles_to_result, officers, result_by_role) if officers is not None else None
