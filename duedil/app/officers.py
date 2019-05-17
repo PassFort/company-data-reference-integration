@@ -1,6 +1,7 @@
 from datetime import datetime
 from schemad_types.utils import get_in
 from functools import reduce
+from copy import deepcopy
 
 from passfort_data_structure.companies.officers import Officer
 from passfort_data_structure.entities.entity_type import EntityType
@@ -83,13 +84,14 @@ def format_officers(officers):
     def add_officer_roles_to_result(result, elem):
 
         officer_data = format_officer_data(elem)
+        officer = Officer(officer_data)
 
         if officer_data:
             appointments = elem.get('appointments') or []
 
             for appt in appointments:
                 # Required fields
-                officer_with_role = Officer(officer_data)
+                officer_with_role = deepcopy(officer)
                 officer_with_role.original_role = {'v': appt['officialRole']}
                 officer_with_role.provider_name = 'Duedil'
 

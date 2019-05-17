@@ -88,6 +88,10 @@ class RegistryTests(unittest.TestCase):
 
             self.assertDictEqual(as_secretary, as_resigned)
 
+        with self.subTest('the same resolver id is assigned to all 3 roles'):
+            self.assertEqual(as_secretary['resolver_id'], as_director['resolver_id'])
+            self.assertEqual(as_secretary['resolver_id'], as_resigned['resolver_id'])
+
     def test_axa_fr(self):
         response = requests.post(API_URL + '/registry-check', json={
             "input_data": {
