@@ -117,11 +117,11 @@ class TestOfficers(unittest.TestCase):
 
         _, officers = request_officers('gb', '100', {})
 
-        Assert.isinstance(officers[0], Officer)
+        Assert.isinstance(officers['directors'][0], Officer)
 
-        donald = officers[0]
-        paul = officers[2]
-        company = officers[3]
+        donald = officers['directors'][0]
+        paul = officers['directors'][2]
+        company = officers['directors'][3]
 
         with self.subTest('formats first_names from provided names'):
             Assert.equal(donald.first_names.v, 'Donald Andrew')
