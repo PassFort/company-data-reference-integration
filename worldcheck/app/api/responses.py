@@ -57,13 +57,14 @@ def make_results_response(results=[], config=None):
     }
 
 
-def make_match_response(result):
+def make_match_response(result, associate_relationships):
     from app.api.formatter import entity_to_passfort_format, entity_to_events
     return {
         'output_data': entity_to_passfort_format(result),
         'raw': result.to_dict(),
         'errors': [],
-        'events': entity_to_events(result)
+        'events': entity_to_events(result),
+        'associate_relationships': associate_relationships
     }
 
 
@@ -75,13 +76,13 @@ def make_associates_response(associates):
     }
 
 
-def make_associate_response(associate_data: Entity, association: Associate):
+def make_associate_response(associate_data: Entity, association: str):
     from app.api.formatter import associated_entity_to_passfort_format
     return {
         'output_data': associated_entity_to_passfort_format(associate_data, association),
         'raw': {
             'associate_data': associate_data.to_dict(),
-            'association': association.to_dict()
+            'association': association
         },
         'errors': []
     }

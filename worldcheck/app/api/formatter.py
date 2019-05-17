@@ -134,7 +134,7 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
 def associated_entity_to_passfort_format(entity: 'Entity', association: 'Associate'):
     return {
         "name": get_primary_name(entity),
-        "association": association.type,
+        "association": association,
         "is_pep": has_pep_source(entity),
         "is_sanction": len(get_actions_if_any(entity)) > 0
     }
