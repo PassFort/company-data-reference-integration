@@ -37,7 +37,7 @@ class CustomAuthApiClient(ApiClient):
                 post_params,
                 body,
                 _preload_content,
-                10  # request_timeout
+                30  # request_timeout
             )
         try:
             '''
@@ -49,10 +49,7 @@ class CustomAuthApiClient(ApiClient):
                 The API client is making too many concurrent requests, and some are being throttled.
                 Throttled requests can be retried (with an updated request Date and HTTP signature) after a short delay.
             '''
-            return retry(
-                lambda: auth_request(),
-                [429],
-                retry_backoff_sec=0.5)
+            return auth_request()
         except MaxRetryError:
             raise WorldCheckConnectionError('Unable to connect to {}'.format(url))
 
