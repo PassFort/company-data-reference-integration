@@ -401,3 +401,11 @@ class OngoingScreeningDisableRequest(Model):
     credentials = ModelType(WorldCheckCredentials, required=True)
     config = ModelType(WorldCheckConfig, required=True)
     is_demo = BooleanType(default=False)
+
+
+class AssociatesDataRequest(Model):
+    credentials = ModelType(WorldCheckCredentials, required=True)
+    config = ModelType(WorldCheckConfig, required=True)
+    is_demo = BooleanType(default=False)
+
+    association = StringType(required=True)

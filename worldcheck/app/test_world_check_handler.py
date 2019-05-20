@@ -84,6 +84,17 @@ class MatchHandlerTest(TestCase):
                 self.assertGreater(len(sanction_event['sanctions']), 0)
                 self.assertTrue('pep' not in sanction_event)
 
+            with self.subTest('returns associate relationships'):
+                self.assertEqual(len(match_response['associate_relationships']), 2)
+                self.assertEqual(match_response['associate_relationships'][0], {
+                    'associate_id': 'e_tr_wco_108800',
+                    'association': 'AFFILIATED_COMPANY'
+                })
+                self.assertEqual(match_response['associate_relationships'][1], {
+                    'associate_id': 'e_tr_wci_889031',
+                    'association': 'ASSOCIATE'
+                })
+
         with self.subTest('creates a refer flag as default'):
             match_response = self.handler.get_entity_for_match('lukoil_romania_srl_2756289')
             self.assertEqual(len(match_response['events']), 1)
@@ -97,9 +108,26 @@ class MatchHandlerTest(TestCase):
                 'errors': []
             })
 
+    def test_get_associate_data_old(self):
+        response = self.handler.get_associate_old(
+            'lukoil_romania_srl_9437',
+            'lukoil_romania_srl_2756289')
+
+        self.assertEqual(
+            response['output_data'],
+            {
+                'name': 'LUKOIL ENERGY & GAS ROMANIA',
+                'association': 'AFFILIATED_COMPANY',
+                'is_pep': False,
+                'is_sanction': False
+            }
+        )
+
     def test_get_associate_data(self):
-        response = self.handler.get_associate('lukoil_romania_srl_9437',
-                                              'lukoil_romania_srl_2756289')
+        response = self.handler.get_associate(
+            'lukoil_romania_srl_2756289',
+            'AFFILIATED_COMPANY'
+        )
 
         self.assertEqual(
             response['output_data'],
