@@ -145,20 +145,36 @@ class MatchHandler:
         self.is_demo = is_demo
 
     def get_entity_for_match(self, match_id):
-        return make_match_response(result=self.__get_entity(match_id))
+        entity = self.__get_entity(match_id)
+        return make_match_response(
+            result=entity,
+            associate_relationships=[
+                {
+                    'associate_id': a.target_entity_id,
+                    'association': a.type
+                } for a in entity.associates or []
+            ]
+        )
 
+    # TO BE DEPRECATED
     def get_match_associates(self, match_id):
         from swagger_client.models import Entity
         entity: Entity = self.__get_entity(match_id)
         return make_associates_response([a.target_entity_id for a in entity.associates or []])
 
-    def get_associate(self, match_id, associate_id):
+    # TO BE DEPRECATED
+    def get_associate_old(self, match_id, associate_id):
         from swagger_client.models import Entity
         matched_entity: Entity = self.__get_entity(match_id)
         associated_entity = self.__get_entity(associate_id)
 
         association_data = next(a for a in matched_entity.associates if a.target_entity_id == associate_id)
-        return make_associate_response(associated_entity, association_data)
+        return make_associate_response(associated_entity, association_data.type)
+
+    def get_associate(self, associate_id, association):
+        associated_entity = self.__get_entity(associate_id)
+
+        return make_associate_response(associated_entity, association)
 
     def __get_entity(self, match_id):
         import datetime

@@ -8,7 +8,7 @@ from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
 
 from app.api.types import validate_model, ScreeningRequest, ScreeningResultsRequest, OngoingScreeningResultsRequest, \
-    Error, OngoingScreeningDisableRequest
+    Error, OngoingScreeningDisableRequest, AssociatesDataRequest
 from app.api.responses import make_error_response
 from app.worldcheck_handler import CaseHandler, MatchHandler, WorldCheckPendingError, WorldCheckConnectionError
 
@@ -113,6 +113,7 @@ def get_match_data(request_data: ScreeningResultsRequest, match_id):
     return jsonify(MatchHandler(request_data.credentials, None, request_data.is_demo).get_entity_for_match(match_id))
 
 
+# TO BE DEPRECATED
 @app.route('/match/<string:match_id>/associates', methods=['POST'])
 @validate_model(ScreeningResultsRequest)
 def get_match_associates(request_data: ScreeningResultsRequest, match_id):
@@ -127,13 +128,25 @@ def get_match_associates(request_data: ScreeningResultsRequest, match_id):
 
 @app.route('/match/<string:match_id>/associate/<string:associate_id>', methods=['POST'])
 @validate_model(ScreeningResultsRequest)
-def get_associate_data(request_data: ScreeningResultsRequest, match_id, associate_id):
+def get_associate_data_old(request_data: ScreeningResultsRequest, match_id, associate_id):
     return jsonify(
         MatchHandler(
             request_data.credentials,
             None,
             request_data.is_demo
-        ).get_associate(match_id, associate_id)
+        ).get_associate_old(match_id, associate_id)
+    )
+
+
+@app.route('/match/associate/<string:associate_id>', methods=['POST'])
+@validate_model(AssociatesDataRequest)
+def get_associate_data(request_data: AssociatesDataRequest, associate_id):
+    return jsonify(
+        MatchHandler(
+            request_data.credentials,
+            None,
+            request_data.is_demo
+        ).get_associate(associate_id, request_data.association)
     )
 
 
