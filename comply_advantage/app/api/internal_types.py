@@ -133,7 +133,7 @@ class ComplyAdvantageMatchData(Model):
     ca_fields = ListType(ModelType(ComplyAdvantageMatchField), serialized_name="fields", default=[])
     types = ListType(StringType)
     source_notes = DictType(ModelType(ComplyAdvantageSourceNote))
-    media = ListType(ModelType(ComplyAdvantageMediaData))
+    media = ListType(ModelType(ComplyAdvantageMediaData), default=[])
 
     def to_events(self, share_url: StringType, extra_fields: dict, config: ComplyAdvantageConfig) -> List['MatchEvent']:
         events = []
