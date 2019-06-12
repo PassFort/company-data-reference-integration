@@ -46,6 +46,28 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
+    'Private limited by guarantee, no share capital':
+    StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY),
+    }),
+    'Private Limited Company (חברה פרטית - מוגבלת - חברה לא ממשלתית)':
+    StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY),
+    }),
+    'Limited Company':
+    StructuredCompanyType({
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY),
+    }),
+    'Limited by shares':
+    StructuredCompanyType({
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY),
+    }),
     'Other': StructuredCompanyType({})
 }
 
