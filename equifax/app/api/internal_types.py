@@ -1,10 +1,16 @@
 from copy import deepcopy
 import re
+from datetime import datetime
 from schematics.exceptions import ValidationError, ConversionError
 from schematics.models import Model
 from schematics.types import ModelType, ListType, StringType, UnionType
 
 from .types import ErrorCode, MatchField, DatabaseType
+
+
+def deserialize_date(date_string):
+    if date_string:
+        return datetime.strptime(date_string, '%Y%m%d').strftime('%Y-%m-%d')
 
 
 class XMLTagBaseType(ModelType):
@@ -81,10 +87,10 @@ class TradeItem(Model):
     def get_item(self, name):
         return next((i for i in self.items if i.name == name), None)
 
-    def item_content(self, name):
+    def item_content(self, name, deserializer=lambda x: x):
         item = self.get_item(name)
         if item is not None:
-            return item.text
+            return deserializer(item.text)
         return None
 
     def is_true(self, name):
@@ -142,6 +148,8 @@ class TradeItem(Model):
         return {
             'database_name': self.database_name,
             'database_type': DatabaseType.CREDIT.value,
+            'date_first_seen': self.item_content('DateOpened', deserialize_date),
+            'date_of_last_activity': self.item_content('DateLastReported', deserialize_date),
             'matched_fields': matched_fields,
             'count': 1,
             'extra': extra_fields

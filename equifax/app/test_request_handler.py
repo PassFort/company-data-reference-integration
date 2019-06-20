@@ -320,6 +320,8 @@ class TestRecordKeeping(unittest.TestCase):
         matches = actual['output_data']['electronic_id_check']['matches']
         self.assertEqual(len(matches), 2)
 
+        self.assertEqual(matches[0]['date_of_last_activity'], '2019-01-29')
+        self.assertEqual(matches[0]['date_first_seen'], '2016-10-03')
         self.assertListEqual(
             matches[0]['extra'],
             [
