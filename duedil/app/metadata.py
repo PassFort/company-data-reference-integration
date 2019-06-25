@@ -34,6 +34,11 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
+    'Aktieselskab Partnerships': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
     'Financial Product Companies – Licensed Resident Agent': StructuredCompanyType({
         'is_public': tagged(False),
         'is_limited': tagged(True),
