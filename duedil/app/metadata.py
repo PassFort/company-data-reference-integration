@@ -29,6 +29,11 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
+    'Sabiedrība ar ierobežotu atbildību': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
     'Limited Partnerships': StructuredCompanyType({
         'is_public': tagged(False),
         'is_limited': tagged(True),
