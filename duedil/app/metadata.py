@@ -24,6 +24,11 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
+    'Spoločnosť s ručením obmedzeným': StructuredCompanyType({
+        'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY)
+    }),
     'Public limited with share capital': StructuredCompanyType({
         'is_public': tagged(True),
         'is_limited': tagged(True),
