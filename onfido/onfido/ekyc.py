@@ -1,4 +1,3 @@
-from pipetools import pipe
 import re
 import logging
 from functools import partial

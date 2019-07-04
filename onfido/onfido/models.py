@@ -147,7 +147,7 @@ class IdentityReportItemNonUK(IdentityReportItem):
                     'count': 1,
                 }
 
-        sources = self.properties.sources or ['Address Database']
+        sources = self.properties.sources or ['Unknown Database']
         return [map_source(source) for source in self.properties.sources]
 
 
