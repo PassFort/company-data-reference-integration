@@ -25,27 +25,22 @@ STRUCTURED_COMPANY_TYPE_MAP = {
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
     'Spoločnosť s ručením obmedzeným': StructuredCompanyType({
-        'is_public': tagged(False),
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
     'Sabiedrība ar ierobežotu atbildību': StructuredCompanyType({
-        'is_public': tagged(False),
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
     'Limited Partnerships': StructuredCompanyType({
-        'is_public': tagged(False),
         'is_limited': tagged(True),
-        'ownership_type': tagged(OwnershipType.COMPANY)
+        'ownership_type': tagged(OwnershipType.PARTNERSHIP)
     }),
     'Aktieselskab Partnerships': StructuredCompanyType({
-        'is_public': tagged(False),
         'is_limited': tagged(True),
-        'ownership_type': tagged(OwnershipType.COMPANY)
+        'ownership_type': tagged(OwnershipType.PARTNERSHIP)
     }),
     'Financial Product Companies – Licensed Resident Agent': StructuredCompanyType({
-        'is_public': tagged(False),
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY)
     }),
@@ -80,6 +75,16 @@ STRUCTURED_COMPANY_TYPE_MAP = {
     'Private Limited Company (חברה פרטית - מוגבלת - חברה לא ממשלתית)':
     StructuredCompanyType({
         'is_public': tagged(False),
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY),
+    }),
+    'Societate cu răspundere limitată':
+    StructuredCompanyType({
+        'is_limited': tagged(True),
+        'ownership_type': tagged(OwnershipType.COMPANY),
+    }),
+    'Limited Liability Company':
+    StructuredCompanyType({
         'is_limited': tagged(True),
         'ownership_type': tagged(OwnershipType.COMPANY),
     }),
