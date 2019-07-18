@@ -6,6 +6,7 @@ from app.api.responses import make_screening_started_response, make_results_resp
 from swagger_client.api import CaseApi, ReferenceApi
 
 import logging
+import errno
 
 from app.utils import create_response_from_file
 
@@ -51,6 +52,13 @@ class CaseHandler:
                 )
             except FileNotFoundError:
                 results = []
+            except OSError as os_ex:
+                if os_ex.errno == errno.ENAMETOOLONG:
+                    logging.error("Demo institution queried WorldCheck with too long a profile name")
+                    results = []
+                else:
+                    raise
+
         else:
             audit_response = self.case_api.cases_case_system_id_audit_events_post(
                 case_system_id,
