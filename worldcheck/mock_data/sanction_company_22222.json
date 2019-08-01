@@ -1,0 +1,288 @@
+{
+  "entityType": "ORGANISATION",
+  "actions": [ 
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "UNSTR",
+                "creationDate": "2013-03-21T13:41:10Z",
+                "identifier": "b_trwc_48",
+                "importIdentifier": null,
+                "name": "CANADA - UNSTR - Sanctions Terrorism.",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "CANADA",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " Case T-69/15: Order of the General Court of 16 July 2015, DEMO company and Others v Council (Action for annulment - Common foreign and security policy - Restrictive measures adopted in view of Russia's actions destabilising the situation in Ukraine - Lis pendens - Manifest inadmissibility).",
+            "title": "CANADA"
+        }
+  ],
+  "active": true,
+  "addresses": [
+    {
+      "city": "Ploiesti",
+      "country": {
+        "code": "ROU",
+        "name": "ROMANIA"
+      },
+      "postCode": null,
+      "region": "Prahova",
+      "street": null
+    }
+  ],
+  "category": "CORPORATE",
+  "comments": null,
+  "contacts": [],
+  "countryLinks": [
+    {
+      "country": {
+        "code": "ROU",
+        "name": "ROMANIA"
+      },
+      "countryText": "ROMANIA",
+      "type": "REGISTEREDIN"
+    },
+    {
+      "country": {
+        "code": "ROU",
+        "name": "ROMANIA"
+      },
+      "countryText": "ROMANIA",
+      "type": "LOCATION"
+    }
+  ],
+  "creationDate": "2015-08-11T00:00:00Z",
+  "deletionDate": null,
+  "description": null,
+  "details": [
+    {
+      "detailType": "UNKNOWN",
+      "text": " ",
+      "title": "MAJORITY OWNED - RSSRE-WC"
+    },
+    {
+      "detailType": "BIOGRAPHY",
+      "text": " Company specialising in production of electricity (Jul 2006 - ). ",
+      "title": "BIOGRAPHY"
+    },
+    {
+      "detailType": "IDENTIFICATION",
+      "text": " Fiscal Code (CIF): 18868036. Registry No (CRN): J29/1565/2006. Owned by Lukoil OAO (sanctioned entity) (100%) (reported Feb 2018 - ). ",
+      "title": "IDENTIFICATION"
+    },
+    {
+      "detailType": "REPORTS",
+      "text": " Aug 2015 - reportedly under investigation by the Prosecutor's Office of Ploiesti Court of Appeal for alleged complicity in tax evasion and complicity in money laundering (2008-2010). Feb 2018 - no further information reported. ",
+      "title": "REPORTS"
+    },
+    {
+      "detailType": "NOTE",
+      "text": " The RSSRE-WC keyword covers all entities connected, related, associated, affiliated, linked to, owned, or controlled by Russian OFAC (keyword UKR-EO13662) and/or EU (EUFSR-RUS) Sectoral Sanctioned companies within World-Check. Data that has been organized and structured under the RSSRE-WC keyword conforms to the World-Check Entity and State Owned Enterprise research guidelines. The RSSRE-WC keyword is designed only to assist World-Check Users in checking for information contained in the World-Check database relating to entities which are related, linked, affiliated or associated to entities which are subject to Russian Sectoral Sanctions. The RSSRE-WC keyword is not intended and should not be construed as a means of highlighting any list of majority owned or controlled entities which are automatically subject to Russian Sectoral Sanctions. Users should perform their own due diligence on any entities highlighted under the RSSRE-WC keyword to verify the existence and/or nature of any relationship with a sanctioned entity. All information contained in profiles organized and structured under the RSSRE-WC keyword is based on the publically available information World-Check was able to source at the point in time that the profile is indicated to have been last updated. World-Check therefore makes no guarantees as to the accuracy of the information contained in profiles organized under the RSSRE-WC keyword nor to the accuracy of any affiliation highlighted by such keyword.",
+      "title": "KEYWORD NOTE"
+    }
+  ],
+  "entityId": "e_tr_wco_2756289",
+  "externalImportId": "ei_trwc_2756289",
+  "files": [],
+  "identityDocuments": [
+    {
+      "entity": null,
+      "expiryDate": null,
+      "issueDate": null,
+      "issuer": null,
+      "locationType": {
+        "country": {
+          "code": "ROU",
+          "name": "ROMANIA"
+        },
+        "name": "COD DE IDENTIFICARE FISCALA - TAX IDENTIFICATION CODE",
+        "type": "RO-CIF"
+      },
+      "number": "18868036",
+      "type": null
+    },
+    {
+      "entity": null,
+      "expiryDate": null,
+      "issueDate": null,
+      "issuer": null,
+      "locationType": {
+        "country": {
+          "code": "ROU",
+          "name": "ROMANIA"
+        },
+        "name": "NUMAR DE INMATRICULARE - COMPANY REGISTRATION NUMBER",
+        "type": "RO-CRN"
+      },
+      "number": "J29/1565/2006",
+      "type": null
+    }
+  ],
+  "images": [],
+  "lastAdjunctChangeDate": null,
+  "modificationDate": "2018-06-13T00:00:00Z",
+  "names": [
+    {
+      "fullName": "DEMO ENERGY & GAS ROMANIA S.R.L.",
+      "givenName": null,
+      "languageCode": null,
+      "lastName": null,
+      "originalScript": "DEMO ENERGY & GAS ROMANIA S.R.L.",
+      "prefix": null,
+      "suffix": null,
+      "type": "AKA"
+    },
+    {
+      "fullName": "DEMO GAS ROMANIA SRL PLOIESTI",
+      "givenName": null,
+      "languageCode": null,
+      "lastName": null,
+      "originalScript": "DEMO GAS ROMANIA SRL PLOIESTI",
+      "prefix": null,
+      "suffix": null,
+      "type": "AKA"
+    },
+    {
+      "fullName": "DEMO ENERGY & GAS ROMANIA",
+      "givenName": null,
+      "languageCode": null,
+      "lastName": "DEMO ENERGY & GAS ROMANIA",
+      "originalScript": "DEMO ENERGY & GAS ROMANIA",
+      "prefix": null,
+      "suffix": null,
+      "type": "PRIMARY"
+    }
+  ],
+  "previousCountryLinks": [],
+  "provider": {
+    "code": "trwc",
+    "identifier": "cnp_7",
+    "master": true,
+    "name": "World Check"
+  },
+  "sourceDescription": null,
+  "sourceUris": [],
+  "sources": [
+    {
+      "abbreviation": "RSSRE-DIR4-WC",
+      "creationDate": "2018-01-30T05:14:15Z",
+      "identifier": "b_trwc_RSSRE-DIR4-WC",
+      "importIdentifier": null,
+      "name": "INTERNATIONAL - RSSRE-DIR4-WC - Russian Sectoral Sanctioned company and subsidiaries subject to Directive 4",
+      "provider": null,
+      "providerSourceStatus": "ACTIVE",
+      "regionOfAuthority": "UNKNOWN",
+      "subscriptionCategory": "STANDARD",
+      "type": {
+        "category": {
+          "description": "The bodies detailed here, the Bureau of Industry and Security (BIS) and the World Bank, issue notices if they consider a person or company to be in breach of U.S. export regulations in the case of the BIS, or if they consider the person to have behaved improperly in the World Bank procurement process. Again, although there may be no reason why an action should stop you from dealing with a customer, this knowledge of the customer may be useful in assessing whether you wish to deal with them.",
+          "identifier": "ec_5",
+          "name": "Other Bodies",
+          "providerSourceTypes": []
+        },
+        "identifier": "t_trwc_5",
+        "name": "World-Check other bodies"
+      }
+    },
+    {
+      "abbreviation": "RSSRE-50-WC",
+      "creationDate": "2017-03-17T05:00:13Z",
+      "identifier": "b_trwc_RSSRE-50-WC",
+      "importIdentifier": null,
+      "name": "INTERNATIONAL - RSSRE-50-WC - Subsidiary owned 50% or more by a Russian Sectoral Sanctioned company.",
+      "provider": null,
+      "providerSourceStatus": "ACTIVE",
+      "regionOfAuthority": "UNKNOWN",
+      "subscriptionCategory": "STANDARD",
+      "type": {
+        "category": {
+          "description": "The bodies detailed here, the Bureau of Industry and Security (BIS) and the World Bank, issue notices if they consider a person or company to be in breach of U.S. export regulations in the case of the BIS, or if they consider the person to have behaved improperly in the World Bank procurement process. Again, although there may be no reason why an action should stop you from dealing with a customer, this knowledge of the customer may be useful in assessing whether you wish to deal with them.",
+          "identifier": "ec_5",
+          "name": "Other Bodies",
+          "providerSourceTypes": []
+        },
+        "identifier": "t_trwc_5",
+        "name": "World-Check other bodies"
+      }
+    },
+    {
+      "abbreviation": "RSSRE-WC",
+      "creationDate": "2015-02-27T17:09:06Z",
+      "identifier": "b_trwc_RSSRE-WC",
+      "importIdentifier": null,
+      "name": "INTERNATIONAL - RSSRE-WC - Russian Sectoral Sanctions Relevant Entity World-Check Data",
+      "provider": null,
+      "providerSourceStatus": "ACTIVE",
+      "regionOfAuthority": "UNKNOWN",
+      "subscriptionCategory": "STANDARD",
+      "type": {
+        "category": {
+          "description": "The bodies detailed here, the Bureau of Industry and Security (BIS) and the World Bank, issue notices if they consider a person or company to be in breach of U.S. export regulations in the case of the BIS, or if they consider the person to have behaved improperly in the World Bank procurement process. Again, although there may be no reason why an action should stop you from dealing with a customer, this knowledge of the customer may be useful in assessing whether you wish to deal with them.",
+          "identifier": "ec_5",
+          "name": "Other Bodies",
+          "providerSourceTypes": []
+        },
+        "identifier": "t_trwc_5",
+        "name": "World-Check other bodies"
+      }
+    }
+  ],
+  "subCategory": null,
+  "updateCategory": "C4",
+  "updatedDates": {
+    "ageUpdated": null,
+    "aliasesUpdated": "2018-02-08T00:00:00Z",
+    "alternativeSpellingUpdated": null,
+    "asOfDateUpdated": null,
+    "categoryUpdated": null,
+    "citizenshipsUpdated": null,
+    "companiesUpdated": "2018-02-08T00:00:00Z",
+    "deceasedUpdated": null,
+    "dobsUpdated": null,
+    "eiUpdated": null,
+    "enteredUpdated": null,
+    "externalSourcesUpdated": "2018-06-13T00:00:00Z",
+    "firstNameUpdated": null,
+    "foreignAliasUpdated": null,
+    "furtherInformationUpdated": "2018-02-08T00:00:00Z",
+    "idNumbersUpdated": null,
+    "keywordsUpdated": "2018-02-08T00:00:00Z",
+    "lastNameUpdated": null,
+    "linkedToUpdated": null,
+    "locationsUpdated": null,
+    "lowQualityAliasesUpdated": null,
+    "passportsUpdated": null,
+    "placeOfBirthUpdated": null,
+    "positionUpdated": null,
+    "ssnUpdated": null,
+    "subCategoryUpdated": null,
+    "titleUpdated": null,
+    "updatecategoryUpdated": "2018-06-13T00:00:00Z"
+  },
+  "weblinks": [
+    {
+      "caption": null,
+      "uri": "https://www.treasury.gov/resource-center/sanctions/Programs/Documents/eo13662_directive4_20171031.pdf",
+      "tags": []
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+[{
+    "resultId": "0a3687cf-5be8-142c-9702-d9620003a682",
+    "referenceId": "refer_demo_11111",
+    "matchStrength": "MEDIUM",
+    "matchedTerm": "Demo REFER",
+    "submittedTerm": "DEMO",
+    "matchedNameType": "NATIVE_AKA",
+    "secondaryFieldResults": [],
+    "sources": [
+        "b_trwc_180",
+        "b_trwc_ISIS-WC",
+        "b_trwc_134",
+        "b_trwc_RUSCRF"
+    ],
+    "categories": [
+        "Other Bodies",
+        "Law Enforcement",
+        "Law Enforcement"
+    ],
+    "creationDate": "2017-05-15T09:17:03.312Z",
+    "modificationDate": "2017-05-15T09:24:35.788Z",
+    "resolution": null,
+    "resultReview": {
+        "reviewRequired": false,
+        "reviewRequiredDate": "2016-02-19T00:00:00.000Z",
+        "reviewRemark": null,
+        "reviewDate": null
+    }
+}]

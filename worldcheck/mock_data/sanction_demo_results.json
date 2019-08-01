@@ -1,0 +1,26 @@
+[
+  {
+    "resultId": "0a3687d0-63f9-1478-9904-bbc1003b27c4",
+    "referenceId": "sanction_demo_11111",
+    "matchStrength": "STRONG",
+    "matchedTerm": "SANCTIONS, Demo",
+    "submittedTerm": "Sanctions demo",
+    "matchedNameType": "AKA",
+    "secondaryFieldResults": [],
+    "sources": [
+      "b_trwc_PEP N"
+    ],
+    "categories": [
+      "PEP"
+    ],
+    "creationDate": "2018-06-18T12:46:51.500Z",
+    "modificationDate": "2018-06-18T12:46:51.500Z",
+    "resolution": null,
+    "resultReview": {
+      "reviewRequired": false,
+      "reviewRequiredDate": "2016-03-01T00:00:00.000Z",
+      "reviewRemark": null,
+      "reviewDate": null
+    }
+  }
+]

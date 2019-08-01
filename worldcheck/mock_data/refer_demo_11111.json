@@ -1,0 +1,310 @@
+{
+    "entityType": "INDIVIDUAL",
+    "actions": [],
+    "active": true,
+    "addresses": [
+        {
+            "city": "Nizhnevartovsk",
+            "country": {
+                "code": "RUS",
+                "name": "RUSSIAN FEDERATION"
+            },
+            "postCode": null,
+            "region": "Khanty-Mansi District",
+            "street": null
+        },
+        {
+            "city": "Pyt-Yakh",
+            "country": {
+                "code": "RUS",
+                "name": "RUSSIAN FEDERATION"
+            },
+            "postCode": null,
+            "region": "Khanty-Mansi District",
+            "street": null
+        },
+        {
+            "city": null,
+            "country": {
+                "code": "TUR",
+                "name": "TURKEY"
+            },
+            "postCode": null,
+            "region": null,
+            "street": null
+        }
+    ],
+    "associates": [],
+    "category": "NONCONVICTION TERROR",
+    "comments": null,
+    "contacts": [],
+    "countryLinks": [
+        {
+            "country": {
+                "code": "RUS",
+                "name": "RUSSIAN FEDERATION"
+            },
+            "countryText": "RUSSIAN FEDERATION",
+            "type": "NATIONALITY"
+        },
+        {
+            "country": {
+                "code": "RUS",
+                "name": "RUSSIAN FEDERATION"
+            },
+            "countryText": "RUSSIAN FEDERATION",
+            "type": "LOCATION"
+        },
+        {
+            "country": {
+                "code": "TUR",
+                "name": "TURKEY"
+            },
+            "countryText": "TURKEY",
+            "type": "LOCATION"
+        }
+    ],
+    "creationDate": "2014-11-14T00:00:00Z",
+    "deletionDate": null,
+    "description": null,
+    "details": [
+        {
+            "detailType": "FUNDING",
+            "text": " To be determined. ",
+            "title": "FUNDING"
+        },
+        {
+            "detailType": "IDENTIFICATION",
+            "text": " Address: Internatsionalnaya street, Nizhnevartovsk, KHMAO-Yugra, Tyumen region, Russia. ",
+            "title": "IDENTIFICATION"
+        },
+        {
+            "detailType": "REPORTS",
+            "text": " Nov 2014 - name published on the Russian Federal Financial Monitoring Service List. Feb 2015 - arrest warrant issued by Interpol. Wanted in Russia for terrorism and illegal acquisition of weapons and explosives. Oct 2015 - wanted in Russia for preparation to perform a terror attack on a mosque in Khanty-Mansi District (Oct 2013 - Apr 2014).",
+            "title": "REPORTS"
+        },
+        {
+            "detailType": "BIOGRAPHY",
+            "text": " Alleged member {General} of the Islamic State of Iraq and the Levant (ISIS). ",
+            "title": "BIOGRAPHY"
+        },
+        {
+            "detailType": "UNKNOWN",
+            "text": " 2015-6751. ",
+            "title": "INTERPOL"
+        },
+        {
+            "detailType": "UNKNOWN",
+            "text": " This category includes information about individuals who are reportedly being investigated for, or have been arrested or charged on suspicion of, involvement in terrorism or terror related activities. The category also includes individuals or entities identified on national or internationally recognised banning, warning or wanted lists as allegedly connected to terrorism or individuals who are reportedly connected to an organisation included on any national or international terrorism list. Inclusion in this category does not mean that an individual or entity is a terrorist or terrorist organisation or that they are involved in or connected to terrorism or terror related activity. Individuals included in this category have not been convicted of any terror related activity; you should review the content carefully and in accordance with our terms and conditions, further enquiries should be made of the report subject to investigate the outcome of any alleged investigation, arrest, charges or any reported connection to any terror related activity and whether such allegations are denied.",
+            "title": "NONCONVICTION TERROR CATEGORY NOTICE"
+        }
+    ],
+    "entityId": "e_tr_wci_2481616",
+    "externalImportId": "ei_trwc_2481616",
+    "files": [],
+    "identityDocuments": [
+        {
+            "entity": null,
+            "expiryDate": null,
+            "issueDate": null,
+            "issuer": "RUSSIAN FEDERATION",
+            "locationType": null,
+            "number": "8203 822571",
+            "type": "Passport"
+        }
+    ],
+    "images": [],
+    "lastAdjunctChangeDate": "2015-10-16T00:00:00Z",
+    "modificationDate": "2019-04-20T00:00:00Z",
+    "names": [
+        {
+            "fullName": "DEMO Refer",
+            "givenName": "DEMO",
+            "languageCode": null,
+            "lastName": "Refer",
+            "originalScript": "DEMO Refer",
+            "prefix": null,
+            "suffix": null,
+            "type": "PRIMARY"
+        },
+        {
+            "fullName": "Refer, DEMO",
+            "givenName": null,
+            "languageCode": {
+                "code": "rus",
+                "name": "Russian"
+            },
+            "lastName": null,
+            "originalScript": "Refer, DEMO",
+            "prefix": null,
+            "suffix": null,
+            "type": "NATIVE_AKA"
+        }
+    ],
+    "previousCountryLinks": [],
+    "provider": {
+        "code": "trwc",
+        "identifier": "cnp_7",
+        "master": true,
+        "name": "World Check"
+    },
+    "sourceDescription": null,
+    "sourceUris": [],
+    "sources": [
+        {
+            "abbreviation": "FFMS",
+            "creationDate": "2013-03-21T13:41:11Z",
+            "identifier": "b_trwc_180",
+            "importIdentifier": null,
+            "name": "RUSSIAN FEDERATION - FFMS - Federal Financial Monitoring Service",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "RUSSIAN FEDERATION",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "INTERPOL",
+            "creationDate": "2013-03-21T13:41:10Z",
+            "identifier": "b_trwc_134",
+            "importIdentifier": null,
+            "name": "INTERPOL",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "UNKNOWN",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of persons wanted by the Federal Bureau of Investigation and Interpol in connection with various crimes. Any dealing with these individuals is information that could assist in their apprehension by the authorities.",
+                    "identifier": "ec_2",
+                    "name": "Law Enforcement",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_3",
+                "name": "Law"
+            }
+        },
+        {
+            "abbreviation": "RUSCRF",
+            "creationDate": "2013-11-15T10:52:15Z",
+            "identifier": "b_trwc_RUSCRF",
+            "importIdentifier": null,
+            "name": "RUSSIAN FEDERATION - RUSCRF - Russian Federal Investigative Committee",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "RUSSIAN FEDERATION",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of persons wanted by the Federal Bureau of Investigation and Interpol in connection with various crimes. Any dealing with these individuals is information that could assist in their apprehension by the authorities.",
+                    "identifier": "ec_2",
+                    "name": "Law Enforcement",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_3",
+                "name": "Law"
+            }
+        },
+        {
+            "abbreviation": "ISIS-WC",
+            "creationDate": "2015-12-04T05:10:01Z",
+            "identifier": "b_trwc_ISIS-WC",
+            "importIdentifier": null,
+            "name": "INTERNATIONAL - ISIS-WC - Islamic State - Relevant World-Check Data",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "UNKNOWN",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "The bodies detailed here, the Bureau of Industry and Security (BIS) and the World Bank, issue notices if they consider a person or company to be in breach of U.S. export regulations in the case of the BIS, or if they consider the person to have behaved improperly in the World Bank procurement process. Again, although there may be no reason why an action should stop you from dealing with a customer, this knowledge of the customer may be useful in assessing whether you wish to deal with them.",
+                    "identifier": "ec_5",
+                    "name": "Other Bodies",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_5",
+                "name": "World-Check other bodies"
+            }
+        }
+    ],
+    "subCategory": null,
+    "updateCategory": "C4",
+    "updatedDates": {
+        "ageUpdated": null,
+        "aliasesUpdated": null,
+        "alternativeSpellingUpdated": null,
+        "asOfDateUpdated": null,
+        "categoryUpdated": "2019-04-20T00:00:00Z",
+        "citizenshipsUpdated": null,
+        "companiesUpdated": "2015-10-16T00:00:00Z",
+        "deceasedUpdated": null,
+        "dobsUpdated": null,
+        "eiUpdated": null,
+        "enteredUpdated": null,
+        "externalSourcesUpdated": "2018-04-20T00:00:00Z",
+        "firstNameUpdated": "2015-10-16T00:00:00Z",
+        "foreignAliasUpdated": "2015-10-16T00:00:00Z",
+        "furtherInformationUpdated": "2019-04-20T00:00:00Z",
+        "idNumbersUpdated": null,
+        "keywordsUpdated": "2015-12-11T00:00:00Z",
+        "lastNameUpdated": null,
+        "linkedToUpdated": "2015-10-16T00:00:00Z",
+        "locationsUpdated": "2015-10-16T00:00:00Z",
+        "lowQualityAliasesUpdated": null,
+        "passportsUpdated": "2014-11-20T00:00:00Z",
+        "placeOfBirthUpdated": "2016-02-19T00:00:00Z",
+        "positionUpdated": null,
+        "ssnUpdated": null,
+        "subCategoryUpdated": null,
+        "titleUpdated": null,
+        "updatecategoryUpdated": "2018-04-20T00:00:00Z"
+    },
+    "weblinks": [
+        {
+            "caption": null,
+            "uri": "http://www.kp.ru/daily/26443.4/3316430/",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://fedsfm.ru/documents/terrorists-catalog-portal-act",
+            "tags": []
+        }
+    ],
+    "gender": "MALE",
+    "roles": [],
+    "ageAsOfDate": null,
+    "isDeceased": null,
+    "events": [
+        {
+            "address": {
+                "city": null,
+                "country": {
+                    "code": "RUS",
+                    "name": "RUSSIAN FEDERATION"
+                },
+                "postCode": null,
+                "region": "Tsatanikh settlement, Untsukulskiy district, Dagestan Republic, Russia",
+                "street": null
+            },
+            "allegedAddresses": [],
+            "day": 28,
+            "fullDate": "1982-07-28",
+            "month": 7,
+            "type": "BIRTH",
+            "year": 1982
+        }
+    ],
+    "previousRoles": [],
+    "age": null,
+    "entityType": "INDIVIDUAL"
+}
