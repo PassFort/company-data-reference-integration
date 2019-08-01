@@ -36,12 +36,12 @@ class CaseHandler:
 
     def submit_screening_request(self, input_data: ScreeningRequestData):
         if self.is_demo:
-            if 'PEP' in input_data.name.upper() and input_data.entity_type == 'INDIVIDUAL':
-                case_system_id = 'pep_demo_results'
+            if 'PEP' in input_data.name.upper():
+                case_system_id = 'pep_demo_results' if input_data.entity_type == 'INDIVIDUAL' else 'pep_company_results'
             elif 'SANCTION' in input_data.name.upper():
                 case_system_id = 'sanction_demo_results' if input_data.entity_type == 'INDIVIDUAL' else 'sanction_company_results'
             elif 'REFER' in input_data.name.upper():
-                case_system_id = 'refer_demo_results'
+                case_system_id = 'refer_demo_results' if input_data.entity_type == 'INDIVIDUAL' else 'refer_company_results'
             else:
                 case_system_id = input_data.name.lower().replace(" ", "_") + "_results"
         else:

@@ -1,40 +1,6 @@
 {
   "entityType": "ORGANISATION",
-  "actions": [ {
-            "actionId": null,
-            "actionType": "SANCTION",
-            "comment": null,
-            "endDate": null,
-            "files": [],
-            "publicationType": null,
-            "published": null,
-            "reference": null,
-            "source": {
-                "abbreviation": "UNSTR",
-                "creationDate": "2013-03-21T13:41:10Z",
-                "identifier": "b_trwc_48",
-                "importIdentifier": null,
-                "name": "CANADA - UNSTR - Sanctions Terrorism.",
-                "provider": null,
-                "providerSourceStatus": "ACTIVE",
-                "regionOfAuthority": "CANADA",
-                "subscriptionCategory": "STANDARD",
-                "type": {
-                    "category": {
-                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
-                        "identifier": "ec_1",
-                        "name": "Sanctions",
-                        "providerSourceTypes": []
-                    },
-                    "identifier": "t_trwc_2",
-                    "name": "Sanctions"
-                }
-            },
-            "startDate": null,
-            "text": " On List [US Treasury Dept. OFAC Consolidated Non-SDN Sanctions List]",
-            "title": "CANADA"
-        }
-],
+  "actions": [],
   "active": true,
   "addresses": [
     {
@@ -141,21 +107,21 @@
   "modificationDate": "2018-06-13T00:00:00Z",
   "names": [ 
     {
-      "fullName": "DEMO SANCTION COMPANY",
+      "fullName": "DEMO PEP COMPANY",
       "givenName": null,
       "languageCode": null,
       "lastName": null,
-      "originalScript": "DEMO SANCTION COMPANY",
+      "originalScript": "DEMO PEP COMPANY",
       "prefix": null,
       "suffix": null,
       "type": "AKA"
     },
     {
-      "fullName": "DEMO SANCTION",
+      "fullName": "DEMO PEP",
       "givenName": null,
       "languageCode": null,
-      "lastName": "DEMO SANCTION",
-      "originalScript": "DEMO SANCTION",
+      "lastName": "DEMO PEP",
+      "originalScript": "DEMO PEP",
       "prefix": null,
       "suffix": null,
       "type": "PRIMARY"
@@ -190,6 +156,27 @@
         },
         "identifier": "t_trwc_4",
         "name": "Regulatory"
+      }
+    }, 
+    {
+      "abbreviation": "PEP NG-A",
+      "creationDate": "2013-03-21T13:41:09Z",
+      "identifier": "b_trwc_PEP NG-A",
+      "importIdentifier": null,
+      "name": "PEP - Non Governmental - Close Associate",
+      "provider": null,
+      "providerSourceStatus": "ACTIVE",
+      "regionOfAuthority": null,
+      "subscriptionCategory": "STANDARD",
+      "type": {
+        "category": {
+          "description": "This gives details of high-ranking government officials in over 200 countries. Although there may be no reason why you should not do business with these individuals, the Basle Committee on Banking supervision has stated that one should check these customers because without this due diligence, banks can become subject to reputational, operational, legal and concentration risks, which can result in significant financial cost.",
+          "identifier": "ec_4",
+          "name": "PEP",
+          "providerSourceTypes": []
+        },
+        "identifier": "t_trwc_11",
+        "name": "Non-Governmental"
       }
     },
     {

@@ -1,0 +1,29 @@
+[{
+    "categories": [
+      "Other Bodies",
+      "Other Bodies",
+      "Other Bodies"
+    ],
+    "creation_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "matchStrength": "STRONG",
+    "matched_name_type": "PRIMARY",
+    "matched_term": "LUKOIL ENERGY & GAS ROMANIA",
+    "modification_date": "Mon, 04 Jun 2018 13:17:16 GMT",
+    "referenceId": "lukoil_romania_srl_2756289",
+    "resolution": null,
+    "resultId": "0a3687cf-636b-1408-98f2-bc75009b9210",
+    "result_review": {
+      "review_date": null,
+      "review_remark": null,
+      "review_required": false,
+      "review_required_date": "Thu, 08 Feb 2018 00:00:00 GMT"
+    },
+    "secondary_field_results": [],
+    "sources": [
+      "b_trwc_RSSRE-WC",
+      "b_trwc_RSSRE-50-WC",
+      "b_trwc_RSSRE-DIR4-WC"
+    ],
+    "submitted_term": "LUKOIL ROMANIA SRL"
+  }
+]
