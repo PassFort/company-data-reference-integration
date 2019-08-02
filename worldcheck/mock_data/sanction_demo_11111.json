@@ -1,0 +1,734 @@
+{
+    "entityType": "INDIVIDUAL",
+    "actions": [
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "DFAT",
+                "creationDate": "2013-03-21T13:41:09Z",
+                "identifier": "b_trwc_14",
+                "importIdentifier": null,
+                "name": "AUSTRALIA - DFAT - Dept Foreign Affairs & Trade.",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "AUSTRALIA",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " No 91,a,b (Jan 2014 - amended). PRIMARY NAME: Janan Agha. aka: Abdullah Jan Agha. Date of Birth: a) Approximately 1958 b) Approximately 1953. Place of Birth: Tirin Kot city, Uruzgan Province, Afghanistan. Citizenship: Afghan. Additional Information: Title: Mullah. Governor of Faryab Province under the Taliban regime. Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TI.O.4.01) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul. 2010.",
+            "title": "AUSTRALIA"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "UNSTR",
+                "creationDate": "2013-03-21T13:41:10Z",
+                "identifier": "b_trwc_48",
+                "importIdentifier": null,
+                "name": "CANADA - UNSTR - Sanctions Terrorism.",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "CANADA",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " Jan 2014 - amended. PRIMARY NAME: Agha,Janan. Alias: Agha,Abdullah Jan. POB: Tirin Kot city, Uruzgan Province, Afghanistan. DOB: Approximately 1958; alt DOB: Approximately 1953. Nationality: Afghan. Title: Mullah; Designation: Governor of Faryab Province under the Taliban regime; Other information: Member of the Taliban Supreme Council and advisor to Mullah Mohammed Omar as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group.",
+            "title": "CANADA"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "OTHER SANCTIONS",
+                "creationDate": "2013-03-21T13:41:09Z",
+                "identifier": "b_trwc_3",
+                "importIdentifier": null,
+                "name": "World-Check Other Sanctions",
+                "provider": null,
+                "providerSourceStatus": "HIDDEN",
+                "regionOfAuthority": null,
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " EU 753/2011. 2011/486/CFSP (Mar 2017 - amended) (previously listed on EC 881/2002. 2002/402/CFSP). PRIMARY NAME: Janan Agha (alias Abdullah Jan Agha). Title: Mullah. Grounds for listing: Governor of Faryab Province under the Taliban regime. Date of birth: (a) Approximately 1958, (b) Approximately 1953. Place of birth: Tirin Kot city, Uruzgan Province, Afghanistan. Nationality: Afghan. Date of UN designation:23.2.2001. Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar as at June 2010. Leads a Taliban 'front' (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council Resolution 1822 (2008) was concluded on 23 Jul. 2010. INTERPOL-UN Security Council Special Notice web link: https://www.interpol.int/en/notice/search/un/1428048",
+            "title": "EU"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "HKGAZ",
+                "creationDate": "2013-03-21T13:41:10Z",
+                "identifier": "b_trwc_117",
+                "importIdentifier": null,
+                "name": "HONG KONG - HKGAZ- Gazetted Sanctions List.",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "HONG KONG",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " G.N. (E.) 31 (22 May 2019). PRIMARY NAME: JANAN AGHA. Title: Mullah Designation: Governor of Faryab Province under the Taliban regime DOB: a) Approximately 1958 b) Approximately 1953 POB: Tirin Kot city, Uruzgan Province, Afghanistan Good quality a.k.a.: Abdullah Jan Agha Nationality: Afghanistan Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TAi.004) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul. 2010. INTERPOL-UN Security Council Special Notice web link: https://www.interpol.int/en/How-we-work/Notices/View-UN-Notices-Individuals",
+            "title": "HONG KONG"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "IMOD",
+                "creationDate": "2013-03-21T13:41:10Z",
+                "identifier": "b_trwc_143",
+                "importIdentifier": null,
+                "name": "ISRAEL - ISRAEL MINISTRY OF DEFENCE - TERRORISM LIST - IMOD",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "ISRAEL",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " 22/11/11 - addition. Listed under Section 2 of Prohibition of Financing Terrorism Law. PRIMARY NAME: JANAN AGHA.",
+            "title": "ISRAEL"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "SECO",
+                "creationDate": "2013-03-21T13:41:11Z",
+                "identifier": "b_trwc_190",
+                "importIdentifier": null,
+                "name": "SWITZERLAND  - SECO - State Secretariat for Econ. Affairs.",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "SWITZERLAND",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " SSID: 10-18028 (Jan 2014 - amended). Foreign identifier: TI.A.91.01. PRIMARY NAME: Janan Agha Title: Mullah DOB: a) 1958 (approximately) b) 1953 (approximately) POB: Tirin Kot city, Uruzgan Province, Afghanistan Good quality a.k.a.: Abdullah Jan Agha Nationality: Afghanistan Justification: Governor of Faryab Province under the Taliban regime Relation: Advisor to Mohammed Omar Ghulam Nabi (TI.O.4.01., SSID 10-19042) Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TI.O.4.01) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul 2010.",
+            "title": "SWITZERLAND"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "UKHMT",
+                "creationDate": "2013-03-21T13:41:12Z",
+                "identifier": "b_trwc_312",
+                "importIdentifier": null,
+                "name": "UK - UKHMT - HM Treasury Sanctions Lists",
+                "provider": null,
+                "providerSourceStatus": "ACTIVE",
+                "regionOfAuthority": "UNITED KINGDOM",
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " Apr 2001 - addition. Mar 2014 - amended. PRIMARY NAME: AGHA,JANAN. Title: Mullah DOB: (1) --/--/1958. (2) --/--/1953. POB: Tirin Kot city, Uruzgan Province, Afghanistan a.k.a: AGHA, Abdullah, Jan Nationality: Afghan Position: Governor of Faryab Province under the Taliban regime. Other Information: UN Ref TI.A.91.01. Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. DOB is approximate. Group ID: 7213.",
+            "title": "UK"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "OTHER SANCTIONS",
+                "creationDate": "2013-03-21T13:41:09Z",
+                "identifier": "b_trwc_3",
+                "importIdentifier": null,
+                "name": "World-Check Other Sanctions",
+                "provider": null,
+                "providerSourceStatus": "HIDDEN",
+                "regionOfAuthority": null,
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " UNSCR 1988 (2011) previously listed on UNSCR 1267 (1999) (Jan 2014 - amended). (TI.A.91.01) TAi.091. PRIMARY NAME: JANAN AGHA. Title: Mullah Designation: Governor of Faryab Province under the Taliban regime DOB: a) Approximately 1958 b) Approximately 1953 POB: Tirin Kot city, Uruzgan Province, Afghanistan Good quality a.k.a.: Abdullah Jan Agha Nationality: Afghanistan Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TAi.004) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul. 2010. INTERPOL-UN Security Council Special Notice web link: https://www.interpol.int/en/How-we-work/Notices/View-UN-Notices-Individuals",
+            "title": "UN"
+        },
+        {
+            "actionId": null,
+            "actionType": "SANCTION",
+            "comment": null,
+            "endDate": null,
+            "files": [],
+            "publicationType": null,
+            "published": null,
+            "reference": null,
+            "source": {
+                "abbreviation": "OTHER SANCTIONS",
+                "creationDate": "2013-03-21T13:41:09Z",
+                "identifier": "b_trwc_3",
+                "importIdentifier": null,
+                "name": "World-Check Other Sanctions",
+                "provider": null,
+                "providerSourceStatus": "HIDDEN",
+                "regionOfAuthority": null,
+                "subscriptionCategory": "STANDARD",
+                "type": {
+                    "category": {
+                        "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                        "identifier": "ec_1",
+                        "name": "Sanctions",
+                        "providerSourceTypes": []
+                    },
+                    "identifier": "t_trwc_2",
+                    "name": "Sanctions"
+                }
+            },
+            "startDate": null,
+            "text": " Feb 2016 - removed from South Korea (KRMSF) sanctions list.",
+            "title": "SANCTIONS HISTORY"
+        }
+    ],
+    "active": true,
+    "addresses": [
+        {
+            "city": null,
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "postCode": null,
+            "region": null,
+            "street": null
+        },
+        {
+            "city": null,
+            "country": {
+                "code": "PAK",
+                "name": "PAKISTAN"
+            },
+            "postCode": null,
+            "region": null,
+            "street": null
+        },
+        {
+            "city": null,
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "postCode": null,
+            "region": null,
+            "street": "Province of Faryab"
+        },
+        {
+            "city": null,
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "postCode": null,
+            "region": null,
+            "street": "Province of Uruzgan"
+        },
+        {
+            "city": null,
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "postCode": null,
+            "region": "Faryab",
+            "street": null
+        },
+        {
+            "city": null,
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "postCode": null,
+            "region": "Uruzgan",
+            "street": null
+        }
+    ],
+    "category": "NONCONVICTION TERROR",
+    "comments": null,
+    "contacts": [],
+    "countryLinks": [
+        {
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "countryText": "AFGHANISTAN",
+            "type": "NATIONALITY"
+        },
+        {
+            "country": {
+                "code": "AFG",
+                "name": "AFGHANISTAN"
+            },
+            "countryText": "AFGHANISTAN",
+            "type": "LOCATION"
+        },
+        {
+            "country": {
+                "code": "PAK",
+                "name": "PAKISTAN"
+            },
+            "countryText": "PAKISTAN",
+            "type": "LOCATION"
+        }
+    ],
+    "creationDate": "2001-09-13T00:00:00Z",
+    "deletionDate": null,
+    "description": null,
+    "details": [
+        {
+            "detailType": "REPORTS",
+            "text": " Former governor of Faryab province (1996-2001). Jun 2010 - member of Taliban supreme council and advisor to Mullah Mohammed Omar.",
+            "title": "REPORTS"
+        },
+        {
+            "detailType": "UNKNOWN",
+            "text": " This category includes information about individuals who are reportedly being investigated for, or have been arrested or charged on suspicion of, involvement in terrorism or terror related activities. The category also includes individuals or entities identified on national or internationally recognised banning, warning or wanted lists as allegedly connected to terrorism or individuals who are reportedly connected to an organisation included on any national or international terrorism list. Inclusion in this category does not mean that an individual or entity is a terrorist or terrorist organisation or that they are involved in or connected to terrorism or terror related activity. Individuals included in this category have not been convicted of any terror related activity; you should review the content carefully and in accordance with our terms and conditions, further enquiries should be made of the report subject to investigate the outcome of any alleged investigation, arrest, charges or any reported connection to any terror related activity and whether such allegations are denied.",
+            "title": "NONCONVICTION TERROR CATEGORY NOTICE"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " No 91,a,b (Jan 2014 - amended). PRIMARY NAME: Janan Agha. aka: Abdullah Jan Agha. Date of Birth: a) Approximately 1958 b) Approximately 1953. Place of Birth: Tirin Kot city, Uruzgan Province, Afghanistan. Citizenship: Afghan. Additional Information: Title: Mullah. Governor of Faryab Province under the Taliban regime. Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TI.O.4.01) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul. 2010.",
+            "title": "AUSTRALIA SANCTIONS - DFAT"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " Jan 2014 - amended. PRIMARY NAME: Agha,Janan. Alias: Agha,Abdullah Jan. POB: Tirin Kot city, Uruzgan Province, Afghanistan. DOB: Approximately 1958; alt DOB: Approximately 1953. Nationality: Afghan. Title: Mullah; Designation: Governor of Faryab Province under the Taliban regime; Other information: Member of the Taliban Supreme Council and advisor to Mullah Mohammed Omar as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group.",
+            "title": "CANADA SANCTIONS - UNSTR"
+        },
+        {
+            "detailType": "REPORTS",
+            "text": " 1428048 (2006-26606). Appears on Interpol-United Nations Security Council Special Notice, subject to UN Sanctions - Al-Qaida (TI.A.91.01.).",
+            "title": "UN REPORTS - INTERPOL"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " EU 753/2011. 2011/486/CFSP (Mar 2017 - amended) (previously listed on EC 881/2002. 2002/402/CFSP). PRIMARY NAME: Janan Agha (alias Abdullah Jan Agha). Title: Mullah. Grounds for listing: Governor of Faryab Province under the Taliban regime. Date of birth: (a) Approximately 1958, (b) Approximately 1953. Place of birth: Tirin Kot city, Uruzgan Province, Afghanistan. Nationality: Afghan. Date of UN designation:23.2.2001. Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar as at June 2010. Leads a Taliban 'front' (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council Resolution 1822 (2008) was concluded on 23 Jul. 2010. INTERPOL-UN Security Council Special Notice web link: https://www.interpol.int/en/notice/search/un/1428048",
+            "title": "EU SANCTIONS"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " G.N. (E.) 31 (22 May 2019). PRIMARY NAME: JANAN AGHA. Title: Mullah Designation: Governor of Faryab Province under the Taliban regime DOB: a) Approximately 1958 b) Approximately 1953 POB: Tirin Kot city, Uruzgan Province, Afghanistan Good quality a.k.a.: Abdullah Jan Agha Nationality: Afghanistan Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TAi.004) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul. 2010. INTERPOL-UN Security Council Special Notice web link: https://www.interpol.int/en/How-we-work/Notices/View-UN-Notices-Individuals",
+            "title": "HONG KONG SANCTIONS - HKGAZ"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " 22/11/11 - addition. Listed under Section 2 of Prohibition of Financing Terrorism Law. PRIMARY NAME: JANAN AGHA.",
+            "title": "ISRAEL SANCTIONS - IMOD"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " SSID: 10-18028 (Jan 2014 - amended). Foreign identifier: TI.A.91.01. PRIMARY NAME: Janan Agha Title: Mullah DOB: a) 1958 (approximately) b) 1953 (approximately) POB: Tirin Kot city, Uruzgan Province, Afghanistan Good quality a.k.a.: Abdullah Jan Agha Nationality: Afghanistan Justification: Governor of Faryab Province under the Taliban regime Relation: Advisor to Mohammed Omar Ghulam Nabi (TI.O.4.01., SSID 10-19042) Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TI.O.4.01) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul 2010.",
+            "title": "SWITZERLAND SANCTIONS - SECO"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " Apr 2001 - addition. Mar 2014 - amended. PRIMARY NAME: AGHA,JANAN. Title: Mullah DOB: (1) --/--/1958. (2) --/--/1953. POB: Tirin Kot city, Uruzgan Province, Afghanistan a.k.a: AGHA, Abdullah, Jan Nationality: Afghan Position: Governor of Faryab Province under the Taliban regime. Other Information: UN Ref TI.A.91.01. Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. DOB is approximate. Group ID: 7213.",
+            "title": "UK SANCTIONS - UKHMT"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " UNSCR 1988 (2011) previously listed on UNSCR 1267 (1999) (Jan 2014 - amended). (TI.A.91.01) TAi.091. PRIMARY NAME: JANAN AGHA. Title: Mullah Designation: Governor of Faryab Province under the Taliban regime DOB: a) Approximately 1958 b) Approximately 1953 POB: Tirin Kot city, Uruzgan Province, Afghanistan Good quality a.k.a.: Abdullah Jan Agha Nationality: Afghanistan Other information: Member of Taliban Supreme Council and advisor to Mullah Mohammed Omar (TAi.004) as at June 2010. Leads a Taliban \"front\" (mahaz) as of mid-2013. Believed to be in Afghanistan/Pakistan border area. Belongs to Sadat ethnic group. Review pursuant to Security Council resolution 1822 (2008) was concluded on 23 Jul. 2010. INTERPOL-UN Security Council Special Notice web link: https://www.interpol.int/en/How-we-work/Notices/View-UN-Notices-Individuals",
+            "title": "UN SANCTIONS"
+        },
+        {
+            "detailType": "SANCTION",
+            "text": " Feb 2016 - removed from South Korea (KRMSF) sanctions list.",
+            "title": "SANCTIONS HISTORY"
+        },
+        {
+            "detailType": "BIOGRAPHY",
+            "text": " Alleged member {Political} of Taliban supreme council.",
+            "title": "BIOGRAPHY"
+        },
+        {
+            "detailType": "IDENTIFICATION",
+            "text": " To be determined.",
+            "title": "IDENTIFICATION"
+        },
+        {
+            "detailType": "FUNDING",
+            "text": " To be determined.",
+            "title": "FUNDING"
+        }
+    ],
+    "entityId": "e_tr_wci_38491",
+    "externalImportId": "ei_trwc_38491",
+    "files": [],
+    "identityDocuments": [],
+    "images": [],
+    "lastAdjunctChangeDate": "2017-09-06T00:00:00Z",
+    "modificationDate": "2019-07-10T00:00:00Z",
+    "names": [
+        {
+            "fullName": "Demo sanction",
+            "givenName": null,
+            "languageCode": null,
+            "lastName": null,
+            "originalScript": "DEMO",
+            "prefix": null,
+            "suffix": null,
+            "type": "AKA"
+        },
+        {
+            "fullName": "Sanctions demo",
+            "givenName": null,
+            "languageCode": null,
+            "lastName": null,
+            "originalScript": "DEMO",
+            "prefix": null,
+            "suffix": null,
+            "type": "AKA"
+        },
+        {
+            "fullName": "Demo SANCTION",
+            "givenName": "Demo",
+            "languageCode": null,
+            "lastName": "Sanction",
+            "originalScript": "Demo SANCTION",
+            "prefix": null,
+            "suffix": null,
+            "type": "PRIMARY"
+        }
+    ],
+    "previousCountryLinks": [],
+    "provider": {
+        "code": "trwc",
+        "identifier": "cnp_7",
+        "master": true,
+        "name": "World Check"
+    },
+    "sourceDescription": null,
+    "sourceUris": [],
+    "sources": [
+         {
+            "abbreviation": "CANS",
+            "creationDate": "2013-03-21T13:41:13Z",
+            "identifier": "b_trwc_445",
+            "importIdentifier": null,
+            "name": "CANADA - CANS - Canadian Sanctions",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "CANADA",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "DFAT",
+            "creationDate": "2013-03-21T13:41:09Z",
+            "identifier": "b_trwc_14",
+            "importIdentifier": null,
+            "name": "AUSTRALIA - DFAT - Dept Foreign Affairs & Trade.",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "AUSTRALIA",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "EU",
+            "creationDate": "2013-03-21T13:41:10Z",
+            "identifier": "b_trwc_67",
+            "importIdentifier": null,
+            "name": "EU - EU - European Union Sanctions.",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "UNKNOWN",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "FFMS",
+            "creationDate": "2013-03-21T13:41:11Z",
+            "identifier": "b_trwc_180",
+            "importIdentifier": null,
+            "name": "RUSSIAN FEDERATION - FFMS - Federal Financial Monitoring Service",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "RUSSIAN FEDERATION",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "MFSANC",
+            "creationDate": "2013-03-21T13:41:11Z",
+            "identifier": "b_trwc_160",
+            "importIdentifier": null,
+            "name": "MALTA - MFSANC - Sanctions List.",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "MALTA",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "MINEFI",
+            "creationDate": "2013-03-21T13:41:10Z",
+            "identifier": "b_trwc_110",
+            "importIdentifier": null,
+            "name": "FRANCE - MINEFI- Ministry of Finance.",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "FRANCE",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        },
+        {
+            "abbreviation": "NZPOL",
+            "creationDate": "2013-03-21T13:41:11Z",
+            "identifier": "b_trwc_168",
+            "importIdentifier": null,
+            "name": "NEW ZEALAND - NZPOL - Police Designated Terrorists.",
+            "provider": null,
+            "providerSourceStatus": "ACTIVE",
+            "regionOfAuthority": "NEW ZEALAND",
+            "subscriptionCategory": "STANDARD",
+            "type": {
+                "category": {
+                    "description": "This gives details of individuals, companies and vessels with whom national or supranational bodies have decreed firms should not have financial dealings. Dealings with these designated persons or entities can lead to large fines, jail sentences and increased regulatory oversight owing to perceived failures in systems of internal control.",
+                    "identifier": "ec_1",
+                    "name": "Sanctions",
+                    "providerSourceTypes": []
+                },
+                "identifier": "t_trwc_2",
+                "name": "Sanctions"
+            }
+        }
+    ],
+    "subCategory": "PEP SN",
+    "updateCategory": "C4",
+    "updatedDates": {
+        "ageUpdated": null,
+        "aliasesUpdated": "2017-07-24T00:00:00Z",
+        "alternativeSpellingUpdated": null,
+        "asOfDateUpdated": null,
+        "categoryUpdated": "2019-04-08T00:00:00Z",
+        "citizenshipsUpdated": "2003-04-15T00:00:00Z",
+        "companiesUpdated": "2012-01-19T00:00:00Z",
+        "deceasedUpdated": null,
+        "dobsUpdated": "2012-01-19T00:00:00Z",
+        "eiUpdated": "2009-01-09T00:00:00Z",
+        "enteredUpdated": null,
+        "externalSourcesUpdated": "2019-07-10T00:00:00Z",
+        "firstNameUpdated": "2003-10-25T00:00:00Z",
+        "foreignAliasUpdated": "2017-09-06T00:00:00Z",
+        "furtherInformationUpdated": "2019-07-10T00:00:00Z",
+        "idNumbersUpdated": null,
+        "keywordsUpdated": "2017-10-09T00:00:00Z",
+        "lastNameUpdated": "2003-10-25T00:00:00Z",
+        "linkedToUpdated": null,
+        "locationsUpdated": "2017-09-12T00:00:00Z",
+        "lowQualityAliasesUpdated": "2017-04-27T00:00:00Z",
+        "passportsUpdated": null,
+        "placeOfBirthUpdated": "2016-10-31T00:00:00Z",
+        "positionUpdated": "2011-11-30T00:00:00Z",
+        "ssnUpdated": null,
+        "subCategoryUpdated": "2014-01-27T00:00:00Z",
+        "titleUpdated": "2004-05-31T00:00:00Z",
+        "updatecategoryUpdated": "2019-05-15T00:00:00Z"
+    },
+    "weblinks": [
+        {
+            "caption": null,
+            "uri": "http://www.bundesbank.de/finanzsanktionen/finanzsanktionen_taliban.php",
+            "tags": []
+        },
+                {
+            "caption": null,
+            "uri": "http://www.llv.li/pdf-llv-rdr-2011527.pdf",
+            "tags": []
+        },
+        {
+            "caption": null,
+            "uri": "http://www.mas.gov.sg/masmcm/bin/pt1MAS__Anti_terrorism_Measures__Regulations_2002__S_515_2002.htm",
+            "tags": []
+        },
+                 {
+            "caption": null,
+            "uri": "http://europa.eu.int/eur-lex/pri/en/oj/dat/2002/l_139/l_13920020529en00090022.pdf",
+            "tags": []
+        }
+    ]
+}

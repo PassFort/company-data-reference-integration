@@ -1,0 +1,196 @@
+{
+  "entityType": "INDIVIDUAL",
+  "actions": [],
+  "active": true,
+  "addresses": [
+    {
+      "city": "Maidenhead",
+      "country": {
+        "code": "GBR",
+        "name": "UNITED KINGDOM"
+      },
+      "postCode": null,
+      "region": "Berkshire",
+      "street": null
+    },
+    {
+      "city": "Sonning",
+      "country": {
+        "code": "GBR",
+        "name": "UNITED KINGDOM"
+      },
+      "postCode": null,
+      "region": "Berkshire",
+      "street": null
+    }
+  ],
+  "associates": [
+    {
+      "reversed": null,
+      "targetEntityId": "associate_demo_11111",
+      "targetExternalImportId": "ei_trwc_20187",
+      "type": "ASSOCIATE"
+    }
+  ],
+  "category": "INDIVIDUAL",
+  "comments": null,
+  "contacts": [],
+  "countryLinks": [
+    {
+      "country": {
+        "code": "GBR",
+        "name": "UNITED KINGDOM"
+      },
+      "countryText": "UNITED KINGDOM",
+      "type": "NATIONALITY"
+    },
+    {
+      "country": {
+        "code": "GBR",
+        "name": "UNITED KINGDOM"
+      },
+      "countryText": "UNITED KINGDOM",
+      "type": "LOCATION"
+    }
+  ],
+  "creationDate": "2008-02-05T00:00:00Z",
+  "deletionDate": null,
+  "description": null,
+  "details": [
+    {
+      "detailType": "IDENTIFICATION",
+      "text": " Demo pep (PEP) (spouse). ",
+      "title": "IDENTIFICATION"
+    },
+    {
+      "detailType": "BIOGRAPHY",
+      "text": " Former relationship manager at Demo company (2005- ).",
+      "title": "BIOGRAPHY"
+    },
+    {
+      "detailType": "REPORTS",
+      "text": " Jul 2016 - no further information reported.",
+      "title": "REPORTS"
+    }
+  ],
+  "entityId": "e_tr_wci_796567",
+  "externalImportId": "ei_trwc_796567",
+  "files": [],
+  "identityDocuments": [],
+  "images": [],
+  "lastAdjunctChangeDate": null,
+  "modificationDate": "2016-07-26T00:00:00Z",
+  "names": [
+    {
+      "fullName": "Demo PEP",
+      "givenName": "PEP",
+      "languageCode": null,
+      "lastName": "PEP",
+      "originalScript": "demo pep",
+      "prefix": null,
+      "suffix": null,
+      "type": "PRIMARY"
+    },
+    {
+      "fullName": "PEP,Demo John",
+      "givenName": null,
+      "languageCode": null,
+      "lastName": null,
+      "originalScript": "PEP,Demo John",
+      "prefix": null,
+      "suffix": null,
+      "type": "AKA"
+    }
+  ],
+  "previousCountryLinks": [],
+  "provider": {
+    "code": "trwc",
+    "identifier": "cnp_7",
+    "master": true,
+    "name": "World Check"
+  },
+  "sourceDescription": null,
+  "sourceUris": [],
+  "sources": [
+    {
+      "abbreviation": "PEP N-R",
+      "creationDate": "2013-03-21T13:41:09Z",
+      "identifier": "b_trwc_PEP N-R",
+      "importIdentifier": null,
+      "name": "PEP - National Government - Immediate Relative",
+      "provider": null,
+      "providerSourceStatus": "ACTIVE",
+      "regionOfAuthority": null,
+      "subscriptionCategory": "STANDARD",
+      "type": {
+        "category": {
+          "description": "This gives details of high-ranking government officials in over 200 countries. Although there may be no reason why you should not do business with these individuals, the Basle Committee on Banking supervision has stated that one should check these customers because without this due diligence, banks can become subject to reputational, operational, legal and concentration risks, which can result in significant financial cost.",
+          "identifier": "ec_4",
+          "name": "PEP",
+          "providerSourceTypes": []
+        },
+        "identifier": "t_trwc_8",
+        "name": "National Government"
+      }
+    }
+  ],
+  "subCategory": "PEP N-R",
+  "updateCategory": "C1",
+  "updatedDates": {
+    "ageUpdated": null,
+    "aliasesUpdated": null,
+    "alternativeSpellingUpdated": null,
+    "asOfDateUpdated": null,
+    "categoryUpdated": null,
+    "citizenshipsUpdated": null,
+    "companiesUpdated": null,
+    "deceasedUpdated": null,
+    "dobsUpdated": "2016-07-26T00:00:00Z",
+    "eiUpdated": "2014-02-19T00:00:00Z",
+    "enteredUpdated": null,
+    "externalSourcesUpdated": null,
+    "firstNameUpdated": null,
+    "foreignAliasUpdated": null,
+    "furtherInformationUpdated": "2016-07-26T00:00:00Z",
+    "idNumbersUpdated": null,
+    "keywordsUpdated": null,
+    "lastNameUpdated": null,
+    "linkedToUpdated": null,
+    "locationsUpdated": "2016-07-26T00:00:00Z",
+    "lowQualityAliasesUpdated": null,
+    "passportsUpdated": null,
+    "placeOfBirthUpdated": "2016-07-26T00:00:00Z",
+    "positionUpdated": null,
+    "ssnUpdated": null,
+    "subCategoryUpdated": null,
+    "titleUpdated": null,
+    "updatecategoryUpdated": "2016-07-12T00:00:00Z"
+  },
+  "weblinks": [ ],
+  "gender": "MALE",
+  "roles": [],
+  "ageAsOfDate": null,
+  "isDeceased": null,
+  "events": [
+    {
+      "address": {
+        "city": null,
+        "country": {
+          "code": "GBR",
+          "name": "UNITED KINGDOM"
+        },
+        "postCode": null,
+        "region": "Norfolk, United Kingdom",
+        "street": null
+      },
+      "allegedAddresses": [],
+      "day": 0,
+      "fullDate": "1957-09-00",
+      "month": 9,
+      "type": "BIRTH",
+      "year": 1957
+    }
+  ],
+  "previousRoles": [],
+  "age": null
+}
