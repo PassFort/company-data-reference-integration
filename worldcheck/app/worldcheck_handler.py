@@ -36,7 +36,14 @@ class CaseHandler:
 
     def submit_screening_request(self, input_data: ScreeningRequestData):
         if self.is_demo:
-            case_system_id = input_data.name.lower().replace(" ", "_") + "_results"
+            if 'PEP' in input_data.name.upper():
+                case_system_id = 'pep_demo_results' if input_data.entity_type == 'INDIVIDUAL' else 'pep_company_results'
+            elif 'SANCTION' in input_data.name.upper():
+                case_system_id = 'sanction_demo_results' if input_data.entity_type == 'INDIVIDUAL' else 'sanction_company_results'
+            elif 'REFER' in input_data.name.upper():
+                case_system_id = 'refer_demo_results' if input_data.entity_type == 'INDIVIDUAL' else 'refer_company_results'
+            else:
+                case_system_id = input_data.name.lower().replace(" ", "_") + "_results"
         else:
             case = self.__new_case(input_data)
             self.case_api.cases_case_system_id_screening_request_post(case.case_system_id)
