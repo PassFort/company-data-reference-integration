@@ -16,24 +16,6 @@ def test_authentication(client):
     assert validate_authentication(user, password) == 200
 
 
-@patch('api.views.validate_authentication')
-def test_health_check(mock_authentication, client):
-
-    mock_authentication.return_value=200
-
-    response = client.post(
-        '/health-check',
-        data=json.dumps({
-            'credentials' :{
-                'username': 'dummy_user',
-                'password': 'dummy_pass'}}),
-        content_type='application/json'
-    )
-
-    mock_authentication.assert_called_with('dummy_user', 'dummy_pass')
-    assert response.status_code == 200
-
-
 @patch('trulioo.api.requests.get', Mock(return_value=Response(200, lambda: [])))
 def test_empty_list_of_consents(client):
     user = 'dummy_user'
