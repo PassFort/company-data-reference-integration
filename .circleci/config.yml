@@ -291,9 +291,6 @@ jobs:
     e2e_worldcheck:
         <<: *e2e
 
-    e2e_trulioo:
-        <<: *e2e
-
     deploy_comply_advantage_staging:
         <<: *deploy_staging_common
 
@@ -556,12 +553,8 @@ workflows:
             - unit_trulioo:
                 requires:
                   - build_trulioo
-            - e2e_trulioo:
-                requires:
-                  - build_trulioo
             - deploy_trulioo_staging:
                 requires:
-                  - e2e_trulioo
                   - unit_trulioo
                 filters:
                     branches:
@@ -569,7 +562,6 @@ workflows:
                           - staging
             - deploy_trulioo_production:
                 requires:
-                  - e2e_trulioo
                   - unit_trulioo
                 filters:
                     branches:

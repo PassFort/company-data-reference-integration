@@ -1,17 +1,26 @@
-FROM python:3.7-slim
+FROM frolvlad/alpine-python3
 
-LABEL MANTAINER="Joelmir Ribacki" EMAIL="ribacki@devgrid.co.uk"
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8 \
+    # This disables the ~/.ssh/known_hosts file
+    GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 EXPOSE 8001
 
 WORKDIR /app
 
-COPY . /app
+RUN apk add --no-cache yarn openssh-client git 
+COPY Pipfile Pipfile.lock package.json yarn.lock /src/
 
 ENV FLASK_APP="app"
 
 RUN pip install pipenv \
-    && pipenv sync
+    && pipenv sync \
+    && yarn \
+    && apk del --no-cache git openssh-client
+
+COPY . /app
 
 ENTRYPOINT [ "pipenv", "run"]
 
