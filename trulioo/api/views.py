@@ -56,23 +56,12 @@ class Ekyc_check(Resource):
 
         return response
 
-class HealthCheck(Resource):
-    def post(self):
-        request_json = request.json
-        if not request_json:
-            return 'INVALID_INPUT_DATA', 201
-        if not (request_json.get('credentials') and\
-             request_json['credentials'].get('username') and\
-             request_json['credentials'].get('password')):
-            return 'MISSING_API_KEY', 203
-        
-        status_code = validate_authentication(
-            request_json['credentials'].get('username'),
-            request_json['credentials'].get('password'))
 
-        return 'Trulioo Integration', status_code
+class HealthCheck(Resource):
+    def get(self):
+        return 'success', 200
 
 
 def init_app(api):
     api.add_resource(Ekyc_check, '/ekyc-check')
-    api.add_resource(HealthCheck, '/health-check')
+    api.add_resource(HealthCheck, '/health')
