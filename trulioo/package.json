@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "license": "Private",
+  "scripts": {
+    "unit": "pipenv run pytest"
+  }
+}
