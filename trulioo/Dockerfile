@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-python3
+FROM python:3.7.4-alpine3.10
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
