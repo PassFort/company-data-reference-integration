@@ -11,7 +11,7 @@ EXPOSE 8001
 WORKDIR /app
 
 RUN apk add --no-cache yarn openssh-client git 
-COPY Pipfile Pipfile.lock package.json yarn.lock /src/
+COPY Pipfile Pipfile.lock package.json yarn.lock /app/
 
 ENV FLASK_APP="app"
 
