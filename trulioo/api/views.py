@@ -20,7 +20,7 @@ class Ekyc_check(Resource):
                 "errors": [
                     {
                         'code': 201,
-                        'message': 'INVALID_INPUT_DATA'
+                        'message': 'The submitted data was invalid'
                     }
                 ]
             }
@@ -36,7 +36,7 @@ class Ekyc_check(Resource):
                 "errors": [
                     {
                         'code': 203,
-                        'message': 'MISSING_API_KEY'
+                        'message': 'Missing provider credentials'
                     }
                 ]
             }

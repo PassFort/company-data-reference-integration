@@ -645,7 +645,7 @@ def test_record_error_missing_required_fields_1001(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 101, 'message': 'MISSING_REQUIRED_FIELDS'}]
+                                "errors": [{'code': 101, 'message': 'Missing required fields'}]
                             } 
 
 def test_record_error_missing_required_fields_4001(client):
@@ -654,7 +654,7 @@ def test_record_error_missing_required_fields_4001(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 101, 'message': 'MISSING_REQUIRED_FIELDS'}]
+                                "errors": [{'code': 101, 'message': 'Missing required fields'}]
                             } 
 
 def test_record_error_missing_required_fields_3005(client):
@@ -663,7 +663,7 @@ def test_record_error_missing_required_fields_3005(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 101, 'message': 'MISSING_REQUIRED_FIELDS'}]
+                                "errors": [{'code': 101, 'message': 'Missing required fields'}]
                             } 
 
 def test_record_error_missing_required_fields_not_duplicated(client):
@@ -672,7 +672,7 @@ def test_record_error_missing_required_fields_not_duplicated(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 101, 'message': 'MISSING_REQUIRED_FIELDS'}]
+                                "errors": [{'code': 101, 'message': 'Missing required fields'}]
                             } 
 
 def test_record_error_unknown_error(client):
@@ -681,7 +681,7 @@ def test_record_error_unknown_error(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 401, 'message': 'UNKNOWN_INTERNAL_ERROR'}]
+                                "errors": [{'code': 401, 'message': 'Unknown internal error'}]
                             } 
 
 def test_record_error_invalid_input_data_1006(client):
@@ -690,7 +690,10 @@ def test_record_error_invalid_input_data_1006(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 201, 'message': 'INVALID_INPUT_DATA'}]
+                                "errors": [{
+                                    'code': 201, 
+                                    'message': 'The submitted data was invalid. Provider returned error code 1006'
+                                }]
                             }
 
 def test_record_error_invalid_input_data_1008(client):
@@ -699,7 +702,10 @@ def test_record_error_invalid_input_data_1008(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 201, 'message': 'INVALID_INPUT_DATA'}]
+                                "errors": [{
+                                    'code': 201, 
+                                    'message': 'The submitted data was invalid. Provider returned error code 1008'
+                                }]
                             }
 
 def test_record_error_missing_required_fields_1001_datasource_error(client):
@@ -717,5 +723,5 @@ def test_record_error_missing_required_fields_1001_datasource_error(client):
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
-                                "errors": [{'code': 101, 'message': 'MISSING_REQUIRED_FIELDS'}]
+                                "errors": [{'code': 101, 'message': 'Missing required fields'}]
                             } 

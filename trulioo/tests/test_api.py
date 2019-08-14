@@ -73,7 +73,7 @@ def test_ekyc_check_empty_package(client):
         "output_data": {
         },
         "raw": {},
-        "errors": [{'code': 201, 'message':'INVALID_INPUT_DATA'}]
+        "errors": [{'code': 201, 'message':'The submitted data was invalid'}]
     }
 
 def test_ekyc_check_api_key_empty(client):
@@ -88,7 +88,7 @@ def test_ekyc_check_api_key_empty(client):
         "output_data": {
         },
         "raw": {},
-        "errors": [{'code': 203, 'message':'MISSING_API_KEY'}]
+        "errors": [{'code': 203, 'message':'Missing provider credentials'}]
     }
 
 def test_ekyc_check_wrong_method(client):

@@ -171,12 +171,15 @@ def check_errors(error_section, response_body):
     #Check errors:
     for error in error_section.get('Errors', []):
         if error.get('Code') in ['InternalServerError', '2000']:
-            response_body['errors'].append({'code': 401, 'message': 'UNKNOWN_INTERNAL_ERROR'})
+            response_body['errors'].append({'code': 401, 'message': 'Unknown internal error'})
         
         elif error.get('Code') in ['1001', '4001', '3005'] and\
                 not next((error for error in response_body['errors'] if error['code'] == 101), None):
-            response_body['errors'].append({'code': 101, 'message': 'MISSING_REQUIRED_FIELDS'})
+            response_body['errors'].append({'code': 101, 'message': 'Missing required fields'})
         
         elif error.get('Code') in ['1006', '1008'] and\
                 not next((error for error in response_body['errors'] if error['code'] == 201), None):
-            response_body['errors'].append({'code': 201, 'message': 'INVALID_INPUT_DATA'})
+            response_body['errors'].append({
+                'code': 201,
+                'message': f'The submitted data was invalid. Provider returned error code {error.get("Code")}'
+            })
