@@ -8,7 +8,7 @@
  
 # Instalation
 
-Requeriments: **Python 3.7**
+Requirements: **Python 3.7**
 
 ```sh
 #Prod
@@ -38,7 +38,7 @@ $ pipenv run coverage report
 ```
 # Build docker image
 ```sh
-$ docker build --tag=trulioo:1.1 -f docker/Dockerfile .
+$ docker build --tag=trulioo:1.1 -f Dockerfile .
 ```
 # Run docker image
 ```sh
@@ -51,11 +51,6 @@ POST /health-check
 ```
 Health check example
 ```sh
-curl --request POST \
-  --url http://127.0.0.1:8001/health-check \
-  --header ': ' \
-  --header 'Content-Type: application/json' \
-  --data '{"credentials": {"username":"trulioo_user","password":"trulioo_pass"}}'
-
+curl http://127.0.0.1:8001/health
 "Trulioo Integration" ( 200 )
   ```
