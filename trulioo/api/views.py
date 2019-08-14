@@ -6,7 +6,7 @@ from api.demo_response import create_demo_response
 from trulioo.api import validate_authentication
 from trulioo.api import verify
 from trulioo.convert_data import passfort_to_trulioo_data
-from trulioo.convert_data import truilioo_to_passfort_data
+from trulioo.convert_data import trulioo_to_passfort_data
 
 class Ekyc_check(Resource):
 
@@ -52,7 +52,7 @@ class Ekyc_check(Resource):
             trulioo_request_data, country_code = passfort_to_trulioo_data(request_json)
             trulioo_response_data = verify(username, password, country_code, trulioo_request_data)
 
-            response = truilioo_to_passfort_data(trulioo_response_data)
+            response = trulioo_to_passfort_data(trulioo_response_data)
 
         return response
 

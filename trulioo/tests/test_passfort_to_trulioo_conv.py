@@ -3,15 +3,15 @@ import pytest
 from trulioo.convert_data import passfort_to_trulioo_data
 
 def test_empty_package(client):
-    truilioo_request_data, country_code = passfort_to_trulioo_data({})
+    trulioo_request_data, country_code = passfort_to_trulioo_data({})
 
-    assert truilioo_request_data == {}
+    assert trulioo_request_data == {}
     assert country_code == 'GB'
 
 def test_empty_input_data(client):
-    truilioo_request_data, country_code = passfort_to_trulioo_data({'input_data':None})
+    trulioo_request_data, country_code = passfort_to_trulioo_data({'input_data':None})
 
-    assert truilioo_request_data == {}
+    assert trulioo_request_data == {}
     assert country_code == 'GB'
 
 def test_single_name_without_surname(client):
@@ -24,13 +24,13 @@ def test_single_name_without_surname(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             "FirstGivenName": 'Todd'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 
 def test_two_names_without_surname(client):
@@ -43,14 +43,14 @@ def test_two_names_without_surname(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'FirstGivenName': 'Todd',
             'MiddleName':'Astor'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_many_names_without_surname(client):
     input_data = {
@@ -62,14 +62,14 @@ def test_many_names_without_surname(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'FirstGivenName': 'Todd',
             'MiddleName':'Astor Royal Tony'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_just_surname(client):
     input_data = {
@@ -81,13 +81,13 @@ def test_just_surname(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'FirstSurName': 'Stark'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_dob_complete(client):
     input_data = {
@@ -97,7 +97,7 @@ def test_dob_complete(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'YearOfBirth': 2019,
@@ -105,7 +105,7 @@ def test_dob_complete(client):
             'DayOfBirth': 31
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_dob_year_month(client):
     input_data = {
@@ -115,14 +115,14 @@ def test_dob_year_month(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'YearOfBirth': 2019,
             'MonthOfBirth': 1
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_dob_year(client):
     input_data = {
@@ -132,13 +132,13 @@ def test_dob_year(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'YearOfBirth': 2019
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_gender(client):
     input_data = {
@@ -148,13 +148,13 @@ def test_gender(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'Gender': 'M'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_empty_address_history(client):
     input_data = {
@@ -162,9 +162,9 @@ def test_empty_address_history(client):
             'address_history': {}
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {}
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 
 def test_one_simple_address(client):
@@ -180,14 +180,14 @@ def test_one_simple_address(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'Location':{
             'BuildingNumber':'10',
             'PostalCode':'SW1A 2AA'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_one_simple_address_diff_country(client):
     input_data = {
@@ -202,14 +202,14 @@ def test_one_simple_address_diff_country(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'Location':{
             'BuildingNumber':'10',
             'PostalCode':'SW1A 2AA'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
     assert country_code == 'BR'
 
 def test_one_complete_address(client):
@@ -232,7 +232,7 @@ def test_one_complete_address(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'Location':{
             'BuildingNumber':'10',
@@ -246,7 +246,7 @@ def test_one_complete_address(client):
             'PostalCode':'SW1A 2AA'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_communication_with_empty_values(client):
     input_data = {
@@ -254,9 +254,9 @@ def test_communication_with_empty_values(client):
             'contact_details': {}
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {}
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_communication_with_email(client):
     input_data = {
@@ -266,13 +266,13 @@ def test_communication_with_email(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'Communication': {
             'EmailAddress': 'test@test.com'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_communication_with_telephone(client):
     input_data = {
@@ -282,13 +282,13 @@ def test_communication_with_telephone(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'Communication': {
             'Telephone': '+44 7911 123456'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 
 def test_communication_with_full_values(client):
     input_data = {
@@ -299,12 +299,12 @@ def test_communication_with_full_values(client):
             }
         }
     }
-    truilioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
         'Communication': {
             'EmailAddress': 'test@test.com',
             'Telephone': '+44 7911 123456'
         }
     }
-    assert truilioo_request_data == output_data
+    assert trulioo_request_data == output_data
 

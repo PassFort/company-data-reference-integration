@@ -90,7 +90,7 @@ def passfort_to_trulioo_data(passfort_data):
     return trulioo_pkg, country_code
 
 
-def truilioo_to_passfort_data(trulioo_data):
+def trulioo_to_passfort_data(trulioo_data):
     #base response
     response_body = {
         "output_data": {

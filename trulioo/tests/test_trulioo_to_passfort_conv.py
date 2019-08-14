@@ -1,9 +1,9 @@
 import pytest 
 
-from trulioo.convert_data import truilioo_to_passfort_data
+from trulioo.convert_data import trulioo_to_passfort_data
 
 def test_empty_package(client):
-    response_body = truilioo_to_passfort_data({})
+    response_body = trulioo_to_passfort_data({})
 
     assert response_body == {
                                 "output_data": {
@@ -21,7 +21,7 @@ def test_record_with_empty_datasource_results(client):
         'Errors': []
     }
 
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -51,7 +51,7 @@ def test_record_with_one_datasource_without_match(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -81,7 +81,7 @@ def test_record_with_one_datasource_with_surname_match(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -122,7 +122,7 @@ def test_record_with_one_datasource_with_forename_match(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -171,7 +171,7 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
         'Errors': []
     }
 
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -215,7 +215,7 @@ def test_record_with_one_datasource_with_dob_year_month_match(client):
         'Errors': []
     }
 
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -256,7 +256,7 @@ def test_record_with_one_datasource_with_dob_year_match(client):
         'Errors': []
     }
 
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -305,7 +305,7 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
         'Errors': []
     }
 
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {},
@@ -334,7 +334,7 @@ def test_record_with_one_datasource_with_address_match(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -406,7 +406,7 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -482,7 +482,7 @@ def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(clien
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -522,7 +522,7 @@ def test_record_with_one_datasource_with_database_type_credit(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -563,7 +563,7 @@ def test_record_with_one_datasource_with_database_type_civil(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -615,7 +615,7 @@ def test_record_with_two_datasource_with_diff_database_type(client):
         'Errors': []
     }
     
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
 
     assert response_body == {
                                 "output_data": {
@@ -641,7 +641,7 @@ def test_record_with_two_datasource_with_diff_database_type(client):
 
 def test_record_error_missing_required_fields_1001(client):
     trulioo_data = {'Errors': [{'Code': '1001'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -650,7 +650,7 @@ def test_record_error_missing_required_fields_1001(client):
 
 def test_record_error_missing_required_fields_4001(client):
     trulioo_data = {'Errors': [{'Code': '4001'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -659,7 +659,7 @@ def test_record_error_missing_required_fields_4001(client):
 
 def test_record_error_missing_required_fields_3005(client):
     trulioo_data = {'Errors': [{'Code': '3005'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -668,7 +668,7 @@ def test_record_error_missing_required_fields_3005(client):
 
 def test_record_error_missing_required_fields_not_duplicated(client):
     trulioo_data = {'Errors': [{'Code': '1001'}, {'Code': '4001'}, {'Code': '3005'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -677,7 +677,7 @@ def test_record_error_missing_required_fields_not_duplicated(client):
 
 def test_record_error_unknown_error(client):
     trulioo_data = {'Errors': [{'Code': '2000'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -686,7 +686,7 @@ def test_record_error_unknown_error(client):
 
 def test_record_error_invalid_input_data_1006(client):
     trulioo_data = {'Errors': [{'Code': '1006'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -695,7 +695,7 @@ def test_record_error_invalid_input_data_1006(client):
 
 def test_record_error_invalid_input_data_1008(client):
     trulioo_data = {'Errors': [{'Code': '1008'}]}
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
@@ -713,7 +713,7 @@ def test_record_error_missing_required_fields_1001_datasource_error(client):
             ]
         }
     }
-    response_body = truilioo_to_passfort_data(trulioo_data)
+    response_body = trulioo_to_passfort_data(trulioo_data)
     assert response_body == {
                                 "output_data": {},
                                 "raw": trulioo_data,
