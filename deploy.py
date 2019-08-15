@@ -17,6 +17,7 @@ integrations = {
     'vsure': './vsure',
     'bvd': './bvd',
     'worldcheck': './worldcheck',
+    'trulioo': './trulioo',
 }
 
 sentry = {

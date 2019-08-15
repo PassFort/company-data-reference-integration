@@ -199,6 +199,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_trulioo:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo trulioo > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build_comply_advantage:
         <<: *build
 
@@ -218,6 +229,9 @@ jobs:
         <<: *build
 
     build_worldcheck:
+        <<: *build
+
+    build_trulioo:
         <<: *build
 
     lint:
@@ -251,6 +265,9 @@ jobs:
         <<: *unit
 
     unit_worldcheck:
+        <<: *unit
+
+    unit_trulioo:
         <<: *unit
 
     e2e_comply_advantage:
@@ -295,6 +312,9 @@ jobs:
     deploy_worldcheck_staging:
         <<: *deploy_staging_common
 
+    deploy_trulioo_staging:
+        <<: *deploy_staging_common
+
     deploy_comply_advantage_production:
       <<: *deploy_production_common
 
@@ -314,6 +334,9 @@ jobs:
         <<: *deploy_production_common
 
     deploy_worldcheck_production:
+        <<: *deploy_production_common
+
+    deploy_trulioo_production:
         <<: *deploy_production_common
 
 workflows:
@@ -516,6 +539,30 @@ workflows:
                 requires:
                   - e2e_worldcheck
                   - unit_worldcheck
+                filters:
+                    branches:
+                        only:
+                          - master
+
+    trulioo:
+        jobs:
+            - set_integration_trulioo
+            - build_trulioo:
+                requires:
+                  - set_integration_trulioo
+            - unit_trulioo:
+                requires:
+                  - build_trulioo
+            - deploy_trulioo_staging:
+                requires:
+                  - unit_trulioo
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_trulioo_production:
+                requires:
+                  - unit_trulioo
                 filters:
                     branches:
                         only:
