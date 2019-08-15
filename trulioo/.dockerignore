@@ -1,0 +1,12 @@
+/*
+!/Pipfile
+!/Pipfile.lock
+!/package.json
+!/yarn.lock
+!/setup.cfg
+!/api
+!/app
+!/tests
+!/trulioo
+!/coverage
+!/main.py
