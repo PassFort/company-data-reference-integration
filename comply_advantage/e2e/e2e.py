@@ -171,6 +171,20 @@ class TestEvents(unittest.TestCase):
                     ]
                 )
 
+            with self.subTest("does not return adverse media in sources"):
+                source_names = sorted(s['name'] for s in pep_event['sources'])
+                self.assertEqual(
+                    source_names,
+                    [
+                        'ComplyAdvantage PEP Data',
+                        'Related Url',
+                        'Related Url',
+                        'Related Url',
+                        'US System for Award Management Exclusions',
+                        'company AM'
+                    ]
+                )
+
     def test_on_peps_sanctions_and_media(self):
         response = requests.post(
             f'{API_URL}/screening_request',
@@ -207,3 +221,20 @@ class TestEvents(unittest.TestCase):
 
             with self.subTest("returns media"):
                 self.assertEqual(len(media_event["media"]), 30)
+
+            with self.subTest('returns adverse media in sources'):
+                source_names = sorted(s['name'] for s in pep_event['sources'])
+                self.assertEqual(
+                    source_names,
+                    [
+                        'Adverse Media',
+                        'ComplyAdvantage Adverse Media',
+                        'ComplyAdvantage PEP Data',
+                        'Related Url',
+                        'Related Url',
+                        'Related Url',
+                        'US System for Award Management Exclusions',
+                        'company AM'
+                    ]
+                )
+

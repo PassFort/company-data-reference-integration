@@ -379,6 +379,13 @@
                 "name": "ComplyAdvantage Adverse Media",
                 "url": "http://www.complyadvantage.com/"
               },
+              "europe-adverse-media": {
+                "name": "Adverse Media",
+                "aml_types": [
+                    "adverse-media"
+                ],
+                "url": "http://www.dfat.gov.au/sanctions/consolidated-list.html"
+              },
               "dfat-australia-list": {
                 "aml_types": [
                   "sanction"
