@@ -53,11 +53,11 @@ class TestConvertDataToEvents(unittest.TestCase):
             self.assertEqual(chavez_events[0]['details'][0]['title'], 'Countries')
 
         with self.subTest('returns sources'):
-            self.assertEqual(len(actual_event['sources']), 7)  # Only 1, as they are grouped by name
+            self.assertEqual(len(actual_event['sources']), 6)  # Only 1, as they are grouped by name
             self.assertEqual(
                 sorted([s['name'] for s in actual_event['sources']]),
                 [
-                    'ComplyAdvantage Adverse Media', 'ComplyAdvantage PEP Data',
+                    'ComplyAdvantage PEP Data',
                     'Related Url', 'Related Url', 'Related Url',
                     'US System for Award Management Exclusions',
                     'company AM'

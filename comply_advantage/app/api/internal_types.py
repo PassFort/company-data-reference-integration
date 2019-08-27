@@ -79,6 +79,9 @@ class ComplyAdvantageSourceNote(Model):
     def is_sanction(self):
         return len(self.aml_types) and "sanction" in self.aml_types
 
+    def is_adverse_media(self):
+        return len(self.aml_types) and 'adverse-media' in self.aml_types
+
     def is_current(self):
         return self.listing_ended_utc is None
 
@@ -139,7 +142,12 @@ class ComplyAdvantageMatchData(Model):
         events = []
         birth_dates = set(field.value for field in self.ca_fields if field.is_dob())
         death_dates = set(field.value for field in self.ca_fields if field.is_dod())
-        sources_from_source_notes = [s.as_source() for k, s in self.source_notes.items() if not s.is_sanction()]
+        sources_from_source_notes = [
+            s.as_source() for k, s in self.source_notes.items()
+            if not s.is_sanction() and (
+                config.include_adverse_media or (not s.is_adverse_media() and k != 'complyadvantage-adverse-media')
+            )
+        ]
         sources_from_fields = [s.as_source() for s in self.ca_fields if s.is_related_url()]
         entity_sources = self.comply_advantage_entity_sources(share_url)
 
