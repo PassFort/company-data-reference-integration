@@ -11,6 +11,7 @@ from passfort_deployment import deploy_file, \
 
 integrations = {
     'comply_advantage': './comply_advantage',
+    'creditsafe': './creditsafe',
     'duedil': './duedil',
     'equifax': './equifax',
     'onfido': './onfido',
