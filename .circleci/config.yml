@@ -133,6 +133,18 @@ jobs:
                 root: workspace
                 paths:
                     - integration_name
+
+    set_integration_creditsafe:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo creditsafe > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     set_integration_duedil:
         docker:
             - image: circleci/python
@@ -213,6 +225,9 @@ jobs:
     build_comply_advantage:
         <<: *build
 
+    build_creditsafe:
+        <<: *build
+
     build_duedil:
         <<: *build
 
@@ -247,6 +262,9 @@ jobs:
                     grep Raven src/*.py || exit 1
 
     unit_comply_advantage:
+        <<: *unit
+
+    unit_creditsafe:
         <<: *unit
 
     unit_duedil:
@@ -294,6 +312,9 @@ jobs:
     deploy_comply_advantage_staging:
         <<: *deploy_staging_common
 
+    deploy_creditsafe_staging:
+      <<: *deploy_staging_common
+
     deploy_duedil_staging:
         <<: *deploy_staging_common
 
@@ -316,6 +337,9 @@ jobs:
         <<: *deploy_staging_common
 
     deploy_comply_advantage_production:
+      <<: *deploy_production_common
+
+    deploy_creditsafe_production:
       <<: *deploy_production_common
 
     deploy_duedil_production:
@@ -370,6 +394,29 @@ workflows:
                     branches:
                         only:
                           - master
+    creditsafe:
+        jobs:
+            - set_integration_creditsafe
+            - build_creditsafe:
+                requires:
+                    - set_integration_creditsafe
+            - unit_creditsafe:
+                requires:
+                    - build_creditsafe
+            - deploy_creditsafe_staging:
+                requires:
+                    - unit_creditsafe
+                filters:
+                    branches:
+                        only:
+                            - staging
+            - deploy_creditsafe_production:
+                requires:
+                    - unit_creditsafe
+                filters:
+                    branches:
+                        only:
+                            - master
     duedil:
         jobs:
             - set_integration_duedil
