@@ -12,4 +12,6 @@ pycountry = "*"
 gunicorn = "*"
 coverage = "*"
 codecov = "*"
+schematics = "*"
+responses = "*"
 
