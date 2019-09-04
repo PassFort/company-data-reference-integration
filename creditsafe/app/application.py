@@ -7,7 +7,7 @@ from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
-    CreditSafeSearchError, ErrorCode
+    CreditSafeSearchError, ErrorCode, Error
 from .request_handler import CreditSafeHandler
 
 app = Flask(__name__)
@@ -118,18 +118,9 @@ def handle_auth_error(auth_error):
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'Provider unhandled error',
-                    'info': {
-                        'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('details')
-                        }
-                    }
-                }
+                # Yes, messages come from different fields
+                # (messages, details, or error)
+                Error.provider_unhandled_error(response_content.get('details'))
             ]
         ), 500
 
@@ -161,18 +152,9 @@ def handle_search_error(search_error):
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'Provider unhandled error',
-                    'info': {
-                        'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('error')
-                        }
-                    }
-                }
+                # Yes, messages come from different fields
+                # (messages, details, or error)
+                Error.provider_unhandled_error(response_content.get('error'))
             ]
         ), 500
 
