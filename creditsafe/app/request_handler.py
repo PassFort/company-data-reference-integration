@@ -4,6 +4,8 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 from .api.types import SearchInput, Error, CreditSafeAuthenticationError, CreditSafeSearchError
+from .api.internal_types import CreditSafeCompanySearchResponse
+
 
 def requests_retry_session(
         retries=3,
@@ -75,4 +77,9 @@ class CreditSafeHandler:
             companies.extend(result.get('companies', []))
             if len(companies) >= 20:
                 break
-        return raw, companies
+        formatted_companies = [
+            CreditSafeCompanySearchResponse.from_json(c).as_passfort_format(
+                input_data.country, input_data.state)
+            for c in companies
+        ]
+        return raw, formatted_companies
