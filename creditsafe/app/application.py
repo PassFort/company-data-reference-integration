@@ -1,7 +1,14 @@
 import os
 import logging
+import traceback
+
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
+from requests.exceptions import ConnectionError, Timeout
+
+from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
+    CreditSafeSearchError, ErrorCode, Error
+from .request_handler import CreditSafeHandler
 
 app = Flask(__name__)
 
@@ -65,3 +72,117 @@ def send_analytics(response):
 @app.route('/health')
 def health():
     return jsonify('success')
+
+
+@app.route('/search', methods=['POST'])
+@validate_model(CreditSafeSearchRequest)
+def search(request_data: CreditSafeSearchRequest):
+    handler = CreditSafeHandler(request_data.credentials)
+    raw, companies = handler.search(request_data.input_data)
+    return jsonify({
+        'output_data': companies,
+        'raw_data': raw,
+        'errors': []
+    })
+
+
+@app.errorhandler(400)
+def api_400(error):
+    logging.error(error.description)
+    return jsonify(errors=[error.description]), 400
+
+@app.errorhandler(CreditSafeAuthenticationError)
+def handle_auth_error(auth_error):
+    response = auth_error.response
+    response_content = response.json()
+
+    if response.status_code == 401:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                {
+                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+                    'source': 'PROVIDER',
+                    'message': 'The request could not be authorised',
+                    'info': {
+                        'provider_error': {
+                            # Yes, messages come from different fields
+                            # (messages, details, or error)
+                            'message': response_content.get('message')
+                        }
+                    }
+                }
+            ]
+        ), 200
+    else:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                # Yes, messages come from different fields
+                # (messages, details, or error)
+                Error.provider_unhandled_error(response_content.get('details'))
+            ]
+        ), 500
+
+
+@app.errorhandler(CreditSafeSearchError)
+def handle_search_error(search_error):
+    response = search_error.response
+    response_content = response.json()
+
+    if response.status_code == 400:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                {
+                    'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                    'source': 'PROVIDER',
+                    'message': 'Unable to perform a search using the parameters provided',
+                    'info': {
+                        'provider_error': {
+                            # Yes, messages come from different fields
+                            # (messages, details, or error)
+                            'message': response_content.get('details')
+                        }
+                    }
+                }
+            ]
+        ), 200
+    else:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                # Yes, messages come from different fields
+                # (messages, details, or error)
+                Error.provider_unhandled_error(response_content.get('error'))
+            ]
+        ), 500
+
+@app.errorhandler(ConnectionError)
+def connection_error(error):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[
+        {
+            'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': 'Connection error when contacting CreditSafe',
+            'info': {
+                'raw': '{}'.format(error)
+            }
+        }
+    ]), 502
+
+
+@app.errorhandler(Timeout)
+def timeout_error(error):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[
+        {
+            'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': 'Timeout error when contacting CreditSafe',
+            'info': {
+                'raw': '{}'.format(error)
+            }
+        }
+    ]), 502
