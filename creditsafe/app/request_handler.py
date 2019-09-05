@@ -3,8 +3,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from .api.types import SearchInput, Error, CreditSafeAuthenticationError, CreditSafeSearchError
-from .api.internal_types import CreditSafeCompanySearchResponse
+from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError
+from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport
 
 
 def requests_retry_session(
@@ -83,3 +83,21 @@ class CreditSafeHandler:
             for c in companies
         ]
         return raw, formatted_companies
+
+    def get_report(self, input_data):
+        # Valid for 1 hour. Multiple valid tokens can exist at the same time.
+        token = self.get_token(self.credentials.username, self.credentials.password)
+
+        response = self.session.get(
+            f'{self.base_url}/companies/{input_data.creditsafe_id}',
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+        )
+
+        if response.status_code != 200:
+            raise CreditSafeReportError(response)
+
+        raw = response.json()
+        return raw, CreditSafeCompanyReport.from_json(raw['report']).as_passfort_format()
