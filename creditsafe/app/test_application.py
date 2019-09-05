@@ -12,7 +12,7 @@ from .application import app
 from .api.types import ErrorCode
 
 
-TEST_REQUEST = {
+TEST_SEARCH_REQUEST = {
     'credentials': {
         'username': 'x',
         'password': 'y'
@@ -20,6 +20,17 @@ TEST_REQUEST = {
     'input_data': {
         'query': 'test',
         'country': 'GBR'
+    }
+}
+
+
+TEST_REPORT_REQUEST = {
+    'credentials': {
+        'username': 'x',
+        'password': 'y'
+    },
+    'input_data': {
+        'creditsafe_id': 'testID'
     }
 }
 
@@ -60,7 +71,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
     def test_bad_key_returns_configuration_error(self):
         result = self.app.post(
             '/search',
-            json=TEST_REQUEST)
+            json=TEST_SEARCH_REQUEST)
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json['errors'][0]['code'], ErrorCode.MISCONFIGURATION_ERROR.value)
 
@@ -69,7 +80,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         # Not setting a response will make the unreachable
         result = self.app.post(
             '/search',
-            json=TEST_REQUEST)
+            json=TEST_SEARCH_REQUEST)
         self.assertEqual(result.status_code, 502)
         self.assertEqual(result.json['errors'][0]['code'], ErrorCode.PROVIDER_CONNECTION_ERROR.value)
 
@@ -95,7 +106,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         result = self.app.post(
             '/search',
-            json=TEST_REQUEST
+            json=TEST_SEARCH_REQUEST
         )
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json['errors'], [])
@@ -123,7 +134,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         result = self.app.post(
             '/search',
-            json=TEST_REQUEST
+            json=TEST_SEARCH_REQUEST
         )
 
         self.assertEqual(result.status_code, 200)
@@ -155,9 +166,76 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         result = self.app.post(
             '/search',
-            json=TEST_REQUEST
+            json=TEST_SEARCH_REQUEST
         )
 
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json['errors'][0]['message'],
                          'Unable to perform a search using the parameters provided')
+
+
+class TestReport(unittest.TestCase):
+    def setUp(self):
+        # creates a test client
+        self.app = app.test_client()
+        # propagate the exceptions to the test client
+        self.app.testing = True
+
+    @responses.activate
+    def test_bad_id(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/companies/testID',
+            json={
+                "messages": [
+                    {
+                        "code": "ReportUnavailable",
+                        "text": "Report unavailable.",
+                        "type": "Information"
+                    }
+                ],
+                "correlationId": "1a703860-ca4f-11e9-9c9d-02562b862d16"
+            },
+            status=400)
+        result = self.app.post(
+            '/company_report',
+            json=TEST_REPORT_REQUEST
+        )
+
+        self.assertEqual(result.status_code, 400)
+        self.assertEqual(result.json['errors'][0]['message'],
+                         'Bad ID provided')
+
+    @responses.activate
+    def test_no_access_to_reports(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/companies/testID',
+            json={
+                "details": "No access to RO reports",
+                "correlationId": "23028240-ca67-11e9-b779-06ca8693e6f8",
+                "message": "Forbidden request"
+            },
+            status=403)
+
+        result = self.app.post(
+            '/company_report',
+            json=TEST_REPORT_REQUEST
+        )
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json['errors'][0]['message'],
+                         'The request could not be authorised')
+        self.assertEqual(result.json['errors'][0]['info']['provider_error']['message'],
+                         'No access to RO reports')

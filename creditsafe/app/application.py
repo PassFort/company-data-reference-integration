@@ -7,7 +7,7 @@ from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
-    CreditSafeSearchError, ErrorCode, Error
+    CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest
 from .request_handler import CreditSafeHandler
 
 app = Flask(__name__)
@@ -85,6 +85,17 @@ def search(request_data: CreditSafeSearchRequest):
         'errors': []
     })
 
+@app.route('/company_report', methods=['POST'])
+@validate_model(CreditSafeCompanyReportRequest)
+def company_report(request_data):
+    handler = CreditSafeHandler(request_data.credentials)
+    raw, report = handler.get_report(request_data.input_data)
+    return jsonify({
+        'output_data': report,
+        'raw_data': raw,
+        'errors': []
+    })
+
 
 @app.errorhandler(400)
 def api_400(error):
@@ -157,6 +168,52 @@ def handle_search_error(search_error):
                 Error.provider_unhandled_error(response_content.get('error'))
             ]
         ), 500
+
+
+@app.errorhandler(CreditSafeReportError)
+def handle_report_error(report_error):
+    response = report_error.response
+    response_content = response.json()
+
+    if response.status_code == 400:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                {
+                    'code': ErrorCode.INVALID_INPUT_DATA.value,
+                    'source': 'PROVIDER',
+                    'message': 'Bad ID provided',
+                }
+            ]
+        ), 400
+    elif response.status_code == 403 and response_content.get('message') == 'Forbidden request':
+        return jsonify(
+            raw=response_content,
+            errors=[
+                {
+                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+                    'source': 'PROVIDER',
+                    'message': 'The request could not be authorised',
+                    'info': {
+                        'provider_error': {
+                            # Yes, messages come from different fields
+                            # (messages, details, or error)
+                            'message': response_content.get('details')
+                        }
+                    }
+                }
+            ]
+        ), 200
+    else:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                # Yes, messages come from different fields
+                # (messages, details, or error)
+                Error.provider_unhandled_error(response_content.get('error'))
+            ]
+        ), 500
+
 
 @app.errorhandler(ConnectionError)
 def connection_error(error):
