@@ -24,6 +24,31 @@ TEST_REQUEST = {
 }
 
 
+SEARCH_RESPONSE = {
+    "totalSize": 1,
+    "companies": [
+        {
+            "id": "GB001-0-09565115",
+            "country": "GB",
+            "regNo": "09565115",
+            "safeNo": "UK13646576",
+            "name": "PASSFORT LIMITED",
+            "address": {
+                "simpleValue": "11 PRINCELET STREET, LONDON, Greater London, E1 6QH",
+                "city": "LONDON",
+                "postCode": "E1 6QH"
+            },
+            "status": "Active",
+            "type": "Ltd",
+            "dateOfLatestAccounts": "2017-12-31T00:00:00.000000Z",
+            "dateOfLatestChange": "2019-07-03T01:27:52.000Z",
+            "activityCode": "7222",
+            "statusDescription": "Active - Accounts Filed"
+        }
+    ]
+}
+
+
 class TestHandleSearchRequestErrors(unittest.TestCase):
 
     def setUp(self):
@@ -87,7 +112,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         responses.add(
             responses.GET,
             'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=20',
-            json={'companies': [{}]},
+            json=SEARCH_RESPONSE,
             status=200)
 
         responses.add(
@@ -102,7 +127,17 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.json['output_data'], [{}])
+        self.assertEqual(
+            result.json['output_data'],
+            [
+                {
+                    'name': 'PASSFORT LIMITED',
+                    'number': '09565115',
+                    'creditsafe_id': 'GB001-0-09565115',
+                    'country_of_incorporation': 'GBR'
+                }
+            ]
+        )
 
     @responses.activate
     def test_search_returns_errors_from_provider_if_no_results(self):
