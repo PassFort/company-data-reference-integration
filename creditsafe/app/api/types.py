@@ -47,6 +47,11 @@ class CreditSafeAuthenticationError(CreditSafeError):
 class CreditSafeSearchError(CreditSafeError):
     pass
 
+
+class CreditSafeReportError(CreditSafeError):
+    pass
+
+
 @unique
 class ErrorCode(Enum):
     INVALID_INPUT_DATA = 201
@@ -114,6 +119,10 @@ class SearchInput(Model):
         ]
 
 
+class ReportInput(Model):
+    creditsafe_id = StringType(required=True)
+
+
 class CreditSafeSearchRequest(Model):
     is_demo = BooleanType(default=False)
     credentials = ModelType(CreditSafeCredentials, default=None)
@@ -122,3 +131,9 @@ class CreditSafeSearchRequest(Model):
     def validate_credentials(self, data, value):
         if not self.is_demo and value is None:
             raise ValidationError('This field is required')
+
+
+class CreditSafeCompanyReportRequest(Model):
+    is_demo = BooleanType(default=False)
+    credentials = ModelType(CreditSafeCredentials, default=None)
+    input_data = ModelType(ReportInput, required=True)
