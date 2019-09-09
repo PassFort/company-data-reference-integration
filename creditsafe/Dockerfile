@@ -20,5 +20,6 @@ RUN pip install pipenv \
 COPY main.py /src
 COPY unit_coverage /src
 COPY app /src/app
+COPY demo_data /src/demo_data
 
 CMD pipenv run gunicorn -w 4 -t 120 -b 0.0.0.0:8001 --log-level info --access-logfile - --access-logformat="%(h)s %(t)s %(r)s %(s)s" --enable-stdio-inheritance main:app
