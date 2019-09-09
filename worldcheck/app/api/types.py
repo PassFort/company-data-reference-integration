@@ -13,7 +13,7 @@ from swagger_client.models import MatchStrength
 def validate_partial_date(value):
     for fmt in ['%Y-%m-%d', '%Y-%m', '%Y']:
         try:
-            return datetime.datetime.strptime(value, fmt)
+            return datetime.strptime(value, fmt)
         except (ValueError, TypeError):
             continue
     raise ValidationError(f'Input is not valid date: {value}')
@@ -212,7 +212,10 @@ class TaggedString(Model):
 
 
 class TaggedDate(Model):
-    v = StringType(default=None, validators=[validate_partial_date])
+    v = StringType(default=None)
+
+    def validate_v(self, data, value):
+        return validate_partial_date(value)
 
 
 class TaggedFullName(Model):
@@ -357,6 +360,7 @@ class ScreeningRequestData(Model):
 
         if data['entity_type'] == 'INDIVIDUAL' and not value:
             raise ValidationError('Personal details are required for individuals')
+
         return value
 
     def validate_metadata(self, data, value):

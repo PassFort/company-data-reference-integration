@@ -138,4 +138,3 @@ class MatchHandlerTest(TestCase):
                 'is_sanction': False
             }
         )
-

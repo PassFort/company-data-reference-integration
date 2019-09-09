@@ -18,8 +18,12 @@ PERSONAL_DETAILS_TM = {
     "name": {
         "v": {
             "given_names": ["Theresa"],
-            "family_name": "May"
+            "family_name": "May",
+
         }
+    },
+    "dob": {
+        "v": "1956"
     }
 }
 
