@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
@@ -7,6 +8,15 @@ from schematics.exceptions import DataError, ValidationError
 
 from swagger_client.rest import ApiException
 from swagger_client.models import MatchStrength
+
+
+def validate_partial_date(value):
+    for fmt in ['%Y-%m-%d', '%Y-%m', '%Y']:
+        try:
+            return datetime.datetime.strptime(value, fmt)
+        except (ValueError, TypeError):
+            continue
+    raise ValidationError(f'Input is not valid date: {value}')
 
 
 def validate_model(validation_model):
@@ -202,7 +212,7 @@ class TaggedString(Model):
 
 
 class TaggedDate(Model):
-    v = DateType(default=None)
+    v = StringType(default=None, validators=[validate_partial_date])
 
 
 class TaggedFullName(Model):
