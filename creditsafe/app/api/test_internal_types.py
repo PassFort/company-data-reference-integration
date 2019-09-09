@@ -1,5 +1,7 @@
 import unittest
 
+from decimal import Decimal
+
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanyReport, CompanyDirectorsReport
 
@@ -122,3 +124,54 @@ class TestCompanyReport(unittest.TestCase):
 
         self.assertEqual(formatted_report['directors'][0]['resolver_id'], 'test')
         self.assertEqual(formatted_report['secretaries'][0]['resolver_id'], 'test')
+
+    def test_returns_shareholders(self):
+        shareholders = self.formatted_report['ownership_structure']['shareholders']
+        self.assertEqual(len(shareholders), 26)
+
+        self.assertDictEqual(
+            shareholders[1]['shareholdings'][0],
+            {
+                'share_class': 'ORDINARY',
+                'currency': 'GBP',
+                'amount': 4100000,
+                'percentage': Decimal('20.69')
+            }
+        )
+
+        with self.subTest('should resolve ids against directors'):
+            # test against donald
+            donald_director = next(
+                d for d in self.formatted_report['officers']['directors']
+                if d['last_name'] == 'Gillies'
+            )
+            donald_shareholder = next(
+                s for s in shareholders if s['last_name'] == 'GILLIES'
+            )
+
+            self.assertEqual(
+                donald_director['first_names'],
+                ['Donald', 'Andrew']
+            )
+
+            self.assertEqual(
+                donald_shareholder['first_names'],
+                ['DONALD', 'ANDREW']
+            )
+
+            self.assertEqual(donald_shareholder['type'], 'INDIVIDUAL')
+            self.assertEqual(donald_director['type'], 'INDIVIDUAL')
+            self.assertEqual(donald_director['resolver_id'], donald_shareholder['resolver_id'])
+
+        with self.subTest('should merge shareholders with multiple classes'):
+            episode_shareholder = next(
+                s for s in shareholders if s['last_name'] == 'EPISODE (GP) LTD')
+
+            self.assertEqual(len(episode_shareholder['shareholdings']), 2)
+            print(episode_shareholder['shareholdings'])
+
+            self.assertEqual(episode_shareholder['total_percentage'], Decimal('21.14'))
+            self.assertEqual(episode_shareholder['shareholdings'][0]['share_class'], 'SEED')
+            self.assertEqual(episode_shareholder['shareholdings'][0]['percentage'], Decimal('15.99'))
+            self.assertEqual(episode_shareholder['shareholdings'][1]['share_class'], 'PREFERRED A1')
+            self.assertEqual(episode_shareholder['shareholdings'][1]['percentage'], Decimal('5.15'))

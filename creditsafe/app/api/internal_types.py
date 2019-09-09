@@ -1,9 +1,10 @@
 import pycountry
 
-from datetime import datetime
+from collections import defaultdict
+from uuid import uuid1
 
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType
+from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType
 
 
 DIRECTOR_POSITIONS = [
@@ -119,6 +120,29 @@ Vice President
 Vice-Chairman & M.D.
 Works Director
 '''
+
+
+def split_name(name, expect_title=False):
+    names = name.split(' ')
+    start = 0
+    # First name is the title.
+    if expect_title:
+        start = 1
+    # Assume the last is the surname.
+    # It can be in any order, and it won't depend necessarily on the country, but on the quality of data.
+    return names[start:-1], names[-1]
+
+
+def resolver_key(name, expect_title=False):
+    lower_name = name.lower()
+    if expect_title:
+        parts = lower_name.split(' ', maxsplit=1)
+        if len(parts) == 1:
+            return parts[0]
+        return parts[1]
+    else:
+        return lower_name
+
 
 class CreditSafeCompanySearchResponse(Model):
     creditsafe_id = StringType(required=True, serialized_name="id")
@@ -264,10 +288,7 @@ class CurrentOfficer(Model):
                     first_names.extend(self.middle_name.split(' '))
                 return first_names, self.surname
             else:
-                names = self.name.split(' ')
-                # First name is the title. Assume the last is the surname.
-                # It can be in any order, and it won't depend necessarily on the country, but on the quality of data.
-                return names[1:-1], names[-1]
+                return split_name(self.name, expect_title=True)
         return None, self.name
 
     def as_passfort_format(self):
@@ -325,6 +346,64 @@ class CompanyDirectorsReport(Model):
         }
 
 
+class Shareholder(Model):
+    name = StringType(required=True)
+    shareholder_type = StringType(required=True, choices=["Person", "Company"], serialized_name="shareholderType")
+    share_class = StringType(default=None, serialized_name="shareType")
+    currency = StringType(default=None)
+    amount = IntType(serialized_name="totalNumberOfSharesOwned", required=True)
+    percentage = DecimalType(serialized_name="percentSharesHeld", required=True)
+
+    def format_name(self):
+        if self.entity_type == 'INDIVIDUAL':
+            return split_name(self.name, expect_title=False)
+        return None, self.name
+
+    @property
+    def entity_type(self):
+        if self.shareholder_type == 'Person':
+            return 'INDIVIDUAL'
+        if self.shareholder_type == 'Company':
+            return 'COMPANY'
+        raise NotImplementedError()
+
+    @property
+    def shareholding(self):
+        return {
+            'share_class': self.share_class,
+            'currency': self.currency,
+            'amount': self.amount,
+            'percentage': self.percentage
+        }
+
+
+class ShareholdersReport(Model):
+    shareholders = ListType(ModelType(Shareholder), default=None, serialized_name="shareHolders")
+
+    def as_passfort_format(self, resolver_ids_by_name):
+        deduplicated_shareholders = defaultdict(dict)
+        for s in self.shareholders:
+            if deduplicated_shareholders[s.name] == {}:
+                name_key = resolver_key(s.name, expect_title=False)
+                potential_resolver_id = resolver_ids_by_name.get(name_key)
+                resolver_id = potential_resolver_id if potential_resolver_id is not None else uuid1()
+                first_names, last_name = s.format_name()
+                deduplicated_shareholders[s.name] = {
+                    'resolver_id': resolver_id,
+                    'type': s.entity_type,
+                    'last_name': last_name,
+                    'shareholdings': [s.shareholding]
+                }
+                if s.entity_type == 'INDIVIDUAL':
+                    deduplicated_shareholders[s.name]['first_names'] = first_names
+            else:
+                deduplicated_shareholders[s.name]['shareholdings'].append(s.shareholding)
+
+        for _, ds in deduplicated_shareholders.items():
+            ds['total_percentage'] = sum(x['percentage'] for x in ds['shareholdings'])
+        return list(deduplicated_shareholders.values())
+
+
 class CompanySummary(Model):
     country = StringType(required=True)
     business_name = StringType(required=True, serialized_name="businessName")
@@ -350,6 +429,7 @@ class CreditSafeCompanyReport(Model):
     identification = ModelType(CompanyIdentification, required=True, serialized_name="companyIdentification")
     contact_information = ModelType(ContactInformation, required=True, serialized_name="contactInformation")
     directors = ModelType(CompanyDirectorsReport, default=None)
+    share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
 
     @classmethod
     def from_json(cls, data):
@@ -377,8 +457,25 @@ class CreditSafeCompanyReport(Model):
             'structured_company_type': self.identification.structured_company_type
         }
 
-        officers = self.directors.as_passfort_format()
+        officers = self.directors.as_passfort_format() if self.directors else []
+        resolver_ids = self.flatten_resolver_ids()
+        shareholders = self.share_capital_structure.as_passfort_format(
+            resolver_ids) if self.share_capital_structure else []
         return {
             'metadata': metadata,
-            'officers': officers
+            'officers': officers,
+            'ownership_structure': {
+                'shareholders': shareholders
+            }
         }
+
+    def flatten_resolver_ids(self):
+        # Converts to passfort format and resolves the shareholder names against the directors
+        resolver_id_by_name = {}
+        if self.directors is None:
+            return {}
+
+        for d in self.directors.current_directors:
+            key = resolver_key(d.name, expect_title=True)
+            resolver_id_by_name[key] = d.id
+        return resolver_id_by_name
