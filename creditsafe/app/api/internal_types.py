@@ -153,16 +153,16 @@ def build_resolver_id(original_id):
 
 class ResolverIdMatcher:
 
-    def __init__(self, directors):
+    def __init__(self, directors_report: 'CompanyDirectorsReport'):
         # Converts to passfort format and in order to the shareholder names against the directors
         resolver_ids = {}
-        if directors is None:
-            self.resolver_ids= {}
-
-        for d in directors.current_directors:
-            key = resolver_key(d.name, expect_title=True)
-            resolver_ids[key] = build_resolver_id(d.id)
-        self.resolver_ids = resolver_ids
+        if directors_report is None:
+            self.resolver_ids = {}
+        else:
+            for d in directors_report.current_directors:
+                key = resolver_key(d.name, expect_title=True)
+                resolver_ids[key] = build_resolver_id(d.id)
+            self.resolver_ids = resolver_ids
 
     def find_or_create_resolver_id(self, shareholder_name):
         name_key = resolver_key(shareholder_name, expect_title=False)
