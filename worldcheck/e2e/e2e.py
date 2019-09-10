@@ -18,13 +18,56 @@ PERSONAL_DETAILS_TM = {
     "name": {
         "v": {
             "given_names": ["Theresa"],
-            "family_name": "May"
+            "family_name": "May",
+
         }
+    },
+    "dob": {
+        "v": "1956"
     }
 }
 
 
 class WorldCheckScreenCase(TestCase):
+    def test_400s_on_bad_dob(self):
+        response = requests.post(API_URL + '/screening_request', json={
+            "config": {
+                "group_id": TEST_GROUP_ID
+            },
+            "credentials": GOOD_CREDENTIALS,
+            "input_data": {
+                "rogue": "Super rogue field",
+                "entity_type": "INDIVIDUAL",
+                "personal_details": {
+                    "name": {
+                        "v": {
+                            "given_names": ["Theresa"],
+                            "family_name": "May",
+
+                        }
+                    },
+                    "dob": {
+                        "v": "NOT A DATE"
+                    }
+                }
+            }
+        })
+
+        self.assertEqual(response.status_code, 400)
+        result = response.json()
+        self.assertEqual(result['errors'][0]['message'], 'Bad API request')
+        self.assertEqual(result['errors'][0]['code'], 201)
+        self.assertDictEqual(
+            result['errors'][0]['info'],
+            {
+                "input_data": {
+                    "personal_details": {
+                        "dob": {
+                            "v": ["Input is not valid date: NOT A DATE"]
+                        }
+                    }
+                }
+            })
 
     def test_does_not_error_on_rogue_field(self):
         response = requests.post(API_URL + '/screening_request', json={

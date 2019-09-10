@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
@@ -7,6 +8,15 @@ from schematics.exceptions import DataError, ValidationError
 
 from swagger_client.rest import ApiException
 from swagger_client.models import MatchStrength
+
+
+def validate_partial_date(value):
+    for fmt in ['%Y-%m-%d', '%Y-%m', '%Y']:
+        try:
+            return datetime.strptime(value, fmt)
+        except (ValueError, TypeError):
+            continue
+    raise ValidationError(f'Input is not valid date: {value}')
 
 
 def validate_model(validation_model):
@@ -202,7 +212,10 @@ class TaggedString(Model):
 
 
 class TaggedDate(Model):
-    v = DateType(default=None)
+    v = StringType(default=None)
+
+    def validate_v(self, data, value):
+        return validate_partial_date(value)
 
 
 class TaggedFullName(Model):
@@ -347,6 +360,7 @@ class ScreeningRequestData(Model):
 
         if data['entity_type'] == 'INDIVIDUAL' and not value:
             raise ValidationError('Personal details are required for individuals')
+
         return value
 
     def validate_metadata(self, data, value):
