@@ -156,13 +156,11 @@ class ResolverIdMatcher:
     def __init__(self, directors_report: 'CompanyDirectorsReport'):
         # Converts to passfort format and in order to the shareholder names against the directors
         resolver_ids = {}
-        if directors_report is None:
-            self.resolver_ids = {}
-        else:
+        if directors_report is not None:
             for d in directors_report.current_directors:
                 key = resolver_key(d.name, expect_title=True)
                 resolver_ids[key] = build_resolver_id(d.id)
-            self.resolver_ids = resolver_ids
+        self.resolver_ids = resolver_ids
 
     def find_or_create_resolver_id(self, shareholder_name):
         name_key = resolver_key(shareholder_name, expect_title=False)
@@ -412,18 +410,18 @@ class ShareholdersReport(Model):
         # Merge shareholdings for shareholders with the same name
         unique_shareholders = {}
         for s in self.shareholders:
-            if unique_shareholders.get(s.name) is None:
+            if s.name not in unique_shareholders:
                 first_names, last_name = s.format_name()
                 unique_shareholders[s.name] = PassFortShareholder({
                     'type': s.entity_type,
                     'first_names': first_names,
                     'last_name': last_name,
-                    'shareholdings': [s.shareholding]
+                    'shareholdings': []
                 })
-            else:
-                unique_shareholders[s.name].shareholdings.append(
-                    PassFortShareholding(s.shareholding)
-                )
+
+            unique_shareholders[s.name].shareholdings.append(
+                PassFortShareholding(s.shareholding)
+            )
         return unique_shareholders
 
     def as_passfort_format(self, resolver_id_matcher):
