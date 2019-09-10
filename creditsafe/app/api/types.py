@@ -6,7 +6,8 @@ from functools import wraps
 
 from schematics import Model
 from schematics.exceptions import DataError, ValidationError
-from schematics.types import BooleanType, StringType, ModelType
+from schematics.types.serializable import serializable
+from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType
 
 # TODO JSONDECODE
 def validate_model(validation_model):
@@ -137,3 +138,95 @@ class CreditSafeCompanyReportRequest(Model):
     is_demo = BooleanType(default=False)
     credentials = ModelType(CreditSafeCredentials, default=None)
     input_data = ModelType(ReportInput, required=True)
+
+
+class PassFortFreeformAddress(Model):
+    text = StringType(required=True)
+    country = StringType(default=None)
+
+    @serializable
+    def type(self):
+        return 'FREEFORM'
+
+    class Options:
+        serialize_when_none = False
+
+
+class PassFortAddress(Model):
+    type = StringType(default=None)
+    address = ModelType(PassFortFreeformAddress, required=True)
+
+
+class PassFortStructuredCompanyType(Model):
+    is_limited = BooleanType(default=None)
+    is_public = BooleanType(default=None)
+    ownership_type = StringType(default=None)
+
+    class Options:
+        serialize_when_none = False
+
+
+class PassFortMetadata(Model):
+    name = StringType(required=True)
+    number = StringType(required=True)
+    addresses = ListType(ModelType(PassFortAddress), required=True)
+    country_of_incorporation = StringType(default=None)
+    is_active = BooleanType(default=None)
+    incorporation_date = DateType(default=None)
+    company_type = StringType(default=None)
+    structured_company_type = ModelType(PassFortStructuredCompanyType, default=None)
+
+    class Options:
+        serialize_when_none = False
+
+class PassFortAssociate(Model):
+    resolver_id = UUIDType(required=True)
+    type = StringType(required=True)
+    first_names = ListType(StringType, default=None, serialize_when_none=False)
+    last_name =  StringType(required=True)
+
+    class Options:
+        serialize_when_none = False
+
+
+class PassFortOfficer(PassFortAssociate):
+    original_role = StringType(default=None, serialize_when_none=False)
+    appointed_on = DateType(default=None, serialize_when_none=False)
+    dob = DateType(default=None, serialize_when_none=False)
+
+    @serializable
+    def provider_name(self):
+        return 'CreditSafe'
+
+    class Options:
+        serialize_when_none = False
+
+
+class PassFortShareholding(Model):
+    share_class = StringType(default=None)
+    currency = StringType(default=None)
+    amount = IntType(required=True)
+    percentage = DecimalType(required=True)
+
+    @serializable(serialized_name="percentage")
+    def percentage_out(self):
+        return float(self.percentage)
+
+    @serializable
+    def provider_name(self):
+        return 'CreditSafe'
+
+    class Options:
+        serialize_when_none = False
+
+
+class PassFortShareholder(PassFortAssociate):
+    total_percentage = DecimalType(required=True)
+    shareholdings = ListType(ModelType(PassFortShareholding), required=True)
+
+    @serializable(serialized_name="total_percentage")
+    def percentage_out(self):
+        return float(self.total_percentage)
+
+    class Options:
+        serialize_when_none = False
