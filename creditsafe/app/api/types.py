@@ -180,7 +180,7 @@ class PassFortMetadata(Model):
         serialize_when_none = False
 
 class PassFortAssociate(Model):
-    resolver_id = UUIDType(required=True)
+    resolver_id = UUIDType(default=None)
     type = StringType(required=True)
     first_names = ListType(StringType, default=None, serialize_when_none=False)
     last_name =  StringType(required=True)
@@ -221,12 +221,11 @@ class PassFortShareholding(Model):
 
 
 class PassFortShareholder(PassFortAssociate):
-    total_percentage = DecimalType(required=True)
     shareholdings = ListType(ModelType(PassFortShareholding), required=True)
 
-    @serializable(serialized_name="total_percentage")
-    def percentage_out(self):
-        return float(self.total_percentage)
+    @serializable
+    def total_percentage(self):
+        return float(sum(x.percentage for x in self.shareholdings))
 
     class Options:
         serialize_when_none = False

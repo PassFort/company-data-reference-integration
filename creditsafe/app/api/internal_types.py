@@ -151,6 +151,29 @@ def build_resolver_id(original_id):
     return uuid.uuid3(uuid.NAMESPACE_X500, original_id)
 
 
+class ResolverIdMatcher:
+
+    def __init__(self, directors):
+        # Converts to passfort format and in order to the shareholder names against the directors
+        resolver_ids = {}
+        if directors is None:
+            self.resolver_ids= {}
+
+        for d in directors.current_directors:
+            key = resolver_key(d.name, expect_title=True)
+            resolver_ids[key] = build_resolver_id(d.id)
+        self.resolver_ids = resolver_ids
+
+    def find_or_create_resolver_id(self, shareholder_name):
+        name_key = resolver_key(shareholder_name, expect_title=False)
+        potential_resolver_id = self.resolver_ids.get(name_key)
+
+        if potential_resolver_id:
+            return potential_resolver_id
+
+        return build_resolver_id(name_key)
+
+
 class CreditSafeCompanySearchResponse(Model):
     creditsafe_id = StringType(required=True, serialized_name="id")
     registration_number = StringType(default=None, serialized_name="regNo")
@@ -385,33 +408,30 @@ class Shareholder(Model):
 class ShareholdersReport(Model):
     shareholders = ListType(ModelType(Shareholder), default=None, serialized_name="shareHolders")
 
-    def as_passfort_format(self, resolver_ids_by_name):
-        deduplicated_shareholders = {}
+    def merge_shareholdings(self):
+        # Merge shareholdings for shareholders with the same name
+        unique_shareholders = {}
         for s in self.shareholders:
-            if deduplicated_shareholders.get(s.name) is None:
-                name_key = resolver_key(s.name, expect_title=False)
-                potential_resolver_id = resolver_ids_by_name.get(name_key)
-                resolver_id = potential_resolver_id if potential_resolver_id is not None \
-                    else build_resolver_id(name_key)
-
+            if unique_shareholders.get(s.name) is None:
                 first_names, last_name = s.format_name()
-                deduplicated_shareholders[s.name] = PassFortShareholder({
-                    'resolver_id': resolver_id,
+                unique_shareholders[s.name] = PassFortShareholder({
                     'type': s.entity_type,
+                    'first_names': first_names,
                     'last_name': last_name,
                     'shareholdings': [s.shareholding]
                 })
-                if s.entity_type == 'INDIVIDUAL':
-                    deduplicated_shareholders[s.name].first_names = first_names
             else:
-                deduplicated_shareholders[s.name].shareholdings.append(
+                unique_shareholders[s.name].shareholdings.append(
                     PassFortShareholding(s.shareholding)
                 )
+        return unique_shareholders
 
-        for _, ds in deduplicated_shareholders.items():
-            ds.total_percentage = sum(x.percentage for x in ds.shareholdings)
+    def as_passfort_format(self, resolver_id_matcher):
+        unique_shareholders = self.merge_shareholdings()
+        for name, passfort_shareholder in unique_shareholders.items():
+            passfort_shareholder.resolver_id = resolver_id_matcher.find_or_create_resolver_id(name)
 
-        return [ds.serialize() for ds in deduplicated_shareholders.values()]
+        return [ds.serialize() for ds in unique_shareholders.values()]
 
 
 class CompanySummary(Model):
@@ -468,9 +488,9 @@ class CreditSafeCompanyReport(Model):
         })
 
         officers = self.directors.to_serialized_passfort_format() if self.directors else []
-        resolver_ids = self.flatten_resolver_ids()
+
         shareholders = self.share_capital_structure.as_passfort_format(
-            resolver_ids) if self.share_capital_structure else []
+            ResolverIdMatcher(self.directors)) if self.share_capital_structure else []
         return {
             'metadata': metadata.serialize(),
             'officers': officers,
@@ -478,14 +498,3 @@ class CreditSafeCompanyReport(Model):
                 'shareholders': shareholders
             }
         }
-
-    def flatten_resolver_ids(self):
-        # Converts to passfort format and resolves the shareholder names against the directors
-        resolver_id_by_name = {}
-        if self.directors is None:
-            return {}
-
-        for d in self.directors.current_directors:
-            key = resolver_key(d.name, expect_title=True)
-            resolver_id_by_name[key] = build_resolver_id(d.id)
-        return resolver_id_by_name
