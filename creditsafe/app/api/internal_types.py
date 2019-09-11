@@ -1,9 +1,13 @@
 import pycountry
+import uuid
 
-from datetime import datetime
+from collections import defaultdict
 
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType
+from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
+    UUIDType, DateType
+
+from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata
 
 
 DIRECTOR_POSITIONS = [
@@ -120,6 +124,54 @@ Vice-Chairman & M.D.
 Works Director
 '''
 
+
+def split_name(name, expect_title=False):
+    names = name.split(' ')
+    start = 0
+    # First name is the title.
+    if expect_title:
+        start = 1
+    # Assume the last is the surname.
+    # It can be in any order, and it won't depend necessarily on the country, but on the quality of data.
+    return names[start:-1], names[-1]
+
+
+def resolver_key(name, expect_title=False):
+    lower_name = name.lower()
+    if expect_title:
+        parts = lower_name.split(' ', maxsplit=1)
+        if len(parts) == 1:
+            return parts[0]
+        return parts[1]
+    else:
+        return lower_name
+
+
+def build_resolver_id(original_id):
+    return uuid.uuid3(uuid.NAMESPACE_X500, original_id)
+
+
+class ResolverIdMatcher:
+
+    def __init__(self, directors_report: 'CompanyDirectorsReport'):
+        # Converts to passfort format and in order to the shareholder names against the directors
+        resolver_ids = {}
+        if directors_report is not None:
+            for d in directors_report.current_directors:
+                key = resolver_key(d.name, expect_title=True)
+                resolver_ids[key] = build_resolver_id(d.id)
+        self.resolver_ids = resolver_ids
+
+    def find_or_create_resolver_id(self, shareholder_name):
+        name_key = resolver_key(shareholder_name, expect_title=False)
+        potential_resolver_id = self.resolver_ids.get(name_key)
+
+        if potential_resolver_id:
+            return potential_resolver_id
+
+        return build_resolver_id(name_key)
+
+
 class CreditSafeCompanySearchResponse(Model):
     creditsafe_id = StringType(required=True, serialized_name="id")
     registration_number = StringType(default=None, serialized_name="regNo")
@@ -146,7 +198,7 @@ class CreditSafeCompanySearchResponse(Model):
 
 class ContactAddress(Model):
     address_type = StringType(default=None, serialized_name="type")
-    simple_value = StringType(required=True, serialized_name="simpleValue")
+    simple_value = StringType(default=None, serialized_name="simpleValue")
     postal_code = StringType(default=None, serialized_name="postalCode")
     country = StringType(default=None)
 
@@ -163,6 +215,8 @@ class ContactAddress(Model):
         return None
 
     def as_passfort_address(self):
+        if self.simple_value is None:
+            return None
         return {
             'type': self.passfort_address_type,
             'address': {
@@ -264,43 +318,36 @@ class CurrentOfficer(Model):
                     first_names.extend(self.middle_name.split(' '))
                 return first_names, self.surname
             else:
-                names = self.name.split(' ')
-                # First name is the title. Assume the last is the surname.
-                # It can be in any order, and it won't depend necessarily on the country, but on the quality of data.
-                return names[1:-1], names[-1]
+                return split_name(self.name, expect_title=True)
         return None, self.name
 
-    def as_passfort_format(self):
+    def to_passfort_officer_roles(self):
         first_names, last_name = self.format_name()
         expanded_result = []
 
         for position in self.positions:
-            result = {
-                'resolver_id': self.id,
+            expanded_result.append(PassFortOfficer({
+                'resolver_id': build_resolver_id(self.id),
                 'type': self.entity_type,
                 'first_names': first_names,
                 'last_name': last_name,
                 'original_role': position.position_name,
-                'appointed_on': f'{position.date_appointed}',
-                'provider_name': 'CreditSafe'
-            }
-
-            if self.entity_type == 'INDIVIDUAL':
-                result['dob'] = f'{self.dob}'
-            expanded_result.append(result)
+                'appointed_on': position.date_appointed,
+                'dob': self.dob
+            }))
         return expanded_result
 
 
 class CompanyDirectorsReport(Model):
     current_directors = ListType(ModelType(CurrentOfficer), default=[], serialized_name="currentDirectors")
 
-    def as_passfort_format(self):
+    def to_serialized_passfort_format(self):
         directors = []
         secretaries = []
         partners = []
         other = []
         for officer in self.current_directors:
-            formatted_officer_by_role = officer.as_passfort_format()
+            formatted_officer_by_role = officer.to_passfort_officer_roles()
 
             for officer_by_role in formatted_officer_by_role:
                 is_other = True
@@ -318,11 +365,71 @@ class CompanyDirectorsReport(Model):
                     other.append(officer_by_role)
 
         return {
-            'directors': directors,
-            'secretaries': secretaries,
-            'partners': partners,
-            'other': other
+            'directors': [d.serialize() for d in directors],
+            'secretaries': [s.serialize() for s in secretaries],
+            'partners': [p.serialize() for p in partners],
+            'other': [o.serialize() for o in other]
         }
+
+
+class Shareholder(Model):
+    name = StringType(required=True)
+    shareholder_type = StringType(required=True, choices=["Person", "Company"], serialized_name="shareholderType")
+    share_class = StringType(default=None, serialized_name="shareType")
+    currency = StringType(default=None)
+    amount = IntType(serialized_name="totalNumberOfSharesOwned", required=True)
+    percentage = DecimalType(serialized_name="percentSharesHeld", required=True)
+
+    def format_name(self):
+        if self.entity_type == 'INDIVIDUAL':
+            return split_name(self.name, expect_title=False)
+        return None, self.name
+
+    @property
+    def entity_type(self):
+        if self.shareholder_type == 'Person':
+            return 'INDIVIDUAL'
+        if self.shareholder_type == 'Company':
+            return 'COMPANY'
+        raise NotImplementedError()
+
+    @property
+    def shareholding(self):
+        return {
+            'share_class': self.share_class,
+            'currency': self.currency,
+            'amount': self.amount,
+            'percentage': self.percentage
+        }
+
+
+class ShareholdersReport(Model):
+    shareholders = ListType(ModelType(Shareholder), default=None, serialized_name="shareHolders")
+
+    def merge_shareholdings(self):
+        # Merge shareholdings for shareholders with the same name
+        unique_shareholders = {}
+        for s in self.shareholders:
+            if s.name not in unique_shareholders:
+                first_names, last_name = s.format_name()
+                unique_shareholders[s.name] = PassFortShareholder({
+                    'type': s.entity_type,
+                    'first_names': first_names,
+                    'last_name': last_name,
+                    'shareholdings': []
+                })
+
+            unique_shareholders[s.name].shareholdings.append(
+                PassFortShareholding(s.shareholding)
+            )
+        return unique_shareholders
+
+    def as_passfort_format(self, resolver_id_matcher):
+        unique_shareholders = self.merge_shareholdings()
+        for name, passfort_shareholder in unique_shareholders.items():
+            passfort_shareholder.resolver_id = resolver_id_matcher.find_or_create_resolver_id(name)
+
+        return [ds.serialize() for ds in unique_shareholders.values()]
 
 
 class CompanySummary(Model):
@@ -350,6 +457,7 @@ class CreditSafeCompanyReport(Model):
     identification = ModelType(CompanyIdentification, required=True, serialized_name="companyIdentification")
     contact_information = ModelType(ContactInformation, required=True, serialized_name="contactInformation")
     directors = ModelType(CompanyDirectorsReport, default=None)
+    share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
 
     @classmethod
     def from_json(cls, data):
@@ -366,19 +474,25 @@ class CreditSafeCompanyReport(Model):
             for address in self.contact_information.other_addresses
         ])
 
-        metadata = {
+        metadata = PassFortMetadata({
             'name': self.identification.basic_info.name,
             'number': self.summary.number,
             'addresses': addresses,
             'country_of_incorporation': self.summary.country_code,
             'is_active': self.summary.is_active,
-            'incorporation_date': f'{self.identification.incorporation_date}',
+            'incorporation_date': self.identification.incorporation_date,
             'company_type': self.identification.raw_company_type,
             'structured_company_type': self.identification.structured_company_type
-        }
+        })
 
-        officers = self.directors.as_passfort_format()
+        officers = self.directors.to_serialized_passfort_format() if self.directors else []
+
+        shareholders = self.share_capital_structure.as_passfort_format(
+            ResolverIdMatcher(self.directors)) if self.share_capital_structure else []
         return {
-            'metadata': metadata,
-            'officers': officers
+            'metadata': metadata.serialize(),
+            'officers': officers,
+            'ownership_structure': {
+                'shareholders': shareholders
+            }
         }
