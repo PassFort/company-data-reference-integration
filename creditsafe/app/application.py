@@ -9,6 +9,8 @@ from requests.exceptions import ConnectionError, Timeout
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
     CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest
 from .request_handler import CreditSafeHandler
+from .demo_handler import DemoHandler
+
 
 app = Flask(__name__)
 
@@ -76,7 +78,16 @@ def health():
 
 @app.route('/search', methods=['POST'])
 @validate_model(CreditSafeSearchRequest)
-def search(request_data: CreditSafeSearchRequest):
+def search(request_data: 'CreditSafeSearchRequest'):
+    if request_data.is_demo:
+        demo_handler = DemoHandler()
+        companies = demo_handler.search(request_data.input_data)
+        return jsonify({
+            'output_data': companies,
+            'raw_data': {},
+            'errors': []
+        })
+
     handler = CreditSafeHandler(request_data.credentials)
     raw, companies = handler.search(request_data.input_data)
     return jsonify({
@@ -87,7 +98,16 @@ def search(request_data: CreditSafeSearchRequest):
 
 @app.route('/company_report', methods=['POST'])
 @validate_model(CreditSafeCompanyReportRequest)
-def company_report(request_data):
+def company_report(request_data: 'CreditSafeCompanyReportRequest'):
+    if request_data.is_demo:
+        demo_handler = DemoHandler()
+        report = demo_handler.get_report(request_data.input_data)
+        return jsonify({
+            'output_data': report,
+            'raw_data': {},
+            'errors': []
+        })
+
     handler = CreditSafeHandler(request_data.credentials)
     raw, report = handler.get_report(request_data.input_data)
     return jsonify({

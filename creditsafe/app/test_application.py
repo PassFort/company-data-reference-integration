@@ -239,3 +239,97 @@ class TestReport(unittest.TestCase):
                          'The request could not be authorised')
         self.assertEqual(result.json['errors'][0]['info']['provider_error']['message'],
                          'No access to RO reports')
+
+
+class TestDemoData(unittest.TestCase):
+
+    def setUp(self):
+        # creates a test client
+        self.app = app.test_client()
+        # propagate the exceptions to the test client
+        self.app.testing = True
+
+    def test_pass(self):
+        search_response = self.app.post(
+            '/search',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'query': 'test',
+                    'country': 'GBR'
+                }
+            }
+        ).json
+        with self.subTest('returns demo company data, with pass id'):
+            self.assertEqual(len(search_response['output_data']), 1)
+            self.assertDictEqual(
+                search_response['output_data'][0],
+                {
+                    'name': 'PASSFORT LIMITED',
+                    'number': '09565115',
+                    'creditsafe_id': 'pass',
+                    'country_of_incorporation': 'GBR'
+                }
+            )
+
+        report_response = self.app.post(
+            '/company_report',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'creditsafe_id': 'pass',
+                }
+            }
+        ).json
+
+        with self.subTest('returns demo company report, with pass id'):
+            self.assertEqual(report_response['output_data']['metadata']['number'], '09565115')
+
+    def test_partial(self):
+        search_response = self.app.post(
+            '/search',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'query': ' gfr partial grgeger$',
+                    'country': 'GBR'
+                }
+            }
+        ).json
+        with self.subTest('returns demo company data, with partial id'):
+            self.assertEqual(len(search_response['output_data']), 1)
+            self.assertDictEqual(
+                search_response['output_data'][0],
+                {
+                    'name': 'PASSFORT LIMITED',
+                    'number': '09565115',
+                    'creditsafe_id': 'partial',
+                    'country_of_incorporation': 'GBR'
+                }
+            )
+
+        report_response = self.app.post(
+            '/company_report',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'creditsafe_id': 'partial',
+                }
+            }
+        ).json
+
+        with self.subTest('returns demo company report, with partial id'):
+            self.assertEqual(report_response['output_data']['metadata']['number'], '1111111')
+
+    def test_fail(self):
+        search_response = self.app.post(
+            '/search',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'query': ' gfr fail grgeger$',
+                    'country': 'GBR'
+                }
+            }
+        ).json
+        self.assertEqual(len(search_response['output_data']), 0)
