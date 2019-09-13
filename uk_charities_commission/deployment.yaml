@@ -32,6 +32,8 @@ spec:
           value: {cluster}
         - name: SENTRY_URL
           value: {sentry_url}
+        - name: ADDRESS_PARSER_URL
+          value: address-parser:8080
         readinessProbe:
           httpGet:
             path: '/health'

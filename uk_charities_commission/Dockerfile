@@ -17,11 +17,11 @@ RUN mkdir /srv/logs/ && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
-    apk add --no-cache yarn openssh-client git && \
+    apk add --no-cache build-base yarn openssh-client git libxml2-dev libxslt-dev python3-dev && \
     pipenv run pip install --upgrade wheel && \
     pipenv install && \
     yarn && \
-    apk del --no-cache git openssh-client
+    apk del --no-cache git openssh-client build-base
 
 COPY main.py /src
 COPY coverage /src

@@ -19,6 +19,7 @@ integrations = {
     'bvd': './bvd',
     'worldcheck': './worldcheck',
     'trulioo': './trulioo',
+    'uk_charities_commission': './uk_charities_commission',
 }
 
 sentry = {
