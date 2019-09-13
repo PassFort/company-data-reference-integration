@@ -1,0 +1,400 @@
+{
+    "CharityNumber": 200359,
+    "HasAccountsToDisplay": true,
+    "RegisteredCharityNumber": 200359,
+    "SubsidiaryNumber": 0,
+    "CharityName": "MEATH EPILEPSY CHARITY                                                                                                                                ",
+    "RegistrationHistory": [
+        {
+            "RegistrationDate": "22/09/1962",
+            "RegistrationRemovalDate": null,
+            "RemovalReason": null
+        }
+    ],
+    "WorkingNames": [
+        "THE MEATH EPILEPSY TRUST                                                                                                                              ~O ",
+        "THE MEATH HOME OF COMFORT FOR EPILEPTIC WOMEN AND GIRLS                                                                                               ~O ",
+        "THE MEATH TRUST                                                                                                                                       ~O "
+    ],
+    "AreaOfBenefit": "NATIONAL.",
+    "GoverningDocument": "SCHEME OF 16/03/1992, AS AMENDED BY RESOLUTION DATED 24/08/2006 AS AMENDED BY SCHEME OF 2/04/2007 AS  AMENDED ON 27/01/2015  AS AMENDED ON 25/05/2015   ",
+    "CharitableObjects": "TO SUPPORT, CARE FOR AND PROTECT THE PHYSICAL AND MENTAL HEALTH OF PEOPLE LIVING WITH EPILEPSY AND ASSOCIATED LEARNING AND PHYSICAL DISABILITIES THROUGH THE PROVISION OF SUITABLE ACCOMMODATION, TAILORED ASSISTANCE, SKILLS TRAINING, AND LEISURE AND SPORTS ACTIVITIES.\n \n",
+    "RegisteredCompanyNumber": "5822835             ",
+    "ContactName": {
+        "CharityRoleName": null
+    },
+    "Address": {
+        "Line1": "THE MEATH EPILEPSY CHARITY",
+        "Line2": "WESTBROOK ROAD",
+        "Line3": "GODALMING",
+        "Line4": "SURREY",
+        "Line5": null,
+        "Postcode": "GU7 2QH"
+    },
+    "PublicTelephoneNumber": "01483415095",
+    "PublicFaxNumber": null,
+    "EmailAddress": "finance@meath.org.uk",
+    "WebsiteAddress": "www.meath.org.uk",
+    "Activities": "The Meath Epilepsy Trust provides fully supported residential care; on and off site day activities; and domiciliary services for people with complex epilepsy usually associated with a learning or physical disability.  We also have provision in our constitution to admit people without epilepsy if we believe our service meet their needs.",
+    "AreaOfOperation": [
+        "Throughout England                                "
+    ],
+    "Classification": {
+        "What": [
+            "Disability                                                       ",
+            "Accommodation/housing                                            "
+        ],
+        "Who": [
+            "People With Disabilities                                         "
+        ],
+        "How": [
+            "Provides Buildings/facilities/open Space                         ",
+            "Provides Services                                                "
+        ]
+    },
+    "Trustees": [
+        {
+            "TrusteeNumber": 212165784,
+            "TrusteeName": "The Meath Trustee Company Limited",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        }
+    ],
+    "Submission": [
+        {
+            "MailingCycle": "AR04",
+            "FyStart": "01 Apr 2003",
+            "FyEnd": "31 Mar 2004",
+            "AnnualReturnReceivedDate": "21 Jan 2005",
+            "AccountsReturnReceivedDate": "15 Dec 2004",
+            "GrossIncome": "2828118",
+            "TotalExpenditure": "2325917"
+        },
+        {
+            "MailingCycle": "AR05",
+            "FyStart": "01 Apr 2004",
+            "FyEnd": "31 Mar 2005",
+            "AnnualReturnReceivedDate": "30 Dec 2005",
+            "AccountsReturnReceivedDate": "16 Mar 2006",
+            "GrossIncome": "2948818",
+            "TotalExpenditure": "2753580"
+        },
+        {
+            "MailingCycle": "AR06",
+            "FyStart": "01 Apr 2005",
+            "FyEnd": "31 Mar 2006",
+            "AnnualReturnReceivedDate": "15 Feb 2007",
+            "AccountsReturnReceivedDate": "14 Sep 2006",
+            "GrossIncome": "3226159",
+            "TotalExpenditure": "2993653"
+        },
+        {
+            "MailingCycle": "AR07",
+            "FyStart": "01 Apr 2006",
+            "FyEnd": "31 Mar 2007",
+            "AnnualReturnReceivedDate": "25 Jan 2008",
+            "AccountsReturnReceivedDate": "19 Oct 2007",
+            "GrossIncome": "3419334",
+            "TotalExpenditure": "3229161"
+        },
+        {
+            "MailingCycle": "AR08",
+            "FyStart": "01 Apr 2007",
+            "FyEnd": "31 Mar 2008",
+            "AnnualReturnReceivedDate": "12 Dec 2008",
+            "AccountsReturnReceivedDate": "26 Aug 2008",
+            "GrossIncome": "4393641",
+            "TotalExpenditure": "3489960"
+        },
+        {
+            "MailingCycle": "AR09",
+            "FyStart": "01 Apr 2008",
+            "FyEnd": "31 Mar 2009",
+            "AnnualReturnReceivedDate": "18 Mar 2010",
+            "AccountsReturnReceivedDate": "18 Aug 2009",
+            "GrossIncome": "4529804",
+            "TotalExpenditure": "4003674"
+        },
+        {
+            "MailingCycle": "AR10",
+            "FyStart": "01 Apr 2009",
+            "FyEnd": "31 Mar 2010",
+            "AnnualReturnReceivedDate": "11 Jan 2011",
+            "AccountsReturnReceivedDate": "11 Jan 2011",
+            "GrossIncome": "3973562",
+            "TotalExpenditure": "3891698"
+        },
+        {
+            "MailingCycle": "AR11",
+            "FyStart": "01 Apr 2010",
+            "FyEnd": "31 Mar 2011",
+            "AnnualReturnReceivedDate": "24 Dec 2011",
+            "AccountsReturnReceivedDate": "24 Dec 2011",
+            "GrossIncome": "4084783",
+            "TotalExpenditure": "3709649"
+        },
+        {
+            "MailingCycle": "AR12",
+            "FyStart": "01 Apr 2011",
+            "FyEnd": "31 Mar 2012",
+            "AnnualReturnReceivedDate": "05 Sep 2012",
+            "AccountsReturnReceivedDate": "17 Jan 2013",
+            "GrossIncome": "4126799",
+            "TotalExpenditure": "3959451"
+        },
+        {
+            "MailingCycle": "AR13",
+            "FyStart": "01 Apr 2012",
+            "FyEnd": "31 Mar 2013",
+            "AnnualReturnReceivedDate": "04 Sep 2013",
+            "AccountsReturnReceivedDate": "12 Sep 2013",
+            "GrossIncome": "4781088",
+            "TotalExpenditure": "4085386"
+        },
+        {
+            "MailingCycle": "AR14",
+            "FyStart": "01 Apr 2013",
+            "FyEnd": "31 Mar 2014",
+            "AnnualReturnReceivedDate": "09 Dec 2014",
+            "AccountsReturnReceivedDate": "09 Dec 2014",
+            "GrossIncome": "4591479",
+            "TotalExpenditure": "4286749"
+        },
+        {
+            "MailingCycle": "AR15",
+            "FyStart": "01 Apr 2014",
+            "FyEnd": "31 Mar 2015",
+            "AnnualReturnReceivedDate": "03 Dec 2015",
+            "AccountsReturnReceivedDate": "03 Dec 2015",
+            "GrossIncome": "4727645",
+            "TotalExpenditure": "4560963"
+        },
+        {
+            "MailingCycle": "AR16",
+            "FyStart": "01 Apr 2015",
+            "FyEnd": "31 Mar 2016",
+            "AnnualReturnReceivedDate": "26 Jan 2017",
+            "AccountsReturnReceivedDate": "26 Jan 2017",
+            "GrossIncome": "5709555",
+            "TotalExpenditure": "5313412"
+        },
+        {
+            "MailingCycle": "AR17",
+            "FyStart": "01 Apr 2016",
+            "FyEnd": "31 Mar 2017",
+            "AnnualReturnReceivedDate": "10 Jan 2018",
+            "AccountsReturnReceivedDate": "10 Jan 2018",
+            "GrossIncome": "6075481",
+            "TotalExpenditure": "6323357"
+        },
+        {
+            "MailingCycle": "AR18",
+            "FyStart": "01 Apr 2017",
+            "FyEnd": "31 Mar 2018",
+            "AnnualReturnReceivedDate": "13 Nov 2018",
+            "AccountsReturnReceivedDate": "13 Nov 2018",
+            "GrossIncome": "6364989",
+            "TotalExpenditure": "6781286"
+        },
+        {
+            "MailingCycle": "AR19",
+            "FyStart": "01 Apr 2018(estimated)",
+            "FyEnd": "31 Mar 2019(estimated)",
+            "AnnualReturnReceivedDate": null,
+            "AccountsReturnReceivedDate": null,
+            "GrossIncome": null,
+            "TotalExpenditure": null
+        }
+    ],
+    "AccountListing": [
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2018",
+            "Filename": "Ends59\\0000200359_AC_20180331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends59\\0000200359_AC_20180331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2017",
+            "Filename": "Ends59\\0000200359_AC_20170331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends59\\0000200359_AC_20170331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2016",
+            "Filename": "Ends59\\0000200359_AC_20160331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends59\\0000200359_AC_20160331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2015",
+            "Filename": "Ends59\\0000200359_AC_20150331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends59\\0000200359_AC_20150331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2014",
+            "Filename": "Ends59\\0000200359_AC_20140331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends59\\0000200359_AC_20140331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        }
+    ],
+    "CIOInsolvencyListing": [],
+    "ExtendedRegistrationHistory": [
+        {
+            "CharityEventID": 76191,
+            "OrganisationNumber": 200359,
+            "DateOfEvent": "1962-09-22 00:00:00",
+            "AssociatedOrganisationNumber": -1,
+            "CharityGroupID": -1,
+            "GroupSubsidarySuffix": 0,
+            "CharityEventReasonCode": null,
+            "CharityEventTypeCode": "STD",
+            "RegisteredCharityNumber": 200359,
+            "AssociatedRegisteredCharityNumber": -1,
+            "AssociatedCharityName": null,
+            "CharityEventClassCode": "REG",
+            "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+            "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+        }
+    ],
+    "CIOAmalgamation": [],
+    "SummaryInformationReturnListing": [],
+    "Subsidiary": [
+        {
+            "Number": "1",
+            "Name": "COUNTESS OF MEATH'S FUND FOR THE ENDOWMENT OF THE LAUDERDALE BED                                                                                      ",
+            "RegistrationDate": "22/09/1962",
+            "RemovalDate": "11/01/1996 12:46:00",
+            "OrganisationType": "RM  "
+        }
+    ],
+    "Returns": [
+        {
+            "RegisteredCharityNumber": "200359",
+            "AccountType": "CharityOnlyAccounts",
+            "Resources": {
+                "Incoming": {
+                    "VoluntaryIncome": "178630",
+                    "Legacies": "0",
+                    "Endowments": "0",
+                    "ActivitiesForGenerationFunds": "515701",
+                    "Investment": "17416",
+                    "CharitableActivities": "5653242",
+                    "Other": "0",
+                    "Total": "6364989"
+                },
+                "Expended": {
+                    "VoluntaryIncome": "0",
+                    "Fundraising": "0",
+                    "InvestmentManagement": "0",
+                    "CharitableActivities": "5985463",
+                    "Grants": "0",
+                    "Governance": "24200",
+                    "Other": "661598",
+                    "Total": "6781286"
+                },
+                "Other": {
+                    "RevaluationsOfFixedAssets": "0",
+                    "GainsLossesOnAssets": "-11928",
+                    "GainsLossesOnPensionSchemes": "0",
+                    "SupportCosts": "917519",
+                    "Depreciation": "391457",
+                    "LevelOfReserves": "1400000"
+                }
+            },
+            "AssetsAndLiabilities": {
+                "Assets": {
+                    "TotalFixedAssets": "13965240",
+                    "FixedAssetInvestments": "796239",
+                    "TotalCurrentAssets": "1259479",
+                    "CurrentAssetInvestments": "0",
+                    "Cash": "755448",
+                    "CreditorsDueWithinOneYear": "649259",
+                    "LongTermCreditors": "0",
+                    "PensionFundAssets": "0",
+                    "TotalFixedAssetsAtStartOfYear": "0",
+                    "FixedAssetInvestmentsAtStartOfYear": "0",
+                    "TotalNetAssets": "0"
+                },
+                "Funds": {
+                    "EndowmentFunds": "4944753",
+                    "RestrictedFunds": "0",
+                    "UnrestrictedFunds": "9630707",
+                    "TotalFunds": "14575460"
+                }
+            },
+            "Employees": {
+                "NoEmployees": "206",
+                "NoVolunteers": "70"
+            },
+            "FyearEnd": "31/03/2018"
+        }
+    ],
+    "CharityMainGroupType": "SCH ",
+    "LatestFiling": {
+        "AnnualReturnPeriod": "31/03/2018",
+        "AnnualReturnReceived": "13/11/2018",
+        "AccountsPeriod": "31/03/2018",
+        "AccountsReceived": "13/11/2018 14:16:00",
+        "HasRecieveAnnualReturn": 1,
+        "HasRecieveAccounts": false,
+        "Message": "AR18",
+        "Inactive_Status": 0,
+        "AccountsPeriodForDue": "31/03/2018",
+        "AccountsReceivedForDue": "13/11/2018 14:16:00",
+        "AnnualReturnReceivedForDue": "13/11/2018",
+        "HasRecieveAccountsForDue": false,
+        "HasRecieveAnnualReturnForDue": 1,
+        "EarliestMissingAR": "31/03/2019",
+        "EarliestMissingAccounts": "31/03/2019",
+        "LatestAccQualiifed": 0
+    },
+    "OrganisationType": "R",
+    "InterimManager": null,
+    "PublishedReport": [],
+    "WasExempt": false,
+    "CIOIndicator": null,
+    "CIODateConstituted": null,
+    "CIODissolutionDate": null,
+    "IsCIODissolutionReceived": false,
+    "IsCIOAdminDissolution": false,
+    "IsSuspended": false,
+    "IsInsolvencyActDocsReceived": false,
+    "IsCIOOnAmalgamationNotice": false,
+    "LastRegistrationEvent": {
+        "CharityEventID": 76191,
+        "OrganisationNumber": 200359,
+        "DateOfEvent": "1962-09-22 00:00:00",
+        "AssociatedOrganisationNumber": -1,
+        "CharityGroupID": -1,
+        "GroupSubsidarySuffix": 0,
+        "CharityEventReasonCode": null,
+        "CharityEventTypeCode": "STD",
+        "RegisteredCharityNumber": 200359,
+        "AssociatedRegisteredCharityNumber": -1,
+        "AssociatedCharityName": null,
+        "CharityEventClassCode": "REG",
+        "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+        "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+    },
+    "Insolvent": 0,
+    "InAdministration": 0,
+    "CIOConversionStatus": 0,
+    "ClassInquiry": 0,
+    "InSuspense": 0
+}

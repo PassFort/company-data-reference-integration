@@ -1,0 +1,457 @@
+{
+    "CharityNumber": 1000653,
+    "HasAccountsToDisplay": true,
+    "RegisteredCharityNumber": 1000653,
+    "SubsidiaryNumber": 0,
+    "CharityName": "THE HAMLET CENTRE TRUST                                                                                                                               ",
+    "RegistrationHistory": [
+        {
+            "RegistrationDate": "24/10/1990",
+            "RegistrationRemovalDate": null,
+            "RemovalReason": null
+        }
+    ],
+    "WorkingNames": [
+        "NORWICH TOY LIBRARY                                                                                                                                   ~W ",
+        "THE HAMLET                                                                                                                                            ~W "
+    ],
+    "AreaOfBenefit": "NORFOLK",
+    "GoverningDocument": "MEMORANDUM AND ARTICLES OF ASSOCIATION INCORPORATED 5TH JULY 1990. AS AMENDED BY RESOLUTION PASSED ON 23 MAY 1993.",
+    "CharitableObjects": "1) THE RELIEF OF PERSONS WITH SPECIAL NEEDS 2) THE ADVANCEMENT OF EDUCATION OF CHILDREN AND YOUNG PERSONS WITH SPECIAL NEEDS WITHIN THE AREAS OF NORWICH  AND NORFOLK.",
+    "RegisteredCompanyNumber": "2518973",
+    "ContactName": {
+        "CharityRoleName": null
+    },
+    "Address": {
+        "Line1": "The Hamlet                         ",
+        "Line2": "221 St. Leonards Road              ",
+        "Line3": "NORWICH                            ",
+        "Line4": null,
+        "Line5": null,
+        "Postcode": "NR1 4JN "
+    },
+    "PublicTelephoneNumber": "01603765405",
+    "PublicFaxNumber": null,
+    "EmailAddress": "admin@thehamletcharity.org.uk",
+    "WebsiteAddress": "www.thehamletcharity.org.uk",
+    "Activities": "We provide recreational, educational, social and vocational opportunities and short breaks for children and adults with disabilities in Norwich and Norfolk.",
+    "AreaOfOperation": [
+        "Norfolk                                           "
+    ],
+    "Classification": {
+        "What": [
+            "Education/training                                               ",
+            "The Advancement Of Health Or Saving Of Lives                     ",
+            "Disability                                                       ",
+            "Arts/culture/heritage/science                                    ",
+            "Amateur Sport                                                    ",
+            "Recreation                                                       ",
+            "Other Charitable Purposes                                        "
+        ],
+        "Who": [
+            "Children/young People                                            ",
+            "People With Disabilities                                         ",
+            "The General Public/mankind                                       "
+        ],
+        "How": [
+            "Provides Buildings/facilities/open Space                         ",
+            "Provides Services                                                ",
+            "Provides Advocacy/advice/information                             ",
+            "Other Charitable Activities                                      "
+        ]
+    },
+    "Trustees": [
+        {
+            "TrusteeNumber": 11686604,
+            "TrusteeName": "Tania Davies",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 11764375,
+            "TrusteeName": "Stuart Marpole",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 11890458,
+            "TrusteeName": "Nicholas Hancox",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 11890459,
+            "TrusteeName": "Ann Way",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 12017824,
+            "TrusteeName": "gary pearce",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 12197979,
+            "TrusteeName": "Hester Coutanche",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 12237781,
+            "TrusteeName": "Susan Coombe",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 12333933,
+            "TrusteeName": "Caron Betts",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        },
+        {
+            "TrusteeNumber": 12333939,
+            "TrusteeName": "Stephen Riley Elliott",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        }
+    ],
+    "Submission": [
+        {
+            "MailingCycle": "AR04",
+            "FyStart": "01 Apr 2003",
+            "FyEnd": "31 Mar 2004",
+            "AnnualReturnReceivedDate": "20 Jan 2005",
+            "AccountsReturnReceivedDate": "20 Jan 2005",
+            "GrossIncome": "484106",
+            "TotalExpenditure": "495614"
+        },
+        {
+            "MailingCycle": "AR05",
+            "FyStart": "01 Apr 2004",
+            "FyEnd": "31 Mar 2005",
+            "AnnualReturnReceivedDate": "15 Feb 2006",
+            "AccountsReturnReceivedDate": "15 Feb 2006",
+            "GrossIncome": "457352",
+            "TotalExpenditure": "470226"
+        },
+        {
+            "MailingCycle": "AR06",
+            "FyStart": "01 Apr 2005",
+            "FyEnd": "31 Mar 2006",
+            "AnnualReturnReceivedDate": "30 Nov 2006",
+            "AccountsReturnReceivedDate": "03 Nov 2006",
+            "GrossIncome": "475190",
+            "TotalExpenditure": "485202"
+        },
+        {
+            "MailingCycle": "AR07",
+            "FyStart": "01 Apr 2006",
+            "FyEnd": "31 Mar 2007",
+            "AnnualReturnReceivedDate": "28 Nov 2007",
+            "AccountsReturnReceivedDate": "12 Nov 2007",
+            "GrossIncome": "526514",
+            "TotalExpenditure": "512553"
+        },
+        {
+            "MailingCycle": "AR08",
+            "FyStart": "01 Apr 2007",
+            "FyEnd": "31 Mar 2008",
+            "AnnualReturnReceivedDate": "24 Sep 2008",
+            "AccountsReturnReceivedDate": "26 Sep 2008",
+            "GrossIncome": "546433",
+            "TotalExpenditure": "573697"
+        },
+        {
+            "MailingCycle": "AR09",
+            "FyStart": "01 Apr 2008",
+            "FyEnd": "31 Mar 2009",
+            "AnnualReturnReceivedDate": "15 Oct 2009",
+            "AccountsReturnReceivedDate": "21 Sep 2009",
+            "GrossIncome": "619375",
+            "TotalExpenditure": "631978"
+        },
+        {
+            "MailingCycle": "AR10",
+            "FyStart": "01 Apr 2009",
+            "FyEnd": "31 Mar 2010",
+            "AnnualReturnReceivedDate": "17 Jan 2011",
+            "AccountsReturnReceivedDate": "03 Aug 2010",
+            "GrossIncome": "1331955",
+            "TotalExpenditure": "737483"
+        },
+        {
+            "MailingCycle": "AR11",
+            "FyStart": "01 Apr 2010",
+            "FyEnd": "31 Mar 2011",
+            "AnnualReturnReceivedDate": "07 Dec 2011",
+            "AccountsReturnReceivedDate": "26 Aug 2011",
+            "GrossIncome": "943139",
+            "TotalExpenditure": "787527"
+        },
+        {
+            "MailingCycle": "AR12",
+            "FyStart": "01 Apr 2011",
+            "FyEnd": "31 Mar 2012",
+            "AnnualReturnReceivedDate": "25 Oct 2012",
+            "AccountsReturnReceivedDate": "09 Oct 2012",
+            "GrossIncome": "1155420",
+            "TotalExpenditure": "809989"
+        },
+        {
+            "MailingCycle": "AR13",
+            "FyStart": "01 Apr 2012",
+            "FyEnd": "31 Mar 2013",
+            "AnnualReturnReceivedDate": "29 Jul 2013",
+            "AccountsReturnReceivedDate": "29 Jul 2013",
+            "GrossIncome": "958564",
+            "TotalExpenditure": "910457"
+        },
+        {
+            "MailingCycle": "AR14",
+            "FyStart": "01 Apr 2013",
+            "FyEnd": "31 Mar 2014",
+            "AnnualReturnReceivedDate": "21 Aug 2014",
+            "AccountsReturnReceivedDate": "21 Aug 2014",
+            "GrossIncome": "1327301",
+            "TotalExpenditure": "1080199"
+        },
+        {
+            "MailingCycle": "AR15",
+            "FyStart": "01 Apr 2014",
+            "FyEnd": "31 Mar 2015",
+            "AnnualReturnReceivedDate": "20 Jul 2015",
+            "AccountsReturnReceivedDate": "20 Jul 2015",
+            "GrossIncome": "1142520",
+            "TotalExpenditure": "1103181"
+        },
+        {
+            "MailingCycle": "AR16",
+            "FyStart": "01 Apr 2015",
+            "FyEnd": "31 Mar 2016",
+            "AnnualReturnReceivedDate": "29 Jul 2016",
+            "AccountsReturnReceivedDate": "29 Jul 2016",
+            "GrossIncome": "1116862",
+            "TotalExpenditure": "1208048"
+        },
+        {
+            "MailingCycle": "AR17",
+            "FyStart": "01 Apr 2016",
+            "FyEnd": "31 Mar 2017",
+            "AnnualReturnReceivedDate": "29 Aug 2017",
+            "AccountsReturnReceivedDate": "29 Aug 2017",
+            "GrossIncome": "1210017",
+            "TotalExpenditure": "1244138"
+        },
+        {
+            "MailingCycle": "AR18",
+            "FyStart": "01 Apr 2017",
+            "FyEnd": "31 Mar 2018",
+            "AnnualReturnReceivedDate": "25 Sep 2018",
+            "AccountsReturnReceivedDate": "25 Sep 2018",
+            "GrossIncome": "1111943",
+            "TotalExpenditure": "1037611"
+        },
+        {
+            "MailingCycle": "AR19",
+            "FyStart": "01 Apr 2018",
+            "FyEnd": "31 Mar 2019",
+            "AnnualReturnReceivedDate": "16 Jul 2019",
+            "AccountsReturnReceivedDate": "16 Jul 2019",
+            "GrossIncome": "1356544",
+            "TotalExpenditure": "1268420"
+        }
+    ],
+    "AccountListing": [
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2019",
+            "Filename": "Ends53\\0001000653_AC_20190331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends53\\0001000653_AC_20190331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2018",
+            "Filename": "Ends53\\0001000653_AC_20180331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends53\\0001000653_AC_20180331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2017",
+            "Filename": "Ends53\\0001000653_AC_20170331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends53\\0001000653_AC_20170331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2016",
+            "Filename": "Ends53\\0001000653_AC_20160331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends53\\0001000653_AC_20160331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2015",
+            "Filename": "Ends53\\0001000653_AC_20150331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends53\\0001000653_AC_20150331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Mar 2014",
+            "Filename": "Ends53\\0001000653_AC_20140331_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends53\\0001000653_AC_20140331_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        }
+    ],
+    "CIOInsolvencyListing": [],
+    "ExtendedRegistrationHistory": [
+        {
+            "CharityEventID": 131757,
+            "OrganisationNumber": 1000653,
+            "DateOfEvent": "1990-10-24 00:00:00",
+            "AssociatedOrganisationNumber": -1,
+            "CharityGroupID": -1,
+            "GroupSubsidarySuffix": 0,
+            "CharityEventReasonCode": null,
+            "CharityEventTypeCode": "STD",
+            "RegisteredCharityNumber": 1000653,
+            "AssociatedRegisteredCharityNumber": -1,
+            "AssociatedCharityName": null,
+            "CharityEventClassCode": "REG",
+            "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+            "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+        }
+    ],
+    "CIOAmalgamation": [],
+    "SummaryInformationReturnListing": [],
+    "Subsidiary": [],
+    "Returns": [
+        {
+            "RegisteredCharityNumber": "1000653",
+            "AccountType": "CharityOnlyAccounts",
+            "Resources": {
+                "Incoming": {
+                    "VoluntaryIncome": "193869",
+                    "Legacies": "3226",
+                    "Endowments": "0",
+                    "ActivitiesForGenerationFunds": "17886",
+                    "Investment": "104",
+                    "CharitableActivities": "1142218",
+                    "Other": "2467",
+                    "Total": "1356544"
+                },
+                "Expended": {
+                    "VoluntaryIncome": "0",
+                    "Fundraising": "0",
+                    "InvestmentManagement": "0",
+                    "CharitableActivities": "1257846",
+                    "Grants": "0",
+                    "Governance": "4500",
+                    "Other": "0",
+                    "Total": "1268420"
+                },
+                "Other": {
+                    "RevaluationsOfFixedAssets": "0",
+                    "GainsLossesOnAssets": "0",
+                    "GainsLossesOnPensionSchemes": "0",
+                    "SupportCosts": "306602",
+                    "Depreciation": "72254",
+                    "LevelOfReserves": "70842"
+                }
+            },
+            "AssetsAndLiabilities": {
+                "Assets": {
+                    "TotalFixedAssets": "1457412",
+                    "FixedAssetInvestments": "0",
+                    "TotalCurrentAssets": "515359",
+                    "CurrentAssetInvestments": "0",
+                    "Cash": "398049",
+                    "CreditorsDueWithinOneYear": "61081",
+                    "LongTermCreditors": "0",
+                    "PensionFundAssets": "0",
+                    "TotalFixedAssetsAtStartOfYear": "0",
+                    "FixedAssetInvestmentsAtStartOfYear": "0",
+                    "TotalNetAssets": "0"
+                },
+                "Funds": {
+                    "EndowmentFunds": "0",
+                    "RestrictedFunds": "997473",
+                    "UnrestrictedFunds": "914217",
+                    "TotalFunds": "1911690"
+                }
+            },
+            "Employees": {
+                "NoEmployees": "55",
+                "NoVolunteers": "40"
+            },
+            "FyearEnd": "31/03/2019"
+        }
+    ],
+    "CharityMainGroupType": null,
+    "LatestFiling": {
+        "AnnualReturnPeriod": "31/03/2019",
+        "AnnualReturnReceived": "16/07/2019",
+        "AccountsPeriod": "31/03/2019",
+        "AccountsReceived": "16/07/2019 15:35:00",
+        "HasRecieveAnnualReturn": 1,
+        "HasRecieveAccounts": false,
+        "Message": "AR19",
+        "Inactive_Status": 0,
+        "AccountsPeriodForDue": "31/03/2018",
+        "AccountsReceivedForDue": "25/09/2018 12:27:00",
+        "AnnualReturnReceivedForDue": "25/09/2018 12:27:00",
+        "HasRecieveAccountsForDue": false,
+        "HasRecieveAnnualReturnForDue": 1,
+        "EarliestMissingAR": "01/01/1900",
+        "EarliestMissingAccounts": "01/01/1900",
+        "LatestAccQualiifed": 0
+    },
+    "OrganisationType": "R",
+    "InterimManager": null,
+    "PublishedReport": [],
+    "WasExempt": false,
+    "CIOIndicator": null,
+    "CIODateConstituted": null,
+    "CIODissolutionDate": null,
+    "IsCIODissolutionReceived": false,
+    "IsCIOAdminDissolution": false,
+    "IsSuspended": false,
+    "IsInsolvencyActDocsReceived": false,
+    "IsCIOOnAmalgamationNotice": false,
+    "LastRegistrationEvent": {
+        "CharityEventID": 131757,
+        "OrganisationNumber": 1000653,
+        "DateOfEvent": "1990-10-24 00:00:00",
+        "AssociatedOrganisationNumber": -1,
+        "CharityGroupID": -1,
+        "GroupSubsidarySuffix": 0,
+        "CharityEventReasonCode": null,
+        "CharityEventTypeCode": "STD",
+        "RegisteredCharityNumber": 1000653,
+        "AssociatedRegisteredCharityNumber": -1,
+        "AssociatedCharityName": null,
+        "CharityEventClassCode": "REG",
+        "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+        "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+    },
+    "Insolvent": 0,
+    "InAdministration": 0,
+    "CIOConversionStatus": 0,
+    "ClassInquiry": 0,
+    "InSuspense": 0
+}

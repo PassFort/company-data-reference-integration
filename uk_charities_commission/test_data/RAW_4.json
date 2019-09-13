@@ -1,0 +1,399 @@
+{
+    "CharityNumber": 233748,
+    "HasAccountsToDisplay": true,
+    "RegisteredCharityNumber": 233748,
+    "SubsidiaryNumber": 0,
+    "CharityName": "MIDDLESBROUGH DIOCESAN TRUST                                                                                                                          ",
+    "RegistrationHistory": [
+        {
+            "RegistrationDate": "21/04/1964",
+            "RegistrationRemovalDate": null,
+            "RemovalReason": null
+        }
+    ],
+    "WorkingNames": [],
+    "AreaOfBenefit": "ROMAN CATHOLIC DIOCESE OF MIDDLESBROUGH",
+    "GoverningDocument": "TRUST DEED DATED 2/1/1928 AS AMENDED BY DEED OF REVOCATION  AND DECLARATION OF TRUSTS DATED 9 OCTOBER 1997",
+    "CharitableObjects": "THE ADVANCEMENT OR MAINTENANCE OF THE ROMAN CATHOLIC RELIGION IN THE ROMAN CATHOLIC DIOCESE OF MIDDLESBOROUGH",
+    "RegisteredCompanyNumber": null,
+    "ContactName": {
+        "CharityRoleName": null
+    },
+    "Address": {
+        "Line1": "DIOCESE OF MIDDLESBROUGH",
+        "Line2": "50A THE AVENUE",
+        "Line3": "MIDDLESBROUGH",
+        "Line4": null,
+        "Line5": null,
+        "Postcode": "TS5 6QT"
+    },
+    "PublicTelephoneNumber": "01642850505",
+    "PublicFaxNumber": null,
+    "EmailAddress": "financialsecretary@rdcmidd.org.uk",
+    "WebsiteAddress": "www.middlesbrough-diocese.org.uk",
+    "Activities": "The aims and objectives of the Trust are the advancement or maintenance of the Roman Catholic religion in the Roman Catholic Diocese of Middlesbrough.",
+    "AreaOfOperation": [
+        "City Of York                                      ",
+        "East Riding Of Yorkshire                          ",
+        "Kingston Upon Hull City                           ",
+        "Middlesbrough                                     ",
+        "North Yorkshire                                   ",
+        "Redcar And Cleveland                              ",
+        "Stockton-on-tees                                  "
+    ],
+    "Classification": {
+        "What": [
+            "Education/training                                               ",
+            "Religious Activities                                             ",
+            "Human Rights/religious Or Racial Harmony/equality Or Diversity   "
+        ],
+        "Who": [
+            "Children/young People                                            ",
+            "Elderly/old People                                               ",
+            "People With Disabilities                                         ",
+            "Other Defined Groups                                             ",
+            "The General Public/mankind                                       "
+        ],
+        "How": [
+            "Provides Buildings/facilities/open Space                         ",
+            "Provides Services                                                ",
+            "Provides Advocacy/advice/information                             "
+        ]
+    },
+    "Trustees": [
+        {
+            "TrusteeNumber": 200885750,
+            "TrusteeName": "DIOCESE OF MIDDLESBROUGH TRUSTEE",
+            "RelatedCharitiesCount": 0,
+            "RelatedCharities": []
+        }
+    ],
+    "Submission": [
+        {
+            "MailingCycle": "AR04",
+            "FyStart": "01 Jan 2004",
+            "FyEnd": "31 Dec 2004",
+            "AnnualReturnReceivedDate": "09 Nov 2005",
+            "AccountsReturnReceivedDate": "09 Nov 2005",
+            "GrossIncome": "4847271",
+            "TotalExpenditure": "4911264"
+        },
+        {
+            "MailingCycle": "AR05",
+            "FyStart": "01 Jan 2005",
+            "FyEnd": "31 Dec 2005",
+            "AnnualReturnReceivedDate": "27 Oct 2006",
+            "AccountsReturnReceivedDate": "27 Oct 2006",
+            "GrossIncome": "5302629",
+            "TotalExpenditure": "5266972"
+        },
+        {
+            "MailingCycle": "AR06",
+            "FyStart": "01 Jan 2006",
+            "FyEnd": "31 Dec 2006",
+            "AnnualReturnReceivedDate": "19 Oct 2007",
+            "AccountsReturnReceivedDate": "19 Oct 2007",
+            "GrossIncome": "5477690",
+            "TotalExpenditure": "5230668"
+        },
+        {
+            "MailingCycle": "AR07",
+            "FyStart": "01 Jan 2007",
+            "FyEnd": "31 Dec 2007",
+            "AnnualReturnReceivedDate": "29 Oct 2008",
+            "AccountsReturnReceivedDate": "29 Oct 2008",
+            "GrossIncome": "6215623",
+            "TotalExpenditure": "5586267"
+        },
+        {
+            "MailingCycle": "AR08",
+            "FyStart": "01 Jan 2008",
+            "FyEnd": "31 Dec 2008",
+            "AnnualReturnReceivedDate": "28 Oct 2009",
+            "AccountsReturnReceivedDate": "28 Oct 2009",
+            "GrossIncome": "5790591",
+            "TotalExpenditure": "5797251"
+        },
+        {
+            "MailingCycle": "AR09",
+            "FyStart": "01 Jan 2009",
+            "FyEnd": "31 Dec 2009",
+            "AnnualReturnReceivedDate": "29 Oct 2010",
+            "AccountsReturnReceivedDate": "29 Oct 2010",
+            "GrossIncome": "7086557",
+            "TotalExpenditure": "5752543"
+        },
+        {
+            "MailingCycle": "AR10",
+            "FyStart": "01 Jan 2010",
+            "FyEnd": "31 Dec 2010",
+            "AnnualReturnReceivedDate": "28 Oct 2011",
+            "AccountsReturnReceivedDate": "28 Oct 2011",
+            "GrossIncome": "6713996",
+            "TotalExpenditure": "6067000"
+        },
+        {
+            "MailingCycle": "AR11",
+            "FyStart": "01 Jan 2011",
+            "FyEnd": "31 Dec 2011",
+            "AnnualReturnReceivedDate": "31 Oct 2012",
+            "AccountsReturnReceivedDate": "31 Oct 2012",
+            "GrossIncome": "5650842",
+            "TotalExpenditure": "6030598"
+        },
+        {
+            "MailingCycle": "AR12",
+            "FyStart": "01 Jan 2012",
+            "FyEnd": "31 Dec 2012",
+            "AnnualReturnReceivedDate": "31 Oct 2013",
+            "AccountsReturnReceivedDate": "31 Oct 2013",
+            "GrossIncome": "7710799",
+            "TotalExpenditure": "5853079"
+        },
+        {
+            "MailingCycle": "AR13",
+            "FyStart": "01 Jan 2013",
+            "FyEnd": "31 Dec 2013",
+            "AnnualReturnReceivedDate": "30 Oct 2014",
+            "AccountsReturnReceivedDate": "30 Oct 2014",
+            "GrossIncome": "6507025",
+            "TotalExpenditure": "6154892"
+        },
+        {
+            "MailingCycle": "AR14",
+            "FyStart": "01 Jan 2014",
+            "FyEnd": "31 Dec 2014",
+            "AnnualReturnReceivedDate": "28 Oct 2015",
+            "AccountsReturnReceivedDate": "28 Oct 2015",
+            "GrossIncome": "5562778",
+            "TotalExpenditure": "7395412"
+        },
+        {
+            "MailingCycle": "AR15",
+            "FyStart": "01 Jan 2015",
+            "FyEnd": "31 Dec 2015",
+            "AnnualReturnReceivedDate": "31 Oct 2016",
+            "AccountsReturnReceivedDate": "28 Oct 2016",
+            "GrossIncome": "6464385",
+            "TotalExpenditure": "6306162"
+        },
+        {
+            "MailingCycle": "AR16",
+            "FyStart": "01 Jan 2016",
+            "FyEnd": "31 Dec 2016",
+            "AnnualReturnReceivedDate": "31 Oct 2017",
+            "AccountsReturnReceivedDate": "31 Oct 2017",
+            "GrossIncome": "6158002",
+            "TotalExpenditure": "6394999"
+        },
+        {
+            "MailingCycle": "AR17",
+            "FyStart": "01 Jan 2017",
+            "FyEnd": "31 Dec 2017",
+            "AnnualReturnReceivedDate": "30 Oct 2018",
+            "AccountsReturnReceivedDate": "30 Oct 2018",
+            "GrossIncome": "7557296",
+            "TotalExpenditure": "6293187"
+        },
+        {
+            "MailingCycle": "AR18",
+            "FyStart": "01 Jan 2018(estimated)",
+            "FyEnd": "31 Dec 2018(estimated)",
+            "AnnualReturnReceivedDate": null,
+            "AccountsReturnReceivedDate": null,
+            "GrossIncome": null,
+            "TotalExpenditure": null
+        }
+    ],
+    "AccountListing": [
+        {
+            "AccountPeriodYearEndDate": "31 Dec 2017",
+            "Filename": "Ends48\\0000233748_AC_20171231_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends48\\0000233748_AC_20171231_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Dec 2016",
+            "Filename": "Ends48\\0000233748_AC_20161231_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends48\\0000233748_AC_20161231_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Dec 2015",
+            "Filename": "Ends48\\0000233748_AC_20151231_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends48\\0000233748_AC_20151231_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Dec 2014",
+            "Filename": "Ends48\\0000233748_AC_20141231_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends48\\0000233748_AC_20141231_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        },
+        {
+            "AccountPeriodYearEndDate": "31 Dec 2013",
+            "Filename": "Ends48\\0000233748_AC_20131231_E_C.pdf",
+            "DisplayName": null,
+            "SizeInKB": 0,
+            "HyperlinkReference": "/Accounts/Ends48\\0000233748_AC_20131231_E_C.pdf",
+            "Language": null,
+            "IsColour": null
+        }
+    ],
+    "CIOInsolvencyListing": [],
+    "ExtendedRegistrationHistory": [
+        {
+            "CharityEventID": 16994,
+            "OrganisationNumber": 233748,
+            "DateOfEvent": "1964-04-21 00:00:00",
+            "AssociatedOrganisationNumber": -1,
+            "CharityGroupID": -1,
+            "GroupSubsidarySuffix": 0,
+            "CharityEventReasonCode": null,
+            "CharityEventTypeCode": "STD",
+            "RegisteredCharityNumber": 233748,
+            "AssociatedRegisteredCharityNumber": -1,
+            "AssociatedCharityName": null,
+            "CharityEventClassCode": "REG",
+            "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+            "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+        }
+    ],
+    "CIOAmalgamation": [],
+    "SummaryInformationReturnListing": [],
+    "Subsidiary": [
+        {
+            "Number": "1",
+            "Name": "DIOCESE OF MIDDLESBROUGH CLERGY RETIREMENT FUND                                                                                                       ",
+            "RegistrationDate": "25/11/1997 08:46:00",
+            "RemovalDate": null,
+            "OrganisationType": "R   "
+        }
+    ],
+    "Returns": [
+        {
+            "RegisteredCharityNumber": "233748",
+            "AccountType": "CharityOnlyAccounts",
+            "Resources": {
+                "Incoming": {
+                    "VoluntaryIncome": "4837020",
+                    "Legacies": "1550544",
+                    "Endowments": "0",
+                    "ActivitiesForGenerationFunds": "505632",
+                    "Investment": "1301992",
+                    "CharitableActivities": "517834",
+                    "Other": "394818",
+                    "Total": "7557296"
+                },
+                "Expended": {
+                    "VoluntaryIncome": "0",
+                    "Fundraising": "0",
+                    "InvestmentManagement": "0",
+                    "CharitableActivities": "6233088",
+                    "Grants": "0",
+                    "Governance": "109505",
+                    "Other": "24852",
+                    "Total": "6293187"
+                },
+                "Other": {
+                    "RevaluationsOfFixedAssets": "0",
+                    "GainsLossesOnAssets": "844728",
+                    "GainsLossesOnPensionSchemes": "0",
+                    "SupportCosts": "334435",
+                    "Depreciation": "182204",
+                    "LevelOfReserves": "42989110"
+                }
+            },
+            "AssetsAndLiabilities": {
+                "Assets": {
+                    "TotalFixedAssets": "44605919",
+                    "FixedAssetInvestments": "34288158",
+                    "TotalCurrentAssets": "9121471",
+                    "CurrentAssetInvestments": "0",
+                    "Cash": "7586128",
+                    "CreditorsDueWithinOneYear": "1702519",
+                    "LongTermCreditors": "5912622",
+                    "PensionFundAssets": "0",
+                    "TotalFixedAssetsAtStartOfYear": "46217486",
+                    "FixedAssetInvestmentsAtStartOfYear": "36074259",
+                    "TotalNetAssets": "46112249"
+                },
+                "Funds": {
+                    "EndowmentFunds": "0",
+                    "RestrictedFunds": "3123139",
+                    "UnrestrictedFunds": "42989110",
+                    "TotalFunds": "46112249"
+                }
+            },
+            "Employees": {
+                "NoEmployees": "21",
+                "NoVolunteers": "2000"
+            },
+            "FyearEnd": "31/12/2017"
+        }
+    ],
+    "CharityMainGroupType": "SCH ",
+    "LatestFiling": {
+        "AnnualReturnPeriod": "31/12/2017",
+        "AnnualReturnReceived": "30/10/2018 17:34:00",
+        "AccountsPeriod": "31/12/2017",
+        "AccountsReceived": "30/10/2018 17:34:00",
+        "HasRecieveAnnualReturn": 1,
+        "HasRecieveAccounts": false,
+        "Message": "AR17",
+        "Inactive_Status": 0,
+        "AccountsPeriodForDue": "31/12/2017",
+        "AccountsReceivedForDue": "30/10/2018 17:34:00",
+        "AnnualReturnReceivedForDue": "30/10/2018 17:34:00",
+        "HasRecieveAccountsForDue": false,
+        "HasRecieveAnnualReturnForDue": 1,
+        "EarliestMissingAR": "31/12/2018",
+        "EarliestMissingAccounts": "31/12/2018",
+        "LatestAccQualiifed": 0
+    },
+    "OrganisationType": "R",
+    "InterimManager": null,
+    "PublishedReport": [],
+    "WasExempt": false,
+    "CIOIndicator": null,
+    "CIODateConstituted": null,
+    "CIODissolutionDate": null,
+    "IsCIODissolutionReceived": false,
+    "IsCIOAdminDissolution": false,
+    "IsSuspended": false,
+    "IsInsolvencyActDocsReceived": false,
+    "IsCIOOnAmalgamationNotice": false,
+    "LastRegistrationEvent": {
+        "CharityEventID": 16994,
+        "OrganisationNumber": 233748,
+        "DateOfEvent": "1964-04-21 00:00:00",
+        "AssociatedOrganisationNumber": -1,
+        "CharityGroupID": -1,
+        "GroupSubsidarySuffix": 0,
+        "CharityEventReasonCode": null,
+        "CharityEventTypeCode": "STD",
+        "RegisteredCharityNumber": 233748,
+        "AssociatedRegisteredCharityNumber": -1,
+        "AssociatedCharityName": null,
+        "CharityEventClassCode": "REG",
+        "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+        "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+    },
+    "Insolvent": 0,
+    "InAdministration": 0,
+    "CIOConversionStatus": 0,
+    "ClassInquiry": 0,
+    "InSuspense": 0
+}

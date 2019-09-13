@@ -1,0 +1,158 @@
+{
+    "metadata": {
+        "name": "CHILDREN WITH CANCER UK",
+        "number": "04960054",
+        "uk_charity_commission_number": "298405",
+        "addresses": [
+            {
+                "type": "STRUCTURED",
+                "original_freeform_address": "CHILDREN WITH CANCER UK, 51 GREAT ORMOND STREET, LONDON, WC1N 3JQ"
+            }
+        ],
+        "country_of_incorporation": "GBR",
+        "number_of_employees": 37,
+        "is_active": true,
+        "contact_details": {
+            "email": "info@childrenwithcancer.org.uk",
+            "phone_number": "02074040808",
+            "url": "www.childrenwithcancer.org.uk"
+        },
+        "areas_of_activity": [
+            {
+                "location": "Throughout England And Wales"
+            }
+        ],
+        "description": "OUR MAIN AIMS ARE TO UNDERSTAND WHAT CAUSES CHILDREN TO DEVELOP CANCER, TO DEVELOP IMPROVED TREATMENTS AND TO PROVIDE CARE FOR AFFECTED CHILDREN AND THEIR FAMILIES.  IT IS THE TRUSTEES' POLICY TO MAXIMISE THE PROPORTION OF CHARITABLE OUTPUT THAT IS ACHIEVED THROUGH GRANT MAKING TO ORGANISATIONS.  IT IS INTENDED THAT THE CHARITY WILL FOCUS ON REVENUE FUNDING FOR RESEARCH INTO CAUSES AND TREATMENT.\n\n1) TO PROMOTE THE RELIEF OF CHILDREN AND YOUNG PEOPLE SUFFERING FROM LEUKAEMIA OR ANY OTHER FORM OF CANCER (AND ALLIED DISORDERS) AND OF THEIR FAMILIES 2) TO RAISE PUBLIC AWARENESS AND KNOWLEDGE IN MATTERS RELATING TO LEUKAEMIA OR ANY OTHER FORM OF CANCER (AND ALLIED DISORDERS) AFFECTING CHILDREN AND YOUNG PEOPLE 3) TO PROMOTE RESEARCH INTO THE CAUSES, ALLEVIATION, PREVENTION, TREATMENT AND CURE OF LEUKAEMIA OR ANY OTHER FORM OF CANCER (AND ALLIED DISORDERS) AFFECTING CHILDREN AND YOUNG PEOPLE AND TO PUBLISH THE USEFUL RESULTS OF SUCH RESEARCH.\n\n"
+    },
+    "officers": {
+        "trustees": [
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "EDWARD",
+                                "JAMES"
+                            ],
+                            "family_name": "O'GORMAN"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "LINDA",
+                                "PATRICIA",
+                                "MARY"
+                            ],
+                            "family_name": "ROBSON"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "SANDRA"
+                            ],
+                            "family_name": "MILEHAM"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Alasdair"
+                            ],
+                            "family_name": "Philips"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Virna",
+                                "Frances"
+                            ],
+                            "family_name": "Baillie"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            }
+        ]
+    },
+    "charity_data": {
+        "registration_date": "2005-01-18",
+        "number_of_volunteers": 5,
+        "beneficiaries": [
+            "Children/young People",
+            "People With Disabilities",
+            "Other Charities Or Voluntary Bodies",
+            "The General Public/mankind"
+        ],
+        "activity": [
+            "Makes Grants To Individuals",
+            "Makes Grants To Organisations",
+            "Provides Services",
+            "Provides Advocacy/advice/information",
+            "Sponsors Or Undertakes Research"
+        ],
+        "purpose": [
+            "General Charitable Purposes",
+            "Education/training",
+            "The Advancement Of Health Or Saving Of Lives",
+            "Disability",
+            "Environment/conservation/heritage"
+        ]
+    },
+    "financials": {
+        "total_income_and_endowments": {
+            "value": 14332347,
+            "currency_code": "GBP"
+        },
+        "total_expenditure": {
+            "value": 15719396,
+            "currency_code": "GBP"
+        },
+        "total_funds": {
+            "value": 9544308,
+            "currency_code": "GBP"
+        }
+    }
+}

@@ -1,0 +1,223 @@
+{
+    "metadata": {
+        "name": "THE HAMLET CENTRE TRUST",
+        "number": "02518973",
+        "uk_charity_commission_number": "1000653",
+        "addresses": [
+            {
+                "type": "STRUCTURED",
+                "original_freeform_address": "The Hamlet, 221 St. Leonards Road, NORWICH, NR1 4JN"
+            }
+        ],
+        "country_of_incorporation": "GBR",
+        "number_of_employees": 55,
+        "is_active": true,
+        "contact_details": {
+            "email": "admin@thehamletcharity.org.uk",
+            "phone_number": "01603765405",
+            "url": "www.thehamletcharity.org.uk"
+        },
+        "areas_of_activity": [
+            {
+                "location": "Norfolk"
+            }
+        ],
+        "description": "We provide recreational, educational, social and vocational opportunities and short breaks for children and adults with disabilities in Norwich and Norfolk.\n\n1) THE RELIEF OF PERSONS WITH SPECIAL NEEDS 2) THE ADVANCEMENT OF EDUCATION OF CHILDREN AND YOUNG PERSONS WITH SPECIAL NEEDS WITHIN THE AREAS OF NORWICH  AND NORFOLK."
+    },
+    "officers": {
+        "trustees": [
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Tania"
+                            ],
+                            "family_name": "Davies"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Stuart"
+                            ],
+                            "family_name": "Marpole"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Nicholas"
+                            ],
+                            "family_name": "Hancox"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Ann"
+                            ],
+                            "family_name": "Way"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "gary"
+                            ],
+                            "family_name": "pearce"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Hester"
+                            ],
+                            "family_name": "Coutanche"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Susan"
+                            ],
+                            "family_name": "Coombe"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Caron"
+                            ],
+                            "family_name": "Betts"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Stephen",
+                                "Riley"
+                            ],
+                            "family_name": "Elliott"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            }
+        ]
+    },
+    "charity_data": {
+        "registration_date": "1990-10-24",
+        "number_of_volunteers": 40,
+        "beneficiaries": [
+            "Children/young People",
+            "People With Disabilities",
+            "The General Public/mankind"
+        ],
+        "activity": [
+            "Provides Buildings/facilities/open Space",
+            "Provides Services",
+            "Provides Advocacy/advice/information",
+            "Other Charitable Activities"
+        ],
+        "purpose": [
+            "Education/training",
+            "The Advancement Of Health Or Saving Of Lives",
+            "Disability",
+            "Arts/culture/heritage/science",
+            "Amateur Sport",
+            "Recreation",
+            "Other Charitable Purposes"
+        ]
+    },
+    "financials": {
+        "total_income_and_endowments": {
+            "value": 1356544,
+            "currency_code": "GBP"
+        },
+        "total_expenditure": {
+            "value": 1268420,
+            "currency_code": "GBP"
+        },
+        "total_funds": {
+            "value": 1911690,
+            "currency_code": "GBP"
+        }
+    }
+}

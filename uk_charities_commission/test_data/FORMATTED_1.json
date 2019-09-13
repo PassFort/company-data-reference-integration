@@ -1,0 +1,66 @@
+{
+    "metadata": {
+        "name": "TAA SERVICE",
+        "number": "07744414",
+        "uk_charity_commission_number": "1144929",
+        "addresses": [
+            {
+                "type": "STRUCTURED",
+                "original_freeform_address": "BLUE SKIES HOUSE, BUTLERS LEAP, RUGBY, WARWICKSHIRE, CV21 3RQ"
+            }
+        ],
+        "country_of_incorporation": "GBR",
+        "number_of_employees": null,
+        "is_active": true,
+        "contact_details": {
+            "email": null,
+            "phone_number": "03003045999",
+            "url": "www.theairambulanceservice.co.uk"
+        },
+        "areas_of_activity": [
+            {
+                "location": "Throughout England And Wales"
+            }
+        ],
+        "description": "Dormant company - provision of helicopter emergency medical services - Active company is The Air Ambulance Service\n\n\tTHE CHARITY'S OBJECTS (\"OBJECTS\") ARE SPECIFICALLY RESTRICTED TO THE FOLLOWING:\n\tTHE RELIEF OF SICKNESS AND INJURY AND THE PROTECTION OF HUMAN LIFE PRINCIPALLY (BUT NOT EXCLUSIVELY) BY THE PROVISION OF AN AIR AMBULANCE SERVICE (WHETHER OR NOT IN CONJUNCTION WITH OTHER PARTIES FROM TIME TO TIME) WITHIN THE UNITED KINGDOM OR ELSEWHERE."
+    },
+    "officers": {
+        "trustees": [
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "JOHN"
+                            ],
+                            "family_name": "WILLIAMS"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            }
+        ]
+    },
+    "charity_data": {
+        "registration_date": "2011-12-06",
+        "number_of_volunteers": null,
+        "beneficiaries": [
+            "The General Public/mankind"
+        ],
+        "activity": [
+            "Provides Services"
+        ],
+        "purpose": [
+            "The Advancement Of Health Or Saving Of Lives"
+        ]
+    },
+    "financials": {
+        "total_income_and_endowments": null,
+        "total_expenditure": null,
+        "total_funds": null
+    }
+}

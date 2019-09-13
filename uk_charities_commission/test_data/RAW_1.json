@@ -1,0 +1,201 @@
+{
+    "CharityNumber": 5022310,
+    "HasAccountsToDisplay": false,
+    "RegisteredCharityNumber": 1144929,
+    "SubsidiaryNumber": 0,
+    "CharityName": "TAA SERVICE                                                                                                                                           ",
+    "RegistrationHistory": [
+        {
+            "RegistrationDate": "06/12/2011 10:43:00",
+            "RegistrationRemovalDate": null,
+            "RemovalReason": null
+        }
+    ],
+    "WorkingNames": [
+        "THE AIR AMBULANCE SERVICE                                                                                                                             ~O ",
+        "T.A.A.S                                                                                                                                               ~O "
+    ],
+    "AreaOfBenefit": null,
+    "GoverningDocument": "MEMORANDUM  AND ARTICLES INCORPORATED 17 AUG 2011\nAS AMENDED BY CERTIFICATE OF INCORPORATION ON CHANGE OF NAME DATED 27/04/2012",
+    "CharitableObjects": "\tTHE CHARITY'S OBJECTS (\"OBJECTS\") ARE SPECIFICALLY RESTRICTED TO THE FOLLOWING:\n\tTHE RELIEF OF SICKNESS AND INJURY AND THE PROTECTION OF HUMAN LIFE PRINCIPALLY (BUT NOT EXCLUSIVELY) BY THE PROVISION OF AN AIR AMBULANCE SERVICE (WHETHER OR NOT IN CONJUNCTION WITH OTHER PARTIES FROM TIME TO TIME) WITHIN THE UNITED KINGDOM OR ELSEWHERE.",
+    "RegisteredCompanyNumber": "07744414",
+    "ContactName": {
+        "CharityRoleName": null
+    },
+    "Address": {
+        "Line1": "BLUE SKIES HOUSE                   ",
+        "Line2": "BUTLERS LEAP                       ",
+        "Line3": "RUGBY                              ",
+        "Line4": "WARWICKSHIRE                       ",
+        "Line5": null,
+        "Postcode": "CV21 3RQ"
+    },
+    "PublicTelephoneNumber": "03003045999",
+    "PublicFaxNumber": null,
+    "EmailAddress": null,
+    "WebsiteAddress": "www.theairambulanceservice.co.uk",
+    "Activities": "Dormant company - provision of helicopter emergency medical services - Active company is The Air Ambulance Service",
+    "AreaOfOperation": [
+        "Throughout England And Wales                      "
+    ],
+    "Classification": {
+        "What": [
+            "The Advancement Of Health Or Saving Of Lives                     "
+        ],
+        "Who": [
+            "The General Public/mankind                                       "
+        ],
+        "How": [
+            "Provides Services                                                "
+        ]
+    },
+    "Trustees": [
+        {
+            "TrusteeNumber": 2458372,
+            "TrusteeName": "JOHN WILLIAMS",
+            "RelatedCharitiesCount": 2,
+            "RelatedCharities": []
+        }
+    ],
+    "Submission": [
+        {
+            "MailingCycle": "AR12",
+            "FyStart": "01 Jan 2012",
+            "FyEnd": "31 Dec 2012",
+            "AnnualReturnReceivedDate": "22 Nov 2013",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        },
+        {
+            "MailingCycle": "AR13",
+            "FyStart": "01 Jan 2013",
+            "FyEnd": "31 Dec 2013",
+            "AnnualReturnReceivedDate": "25 Nov 2014",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        },
+        {
+            "MailingCycle": "AR14",
+            "FyStart": "01 Jan 2014",
+            "FyEnd": "31 Dec 2014",
+            "AnnualReturnReceivedDate": "25 Sep 2015",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        },
+        {
+            "MailingCycle": "AR15",
+            "FyStart": "01 Jan 2015",
+            "FyEnd": "31 Dec 2015",
+            "AnnualReturnReceivedDate": "22 Apr 2016",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        },
+        {
+            "MailingCycle": "AR16",
+            "FyStart": "01 Jan 2016",
+            "FyEnd": "31 Dec 2016",
+            "AnnualReturnReceivedDate": "08 Jun 2017",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        },
+        {
+            "MailingCycle": "AR17",
+            "FyStart": "01 Jan 2017",
+            "FyEnd": "31 Dec 2017",
+            "AnnualReturnReceivedDate": "05 Jul 2018",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        },
+        {
+            "MailingCycle": "AR18",
+            "FyStart": "01 Jan 2018",
+            "FyEnd": "31 Dec 2018",
+            "AnnualReturnReceivedDate": "25 Mar 2019",
+            "AccountsReturnReceivedDate": "Below Threshold",
+            "GrossIncome": "0",
+            "TotalExpenditure": "0"
+        }
+    ],
+    "AccountListing": [],
+    "CIOInsolvencyListing": [],
+    "ExtendedRegistrationHistory": [
+        {
+            "CharityEventID": 549992,
+            "OrganisationNumber": 5022310,
+            "DateOfEvent": "2011-12-06 10:43:27",
+            "AssociatedOrganisationNumber": -1,
+            "CharityGroupID": -1,
+            "GroupSubsidarySuffix": 0,
+            "CharityEventReasonCode": null,
+            "CharityEventTypeCode": "STD",
+            "RegisteredCharityNumber": 1144929,
+            "AssociatedRegisteredCharityNumber": -1,
+            "AssociatedCharityName": null,
+            "CharityEventClassCode": "REG",
+            "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+            "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+        }
+    ],
+    "CIOAmalgamation": [],
+    "SummaryInformationReturnListing": [],
+    "Subsidiary": [],
+    "Returns": [],
+    "CharityMainGroupType": null,
+    "LatestFiling": {
+        "AnnualReturnPeriod": "31/12/2018",
+        "AnnualReturnReceived": "25/03/2019",
+        "AccountsPeriod": "31/12/2018",
+        "AccountsReceived": "01/01/1900",
+        "HasRecieveAnnualReturn": 1,
+        "HasRecieveAccounts": true,
+        "Message": "NotR",
+        "Inactive_Status": 0,
+        "AccountsPeriodForDue": "31/12/2018",
+        "AccountsReceivedForDue": "01/01/1900",
+        "AnnualReturnReceivedForDue": "25/03/2019",
+        "HasRecieveAccountsForDue": true,
+        "HasRecieveAnnualReturnForDue": 1,
+        "EarliestMissingAR": "01/01/1900",
+        "EarliestMissingAccounts": "01/01/1900",
+        "LatestAccQualiifed": 0
+    },
+    "OrganisationType": "R",
+    "InterimManager": null,
+    "PublishedReport": [],
+    "WasExempt": false,
+    "CIOIndicator": null,
+    "CIODateConstituted": null,
+    "CIODissolutionDate": null,
+    "IsCIODissolutionReceived": false,
+    "IsCIOAdminDissolution": false,
+    "IsSuspended": false,
+    "IsInsolvencyActDocsReceived": false,
+    "IsCIOOnAmalgamationNotice": false,
+    "LastRegistrationEvent": {
+        "CharityEventID": 549992,
+        "OrganisationNumber": 5022310,
+        "DateOfEvent": "2011-12-06 10:43:27",
+        "AssociatedOrganisationNumber": -1,
+        "CharityGroupID": -1,
+        "GroupSubsidarySuffix": 0,
+        "CharityEventReasonCode": null,
+        "CharityEventTypeCode": "STD",
+        "RegisteredCharityNumber": 1144929,
+        "AssociatedRegisteredCharityNumber": -1,
+        "AssociatedCharityName": null,
+        "CharityEventClassCode": "REG",
+        "CharityEventTypeNameEnglish": "STANDARD REGISTRATION",
+        "CharityEventTypeNameWelsh": "COFRESTRU SAFONOL"
+    },
+    "Insolvent": 0,
+    "InAdministration": 0,
+    "CIOConversionStatus": 0,
+    "ClassInquiry": 0,
+    "InSuspense": 0
+}
