@@ -18,8 +18,8 @@ charities = [
 def save_data(charity_name, i):
     raw_data, formatted_data = get_charity(charity_name, CREDENTIALS)
 
-    with open(f'test_data/RAW_{i}.json', 'w') as f:
-        f.write(json.dumps(raw_data, indent=4))
+    with open(f'test_data/RAW_{i}.xml', 'wb') as f:
+        f.write(raw_data)
 
     with open(f'test_data/FORMATTED_{i}.json', 'w') as f:
         f.write(json.dumps(formatted_data, indent=4))

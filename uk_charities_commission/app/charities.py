@@ -1,6 +1,6 @@
 from datetime import datetime
 from zeep import Transport, Client, helpers
-import json
+from lxml import etree
 
 from app.utils import handle_error
 from app.formatters import format_charity
@@ -9,9 +9,11 @@ from app.formatters import format_charity
 wsdl_url = 'https://apps.charitycommission.gov.uk/Showcharity/API/SearchCharitiesV1/SearchCharitiesV1.asmx?wsdl'
 
 
-def to_dict(input_obj):
-    input_dict = helpers.serialize_object(input_obj)
-    return json.loads(json.dumps(input_dict, default=str))
+def to_string(client, charity_obj):
+    charity_xml = etree.Element('Charity')
+    factory = client.type_factory('ns0')
+    factory.Charity.render(charity_xml, charity_obj)
+    return etree.tostring(charity_xml)
 
 
 def get_client():
@@ -37,6 +39,6 @@ def get_charity(name, credentials):
         for charity in results[:10]
     ]
 
-    formatted_results = [(to_dict(data), format_charity(data)) for data in fetched_results]
+    formatted_results = [(to_string(client, data), format_charity(data)) for data in fetched_results]
 
     return formatted_results[0]
