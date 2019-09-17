@@ -6,7 +6,7 @@ from schemad_types.utils import get_in
 from flask import json
 from lxml import etree
 from app.formatters import format_trustee, format_charity
-from app.charities import get_client
+from app.UKCharitiesCommission import UKCharitiesCommission
 from dassert import Assert
 
 
@@ -23,7 +23,7 @@ class TestFormatTrustees(unittest.TestCase):
 
     def test_all_test_data(self):
         raw_file_names = [f for f in os.listdir('test_data') if f.startswith('RAW_')]
-        client = get_client()
+        client = UKCharitiesCommission(None).client
         factory = client.type_factory('ns0')
 
         for raw_file_name in raw_file_names:

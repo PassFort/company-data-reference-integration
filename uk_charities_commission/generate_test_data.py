@@ -1,5 +1,5 @@
 import json
-from app.charities import get_charity
+from app.UKCharitiesCommission import UKCharitiesCommission
 
 CREDENTIALS = {
     "api_key": "60b5b1c4-3a08-4cc2-b"
@@ -16,7 +16,8 @@ charities = [
 ]
 
 def save_data(charity_name, i):
-    raw_data, formatted_data = get_charity(charity_name, CREDENTIALS)
+    charities_commission = UKCharitiesCommission(CREDENTIALS)
+    raw_data, formatted_data = charities_commission.get_charity(charity_name)
 
     with open(f'test_data/RAW_{i}.xml', 'wb') as f:
         f.write(raw_data)

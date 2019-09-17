@@ -7,8 +7,7 @@ from schemad_types.serialization import coerce_untracked
 from passfort_data_structure.entities.company_data import CompanyData
 from passfort_data_structure.misc.errors import EngineError, ProviderError
 
-# from app.companies import request_company_search
-from app.charities import get_charity
+from app.UKCharitiesCommission import UKCharitiesCommission
 
 app = Flask(__name__)
 
@@ -30,7 +29,6 @@ def health():
 def charity_check():
     input_data = request.json['input_data']
     credentials = request.json['credentials']
-    print(credentials)
 
     errors = []
 
@@ -53,7 +51,8 @@ def charity_check():
     if len(errors):
         return jsonify(errors=errors)
 
-    raw, response = get_charity(name, credentials)
+    charities_commission = UKCharitiesCommission(credentials)
+    raw, response = charities_commission.get_charity(name)
 
     return jsonify(
         output_data=coerce_untracked(response),
