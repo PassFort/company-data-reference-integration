@@ -4,6 +4,7 @@ from requests.exceptions import RequestException, HTTPError
 from passfort_data_structure.entities.entity_type import EntityType
 
 
+# TODO - use this
 class UKCharitiesCommissionAuthException(Exception):
     pass
 
@@ -40,31 +41,6 @@ def string_compare(s1, s2):
     remove = string.punctuation + string.whitespace + '&'
     translation = str.maketrans('', '', remove)
     return s1.translate(translation).upper() == s2.translate(translation).upper()
-
-
-def make_get(data):
-    def inner(fields, *args, strip=False):
-        if type(fields) is not list:
-            return inner([fields], *args, strip=strip)
-
-        try:
-            value = None
-            value = data
-            for field in fields:
-                value = value[field]
-
-            if strip:
-                value = value.strip()
-
-            return value
-
-        except (KeyError, IndexError, AttributeError):
-            if len(args) > 0:
-                return args[0]
-
-            raise
-
-    return inner
 
 
 def parse_int(s):

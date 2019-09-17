@@ -11,6 +11,10 @@ from dassert import Assert
 
 
 class TestFormatTrustees(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.maxDiff = 3000
+
     def test_it_formats_individual_trustees(self):
         result = format_trustee({'TrusteeName': 'Mr Henry Irish'})
         Assert.equal(result['immediate_data']['personal_details']['name']['given_names'], ['Henry'])

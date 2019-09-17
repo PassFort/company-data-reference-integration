@@ -2,7 +2,7 @@ import os
 import requests
 import nameparser
 
-from app.utils import make_get, parse_int, parse_date
+from app.utils import parse_int, parse_date
 
 
 nameparser.config.CONSTANTS.suffix_acronyms.add('JP')
@@ -26,9 +26,9 @@ nameparser.config.CONSTANTS.suffix_acronyms.add('SSC')
 ADDRESS_PARSER = os.environ.get('ADDRESS_PARSER_URL')
 
 
-def format_description(getter):
-    activities = getter('Activities')
-    objects = getter('CharitableObjects')
+def format_description(charities):
+    activities = charities.Activities
+    objects = charities.CharitableObjects
 
     if activities and objects:
         return f'{activities}\n\n{objects}'
@@ -38,9 +38,21 @@ def format_description(getter):
         return objects
 
 
-ADDRESS_FIELDS = ['Line1', 'Line2', 'Line3', 'Line4', 'Line5', 'Postcode']
 def format_address(address):
-    freeform_address = ', '.join([address(f, strip=True) for f in ADDRESS_FIELDS if address(f, None)])
+    freeform_address = ''
+    if address.Line1:
+        freeform_address += address.Line1.strip()
+    if address.Line2:
+        freeform_address += f', {address.Line2.strip()}'
+    if address.Line3:
+        freeform_address += f', {address.Line3.strip()}'
+    if address.Line4:
+        freeform_address += f', {address.Line4.strip()}'
+    if address.Line5:
+        freeform_address += f', {address.Line5.strip()}'
+    if address.Postcode:
+        freeform_address += f', {address.Postcode.strip()}'
+
     try:
         return requests.post(ADDRESS_PARSER + '/parser', json={'query': freeform_address}).json()
     except:
@@ -75,10 +87,12 @@ def format_company_number(number):
     return number
 
 
-def format_financials(get):
-    income_and_endowments = parse_int(get(['Returns', -1, 'Resources', 'Incoming', 'Total'], None))
-    expenditure = parse_int(get(['Returns', -1, 'Resources', 'Expended', 'Total'], None))
-    funds = parse_int(get(['Returns', -1, 'AssetsAndLiabilities', 'Funds', 'TotalFunds'], None))
+def format_financials(return_):
+    resources = return_.Resources if return_ else None
+    assets_and_liabilities = return_.AssetsAndLiabilities if return_ else None
+    income_and_endowments = parse_int(resources.Incoming.Total) if resources and resources.Incoming else None
+    expenditure = parse_int(resources.Expended.Total) if resources and resources.Expended else None
+    funds = parse_int(assets_and_liabilities.Funds.TotalFunds) if assets_and_liabilities and assets_and_liabilities.Funds else None
 
     return {
         'total_income_and_endowments': {
@@ -96,46 +110,49 @@ def format_financials(get):
     }
 
 
-def format_charity(data):
-    get = make_get(data)
+def strip(string):
+    if string is not None:
+        return string.strip()
 
-    company_number = format_company_number(get('RegisteredCompanyNumber', None, strip=True))
-    address_get = make_get(get('Address')) if get('Address', None) else None
-    registration_date = parse_date(get(['RegistrationHistory', 0, 'RegistrationDate'], None))
+
+def format_charity(charity):
+    company_number = format_company_number(strip(charity.RegisteredCompanyNumber))
+    registration_date = parse_date(charity.RegistrationHistory[0].RegistrationDate) if len(charity.RegistrationHistory) > 0 else None
 
     is_active = None
-    if get('OrganisationType') == 'R':
+    if charity.OrganisationType == 'R':
         is_active = True
-    elif get('OrganisationType') == 'RM':
+    elif charity.OrganisationType == 'RM':
         is_active = False
 
+    latest_return = charity.Returns[-1] if len(charity.Returns) > 0 else None
 
     return {
         'metadata': {
-            'name': get('CharityName', strip=True),
+            'name': strip(charity.CharityName),
             'number': company_number,
-            'uk_charity_commission_number': str(get('RegisteredCharityNumber')),
-            'addresses': [format_address(address_get)] if address_get else [],
+            'uk_charity_commission_number': str(charity.RegisteredCharityNumber),
+            'addresses': [format_address(charity.Address)] if charity.Address else [],
             'country_of_incorporation': 'GBR' if company_number else None,
-            'number_of_employees': parse_int(get(['Returns', -1, 'Employees', 'NoEmployees'], None)),
+            'number_of_employees': parse_int(latest_return.Employees.NoEmployees) if latest_return and latest_return.Employees else None,
             'is_active': is_active,
             'contact_details': {
-                'email': get('EmailAddress', None, strip=True),
-                'phone_number': get('PublicTelephoneNumber', None, strip=True),
-                'url': get('WebsiteAddress', None, strip=True),
+                'email': strip(charity.EmailAddress),
+                'phone_number': strip(charity.PublicTelephoneNumber),
+                'url': strip(charity.WebsiteAddress),
             },
-            'areas_of_activity': [{'location': area.strip()} for area in get('AreaOfOperation', [])],
-            'description': format_description(get),
+            'areas_of_activity': [{'location': strip(area)} for area in charity.AreaOfOperation or []],
+            'description': format_description(charity),
         },
         'officers': {
-            'trustees': [format_trustee(trustee) for trustee in data['Trustees']],
+            'trustees': [format_trustee(trustee) for trustee in charity.Trustees or []],
         },
         'charity_data': {
             'registration_date': registration_date,
-            'number_of_volunteers': parse_int(get(['Returns', -1, 'Employees', 'NoVolunteers'], None)),
-            'beneficiaries': [b.strip() for b in get(['Classification', 'Who'], [])],
-            'activity': [c.strip() for c in get(['Classification', 'How'], [])],
-            'purpose': [p.strip() for p in get(['Classification', 'What'], [])],
+            'number_of_volunteers': parse_int(latest_return.Employees.NoVolunteers) if latest_return and latest_return.Employees else None,
+            'beneficiaries': [strip(b) for b in charity.Classification.Who or []] if charity.Classification else None,
+            'activity': [c.strip() for c in charity.Classification.How or []] if charity.Classification else None,
+            'purpose': [p.strip() for p in charity.Classification.What or []] if charity.Classification else None,
         },
-        'financials': format_financials(get)
+        'financials': format_financials(latest_return) if latest_return else None
     }

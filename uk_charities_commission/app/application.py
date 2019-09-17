@@ -56,7 +56,7 @@ def charity_check():
 
     return jsonify(
         output_data=coerce_untracked(response),
-        raw=raw,
+        raw=raw.decode('utf8'),
         errors=[],
         price=0,
     )

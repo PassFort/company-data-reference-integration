@@ -58,9 +58,5 @@
             "The Advancement Of Health Or Saving Of Lives"
         ]
     },
-    "financials": {
-        "total_income_and_endowments": null,
-        "total_expenditure": null,
-        "total_funds": null
-    }
+    "financials": null
 }
