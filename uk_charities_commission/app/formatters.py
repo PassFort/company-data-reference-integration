@@ -54,8 +54,9 @@ def format_address(address):
         freeform_address += f', {address.Postcode.strip()}'
 
     try:
-        return requests.post(ADDRESS_PARSER + '/parser', json={'query': freeform_address}).json()
-    except:
+        return requests.post(f'http://{ADDRESS_PARSER}/parser', json={'query': freeform_address}).json()
+    except requests.exceptions.RequestException as e:
+        print(e)
         return {
             "original_freeform_address": freeform_address,
         }
