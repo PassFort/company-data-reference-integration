@@ -222,6 +222,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_uk_charities_commission:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo uk_charities_commission > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build_comply_advantage:
         <<: *build
 
@@ -247,6 +258,9 @@ jobs:
         <<: *build
 
     build_trulioo:
+        <<: *build
+
+    build_uk_charities_commission:
         <<: *build
 
     lint:
@@ -288,6 +302,9 @@ jobs:
     unit_trulioo:
         <<: *unit
 
+    unit_uk_charities_commission:
+        <<: *unit
+
     e2e_comply_advantage:
       <<: *e2e
 
@@ -307,6 +324,9 @@ jobs:
         <<: *e2e
 
     e2e_worldcheck:
+        <<: *e2e
+
+    e2e_uk_charities_commission:
         <<: *e2e
 
     deploy_comply_advantage_staging:
@@ -336,6 +356,9 @@ jobs:
     deploy_trulioo_staging:
         <<: *deploy_staging_common
 
+    deploy_uk_charities_commission_staging:
+        <<: *deploy_staging_common
+
     deploy_comply_advantage_production:
       <<: *deploy_production_common
 
@@ -361,6 +384,9 @@ jobs:
         <<: *deploy_production_common
 
     deploy_trulioo_production:
+        <<: *deploy_production_common
+
+    deploy_uk_charities_commission_production:
         <<: *deploy_production_common
 
 workflows:
@@ -610,6 +636,35 @@ workflows:
             - deploy_trulioo_production:
                 requires:
                   - unit_trulioo
+                filters:
+                    branches:
+                        only:
+                          - master
+
+    uk_charities_commission:
+        jobs:
+            - set_integration_uk_charities_commission
+            - build_uk_charities_commission:
+                requires:
+                  - set_integration_uk_charities_commission
+            - unit_uk_charities_commission:
+                requires:
+                  - build_uk_charities_commission
+            - e2e_uk_charities_commission:
+                requires:
+                  - build_uk_charities_commission
+            - deploy_uk_charities_commission_staging:
+                requires:
+                  - unit_uk_charities_commission
+                  - e2e_uk_charities_commission
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_uk_charities_commission_production:
+                requires:
+                  - unit_uk_charities_commission
+                  - e2e_uk_charities_commission
                 filters:
                     branches:
                         only:
