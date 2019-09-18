@@ -1,0 +1,387 @@
+<Charity>
+  <ns0:CharityNumber xmlns:ns0="http://www.charitycommission.gov.uk/">1000653</ns0:CharityNumber>
+  <ns1:HasAccountsToDisplay xmlns:ns1="http://www.charitycommission.gov.uk/">true</ns1:HasAccountsToDisplay>
+  <ns2:RegisteredCharityNumber xmlns:ns2="http://www.charitycommission.gov.uk/">1000653</ns2:RegisteredCharityNumber>
+  <ns3:SubsidiaryNumber xmlns:ns3="http://www.charitycommission.gov.uk/">0</ns3:SubsidiaryNumber>
+  <ns4:CharityName xmlns:ns4="http://www.charitycommission.gov.uk/">THE HAMLET CENTRE TRUST                                                                                                                               </ns4:CharityName>
+  <ns5:RegistrationHistory xmlns:ns5="http://www.charitycommission.gov.uk/">
+    <ns5:RegistrationDate>24/10/1990</ns5:RegistrationDate>
+  </ns5:RegistrationHistory>
+  <ns6:WorkingNames xmlns:ns6="http://www.charitycommission.gov.uk/">NORWICH TOY LIBRARY                                                                                                                                   ~W </ns6:WorkingNames>
+  <ns7:WorkingNames xmlns:ns7="http://www.charitycommission.gov.uk/">THE HAMLET                                                                                                                                            ~W </ns7:WorkingNames>
+  <ns8:AreaOfBenefit xmlns:ns8="http://www.charitycommission.gov.uk/">NORFOLK</ns8:AreaOfBenefit>
+  <ns9:GoverningDocument xmlns:ns9="http://www.charitycommission.gov.uk/">MEMORANDUM AND ARTICLES OF ASSOCIATION INCORPORATED 5TH JULY 1990. AS AMENDED BY RESOLUTION PASSED ON 23 MAY 1993.</ns9:GoverningDocument>
+  <ns10:CharitableObjects xmlns:ns10="http://www.charitycommission.gov.uk/">1) THE RELIEF OF PERSONS WITH SPECIAL NEEDS 2) THE ADVANCEMENT OF EDUCATION OF CHILDREN AND YOUNG PERSONS WITH SPECIAL NEEDS WITHIN THE AREAS OF NORWICH  AND NORFOLK.</ns10:CharitableObjects>
+  <ns11:RegisteredCompanyNumber xmlns:ns11="http://www.charitycommission.gov.uk/">2518973</ns11:RegisteredCompanyNumber>
+  <ns12:ContactName xmlns:ns12="http://www.charitycommission.gov.uk/"/>
+  <ns13:Address xmlns:ns13="http://www.charitycommission.gov.uk/">
+    <ns13:Line1>The Hamlet                         </ns13:Line1>
+    <ns13:Line2>221 St. Leonards Road              </ns13:Line2>
+    <ns13:Line3>NORWICH                            </ns13:Line3>
+    <ns13:Postcode>NR1 4JN </ns13:Postcode>
+  </ns13:Address>
+  <ns14:PublicTelephoneNumber xmlns:ns14="http://www.charitycommission.gov.uk/">01603765405</ns14:PublicTelephoneNumber>
+  <ns15:EmailAddress xmlns:ns15="http://www.charitycommission.gov.uk/">admin@thehamletcharity.org.uk</ns15:EmailAddress>
+  <ns16:WebsiteAddress xmlns:ns16="http://www.charitycommission.gov.uk/">www.thehamletcharity.org.uk</ns16:WebsiteAddress>
+  <ns17:Activities xmlns:ns17="http://www.charitycommission.gov.uk/">We provide recreational, educational, social and vocational opportunities and short breaks for children and adults with disabilities in Norwich and Norfolk.</ns17:Activities>
+  <ns18:AreaOfOperation xmlns:ns18="http://www.charitycommission.gov.uk/">Norfolk                                           </ns18:AreaOfOperation>
+  <ns19:Classification xmlns:ns19="http://www.charitycommission.gov.uk/">
+    <ns19:What>Education/training                                               </ns19:What>
+    <ns19:What>The Advancement Of Health Or Saving Of Lives                     </ns19:What>
+    <ns19:What>Disability                                                       </ns19:What>
+    <ns19:What>Arts/culture/heritage/science                                    </ns19:What>
+    <ns19:What>Amateur Sport                                                    </ns19:What>
+    <ns19:What>Recreation                                                       </ns19:What>
+    <ns19:What>Other Charitable Purposes                                        </ns19:What>
+    <ns19:Who>Children/young People                                            </ns19:Who>
+    <ns19:Who>People With Disabilities                                         </ns19:Who>
+    <ns19:Who>The General Public/mankind                                       </ns19:Who>
+    <ns19:How>Provides Buildings/facilities/open Space                         </ns19:How>
+    <ns19:How>Provides Services                                                </ns19:How>
+    <ns19:How>Provides Advocacy/advice/information                             </ns19:How>
+    <ns19:How>Other Charitable Activities                                      </ns19:How>
+  </ns19:Classification>
+  <ns20:Trustees xmlns:ns20="http://www.charitycommission.gov.uk/">
+    <ns20:TrusteeNumber>11686604</ns20:TrusteeNumber>
+    <ns20:TrusteeName>Tania Davies</ns20:TrusteeName>
+    <ns20:RelatedCharitiesCount>0</ns20:RelatedCharitiesCount>
+  </ns20:Trustees>
+  <ns21:Trustees xmlns:ns21="http://www.charitycommission.gov.uk/">
+    <ns21:TrusteeNumber>11764375</ns21:TrusteeNumber>
+    <ns21:TrusteeName>Stuart Marpole</ns21:TrusteeName>
+    <ns21:RelatedCharitiesCount>0</ns21:RelatedCharitiesCount>
+  </ns21:Trustees>
+  <ns22:Trustees xmlns:ns22="http://www.charitycommission.gov.uk/">
+    <ns22:TrusteeNumber>11890458</ns22:TrusteeNumber>
+    <ns22:TrusteeName>Nicholas Hancox</ns22:TrusteeName>
+    <ns22:RelatedCharitiesCount>0</ns22:RelatedCharitiesCount>
+  </ns22:Trustees>
+  <ns23:Trustees xmlns:ns23="http://www.charitycommission.gov.uk/">
+    <ns23:TrusteeNumber>11890459</ns23:TrusteeNumber>
+    <ns23:TrusteeName>Ann Way</ns23:TrusteeName>
+    <ns23:RelatedCharitiesCount>0</ns23:RelatedCharitiesCount>
+  </ns23:Trustees>
+  <ns24:Trustees xmlns:ns24="http://www.charitycommission.gov.uk/">
+    <ns24:TrusteeNumber>12017824</ns24:TrusteeNumber>
+    <ns24:TrusteeName>gary pearce</ns24:TrusteeName>
+    <ns24:RelatedCharitiesCount>0</ns24:RelatedCharitiesCount>
+  </ns24:Trustees>
+  <ns25:Trustees xmlns:ns25="http://www.charitycommission.gov.uk/">
+    <ns25:TrusteeNumber>12197979</ns25:TrusteeNumber>
+    <ns25:TrusteeName>Hester Coutanche</ns25:TrusteeName>
+    <ns25:RelatedCharitiesCount>0</ns25:RelatedCharitiesCount>
+  </ns25:Trustees>
+  <ns26:Trustees xmlns:ns26="http://www.charitycommission.gov.uk/">
+    <ns26:TrusteeNumber>12237781</ns26:TrusteeNumber>
+    <ns26:TrusteeName>Susan Coombe</ns26:TrusteeName>
+    <ns26:RelatedCharitiesCount>0</ns26:RelatedCharitiesCount>
+  </ns26:Trustees>
+  <ns27:Trustees xmlns:ns27="http://www.charitycommission.gov.uk/">
+    <ns27:TrusteeNumber>12333933</ns27:TrusteeNumber>
+    <ns27:TrusteeName>Caron Betts</ns27:TrusteeName>
+    <ns27:RelatedCharitiesCount>0</ns27:RelatedCharitiesCount>
+  </ns27:Trustees>
+  <ns28:Trustees xmlns:ns28="http://www.charitycommission.gov.uk/">
+    <ns28:TrusteeNumber>12333939</ns28:TrusteeNumber>
+    <ns28:TrusteeName>Stephen Riley Elliott</ns28:TrusteeName>
+    <ns28:RelatedCharitiesCount>0</ns28:RelatedCharitiesCount>
+  </ns28:Trustees>
+  <ns29:Submission xmlns:ns29="http://www.charitycommission.gov.uk/">
+    <ns29:MailingCycle>AR04</ns29:MailingCycle>
+    <ns29:FyStart>01 Apr 2003</ns29:FyStart>
+    <ns29:FyEnd>31 Mar 2004</ns29:FyEnd>
+    <ns29:AnnualReturnReceivedDate>20 Jan 2005</ns29:AnnualReturnReceivedDate>
+    <ns29:AccountsReturnReceivedDate>20 Jan 2005</ns29:AccountsReturnReceivedDate>
+    <ns29:GrossIncome>484106</ns29:GrossIncome>
+    <ns29:TotalExpenditure>495614</ns29:TotalExpenditure>
+  </ns29:Submission>
+  <ns30:Submission xmlns:ns30="http://www.charitycommission.gov.uk/">
+    <ns30:MailingCycle>AR05</ns30:MailingCycle>
+    <ns30:FyStart>01 Apr 2004</ns30:FyStart>
+    <ns30:FyEnd>31 Mar 2005</ns30:FyEnd>
+    <ns30:AnnualReturnReceivedDate>15 Feb 2006</ns30:AnnualReturnReceivedDate>
+    <ns30:AccountsReturnReceivedDate>15 Feb 2006</ns30:AccountsReturnReceivedDate>
+    <ns30:GrossIncome>457352</ns30:GrossIncome>
+    <ns30:TotalExpenditure>470226</ns30:TotalExpenditure>
+  </ns30:Submission>
+  <ns31:Submission xmlns:ns31="http://www.charitycommission.gov.uk/">
+    <ns31:MailingCycle>AR06</ns31:MailingCycle>
+    <ns31:FyStart>01 Apr 2005</ns31:FyStart>
+    <ns31:FyEnd>31 Mar 2006</ns31:FyEnd>
+    <ns31:AnnualReturnReceivedDate>30 Nov 2006</ns31:AnnualReturnReceivedDate>
+    <ns31:AccountsReturnReceivedDate>03 Nov 2006</ns31:AccountsReturnReceivedDate>
+    <ns31:GrossIncome>475190</ns31:GrossIncome>
+    <ns31:TotalExpenditure>485202</ns31:TotalExpenditure>
+  </ns31:Submission>
+  <ns32:Submission xmlns:ns32="http://www.charitycommission.gov.uk/">
+    <ns32:MailingCycle>AR07</ns32:MailingCycle>
+    <ns32:FyStart>01 Apr 2006</ns32:FyStart>
+    <ns32:FyEnd>31 Mar 2007</ns32:FyEnd>
+    <ns32:AnnualReturnReceivedDate>28 Nov 2007</ns32:AnnualReturnReceivedDate>
+    <ns32:AccountsReturnReceivedDate>12 Nov 2007</ns32:AccountsReturnReceivedDate>
+    <ns32:GrossIncome>526514</ns32:GrossIncome>
+    <ns32:TotalExpenditure>512553</ns32:TotalExpenditure>
+  </ns32:Submission>
+  <ns33:Submission xmlns:ns33="http://www.charitycommission.gov.uk/">
+    <ns33:MailingCycle>AR08</ns33:MailingCycle>
+    <ns33:FyStart>01 Apr 2007</ns33:FyStart>
+    <ns33:FyEnd>31 Mar 2008</ns33:FyEnd>
+    <ns33:AnnualReturnReceivedDate>24 Sep 2008</ns33:AnnualReturnReceivedDate>
+    <ns33:AccountsReturnReceivedDate>26 Sep 2008</ns33:AccountsReturnReceivedDate>
+    <ns33:GrossIncome>546433</ns33:GrossIncome>
+    <ns33:TotalExpenditure>573697</ns33:TotalExpenditure>
+  </ns33:Submission>
+  <ns34:Submission xmlns:ns34="http://www.charitycommission.gov.uk/">
+    <ns34:MailingCycle>AR09</ns34:MailingCycle>
+    <ns34:FyStart>01 Apr 2008</ns34:FyStart>
+    <ns34:FyEnd>31 Mar 2009</ns34:FyEnd>
+    <ns34:AnnualReturnReceivedDate>15 Oct 2009</ns34:AnnualReturnReceivedDate>
+    <ns34:AccountsReturnReceivedDate>21 Sep 2009</ns34:AccountsReturnReceivedDate>
+    <ns34:GrossIncome>619375</ns34:GrossIncome>
+    <ns34:TotalExpenditure>631978</ns34:TotalExpenditure>
+  </ns34:Submission>
+  <ns35:Submission xmlns:ns35="http://www.charitycommission.gov.uk/">
+    <ns35:MailingCycle>AR10</ns35:MailingCycle>
+    <ns35:FyStart>01 Apr 2009</ns35:FyStart>
+    <ns35:FyEnd>31 Mar 2010</ns35:FyEnd>
+    <ns35:AnnualReturnReceivedDate>17 Jan 2011</ns35:AnnualReturnReceivedDate>
+    <ns35:AccountsReturnReceivedDate>03 Aug 2010</ns35:AccountsReturnReceivedDate>
+    <ns35:GrossIncome>1331955</ns35:GrossIncome>
+    <ns35:TotalExpenditure>737483</ns35:TotalExpenditure>
+  </ns35:Submission>
+  <ns36:Submission xmlns:ns36="http://www.charitycommission.gov.uk/">
+    <ns36:MailingCycle>AR11</ns36:MailingCycle>
+    <ns36:FyStart>01 Apr 2010</ns36:FyStart>
+    <ns36:FyEnd>31 Mar 2011</ns36:FyEnd>
+    <ns36:AnnualReturnReceivedDate>07 Dec 2011</ns36:AnnualReturnReceivedDate>
+    <ns36:AccountsReturnReceivedDate>26 Aug 2011</ns36:AccountsReturnReceivedDate>
+    <ns36:GrossIncome>943139</ns36:GrossIncome>
+    <ns36:TotalExpenditure>787527</ns36:TotalExpenditure>
+  </ns36:Submission>
+  <ns37:Submission xmlns:ns37="http://www.charitycommission.gov.uk/">
+    <ns37:MailingCycle>AR12</ns37:MailingCycle>
+    <ns37:FyStart>01 Apr 2011</ns37:FyStart>
+    <ns37:FyEnd>31 Mar 2012</ns37:FyEnd>
+    <ns37:AnnualReturnReceivedDate>25 Oct 2012</ns37:AnnualReturnReceivedDate>
+    <ns37:AccountsReturnReceivedDate>09 Oct 2012</ns37:AccountsReturnReceivedDate>
+    <ns37:GrossIncome>1155420</ns37:GrossIncome>
+    <ns37:TotalExpenditure>809989</ns37:TotalExpenditure>
+  </ns37:Submission>
+  <ns38:Submission xmlns:ns38="http://www.charitycommission.gov.uk/">
+    <ns38:MailingCycle>AR13</ns38:MailingCycle>
+    <ns38:FyStart>01 Apr 2012</ns38:FyStart>
+    <ns38:FyEnd>31 Mar 2013</ns38:FyEnd>
+    <ns38:AnnualReturnReceivedDate>29 Jul 2013</ns38:AnnualReturnReceivedDate>
+    <ns38:AccountsReturnReceivedDate>29 Jul 2013</ns38:AccountsReturnReceivedDate>
+    <ns38:GrossIncome>958564</ns38:GrossIncome>
+    <ns38:TotalExpenditure>910457</ns38:TotalExpenditure>
+  </ns38:Submission>
+  <ns39:Submission xmlns:ns39="http://www.charitycommission.gov.uk/">
+    <ns39:MailingCycle>AR14</ns39:MailingCycle>
+    <ns39:FyStart>01 Apr 2013</ns39:FyStart>
+    <ns39:FyEnd>31 Mar 2014</ns39:FyEnd>
+    <ns39:AnnualReturnReceivedDate>21 Aug 2014</ns39:AnnualReturnReceivedDate>
+    <ns39:AccountsReturnReceivedDate>21 Aug 2014</ns39:AccountsReturnReceivedDate>
+    <ns39:GrossIncome>1327301</ns39:GrossIncome>
+    <ns39:TotalExpenditure>1080199</ns39:TotalExpenditure>
+  </ns39:Submission>
+  <ns40:Submission xmlns:ns40="http://www.charitycommission.gov.uk/">
+    <ns40:MailingCycle>AR15</ns40:MailingCycle>
+    <ns40:FyStart>01 Apr 2014</ns40:FyStart>
+    <ns40:FyEnd>31 Mar 2015</ns40:FyEnd>
+    <ns40:AnnualReturnReceivedDate>20 Jul 2015</ns40:AnnualReturnReceivedDate>
+    <ns40:AccountsReturnReceivedDate>20 Jul 2015</ns40:AccountsReturnReceivedDate>
+    <ns40:GrossIncome>1142520</ns40:GrossIncome>
+    <ns40:TotalExpenditure>1103181</ns40:TotalExpenditure>
+  </ns40:Submission>
+  <ns41:Submission xmlns:ns41="http://www.charitycommission.gov.uk/">
+    <ns41:MailingCycle>AR16</ns41:MailingCycle>
+    <ns41:FyStart>01 Apr 2015</ns41:FyStart>
+    <ns41:FyEnd>31 Mar 2016</ns41:FyEnd>
+    <ns41:AnnualReturnReceivedDate>29 Jul 2016</ns41:AnnualReturnReceivedDate>
+    <ns41:AccountsReturnReceivedDate>29 Jul 2016</ns41:AccountsReturnReceivedDate>
+    <ns41:GrossIncome>1116862</ns41:GrossIncome>
+    <ns41:TotalExpenditure>1208048</ns41:TotalExpenditure>
+  </ns41:Submission>
+  <ns42:Submission xmlns:ns42="http://www.charitycommission.gov.uk/">
+    <ns42:MailingCycle>AR17</ns42:MailingCycle>
+    <ns42:FyStart>01 Apr 2016</ns42:FyStart>
+    <ns42:FyEnd>31 Mar 2017</ns42:FyEnd>
+    <ns42:AnnualReturnReceivedDate>29 Aug 2017</ns42:AnnualReturnReceivedDate>
+    <ns42:AccountsReturnReceivedDate>29 Aug 2017</ns42:AccountsReturnReceivedDate>
+    <ns42:GrossIncome>1210017</ns42:GrossIncome>
+    <ns42:TotalExpenditure>1244138</ns42:TotalExpenditure>
+  </ns42:Submission>
+  <ns43:Submission xmlns:ns43="http://www.charitycommission.gov.uk/">
+    <ns43:MailingCycle>AR18</ns43:MailingCycle>
+    <ns43:FyStart>01 Apr 2017</ns43:FyStart>
+    <ns43:FyEnd>31 Mar 2018</ns43:FyEnd>
+    <ns43:AnnualReturnReceivedDate>25 Sep 2018</ns43:AnnualReturnReceivedDate>
+    <ns43:AccountsReturnReceivedDate>25 Sep 2018</ns43:AccountsReturnReceivedDate>
+    <ns43:GrossIncome>1111943</ns43:GrossIncome>
+    <ns43:TotalExpenditure>1037611</ns43:TotalExpenditure>
+  </ns43:Submission>
+  <ns44:Submission xmlns:ns44="http://www.charitycommission.gov.uk/">
+    <ns44:MailingCycle>AR19</ns44:MailingCycle>
+    <ns44:FyStart>01 Apr 2018</ns44:FyStart>
+    <ns44:FyEnd>31 Mar 2019</ns44:FyEnd>
+    <ns44:AnnualReturnReceivedDate>16 Jul 2019</ns44:AnnualReturnReceivedDate>
+    <ns44:AccountsReturnReceivedDate>16 Jul 2019</ns44:AccountsReturnReceivedDate>
+    <ns44:GrossIncome>1356544</ns44:GrossIncome>
+    <ns44:TotalExpenditure>1268420</ns44:TotalExpenditure>
+  </ns44:Submission>
+  <ns45:AccountListing xmlns:ns45="http://www.charitycommission.gov.uk/">
+    <ns45:AccountPeriodYearEndDate>31 Mar 2019</ns45:AccountPeriodYearEndDate>
+    <ns45:Filename>Ends53\0001000653_AC_20190331_E_C.pdf</ns45:Filename>
+    <ns45:SizeInKB>0</ns45:SizeInKB>
+    <ns45:HyperlinkReference>/Accounts/Ends53\0001000653_AC_20190331_E_C.pdf</ns45:HyperlinkReference>
+  </ns45:AccountListing>
+  <ns46:AccountListing xmlns:ns46="http://www.charitycommission.gov.uk/">
+    <ns46:AccountPeriodYearEndDate>31 Mar 2018</ns46:AccountPeriodYearEndDate>
+    <ns46:Filename>Ends53\0001000653_AC_20180331_E_C.pdf</ns46:Filename>
+    <ns46:SizeInKB>0</ns46:SizeInKB>
+    <ns46:HyperlinkReference>/Accounts/Ends53\0001000653_AC_20180331_E_C.pdf</ns46:HyperlinkReference>
+  </ns46:AccountListing>
+  <ns47:AccountListing xmlns:ns47="http://www.charitycommission.gov.uk/">
+    <ns47:AccountPeriodYearEndDate>31 Mar 2017</ns47:AccountPeriodYearEndDate>
+    <ns47:Filename>Ends53\0001000653_AC_20170331_E_C.pdf</ns47:Filename>
+    <ns47:SizeInKB>0</ns47:SizeInKB>
+    <ns47:HyperlinkReference>/Accounts/Ends53\0001000653_AC_20170331_E_C.pdf</ns47:HyperlinkReference>
+  </ns47:AccountListing>
+  <ns48:AccountListing xmlns:ns48="http://www.charitycommission.gov.uk/">
+    <ns48:AccountPeriodYearEndDate>31 Mar 2016</ns48:AccountPeriodYearEndDate>
+    <ns48:Filename>Ends53\0001000653_AC_20160331_E_C.pdf</ns48:Filename>
+    <ns48:SizeInKB>0</ns48:SizeInKB>
+    <ns48:HyperlinkReference>/Accounts/Ends53\0001000653_AC_20160331_E_C.pdf</ns48:HyperlinkReference>
+  </ns48:AccountListing>
+  <ns49:AccountListing xmlns:ns49="http://www.charitycommission.gov.uk/">
+    <ns49:AccountPeriodYearEndDate>31 Mar 2015</ns49:AccountPeriodYearEndDate>
+    <ns49:Filename>Ends53\0001000653_AC_20150331_E_C.pdf</ns49:Filename>
+    <ns49:SizeInKB>0</ns49:SizeInKB>
+    <ns49:HyperlinkReference>/Accounts/Ends53\0001000653_AC_20150331_E_C.pdf</ns49:HyperlinkReference>
+  </ns49:AccountListing>
+  <ns50:AccountListing xmlns:ns50="http://www.charitycommission.gov.uk/">
+    <ns50:AccountPeriodYearEndDate>31 Mar 2014</ns50:AccountPeriodYearEndDate>
+    <ns50:Filename>Ends53\0001000653_AC_20140331_E_C.pdf</ns50:Filename>
+    <ns50:SizeInKB>0</ns50:SizeInKB>
+    <ns50:HyperlinkReference>/Accounts/Ends53\0001000653_AC_20140331_E_C.pdf</ns50:HyperlinkReference>
+  </ns50:AccountListing>
+  <ns51:ExtendedRegistrationHistory xmlns:ns51="http://www.charitycommission.gov.uk/">
+    <ns51:CharityEventID>131757</ns51:CharityEventID>
+    <ns51:OrganisationNumber>1000653</ns51:OrganisationNumber>
+    <ns51:DateOfEvent>1990-10-24T00:00:00</ns51:DateOfEvent>
+    <ns51:AssociatedOrganisationNumber>-1</ns51:AssociatedOrganisationNumber>
+    <ns51:CharityGroupID>-1</ns51:CharityGroupID>
+    <ns51:GroupSubsidarySuffix>0</ns51:GroupSubsidarySuffix>
+    <ns51:CharityEventTypeCode>STD</ns51:CharityEventTypeCode>
+    <ns51:RegisteredCharityNumber>1000653</ns51:RegisteredCharityNumber>
+    <ns51:AssociatedRegisteredCharityNumber>-1</ns51:AssociatedRegisteredCharityNumber>
+    <ns51:CharityEventClassCode>REG</ns51:CharityEventClassCode>
+    <ns51:CharityEventTypeNameEnglish>STANDARD REGISTRATION</ns51:CharityEventTypeNameEnglish>
+    <ns51:CharityEventTypeNameWelsh>COFRESTRU SAFONOL</ns51:CharityEventTypeNameWelsh>
+  </ns51:ExtendedRegistrationHistory>
+  <ns52:Returns xmlns:ns52="http://www.charitycommission.gov.uk/">
+    <ns52:RegisteredCharityNumber>1000653</ns52:RegisteredCharityNumber>
+    <ns52:AccountType>CharityOnlyAccounts</ns52:AccountType>
+    <ns52:Resources>
+      <ns52:Incoming>
+        <ns52:VoluntaryIncome>193869</ns52:VoluntaryIncome>
+        <ns52:Legacies>3226</ns52:Legacies>
+        <ns52:Endowments>0</ns52:Endowments>
+        <ns52:ActivitiesForGenerationFunds>17886</ns52:ActivitiesForGenerationFunds>
+        <ns52:Investment>104</ns52:Investment>
+        <ns52:CharitableActivities>1142218</ns52:CharitableActivities>
+        <ns52:Other>2467</ns52:Other>
+        <ns52:Total>1356544</ns52:Total>
+      </ns52:Incoming>
+      <ns52:Expended>
+        <ns52:VoluntaryIncome>0</ns52:VoluntaryIncome>
+        <ns52:Fundraising>0</ns52:Fundraising>
+        <ns52:InvestmentManagement>0</ns52:InvestmentManagement>
+        <ns52:CharitableActivities>1257846</ns52:CharitableActivities>
+        <ns52:Grants>0</ns52:Grants>
+        <ns52:Governance>4500</ns52:Governance>
+        <ns52:Other>0</ns52:Other>
+        <ns52:Total>1268420</ns52:Total>
+      </ns52:Expended>
+      <ns52:Other>
+        <ns52:RevaluationsOfFixedAssets>0</ns52:RevaluationsOfFixedAssets>
+        <ns52:GainsLossesOnAssets>0</ns52:GainsLossesOnAssets>
+        <ns52:GainsLossesOnPensionSchemes>0</ns52:GainsLossesOnPensionSchemes>
+        <ns52:SupportCosts>306602</ns52:SupportCosts>
+        <ns52:Depreciation>72254</ns52:Depreciation>
+        <ns52:LevelOfReserves>70842</ns52:LevelOfReserves>
+      </ns52:Other>
+    </ns52:Resources>
+    <ns52:AssetsAndLiabilities>
+      <ns52:Assets>
+        <ns52:TotalFixedAssets>1457412</ns52:TotalFixedAssets>
+        <ns52:FixedAssetInvestments>0</ns52:FixedAssetInvestments>
+        <ns52:TotalCurrentAssets>515359</ns52:TotalCurrentAssets>
+        <ns52:CurrentAssetInvestments>0</ns52:CurrentAssetInvestments>
+        <ns52:Cash>398049</ns52:Cash>
+        <ns52:CreditorsDueWithinOneYear>61081</ns52:CreditorsDueWithinOneYear>
+        <ns52:LongTermCreditors>0</ns52:LongTermCreditors>
+        <ns52:PensionFundAssets>0</ns52:PensionFundAssets>
+        <ns52:TotalFixedAssetsAtStartOfYear>0</ns52:TotalFixedAssetsAtStartOfYear>
+        <ns52:FixedAssetInvestmentsAtStartOfYear>0</ns52:FixedAssetInvestmentsAtStartOfYear>
+        <ns52:TotalNetAssets>0</ns52:TotalNetAssets>
+      </ns52:Assets>
+      <ns52:Funds>
+        <ns52:EndowmentFunds>0</ns52:EndowmentFunds>
+        <ns52:RestrictedFunds>997473</ns52:RestrictedFunds>
+        <ns52:UnrestrictedFunds>914217</ns52:UnrestrictedFunds>
+        <ns52:TotalFunds>1911690</ns52:TotalFunds>
+      </ns52:Funds>
+    </ns52:AssetsAndLiabilities>
+    <ns52:Employees>
+      <ns52:NoEmployees>55</ns52:NoEmployees>
+      <ns52:NoVolunteers>40</ns52:NoVolunteers>
+    </ns52:Employees>
+    <ns52:FyearEnd>31/03/2019</ns52:FyearEnd>
+  </ns52:Returns>
+  <ns53:LatestFiling xmlns:ns53="http://www.charitycommission.gov.uk/">
+    <ns53:AnnualReturnPeriod>31/03/2019</ns53:AnnualReturnPeriod>
+    <ns53:AnnualReturnReceived>16/07/2019</ns53:AnnualReturnReceived>
+    <ns53:AccountsPeriod>31/03/2019</ns53:AccountsPeriod>
+    <ns53:AccountsReceived>16/07/2019 15:35:00</ns53:AccountsReceived>
+    <ns53:HasRecieveAnnualReturn>1</ns53:HasRecieveAnnualReturn>
+    <ns53:HasRecieveAccounts>false</ns53:HasRecieveAccounts>
+    <ns53:Message>AR19</ns53:Message>
+    <ns53:Inactive_Status>0</ns53:Inactive_Status>
+    <ns53:AccountsPeriodForDue>31/03/2018</ns53:AccountsPeriodForDue>
+    <ns53:AccountsReceivedForDue>25/09/2018 12:27:00</ns53:AccountsReceivedForDue>
+    <ns53:AnnualReturnReceivedForDue>25/09/2018 12:27:00</ns53:AnnualReturnReceivedForDue>
+    <ns53:HasRecieveAccountsForDue>false</ns53:HasRecieveAccountsForDue>
+    <ns53:HasRecieveAnnualReturnForDue>1</ns53:HasRecieveAnnualReturnForDue>
+    <ns53:EarliestMissingAR>01/01/1900</ns53:EarliestMissingAR>
+    <ns53:EarliestMissingAccounts>01/01/1900</ns53:EarliestMissingAccounts>
+    <ns53:LatestAccQualiifed>0</ns53:LatestAccQualiifed>
+  </ns53:LatestFiling>
+  <ns54:OrganisationType xmlns:ns54="http://www.charitycommission.gov.uk/">R</ns54:OrganisationType>
+  <ns55:WasExempt xmlns:ns55="http://www.charitycommission.gov.uk/">false</ns55:WasExempt>
+  <ns56:IsCIODissolutionReceived xmlns:ns56="http://www.charitycommission.gov.uk/">false</ns56:IsCIODissolutionReceived>
+  <ns57:IsCIOAdminDissolution xmlns:ns57="http://www.charitycommission.gov.uk/">false</ns57:IsCIOAdminDissolution>
+  <ns58:IsSuspended xmlns:ns58="http://www.charitycommission.gov.uk/">false</ns58:IsSuspended>
+  <ns59:IsInsolvencyActDocsReceived xmlns:ns59="http://www.charitycommission.gov.uk/">false</ns59:IsInsolvencyActDocsReceived>
+  <ns60:IsCIOOnAmalgamationNotice xmlns:ns60="http://www.charitycommission.gov.uk/">false</ns60:IsCIOOnAmalgamationNotice>
+  <ns61:LastRegistrationEvent xmlns:ns61="http://www.charitycommission.gov.uk/">
+    <ns61:CharityEventID>131757</ns61:CharityEventID>
+    <ns61:OrganisationNumber>1000653</ns61:OrganisationNumber>
+    <ns61:DateOfEvent>1990-10-24T00:00:00</ns61:DateOfEvent>
+    <ns61:AssociatedOrganisationNumber>-1</ns61:AssociatedOrganisationNumber>
+    <ns61:CharityGroupID>-1</ns61:CharityGroupID>
+    <ns61:GroupSubsidarySuffix>0</ns61:GroupSubsidarySuffix>
+    <ns61:CharityEventTypeCode>STD</ns61:CharityEventTypeCode>
+    <ns61:RegisteredCharityNumber>1000653</ns61:RegisteredCharityNumber>
+    <ns61:AssociatedRegisteredCharityNumber>-1</ns61:AssociatedRegisteredCharityNumber>
+    <ns61:CharityEventClassCode>REG</ns61:CharityEventClassCode>
+    <ns61:CharityEventTypeNameEnglish>STANDARD REGISTRATION</ns61:CharityEventTypeNameEnglish>
+    <ns61:CharityEventTypeNameWelsh>COFRESTRU SAFONOL</ns61:CharityEventTypeNameWelsh>
+  </ns61:LastRegistrationEvent>
+  <ns62:Insolvent xmlns:ns62="http://www.charitycommission.gov.uk/">0</ns62:Insolvent>
+  <ns63:InAdministration xmlns:ns63="http://www.charitycommission.gov.uk/">0</ns63:InAdministration>
+  <ns64:CIOConversionStatus xmlns:ns64="http://www.charitycommission.gov.uk/">0</ns64:CIOConversionStatus>
+  <ns65:ClassInquiry xmlns:ns65="http://www.charitycommission.gov.uk/">0</ns65:ClassInquiry>
+  <ns66:InSuspense xmlns:ns66="http://www.charitycommission.gov.uk/">0</ns66:InSuspense>
+</Charity>

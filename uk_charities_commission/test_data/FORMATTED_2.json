@@ -1,0 +1,79 @@
+{
+    "metadata": {
+        "name": "MEATH EPILEPSY CHARITY",
+        "number": "05822835",
+        "uk_charity_commission_number": "200359",
+        "addresses": [
+            {
+                "original_freeform_address": "THE MEATH EPILEPSY CHARITY, WESTBROOK ROAD, GODALMING, SURREY, GU7 2QH"
+            }
+        ],
+        "country_of_incorporation": "GBR",
+        "number_of_employees": 206,
+        "is_active": true,
+        "contact_details": {
+            "email": "finance@meath.org.uk",
+            "phone_number": "01483415095",
+            "url": "www.meath.org.uk"
+        },
+        "areas_of_activity": [
+            {
+                "location": "Throughout England"
+            }
+        ],
+        "description": "The Meath Epilepsy Trust provides fully supported residential care; on and off site day activities; and domiciliary services for people with complex epilepsy usually associated with a learning or physical disability.  We also have provision in our constitution to admit people without epilepsy if we believe our service meet their needs.\n\nTO SUPPORT, CARE FOR AND PROTECT THE PHYSICAL AND MENTAL HEALTH OF PEOPLE LIVING WITH EPILEPSY AND ASSOCIATED LEARNING AND PHYSICAL DISABILITIES THROUGH THE PROVISION OF SUITABLE ACCOMMODATION, TAILORED ASSISTANCE, SKILLS TRAINING, AND LEISURE AND SPORTS ACTIVITIES.\n \n"
+    },
+    "officers": {
+        "trustees": [
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "The",
+                                "Meath",
+                                "Trustee",
+                                "Company"
+                            ],
+                            "family_name": "Limited"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            }
+        ]
+    },
+    "charity_data": {
+        "registration_date": "1962-09-22",
+        "number_of_volunteers": 70,
+        "beneficiaries": [
+            "People With Disabilities"
+        ],
+        "activity": [
+            "Provides Buildings/facilities/open Space",
+            "Provides Services"
+        ],
+        "purpose": [
+            "Disability",
+            "Accommodation/housing"
+        ]
+    },
+    "financials": {
+        "total_income_and_endowments": {
+            "value": 6364989,
+            "currency_code": "GBP"
+        },
+        "total_expenditure": {
+            "value": 6781286,
+            "currency_code": "GBP"
+        },
+        "total_funds": {
+            "value": 14575460,
+            "currency_code": "GBP"
+        }
+    }
+}

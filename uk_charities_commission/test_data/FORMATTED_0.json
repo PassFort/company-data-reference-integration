@@ -1,0 +1,263 @@
+{
+    "metadata": {
+        "name": "MACMILLAN CANCER SUPPORT",
+        "number": "02400969",
+        "uk_charity_commission_number": "261017",
+        "addresses": [
+            {
+                "original_freeform_address": "MACMILLAN CANCER SUPPORT, CAMELFORD HOUSE, 87-90 ALBERT EMBANKMENT, LONDON, SE1 7UQ"
+            }
+        ],
+        "country_of_incorporation": "GBR",
+        "number_of_employees": 1715,
+        "is_active": true,
+        "contact_details": {
+            "email": null,
+            "phone_number": "02078407840",
+            "url": "www.macmillan.org.uk"
+        },
+        "areas_of_activity": [
+            {
+                "location": "Throughout England And Wales"
+            },
+            {
+                "location": "Guernsey"
+            },
+            {
+                "location": "Isle Of Man"
+            },
+            {
+                "location": "Jersey"
+            },
+            {
+                "location": "Northern Ireland"
+            },
+            {
+                "location": "Scotland"
+            }
+        ],
+        "description": "Macmillan Cancer Support exists to help improve the lives of people affected by cancer - those with cancer and their families, carers and communities. We are a source for support, helping anyone affected by cancer navigate through the system to get what they need, and a force for change, working to improve cancer care.\n\nTO PROVIDE SUPPORT, ASSISTANCE AND INFORMATION DIRECTLY OR INDIRECTLY TO PEOPLE AFFECTED BY CANCER; TO FURTHER AND BUILD CANCER AWARENESS, EDUCATION AND RESEARCH; TO PROMOTE AND INFLUENCE EFFECTIVE CARE, INVOLVEMENT AND SUPPORT FOR PEOPLE AFFECTED BY CANCER"
+    },
+    "officers": {
+        "trustees": [
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "PROFESSOR",
+                            "given_names": [
+                                "TIMOTHY"
+                            ],
+                            "family_name": "EISEN"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "ANDREW"
+                            ],
+                            "family_name": "DUFF"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "UNA",
+                                "NOELLE"
+                            ],
+                            "family_name": "O'BRIEN"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "RICHARD",
+                                "ANDREW"
+                            ],
+                            "family_name": "MURLEY"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "TOBY"
+                            ],
+                            "family_name": "STRAUSS"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Jane",
+                                "Frances"
+                            ],
+                            "family_name": "Cummings"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Feilim"
+                            ],
+                            "family_name": "Mackle"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Iain",
+                                "Charles",
+                                "Andrew"
+                            ],
+                            "family_name": "Cornish"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "Dr",
+                            "given_names": [
+                                "Jagjit",
+                                "Singh"
+                            ],
+                            "family_name": "Ahluwalia"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            },
+            {
+                "immediate_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "title": "",
+                            "given_names": [
+                                "Susan",
+                                "Carol"
+                            ],
+                            "family_name": "Langley"
+                        }
+                    }
+                },
+                "entity_type": "INDIVIDUAL",
+                "provider_name": "UK Charities Commission",
+                "original_role": "Trustee"
+            }
+        ]
+    },
+    "charity_data": {
+        "registration_date": "1989-06-21",
+        "number_of_volunteers": 20000,
+        "beneficiaries": [
+            "Children/young People",
+            "Elderly/old People",
+            "People With Disabilities",
+            "People Of A Particular Ethnic Or Racial Origin",
+            "Other Charities Or Voluntary Bodies",
+            "Other Defined Groups",
+            "The General Public/mankind"
+        ],
+        "activity": [
+            "Makes Grants To Individuals",
+            "Makes Grants To Organisations",
+            "Provides Human Resources",
+            "Provides Buildings/facilities/open Space",
+            "Provides Services",
+            "Provides Advocacy/advice/information",
+            "Sponsors Or Undertakes Research"
+        ],
+        "purpose": [
+            "Education/training",
+            "The Advancement Of Health Or Saving Of Lives",
+            "The Prevention Or Relief Of Poverty"
+        ]
+    },
+    "financials": {
+        "total_income_and_endowments": {
+            "value": 252692000,
+            "currency_code": "GBP"
+        },
+        "total_expenditure": {
+            "value": 256422000,
+            "currency_code": "GBP"
+        },
+        "total_funds": {
+            "value": 65586000,
+            "currency_code": "GBP"
+        }
+    }
+}

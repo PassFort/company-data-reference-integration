@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: integrations-uk-charities-commission
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  selector:
+    matchLabels:
+      passfort: integrations-uk-charities-commission
+  progressDeadlineSeconds: 240
+  template:
+    metadata:
+      name: integrations-uk-charities-commission
+      labels:
+        passfort: integrations-uk-charities-commission
+    spec:
+      containers:
+      - name: integrations-uk-charities-commission
+        image: {container_uri}
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "256Mi"
+        ports:
+        - containerPort: 8001
+        env:
+        - name: CLUSTER
+          value: {cluster}
+        - name: SENTRY_URL
+          value: {sentry_url}
+        - name: ADDRESS_PARSER_URL
+          value: address-parser:8080
+        readinessProbe:
+          httpGet:
+            path: '/health'
+            port: 8001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: integrations-uk-charities-commission
+spec:
+  ports:
+    - name: http
+      port: 8001
+  selector:
+    passfort: integrations-uk-charities-commission
