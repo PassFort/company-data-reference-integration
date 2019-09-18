@@ -1,27 +1,27 @@
 {
     "metadata": {
-        "name": "THE HAMLET CENTRE TRUST",
-        "number": "02518973",
-        "uk_charity_commission_number": "1000653",
+        "name": "CHILDREN WITH CANCER UK",
+        "number": "04960054",
+        "uk_charity_commission_number": "298405",
         "addresses": [
             {
-                "original_freeform_address": "The Hamlet, 221 St. Leonards Road, NORWICH, NR1 4JN"
+                "original_freeform_address": "CHILDREN WITH CANCER UK, 51 GREAT ORMOND STREET, LONDON, WC1N 3JQ"
             }
         ],
         "country_of_incorporation": "GBR",
-        "number_of_employees": 55,
+        "number_of_employees": 37,
         "is_active": true,
         "contact_details": {
-            "email": "admin@thehamletcharity.org.uk",
-            "phone_number": "01603765405",
-            "url": "www.thehamletcharity.org.uk"
+            "email": "info@childrenwithcancer.org.uk",
+            "phone_number": "02074040808",
+            "url": "www.childrenwithcancer.org.uk"
         },
         "areas_of_activity": [
             {
-                "location": "Norfolk"
+                "location": "Throughout England And Wales"
             }
         ],
-        "description": "We provide recreational, educational, social and vocational opportunities and short breaks for children and adults with disabilities in Norwich and Norfolk.\n\n1) THE RELIEF OF PERSONS WITH SPECIAL NEEDS 2) THE ADVANCEMENT OF EDUCATION OF CHILDREN AND YOUNG PERSONS WITH SPECIAL NEEDS WITHIN THE AREAS OF NORWICH  AND NORFOLK."
+        "description": "OUR MAIN AIMS ARE TO UNDERSTAND WHAT CAUSES CHILDREN TO DEVELOP CANCER, TO DEVELOP IMPROVED TREATMENTS AND TO PROVIDE CARE FOR AFFECTED CHILDREN AND THEIR FAMILIES.  IT IS THE TRUSTEES' POLICY TO MAXIMISE THE PROPORTION OF CHARITABLE OUTPUT THAT IS ACHIEVED THROUGH GRANT MAKING TO ORGANISATIONS.  IT IS INTENDED THAT THE CHARITY WILL FOCUS ON REVENUE FUNDING FOR RESEARCH INTO CAUSES AND TREATMENT.\n\n1) TO PROMOTE THE RELIEF OF CHILDREN AND YOUNG PEOPLE SUFFERING FROM LEUKAEMIA OR ANY OTHER FORM OF CANCER (AND ALLIED DISORDERS) AND OF THEIR FAMILIES 2) TO RAISE PUBLIC AWARENESS AND KNOWLEDGE IN MATTERS RELATING TO LEUKAEMIA OR ANY OTHER FORM OF CANCER (AND ALLIED DISORDERS) AFFECTING CHILDREN AND YOUNG PEOPLE 3) TO PROMOTE RESEARCH INTO THE CAUSES, ALLEVIATION, PREVENTION, TREATMENT AND CURE OF LEUKAEMIA OR ANY OTHER FORM OF CANCER (AND ALLIED DISORDERS) AFFECTING CHILDREN AND YOUNG PEOPLE AND TO PUBLISH THE USEFUL RESULTS OF SUCH RESEARCH.\n\n"
     },
     "officers": {
         "trustees": [
@@ -32,9 +32,10 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "Tania"
+                                "EDWARD",
+                                "JAMES"
                             ],
-                            "family_name": "Davies"
+                            "family_name": "O'GORMAN"
                         }
                     }
                 },
@@ -49,9 +50,11 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "Stuart"
+                                "LINDA",
+                                "PATRICIA",
+                                "MARY"
                             ],
-                            "family_name": "Marpole"
+                            "family_name": "ROBSON"
                         }
                     }
                 },
@@ -66,9 +69,9 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "Nicholas"
+                                "SANDRA"
                             ],
-                            "family_name": "Hancox"
+                            "family_name": "MILEHAM"
                         }
                     }
                 },
@@ -83,9 +86,9 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "Ann"
+                                "Alasdair"
                             ],
-                            "family_name": "Way"
+                            "family_name": "Philips"
                         }
                     }
                 },
@@ -100,78 +103,10 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "gary"
+                                "Virna",
+                                "Frances"
                             ],
-                            "family_name": "pearce"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "Hester"
-                            ],
-                            "family_name": "Coutanche"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "Susan"
-                            ],
-                            "family_name": "Coombe"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "Caron"
-                            ],
-                            "family_name": "Betts"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "Stephen",
-                                "Riley"
-                            ],
-                            "family_name": "Elliott"
+                            "family_name": "Baillie"
                         }
                     }
                 },
@@ -182,40 +117,40 @@
         ]
     },
     "charity_data": {
-        "registration_date": "1990-10-24",
-        "number_of_volunteers": 40,
+        "registration_date": "2005-01-18",
+        "number_of_volunteers": 5,
         "beneficiaries": [
             "Children/young People",
             "People With Disabilities",
+            "Other Charities Or Voluntary Bodies",
             "The General Public/mankind"
         ],
         "activity": [
-            "Provides Buildings/facilities/open Space",
+            "Makes Grants To Individuals",
+            "Makes Grants To Organisations",
             "Provides Services",
             "Provides Advocacy/advice/information",
-            "Other Charitable Activities"
+            "Sponsors Or Undertakes Research"
         ],
         "purpose": [
+            "General Charitable Purposes",
             "Education/training",
             "The Advancement Of Health Or Saving Of Lives",
             "Disability",
-            "Arts/culture/heritage/science",
-            "Amateur Sport",
-            "Recreation",
-            "Other Charitable Purposes"
+            "Environment/conservation/heritage"
         ]
     },
     "financials": {
         "total_income_and_endowments": {
-            "value": 1356544,
+            "value": 14332347,
             "currency_code": "GBP"
         },
         "total_expenditure": {
-            "value": 1268420,
+            "value": 15719396,
             "currency_code": "GBP"
         },
         "total_funds": {
-            "value": 1911690,
+            "value": 9544308,
             "currency_code": "GBP"
         }
     }

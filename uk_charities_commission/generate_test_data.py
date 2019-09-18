@@ -7,7 +7,6 @@ CREDENTIALS = {
 
 charities = [
     'MacMillan Cancer Support',
-    'Air Ambulance Service',
     'Cancer Research UK',
     'Meath Epilepsy Charity',
     'Middlesbrough Diocesan Trust',

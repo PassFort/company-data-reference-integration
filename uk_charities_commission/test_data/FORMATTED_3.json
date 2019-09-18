@@ -1,27 +1,45 @@
 {
     "metadata": {
-        "name": "MEATH EPILEPSY CHARITY",
-        "number": "05822835",
-        "uk_charity_commission_number": "200359",
+        "name": "MIDDLESBROUGH DIOCESAN TRUST",
+        "number": null,
+        "uk_charity_commission_number": "233748",
         "addresses": [
             {
-                "original_freeform_address": "THE MEATH EPILEPSY CHARITY, WESTBROOK ROAD, GODALMING, SURREY, GU7 2QH"
+                "original_freeform_address": "DIOCESE OF MIDDLESBROUGH, 50A THE AVENUE, MIDDLESBROUGH, TS5 6QT"
             }
         ],
-        "country_of_incorporation": "GBR",
-        "number_of_employees": 206,
+        "country_of_incorporation": null,
+        "number_of_employees": 21,
         "is_active": true,
         "contact_details": {
-            "email": "finance@meath.org.uk",
-            "phone_number": "01483415095",
-            "url": "www.meath.org.uk"
+            "email": "financialsecretary@rdcmidd.org.uk",
+            "phone_number": "01642850505",
+            "url": "www.middlesbrough-diocese.org.uk"
         },
         "areas_of_activity": [
             {
-                "location": "Throughout England"
+                "location": "City Of York"
+            },
+            {
+                "location": "East Riding Of Yorkshire"
+            },
+            {
+                "location": "Kingston Upon Hull City"
+            },
+            {
+                "location": "Middlesbrough"
+            },
+            {
+                "location": "North Yorkshire"
+            },
+            {
+                "location": "Redcar And Cleveland"
+            },
+            {
+                "location": "Stockton-on-tees"
             }
         ],
-        "description": "The Meath Epilepsy Trust provides fully supported residential care; on and off site day activities; and domiciliary services for people with complex epilepsy usually associated with a learning or physical disability.  We also have provision in our constitution to admit people without epilepsy if we believe our service meet their needs.\n\nTO SUPPORT, CARE FOR AND PROTECT THE PHYSICAL AND MENTAL HEALTH OF PEOPLE LIVING WITH EPILEPSY AND ASSOCIATED LEARNING AND PHYSICAL DISABILITIES THROUGH THE PROVISION OF SUITABLE ACCOMMODATION, TAILORED ASSISTANCE, SKILLS TRAINING, AND LEISURE AND SPORTS ACTIVITIES.\n \n"
+        "description": "The aims and objectives of the Trust are the advancement or maintenance of the Roman Catholic religion in the Roman Catholic Diocese of Middlesbrough.\n\nTHE ADVANCEMENT OR MAINTENANCE OF THE ROMAN CATHOLIC RELIGION IN THE ROMAN CATHOLIC DIOCESE OF MIDDLESBOROUGH"
     },
     "officers": {
         "trustees": [
@@ -32,12 +50,11 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "The",
-                                "Meath",
-                                "Trustee",
-                                "Company"
+                                "DIOCESE",
+                                "OF",
+                                "MIDDLESBROUGH"
                             ],
-                            "family_name": "Limited"
+                            "family_name": "TRUSTEE"
                         }
                     }
                 },
@@ -48,31 +65,37 @@
         ]
     },
     "charity_data": {
-        "registration_date": "1962-09-22",
-        "number_of_volunteers": 70,
+        "registration_date": "1964-04-21",
+        "number_of_volunteers": 2000,
         "beneficiaries": [
-            "People With Disabilities"
+            "Children/young People",
+            "Elderly/old People",
+            "People With Disabilities",
+            "Other Defined Groups",
+            "The General Public/mankind"
         ],
         "activity": [
             "Provides Buildings/facilities/open Space",
-            "Provides Services"
+            "Provides Services",
+            "Provides Advocacy/advice/information"
         ],
         "purpose": [
-            "Disability",
-            "Accommodation/housing"
+            "Education/training",
+            "Religious Activities",
+            "Human Rights/religious Or Racial Harmony/equality Or Diversity"
         ]
     },
     "financials": {
         "total_income_and_endowments": {
-            "value": 6364989,
+            "value": 7557296,
             "currency_code": "GBP"
         },
         "total_expenditure": {
-            "value": 6781286,
+            "value": 6293187,
             "currency_code": "GBP"
         },
         "total_funds": {
-            "value": 14575460,
+            "value": 46112249,
             "currency_code": "GBP"
         }
     }

@@ -1,33 +1,27 @@
 {
     "metadata": {
-        "name": "CANCER RESEARCH UK",
-        "number": "04325234",
-        "uk_charity_commission_number": "1089464",
+        "name": "MEATH EPILEPSY CHARITY",
+        "number": "05822835",
+        "uk_charity_commission_number": "200359",
         "addresses": [
             {
-                "original_freeform_address": "CANCER RESEARCH UK, ANGEL BUILDING, 407 ST. JOHN STREET, LONDON, EC1V 4AD"
+                "original_freeform_address": "THE MEATH EPILEPSY CHARITY, WESTBROOK ROAD, GODALMING, SURREY, GU7 2QH"
             }
         ],
         "country_of_incorporation": "GBR",
-        "number_of_employees": 4105,
+        "number_of_employees": 206,
         "is_active": true,
         "contact_details": {
-            "email": "secretariat@cancer.org.uk",
-            "phone_number": "020 7242 0200",
-            "url": "www.cancerresearchuk.org"
+            "email": "finance@meath.org.uk",
+            "phone_number": "01483415095",
+            "url": "www.meath.org.uk"
         },
         "areas_of_activity": [
             {
-                "location": "Throughout England And Wales"
-            },
-            {
-                "location": "Northern Ireland"
-            },
-            {
-                "location": "Scotland"
+                "location": "Throughout England"
             }
         ],
-        "description": "Cancer Research UK is dedicated to saving lives through research. Our mission is to prevent, control and cure cancer through our ground-breaking research and in the last 40 years our work has helped double survival rates. But there is more work to be done. The only charity fighting over 200 types of cancer, we rely on every pound donated to help get us closer to beating cancer.\n\nTHE OBJECTS FOR WHICH THE COMPANY IS ESTABLISHED ARE TO PROTECT AND PROMOTE THE HEALTH OF THE PUBLIC IN PARTICULAR BY RESEARCH INTO THE NATURE, CAUSES, DIAGNOSIS, PREVENTION, TREATMENT AND CURE OF ALL FORMS OF CANCER, INCLUDING THE DEVELOPMENT OF FINDINGS OF RESEARCH INTO PRACTICAL APPLICATIONS FOR THE PREVENTION, TREATMENT AND CURE OF CANCER AND IN FURTHERANCE OF THAT PRIMARY OBJECT, TO PROVIDE INFORMATION AND RAISE PUBLIC UNDERSTANDING OF SUCH MATTERS."
+        "description": "The Meath Epilepsy Trust provides fully supported residential care; on and off site day activities; and domiciliary services for people with complex epilepsy usually associated with a learning or physical disability.  We also have provision in our constitution to admit people without epilepsy if we believe our service meet their needs.\n\nTO SUPPORT, CARE FOR AND PROTECT THE PHYSICAL AND MENTAL HEALTH OF PEOPLE LIVING WITH EPILEPSY AND ASSOCIATED LEARNING AND PHYSICAL DISABILITIES THROUGH THE PROVISION OF SUITABLE ACCOMMODATION, TAILORED ASSISTANCE, SKILLS TRAINING, AND LEISURE AND SPORTS ACTIVITIES.\n \n"
     },
     "officers": {
         "trustees": [
@@ -38,208 +32,12 @@
                         "name": {
                             "title": "",
                             "given_names": [
-                                "CATHERINE"
+                                "The",
+                                "Meath",
+                                "Trustee",
+                                "Company"
                             ],
-                            "family_name": "BROWN"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "Andrew",
-                                "William"
-                            ],
-                            "family_name": "Palmer"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "PROFESSOR SIR",
-                            "given_names": [
-                                "LESZEK",
-                                "KRZYSZTOF"
-                            ],
-                            "family_name": "BORYSIEWICZ"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "Dr",
-                            "given_names": [
-                                "ADRIAN",
-                                "MARK"
-                            ],
-                            "family_name": "CRELLIN"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "DAVID",
-                                "CLIVE"
-                            ],
-                            "family_name": "LINDSELL"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "PROFESSOR",
-                            "given_names": [
-                                "STEPHEN",
-                                "TOWNLEY"
-                            ],
-                            "family_name": "HOLGATE"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "CAROLYN",
-                                "JANE"
-                            ],
-                            "family_name": "BRADLEY"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "PROFESSOR SIR",
-                            "given_names": [
-                                "BRUCE",
-                                "ANTHONY",
-                                "JOHN"
-                            ],
-                            "family_name": "PONDER"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "Peter",
-                                "Alan"
-                            ],
-                            "family_name": "Chambre"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "PROFESSOR DAME",
-                            "given_names": [
-                                "AMANDA",
-                                "GAY"
-                            ],
-                            "family_name": "FISHER"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "PROFESSOR SIR",
-                            "given_names": [
-                                "MICHAEL",
-                                "ADRIAN"
-                            ],
-                            "family_name": "RICHARDS"
-                        }
-                    }
-                },
-                "entity_type": "INDIVIDUAL",
-                "provider_name": "UK Charities Commission",
-                "original_role": "Trustee"
-            },
-            {
-                "immediate_data": {
-                    "entity_type": "INDIVIDUAL",
-                    "personal_details": {
-                        "name": {
-                            "title": "",
-                            "given_names": [
-                                "TRACY",
-                                "ANNE"
-                            ],
-                            "family_name": "DE GROOSE"
+                            "family_name": "Limited"
                         }
                     }
                 },
@@ -250,34 +48,31 @@
         ]
     },
     "charity_data": {
-        "registration_date": "2001-11-23",
-        "number_of_volunteers": 47000,
+        "registration_date": "1962-09-22",
+        "number_of_volunteers": 70,
         "beneficiaries": [
-            "The General Public/mankind"
+            "People With Disabilities"
         ],
         "activity": [
-            "Makes Grants To Individuals",
-            "Makes Grants To Organisations",
-            "Provides Services",
-            "Provides Advocacy/advice/information",
-            "Sponsors Or Undertakes Research"
+            "Provides Buildings/facilities/open Space",
+            "Provides Services"
         ],
         "purpose": [
-            "Education/training",
-            "The Advancement Of Health Or Saving Of Lives"
+            "Disability",
+            "Accommodation/housing"
         ]
     },
     "financials": {
         "total_income_and_endowments": {
-            "value": 634362029,
+            "value": 6364989,
             "currency_code": "GBP"
         },
         "total_expenditure": {
-            "value": 652232763,
+            "value": 6781286,
             "currency_code": "GBP"
         },
         "total_funds": {
-            "value": 409328271,
+            "value": 14575460,
             "currency_code": "GBP"
         }
     }
