@@ -87,3 +87,21 @@ class CharitiesErrorHandlingTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(result['errors'][0]['message'], 'Missing apikey')
         self.assertEqual(len(result['errors']), 1)
+
+    def test_dodgy_apikey(self):
+        response = requests.post(API_URL + '/charity-check', json={
+            "input_data": {
+                "metadata": {
+                    "country_of_incorporation": "GBR",
+                    "name": "Macmillan Cancer Support",
+                    "number": "CE002298",
+                }
+            },
+            "config": {},
+            "credentials": {'api_key': 'Dodgy'},
+        })
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(result['errors'][0]['message'], 'Invalid apikey')
+        self.assertEqual(len(result['errors']), 1)

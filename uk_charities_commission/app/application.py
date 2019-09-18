@@ -3,6 +3,7 @@ import logging
 from flask import Flask, jsonify, request
 from raven.contrib.flask import Sentry
 from schemad_types.serialization import coerce_untracked
+from zeep.exceptions import Fault
 
 from passfort_data_structure.entities.company_data import CompanyData
 from passfort_data_structure.misc.errors import EngineError, ProviderError
@@ -52,7 +53,12 @@ def charity_check():
         return jsonify(errors=errors)
 
     charities_commission = UKCharitiesCommission(credentials)
-    raw, response = charities_commission.get_charity(name, metadata.get('number'))
+
+    try:
+        raw, response = charities_commission.get_charity(name, metadata.get('number'))
+    except Fault as e:
+        if 'API Key Verification Failed' in e.message:
+            return jsonify(errors=[{'message': 'Invalid apikey'}])
 
     return jsonify(
         output_data=coerce_untracked(response) if response else None,

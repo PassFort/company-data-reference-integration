@@ -9,11 +9,6 @@ class UKCharitiesCommissionException(Exception):
         return {'message': self.args[0]}
 
 
-# TODO - use this
-class UKCharitiesCommissionAuthException(UKCharitiesCommissionException):
-    pass
-
-
 def handle_error(msg, custom_data=None):
     exception = UKCharitiesCommissionException(msg)
 
@@ -23,7 +18,7 @@ def handle_error(msg, custom_data=None):
         print(exception)
 
         sentry.captureException(
-            exc_info=(exception.__class__, exception, exception.__traceback__),
+            exc_info=(exception.__class__, exception),
             extra=custom_data
         )
     except ImportError:
