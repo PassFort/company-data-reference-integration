@@ -52,11 +52,11 @@ def charity_check():
         return jsonify(errors=errors)
 
     charities_commission = UKCharitiesCommission(credentials)
-    raw, response = charities_commission.get_charity(name)
+    raw, response = charities_commission.get_charity(name, metadata.get('number'))
 
     return jsonify(
-        output_data=coerce_untracked(response),
-        raw=raw.decode('utf8'),
+        output_data=coerce_untracked(response) if response else None,
+        raw=raw.decode('utf8') if raw else None,
         errors=[],
         price=0,
     )

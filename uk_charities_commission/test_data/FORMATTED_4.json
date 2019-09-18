@@ -5,7 +5,6 @@
         "uk_charity_commission_number": "233748",
         "addresses": [
             {
-                "type": "STRUCTURED",
                 "original_freeform_address": "DIOCESE OF MIDDLESBROUGH, 50A THE AVENUE, MIDDLESBROUGH, TS5 6QT"
             }
         ],

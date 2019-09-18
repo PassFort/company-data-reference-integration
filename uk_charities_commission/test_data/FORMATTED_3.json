@@ -5,7 +5,6 @@
         "uk_charity_commission_number": "200359",
         "addresses": [
             {
-                "type": "STRUCTURED",
                 "original_freeform_address": "THE MEATH EPILEPSY CHARITY, WESTBROOK ROAD, GODALMING, SURREY, GU7 2QH"
             }
         ],

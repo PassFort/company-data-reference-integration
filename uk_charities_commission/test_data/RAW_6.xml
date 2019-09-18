@@ -340,32 +340,29 @@ AS AMENDED BY SPECIAL RESOLUTION(S) DATED 28 JUL 2016</ns15:GoverningDocument>
     <ns55:LatestAccQualiifed>0</ns55:LatestAccQualiifed>
   </ns55:LatestFiling>
   <ns56:OrganisationType xmlns:ns56="http://www.charitycommission.gov.uk/">R</ns56:OrganisationType>
-  <ns57:InterimManager xmlns:ns57="http://www.charitycommission.gov.uk/">
-    <ns57:CurrentYN>false</ns57:CurrentYN>
-  </ns57:InterimManager>
-  <ns58:WasExempt xmlns:ns58="http://www.charitycommission.gov.uk/">false</ns58:WasExempt>
-  <ns59:IsCIODissolutionReceived xmlns:ns59="http://www.charitycommission.gov.uk/">false</ns59:IsCIODissolutionReceived>
-  <ns60:IsCIOAdminDissolution xmlns:ns60="http://www.charitycommission.gov.uk/">false</ns60:IsCIOAdminDissolution>
-  <ns61:IsSuspended xmlns:ns61="http://www.charitycommission.gov.uk/">false</ns61:IsSuspended>
-  <ns62:IsInsolvencyActDocsReceived xmlns:ns62="http://www.charitycommission.gov.uk/">false</ns62:IsInsolvencyActDocsReceived>
-  <ns63:IsCIOOnAmalgamationNotice xmlns:ns63="http://www.charitycommission.gov.uk/">false</ns63:IsCIOOnAmalgamationNotice>
-  <ns64:LastRegistrationEvent xmlns:ns64="http://www.charitycommission.gov.uk/">
-    <ns64:CharityEventID>43265</ns64:CharityEventID>
-    <ns64:OrganisationNumber>298405</ns64:OrganisationNumber>
-    <ns64:DateOfEvent>2005-01-18T00:00:00</ns64:DateOfEvent>
-    <ns64:AssociatedOrganisationNumber>-1</ns64:AssociatedOrganisationNumber>
-    <ns64:CharityGroupID>-1</ns64:CharityGroupID>
-    <ns64:GroupSubsidarySuffix>0</ns64:GroupSubsidarySuffix>
-    <ns64:CharityEventTypeCode>STD</ns64:CharityEventTypeCode>
-    <ns64:RegisteredCharityNumber>298405</ns64:RegisteredCharityNumber>
-    <ns64:AssociatedRegisteredCharityNumber>-1</ns64:AssociatedRegisteredCharityNumber>
-    <ns64:CharityEventClassCode>REG</ns64:CharityEventClassCode>
-    <ns64:CharityEventTypeNameEnglish>STANDARD REGISTRATION</ns64:CharityEventTypeNameEnglish>
-    <ns64:CharityEventTypeNameWelsh>COFRESTRU SAFONOL</ns64:CharityEventTypeNameWelsh>
-  </ns64:LastRegistrationEvent>
-  <ns65:Insolvent xmlns:ns65="http://www.charitycommission.gov.uk/">0</ns65:Insolvent>
-  <ns66:InAdministration xmlns:ns66="http://www.charitycommission.gov.uk/">0</ns66:InAdministration>
-  <ns67:CIOConversionStatus xmlns:ns67="http://www.charitycommission.gov.uk/">0</ns67:CIOConversionStatus>
-  <ns68:ClassInquiry xmlns:ns68="http://www.charitycommission.gov.uk/">0</ns68:ClassInquiry>
-  <ns69:InSuspense xmlns:ns69="http://www.charitycommission.gov.uk/">0</ns69:InSuspense>
+  <ns57:WasExempt xmlns:ns57="http://www.charitycommission.gov.uk/">false</ns57:WasExempt>
+  <ns58:IsCIODissolutionReceived xmlns:ns58="http://www.charitycommission.gov.uk/">false</ns58:IsCIODissolutionReceived>
+  <ns59:IsCIOAdminDissolution xmlns:ns59="http://www.charitycommission.gov.uk/">false</ns59:IsCIOAdminDissolution>
+  <ns60:IsSuspended xmlns:ns60="http://www.charitycommission.gov.uk/">false</ns60:IsSuspended>
+  <ns61:IsInsolvencyActDocsReceived xmlns:ns61="http://www.charitycommission.gov.uk/">false</ns61:IsInsolvencyActDocsReceived>
+  <ns62:IsCIOOnAmalgamationNotice xmlns:ns62="http://www.charitycommission.gov.uk/">false</ns62:IsCIOOnAmalgamationNotice>
+  <ns63:LastRegistrationEvent xmlns:ns63="http://www.charitycommission.gov.uk/">
+    <ns63:CharityEventID>43265</ns63:CharityEventID>
+    <ns63:OrganisationNumber>298405</ns63:OrganisationNumber>
+    <ns63:DateOfEvent>2005-01-18T00:00:00</ns63:DateOfEvent>
+    <ns63:AssociatedOrganisationNumber>-1</ns63:AssociatedOrganisationNumber>
+    <ns63:CharityGroupID>-1</ns63:CharityGroupID>
+    <ns63:GroupSubsidarySuffix>0</ns63:GroupSubsidarySuffix>
+    <ns63:CharityEventTypeCode>STD</ns63:CharityEventTypeCode>
+    <ns63:RegisteredCharityNumber>298405</ns63:RegisteredCharityNumber>
+    <ns63:AssociatedRegisteredCharityNumber>-1</ns63:AssociatedRegisteredCharityNumber>
+    <ns63:CharityEventClassCode>REG</ns63:CharityEventClassCode>
+    <ns63:CharityEventTypeNameEnglish>STANDARD REGISTRATION</ns63:CharityEventTypeNameEnglish>
+    <ns63:CharityEventTypeNameWelsh>COFRESTRU SAFONOL</ns63:CharityEventTypeNameWelsh>
+  </ns63:LastRegistrationEvent>
+  <ns64:Insolvent xmlns:ns64="http://www.charitycommission.gov.uk/">0</ns64:Insolvent>
+  <ns65:InAdministration xmlns:ns65="http://www.charitycommission.gov.uk/">0</ns65:InAdministration>
+  <ns66:CIOConversionStatus xmlns:ns66="http://www.charitycommission.gov.uk/">0</ns66:CIOConversionStatus>
+  <ns67:ClassInquiry xmlns:ns67="http://www.charitycommission.gov.uk/">0</ns67:ClassInquiry>
+  <ns68:InSuspense xmlns:ns68="http://www.charitycommission.gov.uk/">0</ns68:InSuspense>
 </Charity>

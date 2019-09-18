@@ -2,11 +2,16 @@ from datetime import datetime
 from zeep import Transport, Client, helpers
 from lxml import etree
 
-from app.utils import handle_error
+from app.utils import handle_error, is_active, permissive_string_compare
 from app.formatters import format_charity
 
 
 wsdl_url = 'https://apps.charitycommission.gov.uk/Showcharity/API/SearchCharitiesV1/SearchCharitiesV1.asmx?wsdl'
+
+
+def is_match(charity, company_number, company_name):
+    return permissive_string_compare(charity.CharityName, company_name) or \
+        permissive_string_compare(charity.RegisteredCompanyNumber, company_number)
 
 
 class UKCharitiesCommission:
@@ -16,7 +21,7 @@ class UKCharitiesCommission:
         self.client = Client(wsdl_url, transport=transport)
         self.credentials = credentials
 
-    def to_string(self, charity_obj):
+    def __value_to_xml(self, charity_obj):
         charity_xml = etree.Element('Charity')
         factory = self.client.type_factory('ns0')
         factory.Charity.render(charity_xml, charity_obj)
@@ -31,7 +36,25 @@ class UKCharitiesCommission:
         return self.client.service.GetCharityByRegisteredCharityNumber(self.credentials['api_key'], charity_number)
 
 
-    def get_charity(self, name):
+    def __pick_best_charity(self, candidates, company_number, company_name):
+        candidates = [c for c in candidates if is_match(c, company_number, company_name)]
+
+        if len(candidates) is 0:
+            return None
+
+        if len(candidates) is 1:
+            return candidates[0]
+
+        candidatees = [c for c in candidates if is_active(c)]
+
+
+        if len(candidates) is 0:
+            return None
+
+        return candidates[0]
+
+
+    def get_charity(self, name, number):
         results = self.find_charities(name)
 
         fetched_results = [
@@ -39,10 +62,12 @@ class UKCharitiesCommission:
             for charity in results[:10]
         ]
 
-        formatted_results = [
-            (self.to_string(raw_charity_obj), format_charity(raw_charity_obj))
-            for raw_charity_obj in fetched_results
-        ]
+        picked_result = self.__pick_best_charity(fetched_results, number, name)
 
-        # TODO: Be smarter here
-        return formatted_results[0]
+        if picked_result:
+            return (
+                self.__value_to_xml(picked_result),
+                format_charity(picked_result)
+            )
+
+        return (None, None)

@@ -4,16 +4,14 @@ from requests.exceptions import RequestException, HTTPError
 from passfort_data_structure.entities.entity_type import EntityType
 
 
-# TODO - use this
-class UKCharitiesCommissionAuthException(Exception):
-    pass
-
-
 class UKCharitiesCommissionException(Exception):
-    pass
-
     def to_dict(self):
         return {'message': self.args[0]}
+
+
+# TODO - use this
+class UKCharitiesCommissionAuthException(UKCharitiesCommissionException):
+    pass
 
 
 def handle_error(msg, custom_data=None):
@@ -32,7 +30,11 @@ def handle_error(msg, custom_data=None):
         pass
 
 
-def string_compare(s1, s2):
+def permissive_string_compare(s1, s2):
+    '''
+    Compare strings, ignoring whitespace/capitalisaton/punctuation, and 0-padding
+    the strings to be identical in length
+    '''
     import string
 
     if (s1 is None) or (s2 is None):
@@ -40,7 +42,14 @@ def string_compare(s1, s2):
 
     remove = string.punctuation + string.whitespace + '&'
     translation = str.maketrans('', '', remove)
-    return s1.translate(translation).upper() == s2.translate(translation).upper()
+
+    s1 = s1.translate(translation).upper()
+    s2 = s2.translate(translation).upper()
+
+    s1 = s1.zfill(len(s2))
+    s2 = s2.zfill(len(s1))
+
+    return s1 == s2
 
 
 def parse_int(s):
@@ -72,3 +81,9 @@ def parse_date(date_str):
     return date.date().isoformat()
 
 
+def is_active(charity):
+    if charity.OrganisationType == 'R':
+        return True
+    elif charity.OrganisationType == 'RM':
+        return False
+    return None

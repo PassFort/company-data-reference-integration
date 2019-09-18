@@ -2,7 +2,7 @@ import os
 import requests
 import nameparser
 
-from app.utils import parse_int, parse_date
+from app.utils import parse_int, parse_date, is_active
 
 
 nameparser.config.CONSTANTS.suffix_acronyms.add('JP')
@@ -57,7 +57,6 @@ def format_address(address):
         return requests.post(ADDRESS_PARSER + '/parser', json={'query': freeform_address}).json()
     except:
         return {
-            'type': 'STRUCTURED',
             "original_freeform_address": freeform_address,
         }
 
@@ -82,8 +81,8 @@ def format_trustee(trustee):
 
 
 def format_company_number(number):
-    if number and len(number) < 8:
-        return '0' * (8 - len(number)) + number
+    if number:
+        return number.zfill(8)
     return number
 
 
@@ -119,12 +118,6 @@ def format_charity(charity):
     company_number = format_company_number(strip(charity.RegisteredCompanyNumber))
     registration_date = parse_date(charity.RegistrationHistory[0].RegistrationDate) if len(charity.RegistrationHistory) > 0 else None
 
-    is_active = None
-    if charity.OrganisationType == 'R':
-        is_active = True
-    elif charity.OrganisationType == 'RM':
-        is_active = False
-
     latest_return = charity.Returns[-1] if len(charity.Returns) > 0 else None
 
     return {
@@ -135,7 +128,7 @@ def format_charity(charity):
             'addresses': [format_address(charity.Address)] if charity.Address else [],
             'country_of_incorporation': 'GBR' if company_number else None,
             'number_of_employees': parse_int(latest_return.Employees.NoEmployees) if latest_return and latest_return.Employees else None,
-            'is_active': is_active,
+            'is_active': is_active(charity),
             'contact_details': {
                 'email': strip(charity.EmailAddress),
                 'phone_number': strip(charity.PublicTelephoneNumber),

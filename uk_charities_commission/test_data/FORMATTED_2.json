@@ -5,7 +5,6 @@
         "uk_charity_commission_number": "1089464",
         "addresses": [
             {
-                "type": "STRUCTURED",
                 "original_freeform_address": "CANCER RESEARCH UK, ANGEL BUILDING, 407 ST. JOHN STREET, LONDON, EC1V 4AD"
             }
         ],
