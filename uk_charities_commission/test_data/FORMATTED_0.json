@@ -5,7 +5,10 @@
         "uk_charity_commission_number": "261017",
         "addresses": [
             {
-                "original_freeform_address": "MACMILLAN CANCER SUPPORT, CAMELFORD HOUSE, 87-90 ALBERT EMBANKMENT, LONDON, SE1 7UQ"
+                "type": "registered_address",
+                "address": {
+                    "original_freeform_address": "MACMILLAN CANCER SUPPORT, CAMELFORD HOUSE, 87-90 ALBERT EMBANKMENT, LONDON, SE1 7UQ"
+                }
             }
         ],
         "country_of_incorporation": "GBR",

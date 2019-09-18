@@ -63,7 +63,7 @@ def format_address(address):
 
     return {
         'type': 'registered_address',
-        'address': address,
+        'address': formatted_address,
     }
 
 
