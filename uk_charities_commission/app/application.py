@@ -5,9 +5,6 @@ from raven.contrib.flask import Sentry
 from schemad_types.serialization import coerce_untracked
 from zeep.exceptions import Fault
 
-from passfort_data_structure.entities.company_data import CompanyData
-from passfort_data_structure.misc.errors import EngineError, ProviderError
-
 from app.UKCharitiesCommission import UKCharitiesCommission
 
 app = Flask(__name__)
@@ -42,9 +39,7 @@ def charity_check():
 
     country_of_incorporation = metadata.get('country', 'GBR')
     if country_of_incorporation != 'GBR':
-        errors.append(coerce_untracked(
-            EngineError.country_not_supported(country_of_incorporation)
-        ))
+        errors.append({'message': 'Country not supported'})
 
     if not credentials.get('api_key'):
         errors.append({'message': 'Missing apikey'})
