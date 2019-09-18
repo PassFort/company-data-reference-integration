@@ -5,7 +5,10 @@
         "uk_charity_commission_number": "298405",
         "addresses": [
             {
-                "original_freeform_address": "CHILDREN WITH CANCER UK, 51 GREAT ORMOND STREET, LONDON, WC1N 3JQ"
+                "type": "registered_address",
+                "address": {
+                    "original_freeform_address": "CHILDREN WITH CANCER UK, 51 GREAT ORMOND STREET, LONDON, WC1N 3JQ"
+                }
             }
         ],
         "country_of_incorporation": "GBR",
