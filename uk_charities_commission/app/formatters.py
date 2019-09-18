@@ -54,12 +54,17 @@ def format_address(address):
         freeform_address += f', {address.Postcode.strip()}'
 
     try:
-        return requests.post(f'http://{ADDRESS_PARSER}/parser', json={'query': freeform_address}).json()
+        formatted_address = requests.post(f'http://{ADDRESS_PARSER}/parser', json={'query': freeform_address}).json()
     except requests.exceptions.RequestException as e:
         print(e)
-        return {
+        formatted_address = {
             "original_freeform_address": freeform_address,
         }
+
+    return {
+        'type': 'registered_address',
+        'address': address,
+    }
 
 
 def format_trustee(trustee):
