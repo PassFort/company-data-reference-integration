@@ -6,7 +6,7 @@ from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
 
-from .api.types import validate_model
+from .api.types import validate_model, IovationCheckRequest, IovationAuthenticationError, IovationCheckError
 from .request_handler import IovationHandler
 from .demo_handler import DemoHandler
 
@@ -83,9 +83,9 @@ def run_check(request_data: 'IovationCheckRequest'):
     else:
         handler = IovationHandler(request_data.credentials)
 
-    raw, report = handler.run_check(request_data.input_data)
+    raw, check_output = handler.run_check(request_data.input_data)
     return jsonify({
-        'output_data': report,
+        'output_data': check_output.to_primitive(),
         'raw_data': raw,
         'errors': []
     })

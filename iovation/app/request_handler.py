@@ -3,9 +3,6 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError
-from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport
-
 
 def requests_retry_session(
         retries=3,

@@ -91,9 +91,32 @@ class IovationCredentials(Model):
     password = StringType(required=True)
 
 
+class DeviceData(Model):
+    account_code = StringType(serialized_name="accountCode")
+    blackbox = StringType()
+    statedip = StringType()
+    type = StringType(required=True)
+
+
+class DeviceMetadata(Model):
+    token = StringType()
+    stated_ip = StringType()
+    action = StringType()
+    reference_id = StringType()
+    device_id = StringType()
+    device_type = StringType()
+
+    def as_iovation_device_data(self):
+        return DeviceData({
+            'account_code': self.reference_id,
+            'blackbox': self.token,
+            'statedip': self.stated_ip,
+            'type': self.action
+        })
+
+
 class CheckInput(Model):
-    # TODO
-    pass
+    device_metadata = ModelType(DeviceMetadata, required=True)
 
 
 class IovationCheckRequest(Model):
@@ -104,3 +127,138 @@ class IovationCheckRequest(Model):
     def validate_credentials(self, data, value):
         if not self.is_demo and value is None:
             raise ValidationError('This field is required')
+
+
+class IovationIpLocation(Model):
+    city = StringType()
+    country_code = StringType(serialized_name="countryCode")
+    region = StringType()
+
+
+class IpDetails(Model):
+    address = StringType()
+    ip_location = ModelType(IovationIpLocation, serialized_name="ipLocation")
+
+
+class DeviceEntity(Model):
+    type = StringType()
+    alias = IntType()
+
+
+class IovationDeviceFraudRule(Model):
+    type = StringType()
+    reason = StringType()
+    score = IntType()
+
+    def as_passfort_device_fraud_rule(self): # can we just use deserialise this?
+        return {
+            'name': self.type,
+            'reason': self.reason,
+            'score': self.score
+        }
+
+class DeviceFraudRuleResults(Model):
+    score = IntType()
+    rules_matched = IntType(serialized_name="rulesMatched")
+    rules = ListType(ModelType(IovationDeviceFraudRule))
+
+
+class DeviceCheckDetails(Model):
+    device = ModelType(DeviceEntity)
+    real_ip = ModelType(IpDetails, serialized_name="realIp")
+    rule_results = ModelType(DeviceFraudRuleResults, serialized_name="ruleResults")
+
+
+class IovationOutput(Model):
+    account_code = StringType(serialized_name="accountCode")
+    details = ModelType(DeviceCheckDetails)
+    id = UUIDType()
+    reason = StringType()
+    result = StringType(choices=["A", "D", "R"])
+    stated_ip = StringType(serialized_name="statedIp")
+    tracking_number = StringType(serialized_name="trackingNumber")
+
+    @classmethod
+    def from_json(cls, response):
+        model = cls().import_data(response, apply_defaults=True)
+        model.validate()
+
+        return response, model
+
+
+class IPLocation(Model):
+    ip_address = StringType()
+    country = StringType()
+    region = StringType()
+    city = StringType()
+
+
+class DeviceFraudRule(Model):
+    name = StringType()
+    reason = StringType()
+    score = IntType()
+
+
+class DeviceFraudDetection(Model):
+    provider_reference = StringType()
+    recommendation = StringType()
+    recommendation_reason = StringType()
+    total_score = IntType()
+    matched_rules = ListType(ModelType(DeviceFraudRule))
+
+
+IOVATION_RECOMMENDATION_MAPPING = {
+    'A': 'Allow',
+    'D': 'Deny',
+    'R': 'Review'
+}
+
+
+class IovationCheckResponse(Model):
+    device_metadata = ModelType(DeviceMetadata)
+    device_fraud_detection = ModelType(DeviceFraudDetection)
+    ip_location = ModelType(IPLocation)
+
+    @classmethod
+    def from_iovation_output(cls, output, input_data):
+        device_metadata = DeviceMetadata({
+            'token': input_data.token,
+            'stated_ip': output.stated_ip,
+            'action': input_data.action,
+            'reference_id': output.account_code
+        })
+
+        if output.details and output.details.device:
+            device_metadata.device_id = output.details.device.alias
+            device_metadata.device_type = output.details.device.type
+
+        device_fraud_detection = DeviceFraudDetection({
+            'provider_reference': output.tracking_number,
+            'recommendation': IOVATION_RECOMMENDATION_MAPPING[output.result],
+            'recommendation_reason': output.reason
+        })
+
+        if output.details and output.details.rule_results:
+            device_fraud_detection.total_score = output.details.rule_results.score
+
+        if output.details.rule_results:
+            matched_rules = []
+            for rule in output.details.rule_results.rules:
+                matched_rules.append(rule.as_passfort_device_fraud_rule())
+            device_fraud_detection.matched_rules = matched_rules
+
+
+        ip_location = IPLocation()
+        if output.details and output.details.real_ip:
+            ip_location.ip_address = output.details.real_ip.address
+            ip_location.country = output.details.real_ip.ip_location.country_code
+            ip_location.region = output.details.real_ip.ip_location.region
+            ip_location.city = output.details.real_ip.ip_location.city
+
+        return cls({
+            'device_metadata': device_metadata,
+            'device_fraud_detection': device_fraud_detection,
+            'ip_location': ip_location
+        })
+
+
