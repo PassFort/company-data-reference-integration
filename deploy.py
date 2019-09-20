@@ -16,6 +16,7 @@ integrations = {
     'equifax': './equifax',
     'onfido': './onfido',
     'vsure': './vsure',
+    'iovation': './iovation',
     'bvd': './bvd',
     'worldcheck': './worldcheck',
     'trulioo': './trulioo',
