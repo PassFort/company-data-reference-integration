@@ -26,6 +26,7 @@ class TestCompanyReport(unittest.TestCase):
                         'address': {
                             'type': 'FREEFORM',
                             'text': 'THE STUDIO 11 PRINCELET STREET, LONDON, E1 6QH',
+                            'country': 'GBR'
                         }
                     },
                     {
@@ -33,13 +34,7 @@ class TestCompanyReport(unittest.TestCase):
                         'address': {
                             'type': 'FREEFORM',
                             'text': 'The Studio 11 Princelet Street, London, E1 6QH',
-                        }
-                    },
-                    {
-                        'type': 'trading_address',
-                        'address': {
-                            'type': 'FREEFORM',
-                            'text': 'Unit 418, The Print Rooms, 164/180 Union Street, London, SE1 0LH',
+                            'country': 'GBR'
                         }
                     }
                 ],
@@ -100,11 +95,16 @@ class TestCompanyReport(unittest.TestCase):
             company_officer,
             {
                 'resolver_id': str(build_resolver_id('918883145')),
-                'type': 'COMPANY',
-                'last_name': 'CC SECRETARIES LIMITED',
+                'entity_type': 'COMPANY',
                 'original_role': 'Company Secretary',
                 'appointed_on': '2018-08-07',
-                'provider_name': 'CreditSafe'
+                'provider_name': 'CreditSafe',
+                'immediate_data': {
+                    'metadata': {
+                        'name': 'CC SECRETARIES LIMITED'
+                    },
+                    'entity_type': 'COMPANY',
+                }
             }
         )
 
@@ -115,13 +115,19 @@ class TestCompanyReport(unittest.TestCase):
             directors[0],
             {
                 'resolver_id': str(build_resolver_id('925098862')),
-                'type': 'INDIVIDUAL',
-                'first_names': ['Tom', 'Kalervo'],
-                'last_name': 'Henriksson',
+                'entity_type': 'INDIVIDUAL',
                 'original_role': 'Director',
                 'appointed_on': '2018-08-31',
                 'provider_name': 'CreditSafe',
-                'dob': '1968-05-01'
+                'immediate_data': {
+                    'personal_details': {
+                        'name': {
+                            'given_names': ['Tom', 'Kalervo'],
+                            'family_name': 'Henriksson'
+                        }
+                    },
+                    'entity_type': 'INDIVIDUAL',
+                }
             }
         )
 
@@ -176,29 +182,32 @@ class TestCompanyReport(unittest.TestCase):
             # test against donald
             donald_director = next(
                 d for d in self.formatted_report['officers']['directors']
-                if d['last_name'] == 'Gillies'
+                if d['entity_type'] == 'INDIVIDUAL' and
+                d['immediate_data']['personal_details']['name']['family_name'] == 'Gillies'
             )
             donald_shareholder = next(
-                s for s in shareholders if s['last_name'] == 'GILLIES'
+                s for s in shareholders if s['entity_type'] == 'INDIVIDUAL' and
+                s['immediate_data']['personal_details']['name']['family_name'] == 'GILLIES'
             )
 
             self.assertEqual(
-                donald_director['first_names'],
+                donald_director['immediate_data']['personal_details']['name']['given_names'],
                 ['Donald', 'Andrew']
             )
 
             self.assertEqual(
-                donald_shareholder['first_names'],
+                donald_shareholder['immediate_data']['personal_details']['name']['given_names'],
                 ['DONALD', 'ANDREW']
             )
 
-            self.assertEqual(donald_shareholder['type'], 'INDIVIDUAL')
-            self.assertEqual(donald_director['type'], 'INDIVIDUAL')
+            self.assertEqual(donald_shareholder['entity_type'], 'INDIVIDUAL')
+            self.assertEqual(donald_director['entity_type'], 'INDIVIDUAL')
             self.assertEqual(donald_director['resolver_id'], donald_shareholder['resolver_id'])
 
         with self.subTest('should merge shareholders with multiple classes'):
             episode_shareholder = next(
-                s for s in shareholders if s['last_name'] == 'EPISODE (GP) LTD')
+                s for s in shareholders if s['entity_type'] == 'COMPANY' and
+                s['immediate_data']['metadata']['name'] == 'EPISODE (GP) LTD')
 
             self.assertEqual(len(episode_shareholder['shareholdings']), 2)
             print(episode_shareholder['shareholdings'])
