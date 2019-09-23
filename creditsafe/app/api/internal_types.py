@@ -7,7 +7,7 @@ from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
     UUIDType, DateType
 
-from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata
+from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata, EntityData
 
 
 DIRECTOR_POSITIONS = [
@@ -339,12 +339,9 @@ class CurrentOfficer(Model):
             expanded_result.append(PassFortOfficer({
                 'resolver_id': build_resolver_id(self.id),
                 'entity_type': self.entity_type,
-                'immediate_data': {
-                    'first_names': first_names,
-                    'last_name': last_name,
-                    'entity_type': self.entity_type,
-                    'dob': self.dob if self.entity_type == 'INDIVIDUAL' else None
-                },
+                'immediate_data':
+                    EntityData.as_company(last_name) if self.entity_type == 'COMPANY' else EntityData.as_individual(
+                        first_names, last_name),
                 'original_role': position.position_name,
                 'appointed_on': position.date_appointed
             }))
@@ -427,11 +424,9 @@ class ShareholdersReport(Model):
                 first_names, last_name = s.format_name()
                 unique_shareholders[s.name] = PassFortShareholder({
                     'entity_type': s.entity_type,
-                    'immediate_data': {
-                        'first_names': first_names,
-                        'last_name': last_name,
-                        'entity_type': s.entity_type,
-                    },
+                    'immediate_data':
+                        EntityData.as_company(last_name) if s.entity_type == 'COMPANY' else EntityData.as_individual(
+                            first_names, last_name),
                     'shareholdings': []
                 })
 

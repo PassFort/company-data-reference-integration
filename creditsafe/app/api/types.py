@@ -180,12 +180,47 @@ class PassFortMetadata(Model):
         serialize_when_none = False
 
 
+class FullName(Model):
+    given_names = ListType(StringType, required=True)
+    family_name = StringType(required=True, min_length=1)
+
+
+class PersonalDetails(Model):
+    name = ModelType(FullName, required=True)
+
+
+class CompanyMetadata(Model):
+    name = StringType(required=True)
+
+
 class EntityData(Model):
-    first_names = ListType(StringType, default=None, serialize_when_none=False)
-    last_name = StringType(required=True)
-    dob = DateType(default=None, serialize_when_none=False)
+    personal_details = ModelType(PersonalDetails, default=None)
+    metadata = ModelType(CompanyMetadata, default=None)
     entity_type = StringType(required=True)
 
+    @classmethod
+    def as_individual(cls, first_names, last_name):
+        return cls({
+            'personal_details': {
+                'name': {
+                    'given_names': first_names,
+                    'family_name': last_name
+                }
+            },
+            'entity_type': 'INDIVIDUAL'
+        })
+
+    @classmethod
+    def as_company(cls, last_name):
+        return cls({
+            'metadata': {
+                'name': last_name
+            },
+            'entity_type': 'COMPANY'
+        })
+
+    class Options:
+        serialize_when_none = False
 
 class PassFortAssociate(Model):
     resolver_id = UUIDType(default=None)
