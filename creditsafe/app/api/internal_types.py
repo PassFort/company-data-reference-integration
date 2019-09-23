@@ -215,14 +215,14 @@ class ContactAddress(Model):
         return None
 
     def as_passfort_address(self):
-        if self.simple_value is None:
+        if self.simple_value is None or self.country is None:
             return None
         return {
             'type': self.passfort_address_type,
             'address': {
                 "type": 'FREEFORM',
                 "text": self.simple_value,
-                "country": pycountry.countries.get(alpha_2=self.country).alpha_3 if self.country else None
+                "country": pycountry.countries.get(alpha_2=self.country).alpha_3
             }
         }
 
@@ -291,18 +291,28 @@ class OfficerPosition(Model):
 
 
 class CurrentOfficer(Model):
-    id = StringType(required=True)
-    name = StringType(default=None)
+    _creditsafe_id = StringType(default=None, serialized_name="id")
+    name = StringType(required=True)
     title = StringType(default=None)
     first_name = StringType(default=None, serialized_name="firstName")
     middle_name = StringType(default=None, serialized_name="middleName")
     surname = StringType(default=None)
+    gender = StringType(default=None)
     dob = UTCDateTimeType(default=None, serialized_name="dateOfBirth")
     positions = ListType(ModelType(OfficerPosition), default=[])
 
+
+    @property
+    def id(self):
+        if self._creditsafe_id is None:
+            # Sometimes officers have no id?
+            return resolver_key(self.name or 'None', expect_title=True)
+        else:
+            return self._creditsafe_id
+
     @property
     def entity_type(self):
-        if self.name and not (self.title or self.first_name or self.middle_name):
+        if self.name and self.dob is None and (self.gender is None or self.gender == 'Unknown'):
             return 'COMPANY'
         return 'INDIVIDUAL'
 
@@ -328,12 +338,14 @@ class CurrentOfficer(Model):
         for position in self.positions:
             expanded_result.append(PassFortOfficer({
                 'resolver_id': build_resolver_id(self.id),
-                'type': self.entity_type,
-                'first_names': first_names,
-                'last_name': last_name,
+                'entity_type': self.entity_type,
+                'immediate_data': {
+                    'first_names': first_names,
+                    'last_name': last_name,
+                    'dob': self.dob if self.entity_type == 'INDIVIDUAL' else None
+                },
                 'original_role': position.position_name,
-                'appointed_on': position.date_appointed,
-                'dob': self.dob
+                'appointed_on': position.date_appointed
             }))
         return expanded_result
 
@@ -404,7 +416,7 @@ class Shareholder(Model):
 
 
 class ShareholdersReport(Model):
-    shareholders = ListType(ModelType(Shareholder), default=None, serialized_name="shareHolders")
+    shareholders = ListType(ModelType(Shareholder), default=[], serialized_name="shareHolders")
 
     def merge_shareholdings(self):
         # Merge shareholdings for shareholders with the same name
@@ -413,9 +425,11 @@ class ShareholdersReport(Model):
             if s.name not in unique_shareholders:
                 first_names, last_name = s.format_name()
                 unique_shareholders[s.name] = PassFortShareholder({
-                    'type': s.entity_type,
-                    'first_names': first_names,
-                    'last_name': last_name,
+                    'entity_type': s.entity_type,
+                    'immediate_data': {
+                        'first_names': first_names,
+                        'last_name': last_name,
+                    },
                     'shareholdings': []
                 })
 
