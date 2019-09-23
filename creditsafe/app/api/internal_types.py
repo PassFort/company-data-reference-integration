@@ -342,6 +342,7 @@ class CurrentOfficer(Model):
                 'immediate_data': {
                     'first_names': first_names,
                     'last_name': last_name,
+                    'entity_type': self.entity_type,
                     'dob': self.dob if self.entity_type == 'INDIVIDUAL' else None
                 },
                 'original_role': position.position_name,
@@ -429,6 +430,7 @@ class ShareholdersReport(Model):
                     'immediate_data': {
                         'first_names': first_names,
                         'last_name': last_name,
+                        'entity_type': s.entity_type,
                     },
                     'shareholdings': []
                 })

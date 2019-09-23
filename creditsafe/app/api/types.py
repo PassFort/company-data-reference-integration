@@ -184,6 +184,7 @@ class EntityData(Model):
     first_names = ListType(StringType, default=None, serialize_when_none=False)
     last_name = StringType(required=True)
     dob = DateType(default=None, serialize_when_none=False)
+    entity_type = StringType(required=True)
 
 
 class PassFortAssociate(Model):

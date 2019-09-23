@@ -101,6 +101,7 @@ class TestCompanyReport(unittest.TestCase):
                 'provider_name': 'CreditSafe',
                 'immediate_data': {
                     'last_name': 'CC SECRETARIES LIMITED',
+                    'entity_type': 'COMPANY',
                 }
             }
         )
@@ -120,6 +121,7 @@ class TestCompanyReport(unittest.TestCase):
                     'first_names': ['Tom', 'Kalervo'],
                     'last_name': 'Henriksson',
                     'dob': '1968-05-01',
+                    'entity_type': 'INDIVIDUAL',
                 }
             }
         )
