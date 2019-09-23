@@ -1,8 +1,10 @@
+import base64
 import requests
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
+from .api.types import IovationCheckError, IovationOutput, IovationCheckResponse, CheckInput
 
 def requests_retry_session(
         retries=3,
@@ -32,6 +34,27 @@ class IovationHandler:
         self.credentials = credentials
         self.session = requests_retry_session()
 
-    def run_check(self, input_data):
-        # TODO
-        pass
+    def run_check(self, input_data: CheckInput):
+        token = self.get_authorization_token()
+
+        response = self.session.post(
+            f'{self.base_url}/subs/{self.credentials.subscriber_id}/checks',
+            json=input_data.device_metadata.as_iovation_device_data().to_primitive(),
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Basic {token}'
+            }
+        )
+
+        if response.status_code != 200:
+            raise IovationCheckError(response)
+
+        response = response.json()
+        raw_data, output = IovationOutput.from_json(response)
+
+        return raw, IovationCheckResponse.from_iovation_output(output, input_data.device_metadata)
+
+    def get_authorization_token(self):
+        token = f'{self.credentials["subscriber_id"]}/{self.credentials["subscriber_account"]}:{self.credentials["password"]}'
+
+        return base64.b64encode(token.encode('utf-8')).decode('utf-8')

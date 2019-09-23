@@ -1,4 +1,5 @@
 from app.api.types import DeviceMetadata, IovationOutput, IovationCheckResponse
+from app.request_handler import IovationHandler
 from app.application import app
 import json
 import responses
@@ -181,3 +182,16 @@ class TestOutputData(unittest.TestCase):
         }
         self.maxDiff = None
         self.assertEqual(expected_output, output.to_primitive())
+
+    def test_authorization_token(self):
+        credentials = {
+            'subscriber_id': '388702',
+            'subscriber_account': 'OLTP',
+            'password': 'CRJSGGFH'
+        }
+
+        handler = IovationHandler(credentials)
+
+        token = handler.get_authorization_token()
+
+        self.assertEqual('Mzg4NzAyL09MVFA6Q1JKU0dHRkg=', token)

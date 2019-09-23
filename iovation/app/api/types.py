@@ -41,10 +41,6 @@ class IovationError(Exception):
         self.response = response
 
 
-class IovationAuthenticationError(IovationError):
-    pass
-
-
 class IovationCheckError(IovationError):
     pass
 
@@ -150,7 +146,7 @@ class IovationDeviceFraudRule(Model):
     reason = StringType()
     score = IntType()
 
-    def as_passfort_device_fraud_rule(self): # can we just use deserialise this?
+    def as_passfort_device_fraud_rule(self):
         return {
             'name': self.type,
             'reason': self.reason,

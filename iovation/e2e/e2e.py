@@ -12,7 +12,7 @@ class IovationTestExamples(unittest.TestCase):
         app.testing = True
         self.testing_app = app.test_client()
 
-    def test_deny_response(self):
+    def test_demo_deny_response(self):
         request = {
             'input_data': {
                 'device_metadata': {
@@ -70,7 +70,7 @@ class IovationTestExamples(unittest.TestCase):
         self.assertEqual(expected_output, response_json['output_data'])
         self.assertIsNotNone(response_json['raw_data'])
 
-    def test_allow_response(self):
+    def test_demo_allow_response(self):
         request = {
             'input_data': {
                 'device_metadata': {
@@ -94,7 +94,7 @@ class IovationTestExamples(unittest.TestCase):
 
         self.assertEqual('Allow', response_json['output_data']['device_fraud_detection']['recommendation'])
 
-    def test_review_response(self):
+    def test_demo_review_response(self):
         request = {
             'input_data': {
                 'device_metadata': {
@@ -117,3 +117,49 @@ class IovationTestExamples(unittest.TestCase):
         response_json = json.loads(response.data)
 
         self.assertEqual('Review', response_json['output_data']['device_fraud_detection']['recommendation'])
+
+    def test_response_using_test_account(self):
+        request = {
+            'input_data': {
+                'device_metadata': {
+                    'token': 'BLACKBOX',
+                    'stated_ip': '1.1.1.1',
+                    'action': 'new_account',
+                    'reference_id': 'REF_ID'
+                }
+            },
+            'credentials': {
+                'subscriber_id': '388702',
+                'subscriber_account': 'OLTP',
+                'password': 'CRJSGGFH'
+            }
+        }
+
+        response = self.testing_app.post('/run_check', content_type='application/json', json=request)
+
+        response_json = json.loads(response.data)
+
+        self.assertEqual('Allow', response_json['output_data']['device_fraud_detection']['recommendation'])
+
+    def test_response_without_blackbox(self):
+        request = {
+            'input_data': {
+                'device_metadata': {
+                    'token': '',
+                    'stated_ip': '1.1.1.1',
+                    'action': 'new_account',
+                    'reference_id': 'REF_ID'
+                }
+            },
+            'credentials': {
+                'subscriber_id': '388702',
+                'subscriber_account': 'OLTP',
+                'password': 'CRJSGGFH'
+            }
+        }
+
+        response = self.testing_app.post('/run_check', content_type='application/json', json=request)
+
+        response_json = json.loads(response.data)
+
+        self.assertEqual('Allow', response_json['output_data']['device_fraud_detection']['recommendation'])

@@ -6,7 +6,8 @@ from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
 
-from .api.types import validate_model, IovationCheckRequest, IovationAuthenticationError, IovationCheckError
+from .api.types import validate_model, IovationCheckRequest, IovationCheckError, \
+    Error, ErrorCode
 from .request_handler import IovationHandler
 from .demo_handler import DemoHandler
 
@@ -96,43 +97,10 @@ def api_400(error):
     logging.error(error.description)
     return jsonify(errors=[error.description]), 400
 
-@app.errorhandler(IovationAuthenticationError)
-def handle_auth_error(auth_error):
-    response = auth_error.response
-    response_content = response.json()
-
-    if response.status_code == 401:
-        return jsonify(
-            raw=response_content,
-            errors=[
-                {
-                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'The request could not be authorised',
-                    'info': {
-                        'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('message')
-                        }
-                    }
-                }
-            ]
-        ), 200
-    else:
-        return jsonify(
-            raw=response_content,
-            errors=[
-                # Yes, messages come from different fields
-                # (messages, details, or error)
-                Error.provider_unhandled_error(response_content.get('details'))
-            ]
-        ), 500
-
 
 @app.errorhandler(IovationCheckError)
-def handle_search_error(check_error):
-    response = search_error.response
+def handle_error(check_error):
+    response = check_error.response
     response_content = response.json()
 
     if response.status_code == 400:
@@ -145,9 +113,23 @@ def handle_search_error(check_error):
                     'message': 'Unable to perform a check using the parameters provided',
                     'info': {
                         'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('details')
+                             'message': response_content.get('message')
+                        }
+                    }
+                }
+            ]
+        ), 200
+    elif response.status_code == 401 or response.status_code == 403:
+        return jsonify(
+            raw=response_content,
+            errors=[
+                {
+                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+                    'source': 'PROVIDER',
+                    'message': 'The request could not be authorised',
+                    'info': {
+                        'provider_error': {
+                            'message': response_content.get('message')
                         }
                     }
                 }
@@ -157,9 +139,7 @@ def handle_search_error(check_error):
         return jsonify(
             raw=response_content,
             errors=[
-                # Yes, messages come from different fields
-                # (messages, details, or error)
-                Error.provider_unhandled_error(response_content.get('error'))
+                Error.provider_unhandled_error(response_content.get('message'))
             ]
         ), 500
 
