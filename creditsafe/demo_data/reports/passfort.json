@@ -130,13 +130,15 @@
       "mainAddress": {
         "type": "Registered Address",
         "simpleValue": "THE STUDIO 11 PRINCELET STREET, LONDON, E1 6QH",
-        "postalCode": "E1 6QH"
+        "postalCode": "E1 6QH",
+        "country": "GB"
       },
       "otherAddresses": [
         {
           "type": "Trading Address",
           "simpleValue": "The Studio 11 Princelet Street, London, E1 6QH",
-          "postalCode": "E1 6QH"
+          "postalCode": "E1 6QH",
+          "country": "GB"
         },
         {
           "type": "Trading Address",
@@ -422,7 +424,6 @@
           ]
         },
         {
-          "id": "920282579",
           "name": "Mr Paul Anthony McNabb",
           "title": "Mr",
           "firstName": "Paul",

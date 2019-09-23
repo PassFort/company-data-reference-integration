@@ -153,7 +153,7 @@ class PassFortFreeformAddress(Model):
 
 
 class PassFortAddress(Model):
-    type = StringType(default=None)
+    type = StringType(default=None, serialize_when_none=False)
     address = ModelType(PassFortFreeformAddress, required=True)
 
 
@@ -179,24 +179,28 @@ class PassFortMetadata(Model):
     class Options:
         serialize_when_none = False
 
+
+class EntityData(Model):
+    first_names = ListType(StringType, default=None, serialize_when_none=False)
+    last_name = StringType(required=True)
+    dob = DateType(default=None, serialize_when_none=False)
+
+
 class PassFortAssociate(Model):
     resolver_id = UUIDType(default=None)
-    type = StringType(required=True)
-    first_names = ListType(StringType, default=None, serialize_when_none=False)
-    last_name =  StringType(required=True)
-
-    class Options:
-        serialize_when_none = False
-
-
-class PassFortOfficer(PassFortAssociate):
-    original_role = StringType(default=None, serialize_when_none=False)
-    appointed_on = DateType(default=None, serialize_when_none=False)
-    dob = DateType(default=None, serialize_when_none=False)
+    entity_type = StringType(required=True)
+    immediate_data = ModelType(EntityData, required=True)
 
     @serializable
     def provider_name(self):
         return 'CreditSafe'
+
+    class Options:
+        serialize_when_none = False
+
+class PassFortOfficer(PassFortAssociate):
+    original_role = StringType(default=None, serialize_when_none=False)
+    appointed_on = DateType(default=None, serialize_when_none=False)
 
     class Options:
         serialize_when_none = False
