@@ -100,7 +100,9 @@ class TestCompanyReport(unittest.TestCase):
                 'appointed_on': '2018-08-07',
                 'provider_name': 'CreditSafe',
                 'immediate_data': {
-                    'last_name': 'CC SECRETARIES LIMITED',
+                    'metadata': {
+                        'name': 'CC SECRETARIES LIMITED'
+                    },
                     'entity_type': 'COMPANY',
                 }
             }
@@ -118,9 +120,12 @@ class TestCompanyReport(unittest.TestCase):
                 'appointed_on': '2018-08-31',
                 'provider_name': 'CreditSafe',
                 'immediate_data': {
-                    'first_names': ['Tom', 'Kalervo'],
-                    'last_name': 'Henriksson',
-                    'dob': '1968-05-01',
+                    'personal_details': {
+                        'name': {
+                            'given_names': ['Tom', 'Kalervo'],
+                            'family_name': 'Henriksson'
+                        }
+                    },
                     'entity_type': 'INDIVIDUAL',
                 }
             }
@@ -177,19 +182,21 @@ class TestCompanyReport(unittest.TestCase):
             # test against donald
             donald_director = next(
                 d for d in self.formatted_report['officers']['directors']
-                if d['immediate_data']['last_name'] == 'Gillies'
+                if d['entity_type'] == 'INDIVIDUAL' and
+                d['immediate_data']['personal_details']['name']['family_name'] == 'Gillies'
             )
             donald_shareholder = next(
-                s for s in shareholders if s['immediate_data']['last_name'] == 'GILLIES'
+                s for s in shareholders if s['entity_type'] == 'INDIVIDUAL' and
+                s['immediate_data']['personal_details']['name']['family_name'] == 'GILLIES'
             )
 
             self.assertEqual(
-                donald_director['immediate_data']['first_names'],
+                donald_director['immediate_data']['personal_details']['name']['given_names'],
                 ['Donald', 'Andrew']
             )
 
             self.assertEqual(
-                donald_shareholder['immediate_data']['first_names'],
+                donald_shareholder['immediate_data']['personal_details']['name']['given_names'],
                 ['DONALD', 'ANDREW']
             )
 
@@ -199,7 +206,8 @@ class TestCompanyReport(unittest.TestCase):
 
         with self.subTest('should merge shareholders with multiple classes'):
             episode_shareholder = next(
-                s for s in shareholders if s['immediate_data']['last_name'] == 'EPISODE (GP) LTD')
+                s for s in shareholders if s['entity_type'] == 'COMPANY' and
+                s['immediate_data']['metadata']['name'] == 'EPISODE (GP) LTD')
 
             self.assertEqual(len(episode_shareholder['shareholdings']), 2)
             print(episode_shareholder['shareholdings'])
