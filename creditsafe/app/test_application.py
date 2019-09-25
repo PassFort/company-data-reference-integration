@@ -94,13 +94,13 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=20',
+            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=100',
             json={'companies': []},
             status=200)
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&pageSize=20',
+            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&pageSize=100',
             json={'companies': []},
             status=200)
 
@@ -122,13 +122,13 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=20',
+            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=100',
             json=SEARCH_RESPONSE,
             status=200)
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&pageSize=20',
+            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&pageSize=100',
             json={'details': 'Param not supported'},
             status=400)
 
@@ -160,7 +160,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=20',
+            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=100',
             json={'details': 'Param not supported'},
             status=400)
 

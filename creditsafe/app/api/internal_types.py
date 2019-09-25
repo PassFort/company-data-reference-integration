@@ -126,7 +126,7 @@ Works Director
 
 
 def split_name(name, expect_title=False):
-    names = name.split(' ')
+    names = name.replace('\xa0', ' ').split(' ')
     start = 0
     # First name is the title.
     if expect_title:
@@ -384,10 +384,10 @@ class CompanyDirectorsReport(Model):
 
 class Shareholder(Model):
     name = StringType(required=True)
-    shareholder_type = StringType(required=True, choices=["Person", "Company"], serialized_name="shareholderType")
+    shareholder_type = StringType(default="Company", choices=["Person", "Company"], serialized_name="shareholderType")
     share_class = StringType(default=None, serialized_name="shareType")
     currency = StringType(default=None)
-    amount = IntType(serialized_name="totalNumberOfSharesOwned", required=True)
+    amount = IntType(serialized_name="totalNumberOfSharesOwned", default=None)
     percentage = DecimalType(serialized_name="percentSharesHeld", required=True)
 
     def format_name(self):
