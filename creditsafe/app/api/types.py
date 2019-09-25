@@ -122,6 +122,7 @@ class SearchInput(Model):
 
 class ReportInput(Model):
     creditsafe_id = StringType(required=True)
+    country_of_incorporation = StringType(default=None) # Only required for DEU
 
 
 class CreditSafeSearchRequest(Model):
@@ -245,7 +246,7 @@ class PassFortOfficer(PassFortAssociate):
 class PassFortShareholding(Model):
     share_class = StringType(default=None)
     currency = StringType(default=None)
-    amount = IntType(required=True)
+    amount = IntType(default=None)
     percentage = DecimalType(required=True)
 
     @serializable(serialized_name="percentage")

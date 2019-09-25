@@ -56,7 +56,7 @@ class CreditSafeHandler:
         raw = []
 
         for query in queries:
-            url = f'{self.base_url}/companies?{query}&pageSize=20'
+            url = f'{self.base_url}/companies?{query}&pageSize=100'
             response = self.session.get(
                 url,
                 headers={
@@ -74,22 +74,24 @@ class CreditSafeHandler:
             result = response.json()
             raw.append(result)
 
-            companies.extend(result.get('companies', []))
+            companies.extend([r for r in result.get('companies', []) if r.get('regNo') is not None])
             if len(companies) >= 20:
                 break
         formatted_companies = [
             CreditSafeCompanySearchResponse.from_json(c).as_passfort_format(
                 input_data.country, input_data.state)
-            for c in companies
+            for c in companies[0:20] # Only get the first 20
         ]
         return raw, formatted_companies
 
     def get_report(self, input_data):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
-
+        url = f'{self.base_url}/companies/{input_data.creditsafe_id}'
+        if input_data.country_of_incorporation == 'DEU':
+            url = f'{url}?customData=de_reason_code::1' # 1 is code for Credit Decisioning
         response = self.session.get(
-            f'{self.base_url}/companies/{input_data.creditsafe_id}',
+            url,
             headers={
                 'Content-Type': 'application/json',
                 'Authorization': f'Bearer {token}'
