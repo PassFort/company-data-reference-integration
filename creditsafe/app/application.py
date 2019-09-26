@@ -131,18 +131,7 @@ def handle_auth_error(auth_error):
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'The request could not be authorised',
-                    'info': {
-                        'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('message')
-                        }
-                    }
-                }
+                Error.provider_misconfiguration_error(response_content.get('message'))
             ]
         ), 200
     else:
@@ -165,18 +154,9 @@ def handle_search_error(search_error):
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'Unable to perform a search using the parameters provided',
-                    'info': {
-                        'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('details')
-                        }
-                    }
-                }
+                # Yes, messages come from different fields
+                # (messages, details, or error)
+                Error.provider_unhandled_error(response_content.get('details'))
             ]
         ), 200
     else:
@@ -199,29 +179,14 @@ def handle_report_error(report_error):
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.INVALID_INPUT_DATA.value,
-                    'source': 'PROVIDER',
-                    'message': 'Bad ID provided',
-                }
+                Error.provider_unhandled_error(response_content.get('details'))
             ]
-        ), 400
+        ), 200 # Clients could potentially change this ID? So surface the error
     elif response.status_code == 403 and response_content.get('message') == 'Forbidden request':
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'The request could not be authorised',
-                    'info': {
-                        'provider_error': {
-                            # Yes, messages come from different fields
-                            # (messages, details, or error)
-                            'message': response_content.get('details')
-                        }
-                    }
-                }
+                Error.provider_misconfiguration_error(f"The request could not be authorised: {response_content.get('details')}")
             ]
         ), 200
     else:
@@ -242,12 +207,9 @@ def connection_error(error):
         {
             'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
             'source': 'PROVIDER',
-            'message': 'Connection error when contacting CreditSafe',
-            'info': {
-                'raw': '{}'.format(error)
-            }
+            'message': "Provider Error: connection to 'Creditsafe' service encountered an error."
         }
-    ]), 502
+    ]), 200
 
 
 @app.errorhandler(Timeout)
@@ -257,9 +219,6 @@ def timeout_error(error):
         {
             'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
             'source': 'PROVIDER',
-            'message': 'Timeout error when contacting CreditSafe',
-            'info': {
-                'raw': '{}'.format(error)
-            }
+            'message': "Provider Error: connection to 'Creditsafe' service timed out"
         }
-    ]), 502
+    ]), 200

@@ -81,7 +81,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         result = self.app.post(
             '/search',
             json=TEST_SEARCH_REQUEST)
-        self.assertEqual(result.status_code, 502)
+        self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json['errors'][0]['code'], ErrorCode.PROVIDER_CONNECTION_ERROR.value)
 
     @responses.activate
@@ -161,7 +161,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         responses.add(
             responses.GET,
             'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=100',
-            json={'details': 'Param not supported'},
+            json={'details': 'Parameters not supported'},
             status=400)
 
         result = self.app.post(
@@ -170,8 +170,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.json['errors'][0]['message'],
-                         'Unable to perform a search using the parameters provided')
+        self.assertIn('Parameters not supported', result.json['errors'][0]['message'])
 
 
 class TestReport(unittest.TestCase):
@@ -208,9 +207,8 @@ class TestReport(unittest.TestCase):
             json=TEST_REPORT_REQUEST
         )
 
-        self.assertEqual(result.status_code, 400)
-        self.assertEqual(result.json['errors'][0]['message'],
-                         'Bad ID provided')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('Provider Error', result.json['errors'][0]['message'])
 
     @responses.activate
     def test_no_access_to_reports(self):
@@ -235,10 +233,8 @@ class TestReport(unittest.TestCase):
             json=TEST_REPORT_REQUEST
         )
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.json['errors'][0]['message'],
-                         'The request could not be authorised')
-        self.assertEqual(result.json['errors'][0]['info']['provider_error']['message'],
-                         'No access to RO reports')
+        self.assertIn('The request could not be authorised', result.json['errors'][0]['message'])
+        self.assertIn('No access to RO reports', result.json['errors'][0]['message'])
 
 
 class TestDemoData(unittest.TestCase):
@@ -301,7 +297,7 @@ class TestDemoData(unittest.TestCase):
             self.assertDictEqual(
                 search_response['output_data'][0],
                 {
-                    'name': 'PASSFORT LIMITED',
+                    'name': 'PASSFORT PARTIAL LIMITED',
                     'number': '09565115',
                     'creditsafe_id': 'partial',
                     'country_of_incorporation': 'GBR'

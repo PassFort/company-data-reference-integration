@@ -9,11 +9,13 @@ class DemoHandler:
             return []
 
         creditsafe_id = 'pass'
+        name = 'PASSFORT LIMITED'
         if 'partial' in input_data.query.lower():
             creditsafe_id = 'partial'
+            name = 'PASSFORT PARTIAL LIMITED'
 
         result =  {
-            'name': 'PASSFORT LIMITED',
+            'name': name,
             'number': '09565115',
             'creditsafe_id': creditsafe_id,
             'country_of_incorporation': 'GBR'

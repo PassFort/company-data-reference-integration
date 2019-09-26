@@ -1,5 +1,6 @@
 import pycountry
 
+from datetime import datetime
 from enum import unique, Enum
 from flask import abort, g, request
 from functools import wraps
@@ -80,11 +81,24 @@ class Error:
         return {
             'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
             'source': 'PROVIDER',
-            'message': 'Provider unhandled error',
+            'message': "Provider Error: {!r} while running 'Creditsafe' service.".format(provider_message),
             'info': {
-                'provider_error': {
-                    'message': provider_message
-                }
+               'provider': 'Creditsafe',
+               'original_error': provider_message,
+               'timestamp': str(datetime.now())
+            }
+        }
+
+    @staticmethod
+    def provider_misconfiguration_error(provider_message: str):
+        return {
+            'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': "Provider Configuration Error: {!r} while running 'Creditsafe' service".format(provider_message),
+            'info': {
+                'provider': 'Creditsafe',
+                'original_error': provider_message,
+                'timestamp': str(datetime.now())
             }
         }
 
