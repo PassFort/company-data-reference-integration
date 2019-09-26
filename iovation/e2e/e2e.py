@@ -60,7 +60,7 @@ class IovationTestExamples(unittest.TestCase):
             },
             "ip_location": {
                 "ip_address": "74.121.28.132",
-                "country": "US",
+                "country": "USA",
                 "region": "OREGON",
                 "city": "PORTLAND" }
         }
