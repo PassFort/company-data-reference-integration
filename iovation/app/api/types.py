@@ -251,7 +251,7 @@ class IovationCheckResponse(Model):
         ip_location = IPLocation()
         if output.details and output.details.real_ip:
             ip_location.ip_address = output.details.real_ip.address
-            ip_location.country = output.details.real_ip.ip_location.country_code
+            ip_location.country = pycountry.countries.get(alpha_2=output.details.real_ip.ip_location.country_code).alpha_3
             ip_location.region = output.details.real_ip.ip_location.region
             ip_location.city = output.details.real_ip.ip_location.city
 
@@ -260,5 +260,3 @@ class IovationCheckResponse(Model):
             'device_fraud_detection': device_fraud_detection,
             'ip_location': ip_location
         })
-
-
