@@ -14,4 +14,4 @@ coverage = "*"
 codecov = "*"
 schematics = "*"
 responses = "*"
-
+nameparser = "*"
