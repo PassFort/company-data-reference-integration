@@ -124,7 +124,8 @@ class TestCompanyReport(unittest.TestCase):
                         'name': {
                             'given_names': ['Tom', 'Kalervo'],
                             'family_name': 'Henriksson'
-                        }
+                        },
+                        'dob': '1968-05-01'
                     },
                     'entity_type': 'INDIVIDUAL',
                 }
@@ -156,7 +157,7 @@ class TestCompanyReport(unittest.TestCase):
             ]
         }, apply_defaults=True)
 
-        formatted_report = report.to_serialized_passfort_format()
+        formatted_report = report.to_serialized_passfort_format(None, 'GBR')
         self.assertEqual(len(formatted_report['directors']), 1)
         self.assertEqual(len(formatted_report['secretaries']), 1)
 

@@ -100,7 +100,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&pageSize=100',
+            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&exact=True&pageSize=100',
             json={'companies': []},
             status=200)
 
@@ -128,7 +128,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
 
         responses.add(
             responses.GET,
-            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&pageSize=100',
+            'https://connect.creditsafe.com/v1/companies?regNo=test&countries=GB&exact=True&pageSize=100',
             json={'details': 'Param not supported'},
             status=400)
 
