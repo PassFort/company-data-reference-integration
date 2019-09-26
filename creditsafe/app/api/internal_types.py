@@ -1,5 +1,6 @@
 import pycountry
 import uuid
+import nameparser
 
 from collections import defaultdict
 
@@ -125,15 +126,13 @@ Works Director
 '''
 
 
+
 def split_name(name, expect_title=False):
-    names = name.replace('\xa0', ' ').split(' ')
-    start = 0
-    # First name is the title.
-    if expect_title:
-        start = 1
-    # Assume the last is the surname.
-    # It can be in any order, and it won't depend necessarily on the country, but on the quality of data.
-    return names[start:-1], names[-1]
+    parsed_name = nameparser.HumanName(name)
+    given_names = parsed_name.first.split() + parsed_name.middle.split()
+    family_name = parsed_name.last
+
+    return given_names, family_name
 
 
 def resolver_key(name, expect_title=False):
@@ -156,11 +155,14 @@ class ResolverIdMatcher:
     def __init__(self, directors_report: 'CompanyDirectorsReport'):
         # Converts to passfort format and in order to the shareholder names against the directors
         resolver_ids = {}
+        resolver_ids_to_officers = {}
         if directors_report is not None:
             for d in directors_report.current_directors:
                 key = resolver_key(d.name, expect_title=True)
                 resolver_ids[key] = build_resolver_id(d.id)
+                resolver_ids_to_officers[resolver_ids[key]] = d
         self.resolver_ids = resolver_ids
+        self.resolver_ids_to_officers = resolver_ids_to_officers
 
     def find_or_create_resolver_id(self, shareholder_name):
         name_key = resolver_key(shareholder_name, expect_title=False)
@@ -170,6 +172,9 @@ class ResolverIdMatcher:
             return potential_resolver_id
 
         return build_resolver_id(name_key)
+
+    def get_director_by_resolver_id(self, resolver_id):
+        return self.resolver_ids_to_officers.get(resolver_id)
 
 
 class CreditSafeCompanySearchResponse(Model):
@@ -312,16 +317,16 @@ class CurrentOfficer(Model):
 
     @property
     def entity_type(self):
-        if self.name and self.dob is None and (self.gender is None or self.gender == 'Unknown'):
-            return 'COMPANY'
-        return 'INDIVIDUAL'
+        if self.name and (self.dob is not None or not (self.gender is None or self.gender == 'Unknown')):
+            return 'INDIVIDUAL'
+        return 'COMPANY'
 
     @property
     def original_role(self):
         return self.positions.position_name
 
-    def format_name(self):
-        if self.entity_type == 'INDIVIDUAL':
+    def format_name(self, entity_type):
+        if entity_type == 'INDIVIDUAL':
             if self.first_name and self.surname:
                 first_names = self.first_name.split(' ')
                 if self.middle_name:
@@ -331,17 +336,31 @@ class CurrentOfficer(Model):
                 return split_name(self.name, expect_title=True)
         return None, self.name
 
-    def to_passfort_officer_roles(self):
-        first_names, last_name = self.format_name()
+    def to_passfort_officer_roles(self, request_handler, country_of_incorporation):
+        search_data = None
+
+        entity_type = self.entity_type
+        if entity_type != 'INDIVIDUAL' and request_handler:
+            search_data = request_handler.exact_search(self.name, country_of_incorporation)
+
+            if search_data:
+                entity_type = 'COMPANY'
+            else:
+                entity_type = 'INDIVIDUAL'
+
+        first_names, last_name = self.format_name(entity_type)
         expanded_result = []
 
         for position in self.positions:
             expanded_result.append(PassFortOfficer({
                 'resolver_id': build_resolver_id(self.id),
-                'entity_type': self.entity_type,
+                'entity_type': entity_type,
                 'immediate_data':
-                    EntityData.as_company(last_name) if self.entity_type == 'COMPANY' else EntityData.as_individual(
-                        first_names, last_name),
+                    EntityData.as_company(
+                        last_name,
+                        search_data
+                    ) if entity_type == 'COMPANY' else EntityData.as_individual(
+                        first_names, last_name, self.dob),
                 'original_role': position.position_name,
                 'appointed_on': position.date_appointed
             }))
@@ -351,13 +370,16 @@ class CurrentOfficer(Model):
 class CompanyDirectorsReport(Model):
     current_directors = ListType(ModelType(CurrentOfficer), default=[], serialized_name="currentDirectors")
 
-    def to_serialized_passfort_format(self):
+    def to_serialized_passfort_format(self, request_handler, country_of_incorporation):
         directors = []
         secretaries = []
         partners = []
         other = []
         for officer in self.current_directors:
-            formatted_officer_by_role = officer.to_passfort_officer_roles()
+            formatted_officer_by_role = officer.to_passfort_officer_roles(
+                request_handler,
+                country_of_incorporation
+            )
 
             for officer_by_role in formatted_officer_by_role:
                 is_other = True
@@ -390,8 +412,8 @@ class Shareholder(Model):
     amount = IntType(serialized_name="totalNumberOfSharesOwned", default=None)
     percentage = DecimalType(serialized_name="percentSharesHeld", required=True)
 
-    def format_name(self):
-        if self.entity_type == 'INDIVIDUAL':
+    def format_name(self, entity_type):
+        if entity_type == 'INDIVIDUAL':
             return split_name(self.name, expect_title=False)
         return None, self.name
 
@@ -416,17 +438,26 @@ class Shareholder(Model):
 class ShareholdersReport(Model):
     shareholders = ListType(ModelType(Shareholder), default=[], serialized_name="shareHolders")
 
-    def merge_shareholdings(self):
+    def merge_shareholdings(self, request_handler, country_of_incorporation):
         # Merge shareholdings for shareholders with the same name
         unique_shareholders = {}
         for s in self.shareholders:
             if s.name not in unique_shareholders:
-                first_names, last_name = s.format_name()
+                search_data = None
+                entity_type = s.entity_type
+                if entity_type != 'INDIVIDUAL' and request_handler:
+                    search_data = request_handler.exact_search(s.name, country_of_incorporation)
+                    if search_data:
+                        entity_type = 'COMPANY'
+
+                first_names, last_name = s.format_name(entity_type)
                 unique_shareholders[s.name] = PassFortShareholder({
-                    'entity_type': s.entity_type,
+                    'entity_type': entity_type,
                     'immediate_data':
-                        EntityData.as_company(last_name) if s.entity_type == 'COMPANY' else EntityData.as_individual(
-                            first_names, last_name),
+                        EntityData.as_company(
+                            last_name, search_data
+                        ) if entity_type == 'COMPANY' else EntityData.as_individual(
+                            first_names, last_name, search_data),
                     'shareholdings': []
                 })
 
@@ -435,10 +466,17 @@ class ShareholdersReport(Model):
             )
         return unique_shareholders
 
-    def as_passfort_format(self, resolver_id_matcher):
-        unique_shareholders = self.merge_shareholdings()
+    def as_passfort_format(self, resolver_id_matcher, request_handler, country_of_incorporation):
+        unique_shareholders = self.merge_shareholdings(request_handler, country_of_incorporation)
         for name, passfort_shareholder in unique_shareholders.items():
             passfort_shareholder.resolver_id = resolver_id_matcher.find_or_create_resolver_id(name)
+            director_data = resolver_id_matcher.get_director_by_resolver_id(
+                passfort_shareholder.resolver_id)
+            # Dob is the only field that needs merging for now (we match on name and search the other fields)
+            if director_data and director_data.dob:
+                if passfort_shareholder.entity_type == 'INDIVIDUAL' and not \
+                    passfort_shareholder.immediate_data.personal_details.dob:
+                    passfort_shareholder.immediate_data.personal_details.dob = director_data.dob
 
         return [ds.serialize() for ds in unique_shareholders.values()]
 
@@ -476,7 +514,7 @@ class CreditSafeCompanyReport(Model):
         model.validate()
         return model
 
-    def as_passfort_format(self):
+    def as_passfort_format(self, request_handler = None):
         addresses = [
             self.contact_information.main_address.as_passfort_address()
         ]
@@ -496,10 +534,16 @@ class CreditSafeCompanyReport(Model):
             'structured_company_type': self.identification.structured_company_type
         })
 
-        officers = self.directors.to_serialized_passfort_format() if self.directors else []
+        officers = self.directors.to_serialized_passfort_format(
+            request_handler,
+            self.summary.country_code
+        ) if self.directors else []
 
         shareholders = self.share_capital_structure.as_passfort_format(
-            ResolverIdMatcher(self.directors)) if self.share_capital_structure else []
+            ResolverIdMatcher(self.directors),
+            request_handler,
+            self.summary.country_code
+        ) if self.share_capital_structure else []
         return {
             'metadata': metadata.serialize(),
             'officers': officers,

@@ -130,13 +130,13 @@ class SearchInput(Model):
 
         return [
             f'{name_query}&{country_query}',
-            f'{registered_number_query}&{country_query}'
+            f'{registered_number_query}&{country_query}&exact=True'
         ]
 
 
 class ReportInput(Model):
     creditsafe_id = StringType(required=True)
-    country_of_incorporation = StringType(default=None) # Only required for DEU
+    country_of_incorporation = StringType(default=None)
 
 
 class CreditSafeSearchRequest(Model):
@@ -202,11 +202,21 @@ class FullName(Model):
 
 class PersonalDetails(Model):
     name = ModelType(FullName, required=True)
+    dob = DateType(default=None)
+
+    class Options:
+        serialize_when_none = False
 
 
 class CompanyMetadata(Model):
     name = StringType(required=True)
+    country_of_incorporation = StringType(default=None)
+    state_of_incorporation = StringType(default=None)
+    number = StringType(default=None)
+    creditsafe_id = StringType(default=None)
 
+    class Options:
+        serialize_when_none = False
 
 class EntityData(Model):
     personal_details = ModelType(PersonalDetails, default=None)
@@ -214,23 +224,26 @@ class EntityData(Model):
     entity_type = StringType(required=True)
 
     @classmethod
-    def as_individual(cls, first_names, last_name):
+    def as_individual(cls, first_names, last_name, dob):
         return cls({
             'personal_details': {
                 'name': {
                     'given_names': first_names,
                     'family_name': last_name
-                }
+                },
+                'dob': dob
             },
             'entity_type': 'INDIVIDUAL'
         })
 
     @classmethod
-    def as_company(cls, last_name):
+    def as_company(cls, last_name, search_data):
+        metadata = {}
+        if search_data:
+            metadata = search_data
+        metadata['name'] = last_name
         return cls({
-            'metadata': {
-                'name': last_name
-            },
+            'metadata': metadata,
             'entity_type': 'COMPANY'
         })
 
