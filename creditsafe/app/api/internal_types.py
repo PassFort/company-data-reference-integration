@@ -239,7 +239,7 @@ class CompanyLegalForm(Model):
 class CompanyBasicInformation(Model):
     name = StringType(required=True, serialized_name="registeredCompanyName")
     registration_date = UTCDateTimeType(default=None, serialized_name="companyRegistrationDate")
-    legal_form = ModelType(CompanyLegalForm, serialized_name="legalForm", required=True)
+    legal_form = ModelType(CompanyLegalForm, serialized_name="legalForm", default=None)
 
 
 class CompanyIdentification(Model):
@@ -253,7 +253,7 @@ class CompanyIdentification(Model):
 
     @property
     def raw_company_type(self):
-        return self.basic_info.legal_form.description
+        return self.basic_info.legal_form.description if self.basic_info.legal_form else ''
 
     @property
     def structured_company_type(self):
@@ -384,7 +384,7 @@ class CompanyDirectorsReport(Model):
 
 class Shareholder(Model):
     name = StringType(required=True)
-    shareholder_type = StringType(default="Company", choices=["Person", "Company"], serialized_name="shareholderType")
+    shareholder_type = StringType(default="Other", serialized_name="shareholderType")
     share_class = StringType(default=None, serialized_name="shareType")
     currency = StringType(default=None)
     amount = IntType(serialized_name="totalNumberOfSharesOwned", default=None)
@@ -401,7 +401,7 @@ class Shareholder(Model):
             return 'INDIVIDUAL'
         if self.shareholder_type == 'Company':
             return 'COMPANY'
-        raise NotImplementedError()
+        return 'COMPANY'
 
     @property
     def shareholding(self):
