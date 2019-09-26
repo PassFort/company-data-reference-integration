@@ -156,11 +156,14 @@ class ResolverIdMatcher:
     def __init__(self, directors_report: 'CompanyDirectorsReport'):
         # Converts to passfort format and in order to the shareholder names against the directors
         resolver_ids = {}
+        resolver_ids_to_officers = {}
         if directors_report is not None:
             for d in directors_report.current_directors:
                 key = resolver_key(d.name, expect_title=True)
                 resolver_ids[key] = build_resolver_id(d.id)
+                resolver_ids_to_officers[resolver_ids[key]] = d
         self.resolver_ids = resolver_ids
+        self.resolver_ids_to_officers = resolver_ids_to_officers
 
     def find_or_create_resolver_id(self, shareholder_name):
         name_key = resolver_key(shareholder_name, expect_title=False)
@@ -170,6 +173,9 @@ class ResolverIdMatcher:
             return potential_resolver_id
 
         return build_resolver_id(name_key)
+
+    def get_director_by_resolver_id(self, resolver_id):
+        return self.resolver_ids_to_officers.get(resolver_id)
 
 
 class CreditSafeCompanySearchResponse(Model):
@@ -465,6 +471,13 @@ class ShareholdersReport(Model):
         unique_shareholders = self.merge_shareholdings(request_handler, country_of_incorporation)
         for name, passfort_shareholder in unique_shareholders.items():
             passfort_shareholder.resolver_id = resolver_id_matcher.find_or_create_resolver_id(name)
+            director_data = resolver_id_matcher.get_director_by_resolver_id(
+                passfort_shareholder.resolver_id)
+            # Dob is the only field that needs merging for now (we match on name and search the other fields)
+            if director_data and director_data.dob:
+                if passfort_shareholder.entity_type == 'INDIVIDUAL' and not \
+                    passfort_shareholder.immediate_data.personal_details.dob:
+                    passfort_shareholder.immediate_data.personal_details.dob = director_data.dob
 
         return [ds.serialize() for ds in unique_shareholders.values()]
 
