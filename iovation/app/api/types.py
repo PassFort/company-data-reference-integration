@@ -85,6 +85,7 @@ class IovationCredentials(Model):
     subscriber_id = StringType(required=True)
     subscriber_account = StringType(required=True)
     password = StringType(required=True)
+    use_test_environment = BooleanType(default=False)
 
 
 class DeviceData(Model):

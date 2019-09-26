@@ -131,7 +131,8 @@ class IovationTestExamples(unittest.TestCase):
             'credentials': {
                 'subscriber_id': '388702',
                 'subscriber_account': 'OLTP',
-                'password': 'CRJSGGFH'
+                'password': 'CRJSGGFH',
+                'use_test_environment': True
             }
         }
 
@@ -154,7 +155,8 @@ class IovationTestExamples(unittest.TestCase):
             'credentials': {
                 'subscriber_id': '388702',
                 'subscriber_account': 'OLTP',
-                'password': 'CRJSGGFH'
+                'password': 'CRJSGGFH',
+                'use_test_environment': True
             }
         }
 

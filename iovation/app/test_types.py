@@ -183,7 +183,32 @@ class TestOutputData(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(expected_output, output.to_primitive())
 
-    def test_authorization_token(self):
+    def test_credentials(self):
+        test_credentials = {
+            'subscriber_id': '388702',
+            'subscriber_account': 'OLTP',
+            'password': 'CRJSGGFH',
+            'use_test_environment': True
+        }
+
+        test_handler = IovationHandler(test_credentials)
+
+        token = test_handler.get_authorization_token()
+
+        self.assertEqual('Mzg4NzAyL09MVFA6Q1JKU0dHRkg=', token)
+        self.assertEqual('https://ci-api.iovation.com/fraud/v1', test_handler.base_url)
+
+        credentials = {
+            'subscriber_id': '388702',
+            'subscriber_account': 'OLTP',
+            'password': 'CRJSGGFH',
+            'use_test_environment': False
+        }
+
+        handler = IovationHandler(credentials)
+        self.assertEqual('https://api.iovation.com/fraud/v1', handler.base_url)
+
+    def test_no_test_flag(self):
         credentials = {
             'subscriber_id': '388702',
             'subscriber_account': 'OLTP',
@@ -191,7 +216,5 @@ class TestOutputData(unittest.TestCase):
         }
 
         handler = IovationHandler(credentials)
+        self.assertEqual('https://api.iovation.com/fraud/v1', handler.base_url)
 
-        token = handler.get_authorization_token()
-
-        self.assertEqual('Mzg4NzAyL09MVFA6Q1JKU0dHRkg=', token)

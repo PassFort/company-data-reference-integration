@@ -4,7 +4,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from .api.types import IovationCheckError, IovationOutput, IovationCheckResponse, CheckInput
+from .api.types import IovationCheckError, IovationOutput, IovationCheckResponse, CheckInput, IovationCredentials
 
 def requests_retry_session(
         retries=3,
@@ -26,8 +26,8 @@ def requests_retry_session(
 
 class IovationHandler:
 
-    def __init__(self, credentials, test_env=True):
-        if test_env:
+    def __init__(self, credentials: IovationCredentials):
+        if credentials.get('use_test_environment'):
             self.base_url = 'https://ci-api.iovation.com/fraud/v1'
         else:
             self.base_url = 'https://api.iovation.com/fraud/v1'
