@@ -1,5 +1,6 @@
 import requests
 
+import pycountry
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
@@ -84,6 +85,33 @@ class CreditSafeHandler:
         ]
         return raw, formatted_companies
 
+    def exact_search(self, name, country, state=None):
+        try:
+
+            token = self.get_token(self.credentials.username, self.credentials.password)
+            country_alpha2 = pycountry.countries.get(alpha_3=country).alpha_2
+
+            url = f'{self.base_url}/companies?countries={country_alpha2}&name={name}&exact=True'
+
+            response = self.session.get(
+                url,
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': f'Bearer {token}'
+                })
+            if response.status_code == 200:
+                result = response.json()
+
+                if len(result.get('companies')):
+                    return CreditSafeCompanySearchResponse.from_json(
+                        result.get('companies')[0]
+                    ).as_passfort_format(country, state)
+        except Exception as e:
+            print(e)
+            pass
+
+        return None
+
     def get_report(self, input_data):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
@@ -102,4 +130,4 @@ class CreditSafeHandler:
             raise CreditSafeReportError(response)
 
         raw = response.json()
-        return raw, CreditSafeCompanyReport.from_json(raw['report']).as_passfort_format()
+        return raw, CreditSafeCompanyReport.from_json(raw['report']).as_passfort_format(self)
