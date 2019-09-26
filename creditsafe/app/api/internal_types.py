@@ -1,5 +1,6 @@
 import pycountry
 import uuid
+import nameparser
 
 from collections import defaultdict
 
@@ -125,15 +126,13 @@ Works Director
 '''
 
 
+
 def split_name(name, expect_title=False):
-    names = name.replace('\xa0', ' ').split(' ')
-    start = 0
-    # First name is the title.
-    if expect_title:
-        start = 1
-    # Assume the last is the surname.
-    # It can be in any order, and it won't depend necessarily on the country, but on the quality of data.
-    return names[start:-1], names[-1]
+    parsed_name = nameparser.HumanName(name)
+    given_names = parsed_name.first.split() + parsed_name.middle.split()
+    family_name = parsed_name.last
+
+    return given_names, family_name
 
 
 def resolver_key(name, expect_title=False):
