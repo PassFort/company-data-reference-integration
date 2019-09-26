@@ -384,7 +384,7 @@ class CompanyDirectorsReport(Model):
 
 class Shareholder(Model):
     name = StringType(required=True)
-    shareholder_type = StringType(default="Company", choices=["Person", "Company"], serialized_name="shareholderType")
+    shareholder_type = StringType(default="Other", serialized_name="shareholderType")
     share_class = StringType(default=None, serialized_name="shareType")
     currency = StringType(default=None)
     amount = IntType(serialized_name="totalNumberOfSharesOwned", default=None)
@@ -401,7 +401,7 @@ class Shareholder(Model):
             return 'INDIVIDUAL'
         if self.shareholder_type == 'Company':
             return 'COMPANY'
-        raise NotImplementedError()
+        return 'COMPANY'
 
     @property
     def shareholding(self):
