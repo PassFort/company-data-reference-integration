@@ -4,7 +4,8 @@ import pycountry
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError
+from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError, \
+    SearchInput
 from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport
 
 
@@ -47,7 +48,7 @@ class CreditSafeHandler:
 
         return response.json()['token']
 
-    def search(self, input_data):
+    def search(self, input_data: SearchInput):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
 
@@ -55,6 +56,7 @@ class CreditSafeHandler:
 
         companies = []
         raw = []
+        found_ids = set()
 
         for query in queries:
             url = f'{self.base_url}/companies?{query}&pageSize=100'
@@ -75,39 +77,33 @@ class CreditSafeHandler:
             result = response.json()
             raw.append(result)
 
-            companies.extend([r for r in result.get('companies', []) if r.get('regNo') is not None])
+            for r in result.get('companies', []):
+                c = CreditSafeCompanySearchResponse.from_json(r)
+                if c.registration_number is None:
+                    continue
+                if c.creditsafe_id in found_ids:
+                    continue
+                found_ids.add(c.creditsafe_id)
+                if not c.matches_search(input_data):
+                    continue
+                companies.append(c)
+            
             if len(companies) >= 20:
                 break
+
         formatted_companies = [
-            CreditSafeCompanySearchResponse.from_json(c).as_passfort_format(
+            c.as_passfort_format(
                 input_data.country, input_data.state)
-            for c in companies[0:20] # Only get the first 20
-        ]
+            for c in companies if c.matches_search(input_data)
+        ][0:20] # Only get the first 20
         return raw, formatted_companies
 
     def exact_search(self, name, country, state=None):
         try:
-
-            token = self.get_token(self.credentials.username, self.credentials.password)
-            country_alpha2 = pycountry.countries.get(alpha_3=country).alpha_2
-
-            url = f'{self.base_url}/companies?countries={country_alpha2}&name={name}&exact=True'
-
-            response = self.session.get(
-                url,
-                headers={
-                    'Content-Type': 'application/json',
-                    'Authorization': f'Bearer {token}'
-                })
-            if response.status_code == 200:
-                result = response.json()
-
-                if len(result.get('companies')):
-                    return CreditSafeCompanySearchResponse.from_json(
-                        result.get('companies')[0]
-                    ).as_passfort_format(country, state)
+            raw, companies = self.search(SearchInput({'name': name, 'country': country, 'state': state}))
+            if len(companies) == 1:
+                return companies[0]
         except Exception as e:
-            print(e)
             pass
 
         return None

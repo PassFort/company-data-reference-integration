@@ -125,7 +125,7 @@ class TestCompanyReport(unittest.TestCase):
                             'given_names': ['Tom', 'Kalervo'],
                             'family_name': 'Henriksson'
                         },
-                        'dob': '1968-05-01'
+                        'dob': '1968-05'
                     },
                     'entity_type': 'INDIVIDUAL',
                 }

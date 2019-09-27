@@ -4,6 +4,7 @@ from datetime import datetime
 from enum import unique, Enum
 from flask import abort, g, request
 from functools import wraps
+from urllib.parse import quote_plus
 
 from schematics import Model
 from schematics.exceptions import DataError, ValidationError
@@ -110,7 +111,9 @@ class CreditSafeCredentials(Model):
 
 class SearchInput(Model):
     # Name or company number
-    query = StringType(required=True)
+    query = StringType(default=None)
+    name = StringType(default=None)
+    number = StringType(default=None)
     country = StringType(required=True, choices=[c.alpha_3 for c in pycountry.countries])
     state = StringType(default=None)
 
@@ -121,17 +124,23 @@ class SearchInput(Model):
     def build_queries(self):
         country_code = self.get_creditsafe_country()
 
-        name_query = f'name={self.query}'
-        registered_number_query = f'regNo={self.query}'
+        all_queries = []
+        any_queries = []
+        all_queries.append(f'countries={country_code}')
         if self.state:
-            country_query = f'countries={country_code}&province={self.state}'
-        else:
-            country_query = f'countries={country_code}'
+            all_queries.append(f'province={quote_plus(self.state)}')
 
-        return [
-            f'{name_query}&{country_query}',
-            f'{registered_number_query}&{country_query}&exact=True'
-        ]
+        if self.name:
+            any_queries.append(f'name={quote_plus(self.name)}')
+        elif self.query:
+            any_queries.append(f'name={quote_plus(self.query)}')
+
+        if self.number:
+            any_queries.append(f'regNo={quote_plus(self.number)}&exact=True')
+        elif self.query:
+            any_queries.append(f'regNo={quote_plus(self.query)}&exact=True')
+
+        return ['&'.join(all_queries + [any_query]) for any_query in any_queries]
 
 
 class ReportInput(Model):
@@ -202,7 +211,7 @@ class FullName(Model):
 
 class PersonalDetails(Model):
     name = ModelType(FullName, required=True)
-    dob = DateType(default=None)
+    dob = StringType(default=None)
 
     class Options:
         serialize_when_none = False
@@ -225,13 +234,20 @@ class EntityData(Model):
 
     @classmethod
     def as_individual(cls, first_names, last_name, dob):
+        if dob:
+            if dob.day == 1:
+                dob_str = dob.strftime("%Y-%m")
+            else:
+                dob_str = dob.strftime("%Y-%m-%d")
+        else:
+            dob_str = None
         return cls({
             'personal_details': {
                 'name': {
                     'given_names': first_names,
                     'family_name': last_name
                 },
-                'dob': dob
+                'dob': dob_str
             },
             'entity_type': 'INDIVIDUAL'
         })
