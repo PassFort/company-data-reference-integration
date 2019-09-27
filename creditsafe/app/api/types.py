@@ -211,7 +211,7 @@ class FullName(Model):
 
 class PersonalDetails(Model):
     name = ModelType(FullName, required=True)
-    dob = DateType(default=None)
+    dob = StringType(default=None)
 
     class Options:
         serialize_when_none = False
@@ -234,13 +234,20 @@ class EntityData(Model):
 
     @classmethod
     def as_individual(cls, first_names, last_name, dob):
+        if dob:
+            if dob.day == 1:
+                dob_str = dob.strftime("%Y-%m")
+            else:
+                dob_str = dob.strftime("%Y-%m-%d")
+        else:
+            dob_str = None
         return cls({
             'personal_details': {
                 'name': {
                     'given_names': first_names,
                     'family_name': last_name
                 },
-                'dob': dob
+                'dob': dob_str
             },
             'entity_type': 'INDIVIDUAL'
         })

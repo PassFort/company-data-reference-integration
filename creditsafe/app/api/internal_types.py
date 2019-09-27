@@ -3,6 +3,7 @@ import uuid
 import nameparser
 
 from collections import defaultdict
+from typing import Dict, Optional
 
 from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
@@ -152,6 +153,8 @@ def build_resolver_id(original_id):
 
 
 class ResolverIdMatcher:
+    resolver_ids: Dict[str, uuid.UUID] = ...
+    resolver_ids_to_officers: Dict[uuid.UUID, 'CurrentOfficer'] = ...
 
     def __init__(self, directors_report: 'CompanyDirectorsReport'):
         # Converts to passfort format and in order to the shareholder names against the directors
@@ -165,7 +168,7 @@ class ResolverIdMatcher:
         self.resolver_ids = resolver_ids
         self.resolver_ids_to_officers = resolver_ids_to_officers
 
-    def find_or_create_resolver_id(self, shareholder_name):
+    def find_or_create_resolver_id(self, shareholder_name) -> uuid.UUID:
         name_key = resolver_key(shareholder_name, expect_title=False)
         potential_resolver_id = self.resolver_ids.get(name_key)
 
@@ -174,7 +177,7 @@ class ResolverIdMatcher:
 
         return build_resolver_id(name_key)
 
-    def get_director_by_resolver_id(self, resolver_id):
+    def get_director_by_resolver_id(self, resolver_id: uuid.UUID) -> Optional['CurrentOfficer']:
         return self.resolver_ids_to_officers.get(resolver_id)
 
 
@@ -343,6 +346,13 @@ class CurrentOfficer(Model):
             else:
                 return split_name(self.name, expect_title=True)
         return None, self.name
+    
+    def to_immediate_data(self, entity_type, search_data=None):
+        first_names, last_name = self.format_name(entity_type)
+        if entity_type == 'COMPANY':
+            return EntityData.as_company(last_name, search_data)
+        else:
+            return EntityData.as_individual(first_names, last_name, self.dob)
 
     def to_passfort_officer_roles(self, request_handler, country_of_incorporation):
         search_data = None
@@ -356,19 +366,13 @@ class CurrentOfficer(Model):
             else:
                 entity_type = 'INDIVIDUAL'
 
-        first_names, last_name = self.format_name(entity_type)
         expanded_result = []
 
         for position in self.positions:
             expanded_result.append(PassFortOfficer({
                 'resolver_id': build_resolver_id(self.id),
                 'entity_type': entity_type,
-                'immediate_data':
-                    EntityData.as_company(
-                        last_name,
-                        search_data
-                    ) if entity_type == 'COMPANY' else EntityData.as_individual(
-                        first_names, last_name, self.dob),
+                'immediate_data': self.to_immediate_data(entity_type, search_data),
                 'original_role': position.position_name,
                 'appointed_on': position.date_appointed
             }))
@@ -446,7 +450,7 @@ class Shareholder(Model):
 class ShareholdersReport(Model):
     shareholders = ListType(ModelType(Shareholder), default=[], serialized_name="shareHolders")
 
-    def merge_shareholdings(self, request_handler, country_of_incorporation):
+    def merge_shareholdings(self, request_handler, country_of_incorporation) -> Dict[str, 'PassFortShareholder']:
         # Merge shareholdings for shareholders with the same name
         unique_shareholders = {}
         for s in self.shareholders:
@@ -478,13 +482,16 @@ class ShareholdersReport(Model):
         unique_shareholders = self.merge_shareholdings(request_handler, country_of_incorporation)
         for name, passfort_shareholder in unique_shareholders.items():
             passfort_shareholder.resolver_id = resolver_id_matcher.find_or_create_resolver_id(name)
-            director_data = resolver_id_matcher.get_director_by_resolver_id(
-                passfort_shareholder.resolver_id)
-            # Dob is the only field that needs merging for now (we match on name and search the other fields)
-            if director_data and director_data.dob:
-                if passfort_shareholder.entity_type == 'INDIVIDUAL' and not \
-                    passfort_shareholder.immediate_data.personal_details.dob:
-                    passfort_shareholder.immediate_data.personal_details.dob = director_data.dob
+            director_data: 'CurrentOfficer' = resolver_id_matcher.get_director_by_resolver_id(
+                passfort_shareholder.resolver_id
+            )
+            if director_data:
+                if passfort_shareholder.entity_type == 'INDIVIDUAL':
+                    dst_data = passfort_shareholder.immediate_data
+                    src_data = director_data.to_immediate_data('INDIVIDUAL')
+                    # Dob is the only field that needs merging for now (we match on name and search the other fields)
+                    if src_data.personal_details.dob and not dst_data.personal_details.dob:
+                        dst_data.personal_details.dob = src_data.personal_details.dob
 
         return [ds.serialize() for ds in unique_shareholders.values()]
 
