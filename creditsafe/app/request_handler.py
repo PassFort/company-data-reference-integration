@@ -101,8 +101,9 @@ class CreditSafeHandler:
     def exact_search(self, name, country, state=None):
         try:
             raw, companies = self.search(SearchInput({'name': name, 'country': country, 'state': state}))
-            if len(companies) == 1:
-                return companies[0]
+            for company in companies:
+                if company['name'] == name:
+                    return company
         except Exception as e:
             pass
 
