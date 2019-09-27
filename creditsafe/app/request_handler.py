@@ -84,7 +84,12 @@ class CreditSafeHandler:
                 if c.creditsafe_id in found_ids:
                     continue
                 found_ids.add(c.creditsafe_id)
+                if not c.matches_search(input_data):
+                    continue
                 companies.append(c)
+            
+            if len(companies) >= 20:
+                break
 
         formatted_companies = [
             c.as_passfort_format(
