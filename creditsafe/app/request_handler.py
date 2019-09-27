@@ -100,27 +100,10 @@ class CreditSafeHandler:
 
     def exact_search(self, name, country, state=None):
         try:
-
-            token = self.get_token(self.credentials.username, self.credentials.password)
-            country_alpha2 = pycountry.countries.get(alpha_3=country).alpha_2
-
-            url = f'{self.base_url}/companies?countries={country_alpha2}&name={name}&exact=True'
-
-            response = self.session.get(
-                url,
-                headers={
-                    'Content-Type': 'application/json',
-                    'Authorization': f'Bearer {token}'
-                })
-            if response.status_code == 200:
-                result = response.json()
-
-                if len(result.get('companies')):
-                    return CreditSafeCompanySearchResponse.from_json(
-                        result.get('companies')[0]
-                    ).as_passfort_format(country, state)
+            raw, companies = self.search(SearchInput({'name': name, 'country': country, 'state': state}))
+            if len(companies) == 1:
+                return companies[0]
         except Exception as e:
-            print(e)
             pass
 
         return None
