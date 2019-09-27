@@ -10,6 +10,7 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
 
 from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput
+from .fuzzy import CompanyNameMatcher
 
 
 DIRECTOR_POSITIONS = [
@@ -204,7 +205,9 @@ class CreditSafeCompanySearchResponse(Model):
     def matches_search(self, search: SearchInput) -> bool:
         if search.number and search.number.lower().strip() != self.registration_number.lower().strip():
             return False
-        if search.name and search.name.lower().strip() != self.name.lower().strip():
+
+        matcher = CompanyNameMatcher()
+        if search.name and not matcher.match(search.name, self.name):
             return False
         return True
 
