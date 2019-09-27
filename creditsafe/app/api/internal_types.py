@@ -8,7 +8,8 @@ from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
     UUIDType, DateType
 
-from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata, EntityData
+from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata, EntityData, \
+    SearchInput
 
 
 DIRECTOR_POSITIONS = [
@@ -199,6 +200,13 @@ class CreditSafeCompanySearchResponse(Model):
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
         return model
+
+    def matches_search(self, search: SearchInput) -> bool:
+        if search.number and search.number.lower().strip() != self.registration_number.lower().strip():
+            return False
+        if search.name and search.name.lower().strip() != self.name.lower().strip():
+            return False
+        return True
 
 
 class ContactAddress(Model):
