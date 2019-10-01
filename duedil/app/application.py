@@ -157,11 +157,11 @@ def ownership_check():
     if is_demo:
         response = None
         raw_response = None
-        with open("./demo_data/demo_response/ownership_structure.json", 'rb') as f:
+        with open("./demo_data/response/ownership_structure.json", 'rb') as f:
             response = CompanyData(
                 ownership_structure=json.loads(f.read())
             )
-        with open("./demo_data/demo_response/raw_response.json", 'rb') as f:
+        with open("./demo_data/response/raw_response.json", 'rb') as f:
             raw_response = json.loads(f.read())
         return jsonify(
             output_data=coerce_untracked(response),
