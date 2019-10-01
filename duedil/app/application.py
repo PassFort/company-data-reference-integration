@@ -152,8 +152,7 @@ def registry_check():
 
 @app.route('/ownership-check', methods=['POST'])
 def ownership_check():
-    input_data = request.json['input_data']
-    is_demo = input_data['is_demo']
+    is_demo = request.json['is_demo']
     if is_demo:
         response = None
         raw_response = None
@@ -169,6 +168,7 @@ def ownership_check():
             errors=[],
             price=0,
         )
+    input_data = request.json['input_data']
     config = request.json['config']
     credentials = request.json['credentials']
 
