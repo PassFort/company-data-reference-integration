@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 from raven.contrib.flask import Sentry
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
@@ -80,7 +80,6 @@ def registry_check():
     input_data = request.json['input_data']
     config = request.json['config']
     credentials = request.json['credentials']
-
     company_number = input_data['metadata']['number']['v']
     country_of_incorporation = input_data['metadata']['country_of_incorporation']['v']
 
@@ -153,6 +152,19 @@ def registry_check():
 
 @app.route('/ownership-check', methods=['POST'])
 def ownership_check():
+    is_demo = request.json['is_demo']
+    if is_demo:
+        response = None
+        raw_response = None
+        with open("./demo_data/response/raw_response.json", 'rb') as f:
+            raw_response = json.loads(f.read())
+        with open("./demo_data/response/ownership_structure.json", 'rb') as f:
+            return jsonify(
+                output_data=json.loads(f.read()),
+                raw=raw_response,
+                errors=[],
+                price=0,
+            )
     input_data = request.json['input_data']
     config = request.json['config']
     credentials = request.json['credentials']
