@@ -80,7 +80,6 @@ def registry_check():
     input_data = request.json['input_data']
     config = request.json['config']
     credentials = request.json['credentials']
-
     company_number = input_data['metadata']['number']['v']
     country_of_incorporation = input_data['metadata']['country_of_incorporation']['v']
 
@@ -154,6 +153,22 @@ def registry_check():
 @app.route('/ownership-check', methods=['POST'])
 def ownership_check():
     input_data = request.json['input_data']
+    is_demo = input_data['is_demo']
+    if is_demo:
+        response = None
+        raw_response = None
+        with open("./demo_data/demo_response/ownership_structure.json", 'rb') as f:
+            response = CompanyData(
+                ownership_structure=json.loads(f.read())
+            )
+        with open("./demo_data/demo_response/raw_response.json", 'rb') as f:
+            raw_response = json.loads(f.read())
+        return jsonify(
+            output_data=coerce_untracked(response),
+            raw=raw_response,
+            errors=[],
+            price=0,
+        )
     config = request.json['config']
     credentials = request.json['credentials']
 
