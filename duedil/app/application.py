@@ -160,7 +160,7 @@ def ownership_check():
             raw_response = json.loads(f.read())
         with open("./demo_data/response/ownership_structure.json", 'rb') as f:
             return jsonify(
-                output_data=json.reads(f.read())
+                output_data=json.reads(f.read()),
                 raw=raw_response,
                 errors=[],
                 price=0,
