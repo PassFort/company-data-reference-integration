@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 from raven.contrib.flask import Sentry
 from requests.exceptions import RequestException, HTTPError
 from json import JSONDecodeError
