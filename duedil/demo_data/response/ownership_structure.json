@@ -1,519 +1,522 @@
 {
-  "shareholders": [
-    {
-      "company_number": "08383439",
-      "country_of_incorporation": "GBR",
-      "last_name": { "v": "Episode (GP) Ltd" },
-      "provider_name": "DueDil",
-      "resolver_id": "83774992-e3aa-11e9-a7df-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 1020926,
-            "currency": "GBP",
-            "percentage": 0.05152715657790063,
-            "provider_name": "DueDil",
-            "share_class": "Preferred A1"
+  "_cls": "python.models.entities.CompanyData.CompanyData",
+  "ownership_structure": {
+    "shareholders": [
+      {
+        "company_number": "08383439",
+        "country_of_incorporation": "GBR",
+        "last_name": { "v": "Episode (GP) Ltd" },
+        "provider_name": "DueDil",
+        "resolver_id": "83774992-e3aa-11e9-a7df-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 1020926,
+              "currency": "GBP",
+              "percentage": 0.05152715657790063,
+              "provider_name": "DueDil",
+              "share_class": "Preferred A1"
+            }
+          },
+          {
+            "v": {
+              "amount": 3168541,
+              "currency": "GBP",
+              "percentage": 0.1599194341514447,
+              "provider_name": "DueDil",
+              "share_class": "Seed"
+            }
           }
-        },
-        {
-          "v": {
-            "amount": 3168541,
-            "currency": "GBP",
-            "percentage": 0.1599194341514447,
-            "provider_name": "DueDil",
-            "share_class": "Seed"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "dob": { "v": "1992-05" },
+        "first_names": { "v": "Donald Andrew" },
+        "last_name": { "v": "Gillies" },
+        "nationality": { "v": "GBR" },
+        "provider_name": "DueDil",
+        "resolver_id": "83775448-e3aa-11e9-8244-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 4100000,
+              "currency": "GBP",
+              "percentage": 0.2069311017344965,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "dob": { "v": "1992-05" },
-      "first_names": { "v": "Donald Andrew" },
-      "last_name": { "v": "Gillies" },
-      "nationality": { "v": "GBR" },
-      "provider_name": "DueDil",
-      "resolver_id": "83775448-e3aa-11e9-8244-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 4100000,
-            "currency": "GBP",
-            "percentage": 0.2069311017344965,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "title": "Mr",
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "dob": { "v": "1991-08" },
+        "first_names": { "v": "Henry Charles" },
+        "last_name": { "v": "Irish" },
+        "nationality": { "v": "GBR" },
+        "provider_name": "DueDil",
+        "resolver_id": "83775bc0-e3aa-11e9-8541-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 4100000,
+              "currency": "GBP",
+              "percentage": 0.2069311017344965,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "title": "Mr",
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "dob": { "v": "1991-08" },
-      "first_names": { "v": "Henry Charles" },
-      "last_name": { "v": "Irish" },
-      "nationality": { "v": "GBR" },
-      "provider_name": "DueDil",
-      "resolver_id": "83775bc0-e3aa-11e9-8541-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 4100000,
-            "currency": "GBP",
-            "percentage": 0.2069311017344965,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "title": "Mr",
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "last_name": { "v": "Open Ocean Fund Ky" },
+        "provider_name": "DueDil",
+        "resolver_id": "83776112-e3aa-11e9-a04d-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 3927387,
+              "currency": "GBP",
+              "percentage": 0.19821915093847292,
+              "provider_name": "DueDil",
+              "share_class": "Preferred A1"
+            }
           }
-        }
-      ],
-      "title": "Mr",
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "last_name": { "v": "Open Ocean Fund Ky" },
-      "provider_name": "DueDil",
-      "resolver_id": "83776112-e3aa-11e9-a04d-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 3927387,
-            "currency": "GBP",
-            "percentage": 0.19821915093847292,
-            "provider_name": "DueDil",
-            "share_class": "Preferred A1"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "company_number": "LP016464",
+        "country_of_incorporation": "GBR",
+        "last_name": { "v": "Entrepreneur First L.P." },
+        "provider_name": "DueDil",
+        "resolver_id": "837767a4-e3aa-11e9-9a6a-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 800000,
+              "currency": "GBP",
+              "percentage": 0.04037680033843834,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary A"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "company_number": "LP016464",
-      "country_of_incorporation": "GBR",
-      "last_name": { "v": "Entrepreneur First L.P." },
-      "provider_name": "DueDil",
-      "resolver_id": "837767a4-e3aa-11e9-9a6a-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 800000,
-            "currency": "GBP",
-            "percentage": 0.04037680033843834,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary A"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "last_name": { "v": "Entreprenuer First Next Stage Lp" },
+        "provider_name": "DueDil",
+        "resolver_id": "83776d26-e3aa-11e9-a8f0-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 589154,
+              "currency": "GBP",
+              "percentage": 0.029735191783240376,
+              "provider_name": "DueDil",
+              "share_class": "Preferred A1"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "last_name": { "v": "Entreprenuer First Next Stage Lp" },
-      "provider_name": "DueDil",
-      "resolver_id": "83776d26-e3aa-11e9-a8f0-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 589154,
-            "currency": "GBP",
-            "percentage": 0.029735191783240376,
-            "provider_name": "DueDil",
-            "share_class": "Preferred A1"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "first_names": { "v": "Wendy" },
+        "last_name": { "v": "White" },
+        "provider_name": "DueDil",
+        "resolver_id": "837773b0-e3aa-11e9-81a4-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 309000,
+              "currency": "GBP",
+              "percentage": 0.015595539130721809,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "first_names": { "v": "Wendy" },
-      "last_name": { "v": "White" },
-      "provider_name": "DueDil",
-      "resolver_id": "837773b0-e3aa-11e9-81a4-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 309000,
-            "currency": "GBP",
-            "percentage": 0.015595539130721809,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Alan William" },
+        "last_name": { "v": "Morgan" },
+        "provider_name": "DueDil",
+        "resolver_id": "83777a5e-e3aa-11e9-81ca-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 295529,
+              "currency": "GBP",
+              "percentage": 0.01491564428402293,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Alan William" },
-      "last_name": { "v": "Morgan" },
-      "provider_name": "DueDil",
-      "resolver_id": "83777a5e-e3aa-11e9-81ca-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 295529,
-            "currency": "GBP",
-            "percentage": 0.01491564428402293,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "company_number": "07316500",
+        "country_of_incorporation": "GBR",
+        "last_name": { "v": "Worldpay (UK) Limited" },
+        "provider_name": "DueDil",
+        "resolver_id": "83778048-e3aa-11e9-b781-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 192180,
+              "currency": "GBP",
+              "percentage": 0.00969951686130135,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "company_number": "07316500",
-      "country_of_incorporation": "GBR",
-      "last_name": { "v": "Worldpay (UK) Limited" },
-      "provider_name": "DueDil",
-      "resolver_id": "83778048-e3aa-11e9-b781-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 192180,
-            "currency": "GBP",
-            "percentage": 0.00969951686130135,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "company_number": "LP017526",
+        "country_of_incorporation": "GBR",
+        "last_name": { "v": "Entrepreneur First Next Stage LP" },
+        "provider_name": "DueDil",
+        "resolver_id": "837785e6-e3aa-11e9-883a-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 190275,
+              "currency": "GBP",
+              "percentage": 0.009603369605495444,
+              "provider_name": "DueDil",
+              "share_class": "Seed"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "company_number": "LP017526",
-      "country_of_incorporation": "GBR",
-      "last_name": { "v": "Entrepreneur First Next Stage LP" },
-      "provider_name": "DueDil",
-      "resolver_id": "837785e6-e3aa-11e9-883a-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 190275,
-            "currency": "GBP",
-            "percentage": 0.009603369605495444,
-            "provider_name": "DueDil",
-            "share_class": "Seed"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "first_names": { "v": "Matthew" },
+        "last_name": { "v": "Wille" },
+        "provider_name": "DueDil",
+        "resolver_id": "83778db8-e3aa-11e9-9c7c-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 131891,
+              "currency": "GBP",
+              "percentage": 0.006656670716796214,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "first_names": { "v": "Matthew" },
-      "last_name": { "v": "Wille" },
-      "provider_name": "DueDil",
-      "resolver_id": "83778db8-e3aa-11e9-9c7c-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 131891,
-            "currency": "GBP",
-            "percentage": 0.006656670716796214,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Andrew" },
+        "last_name": { "v": "Mackay" },
+        "provider_name": "DueDil",
+        "resolver_id": "83779ae2-e3aa-11e9-86e3-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 109855,
+              "currency": "GBP",
+              "percentage": 0.0055444917514739294,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Andrew" },
-      "last_name": { "v": "Mackay" },
-      "provider_name": "DueDil",
-      "resolver_id": "83779ae2-e3aa-11e9-86e3-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 109855,
-            "currency": "GBP",
-            "percentage": 0.0055444917514739294,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Charlie" },
+        "last_name": { "v": "Songhurst" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377a126-e3aa-11e9-9591-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 105708,
+              "currency": "GBP",
+              "percentage": 0.00533518851271955,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Charlie" },
-      "last_name": { "v": "Songhurst" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377a126-e3aa-11e9-9591-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 105708,
-            "currency": "GBP",
-            "percentage": 0.00533518851271955,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Joe" },
+        "last_name": { "v": "White" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377a776-e3aa-11e9-aedc-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 102000,
+              "currency": "GBP",
+              "percentage": 0.0051480420431508885,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Joe" },
-      "last_name": { "v": "White" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377a776-e3aa-11e9-aedc-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 102000,
-            "currency": "GBP",
-            "percentage": 0.0051480420431508885,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "company_number": "LP015969",
+        "country_of_incorporation": "GBR",
+        "last_name": { "v": "Seedcamp III L.P." },
+        "provider_name": "DueDil",
+        "resolver_id": "8377ad30-e3aa-11e9-a543-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 43638,
+              "currency": "GBP",
+              "percentage": 0.002202453516460965,
+              "provider_name": "DueDil",
+              "share_class": "Preferred A1"
+            }
+          },
+          {
+            "v": {
+              "amount": 52854,
+              "currency": "GBP",
+              "percentage": 0.002667594256359775,
+              "provider_name": "DueDil",
+              "share_class": "Seed"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "company_number": "LP015969",
-      "country_of_incorporation": "GBR",
-      "last_name": { "v": "Seedcamp III L.P." },
-      "provider_name": "DueDil",
-      "resolver_id": "8377ad30-e3aa-11e9-a543-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 43638,
-            "currency": "GBP",
-            "percentage": 0.002202453516460965,
-            "provider_name": "DueDil",
-            "share_class": "Preferred A1"
+        ],
+        "type": { "v": "COMPANY" }
+      },
+      {
+        "first_names": { "v": "Christopher" },
+        "last_name": { "v": "Mairs" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377b658-e3aa-11e9-a0b8-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 86427,
+              "currency": "GBP",
+              "percentage": 0.004362057153562763,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        },
-        {
-          "v": {
-            "amount": 52854,
-            "currency": "GBP",
-            "percentage": 0.002667594256359775,
-            "provider_name": "DueDil",
-            "share_class": "Seed"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "John Wilfred" },
+        "last_name": { "v": "Lazar" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377bcd4-e3aa-11e9-9ce2-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 80067,
+              "currency": "GBP",
+              "percentage": 0.004041061590872178,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "COMPANY" }
-    },
-    {
-      "first_names": { "v": "Christopher" },
-      "last_name": { "v": "Mairs" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377b658-e3aa-11e9-a0b8-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 86427,
-            "currency": "GBP",
-            "percentage": 0.004362057153562763,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Nadav" },
+        "last_name": { "v": "Rosenberg" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377c32e-e3aa-11e9-b774-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 66976,
+              "currency": "GBP",
+              "percentage": 0.003380345724334058,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "John Wilfred" },
-      "last_name": { "v": "Lazar" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377bcd4-e3aa-11e9-9ce2-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 80067,
-            "currency": "GBP",
-            "percentage": 0.004041061590872178,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Romain" },
+        "last_name": { "v": "Fau" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377c958-e3aa-11e9-8ae2-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 66067,
+              "currency": "GBP",
+              "percentage": 0.0033344675849495075,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Nadav" },
-      "last_name": { "v": "Rosenberg" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377c32e-e3aa-11e9-b774-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 66976,
-            "currency": "GBP",
-            "percentage": 0.003380345724334058,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Glenn" },
+        "last_name": { "v": "Leighton" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377d01e-e3aa-11e9-aa41-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 52854,
+              "currency": "GBP",
+              "percentage": 0.002667594256359775,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Romain" },
-      "last_name": { "v": "Fau" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377c958-e3aa-11e9-8ae2-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 66067,
-            "currency": "GBP",
-            "percentage": 0.0033344675849495075,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Andrew" },
+        "last_name": { "v": "Pearce" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377d640-e3aa-11e9-894d-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 52854,
+              "currency": "GBP",
+              "percentage": 0.002667594256359775,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Glenn" },
-      "last_name": { "v": "Leighton" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377d01e-e3aa-11e9-aa41-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 52854,
-            "currency": "GBP",
-            "percentage": 0.002667594256359775,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Anthony" },
+        "last_name": { "v": "Gutman" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377dd38-e3aa-11e9-a9ae-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 52854,
+              "currency": "GBP",
+              "percentage": 0.002667594256359775,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Andrew" },
-      "last_name": { "v": "Pearce" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377d640-e3aa-11e9-894d-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 52854,
-            "currency": "GBP",
-            "percentage": 0.002667594256359775,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Erez" },
+        "last_name": { "v": "Mathan" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377e328-e3aa-11e9-8852-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 43931,
+              "currency": "GBP",
+              "percentage": 0.0022172415195849185,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Anthony" },
-      "last_name": { "v": "Gutman" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377dd38-e3aa-11e9-a9ae-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 52854,
-            "currency": "GBP",
-            "percentage": 0.002667594256359775,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Lawrence" },
+        "last_name": { "v": "Dubir-Alai" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377e90c-e3aa-11e9-93f9-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 26838,
+              "currency": "GBP",
+              "percentage": 0.0013545407093537602,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Erez" },
-      "last_name": { "v": "Mathan" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377e328-e3aa-11e9-8852-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 43931,
-            "currency": "GBP",
-            "percentage": 0.0022172415195849185,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Will" },
+        "last_name": { "v": "Armitage" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377eeec-e3aa-11e9-a741-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 26427,
+              "currency": "GBP",
+              "percentage": 0.0013337971281798876,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Lawrence" },
-      "last_name": { "v": "Dubir-Alai" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377e90c-e3aa-11e9-93f9-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 26838,
-            "currency": "GBP",
-            "percentage": 0.0013545407093537602,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "first_names": { "v": "Georgi" },
+        "last_name": { "v": "Zlatkov" },
+        "provider_name": "DueDil",
+        "resolver_id": "8377f4c0-e3aa-11e9-893d-ee0e02764db2",
+        "shareholdings": [
+          {
+            "v": {
+              "amount": 19125,
+              "currency": "GBP",
+              "percentage": 0.0009652578830907915,
+              "provider_name": "DueDil",
+              "share_class": "Ordinary"
+            }
           }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Will" },
-      "last_name": { "v": "Armitage" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377eeec-e3aa-11e9-a741-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 26427,
-            "currency": "GBP",
-            "percentage": 0.0013337971281798876,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
-          }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "first_names": { "v": "Georgi" },
-      "last_name": { "v": "Zlatkov" },
-      "provider_name": "DueDil",
-      "resolver_id": "8377f4c0-e3aa-11e9-893d-ee0e02764db2",
-      "shareholdings": [
-        {
-          "v": {
-            "amount": 19125,
-            "currency": "GBP",
-            "percentage": 0.0009652578830907915,
-            "provider_name": "DueDil",
-            "share_class": "Ordinary"
-          }
-        }
-      ],
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "dob": { "v": "1992-05" },
-      "first_names": { "v": "Donald Andrew" },
-      "last_name": { "v": "Gillies" },
-      "nationality": { "v": "GBR" },
-      "provider_name": "DueDil",
-      "resolver_id": "83a04058-e3aa-11e9-8fd1-ee0e02764db2",
-      "title": "Mr",
-      "type": { "v": "INDIVIDUAL" }
-    },
-    {
-      "dob": { "v": "1991-08" },
-      "first_names": { "v": "Henry Charles" },
-      "last_name": { "v": "Irish" },
-      "nationality": { "v": "GBR" },
-      "provider_name": "DueDil",
-      "resolver_id": "83a04612-e3aa-11e9-a64f-ee0e02764db2",
-      "title": "Mr",
-      "type": { "v": "INDIVIDUAL" }
-    }
-  ]
+        ],
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "dob": { "v": "1992-05" },
+        "first_names": { "v": "Donald Andrew" },
+        "last_name": { "v": "Gillies" },
+        "nationality": { "v": "GBR" },
+        "provider_name": "DueDil",
+        "resolver_id": "83a04058-e3aa-11e9-8fd1-ee0e02764db2",
+        "title": "Mr",
+        "type": { "v": "INDIVIDUAL" }
+      },
+      {
+        "dob": { "v": "1991-08" },
+        "first_names": { "v": "Henry Charles" },
+        "last_name": { "v": "Irish" },
+        "nationality": { "v": "GBR" },
+        "provider_name": "DueDil",
+        "resolver_id": "83a04612-e3aa-11e9-a64f-ee0e02764db2",
+        "title": "Mr",
+        "type": { "v": "INDIVIDUAL" }
+      }
+    ]
+  }
 }
