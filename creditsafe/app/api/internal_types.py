@@ -200,7 +200,7 @@ class CreditSafeCompanySearchResponse(Model):
             'country_of_incorporation': country
         }
         state_from_search = self.address and self.address.province
-        if state:
+        if state_from_search or state:
             result['state_of_incorporation'] = state_from_search or state
         return result
 
