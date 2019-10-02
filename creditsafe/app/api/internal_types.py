@@ -182,10 +182,15 @@ class ResolverIdMatcher:
         return self.resolver_ids_to_officers.get(resolver_id)
 
 
+class CreditsafeSearchAddress(Model):
+    province = StringType(default=None)
+
+
 class CreditSafeCompanySearchResponse(Model):
     creditsafe_id = StringType(required=True, serialized_name="id")
     registration_number = StringType(default=None, serialized_name="regNo")
     name = StringType(required=True)
+    address = ModelType(CreditsafeSearchAddress, default=None)
 
     def as_passfort_format(self, country, state):
         result = {
@@ -194,8 +199,9 @@ class CreditSafeCompanySearchResponse(Model):
             'creditsafe_id': self.creditsafe_id,
             'country_of_incorporation': country
         }
-        if state:
-            result['state_of_incorporation'] = state
+        state_from_search = self.address and self.address.province
+        if state_from_search or state:
+            result['state_of_incorporation'] = state_from_search or state
         return result
 
 
@@ -208,10 +214,14 @@ class CreditSafeCompanySearchResponse(Model):
     def matches_search(self, search: SearchInput) -> bool:
         if search.number and search.number.lower().strip() != self.registration_number.lower().strip():
             return False
-
         matcher = CompanyNameMatcher()
         if search.name and not matcher.match(search.name, self.name):
             return False
+
+        if search.state and self.address and self.address.province:
+            if search.state != self.address.province:
+                return False
+
         return True
 
 
@@ -252,7 +262,7 @@ class ContactInformation(Model):
 
 
 class CompanyLegalForm(Model):
-    description = StringType(required=True)
+    description = StringType(default='Unknown')
 
 
 class CompanyBasicInformation(Model):

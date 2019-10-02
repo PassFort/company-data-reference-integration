@@ -123,22 +123,26 @@ class SearchInput(Model):
 
     def build_queries(self):
         country_code = self.get_creditsafe_country()
-
         all_queries = []
         any_queries = []
         all_queries.append(f'countries={country_code}')
+
         if self.state:
-            all_queries.append(f'province={quote_plus(self.state)}')
-
-        if self.name:
-            any_queries.append(f'name={quote_plus(self.name)}')
-        elif self.query:
-            any_queries.append(f'name={quote_plus(self.query)}')
-
+            # Only supports state and name search, not state and number
+            if self.name:
+                any_queries.append(f'name={quote_plus(self.name)}&province={quote_plus(self.state)}')
+            elif self.query:
+                any_queries.append(f'name={quote_plus(self.query)}&province={quote_plus(self.state)}')
+        else:
+            if self.name:
+                any_queries.append(f'name={quote_plus(self.name)}')
+            elif self.query:
+                any_queries.append(f'name={quote_plus(self.query)}')
+        exact_search = '' if country_code == 'US' else '&exact=True'
         if self.number:
-            any_queries.append(f'regNo={quote_plus(self.number)}&exact=True')
+            any_queries.append(f'regNo={quote_plus(self.number)}{exact_search}')
         elif self.query:
-            any_queries.append(f'regNo={quote_plus(self.query)}&exact=True')
+            any_queries.append(f'regNo={quote_plus(self.query)}{exact_search}')
 
         return ['&'.join(all_queries + [any_query]) for any_query in any_queries]
 
