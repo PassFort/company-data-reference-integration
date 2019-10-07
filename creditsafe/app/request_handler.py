@@ -87,7 +87,7 @@ class CreditSafeHandler:
                 if not c.matches_search(input_data, fuzz_factor=fuzz_factor):
                     continue
                 companies.append(c)
-            
+
             if len(companies) >= 20:
                 break
 
@@ -103,7 +103,7 @@ class CreditSafeHandler:
             c.as_passfort_format(
                 input_data.country, input_data.state)
             for c in companies
-        ][0:20] # Only get the first 20
+        ][0:20]  # Only get the first 20
         return raw, formatted_companies
 
     def exact_search(self, name, country, state=None):
@@ -119,7 +119,7 @@ class CreditSafeHandler:
                 for company in companies:
                     if company['name'] == name:
                         return company
-        except Exception as e:
+        except Exception:
             pass
 
         return None
@@ -129,7 +129,7 @@ class CreditSafeHandler:
         token = self.get_token(self.credentials.username, self.credentials.password)
         url = f'{self.base_url}/companies/{input_data.creditsafe_id}'
         if input_data.country_of_incorporation == 'DEU':
-            url = f'{url}?customData=de_reason_code::1' # 1 is code for Credit Decisioning
+            url = f'{url}?customData=de_reason_code::1'  # 1 is code for Credit Decisioning
         response = self.session.get(
             url,
             headers={
