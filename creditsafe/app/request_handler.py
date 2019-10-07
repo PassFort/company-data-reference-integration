@@ -91,14 +91,11 @@ class CreditSafeHandler:
             if len(companies) >= 20:
                 break
 
-        print([c.serialize() for c in companies])
-
         companies = sorted(
             companies,
             key=lambda co: co.name_match_confidence(input_data),
             reverse=True
         )
-        print([c.serialize() for c in companies])
         formatted_companies = [
             c.as_passfort_format(
                 input_data.country, input_data.state)
