@@ -48,7 +48,7 @@ class CreditSafeHandler:
 
         return response.json()['token']
 
-    def search(self, input_data: SearchInput):
+    def search(self, input_data: SearchInput, fuzz_factor):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
 
@@ -84,23 +84,31 @@ class CreditSafeHandler:
                 if c.creditsafe_id in found_ids:
                     continue
                 found_ids.add(c.creditsafe_id)
-                if not c.matches_search(input_data):
+                if not c.matches_search(input_data, fuzz_factor=fuzz_factor):
                     continue
                 companies.append(c)
-            
+
             if len(companies) >= 20:
                 break
 
+        companies = sorted(
+            companies,
+            key=lambda co: co.name_match_confidence(input_data),
+            reverse=True
+        )
         formatted_companies = [
             c.as_passfort_format(
                 input_data.country, input_data.state)
-            for c in companies if c.matches_search(input_data)
-        ][0:20] # Only get the first 20
+            for c in companies
+        ][0:20]  # Only get the first 20
         return raw, formatted_companies
 
     def exact_search(self, name, country, state=None):
         try:
-            raw, companies = self.search(SearchInput({'name': name, 'country': country, 'state': state}))
+            raw, companies = self.search(
+                SearchInput({'name': name, 'country': country, 'state': state}),
+                fuzz_factor=95
+            )
 
             if len(companies) == 1:
                 return companies[0]
@@ -108,7 +116,7 @@ class CreditSafeHandler:
                 for company in companies:
                     if company['name'] == name:
                         return company
-        except Exception as e:
+        except Exception:
             pass
 
         return None
@@ -118,7 +126,7 @@ class CreditSafeHandler:
         token = self.get_token(self.credentials.username, self.credentials.password)
         url = f'{self.base_url}/companies/{input_data.creditsafe_id}'
         if input_data.country_of_incorporation == 'DEU':
-            url = f'{url}?customData=de_reason_code::1' # 1 is code for Credit Decisioning
+            url = f'{url}?customData=de_reason_code::1'  # 1 is code for Credit Decisioning
         response = self.session.get(
             url,
             headers={
