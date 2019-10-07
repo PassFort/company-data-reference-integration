@@ -89,7 +89,7 @@ def search(request_data: 'CreditSafeSearchRequest'):
         })
 
     handler = CreditSafeHandler(request_data.credentials)
-    raw, companies = handler.search(request_data.input_data)
+    raw, companies = handler.search(request_data.input_data, fuzz_factor=70)
     return jsonify({
         'output_data': companies,
         'raw_data': raw,

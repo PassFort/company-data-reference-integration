@@ -55,7 +55,7 @@ class GenericMatcher:
 
         return (left, right)
 
-    def match(self, left, right):
+    def match_ratio(self, left, right):
         if self.preprocess:
             (left, right) = self.preprocess(left, right)
 
@@ -66,12 +66,17 @@ class GenericMatcher:
         (left, right) = self._expand_syns(left, right)
 
         if left == right:
-            return True
+            return 100
+
+        return fuzz.ratio(left, right)
+
+    def match(self, left, right):
+        match_ratio = self.match_ratio(left, right)
 
         if self.fuzz_factor:
-            return fuzz.ratio(left, right) >= self.fuzz_factor
-        else:
-            return False
+            return match_ratio > self.fuzz_factor
+
+        return match_ratio == 100
 
 
 class CompanyNameMatcher(GenericMatcher):
@@ -82,7 +87,6 @@ class CompanyNameMatcher(GenericMatcher):
         ['CO', 'COMPANY']
     ]
     CASE_SENSITIVE = False
-    FUZZ_FACTOR = 95
 
     @staticmethod
     def _strip_trailing_punctuation(left, right):
@@ -91,9 +95,9 @@ class CompanyNameMatcher(GenericMatcher):
         right = right.rstrip(string.punctuation)
         return (left, right)
 
-    def __init__(self):
+    def __init__(self, fuzz_factor=None):
         super().__init__(
             synonyms=self.SYN_SUFFIXES,
             case_sensitive=self.CASE_SENSITIVE,
             preprocess=self._strip_trailing_punctuation,
-            fuzz_factor=self.FUZZ_FACTOR)
+            fuzz_factor=fuzz_factor)

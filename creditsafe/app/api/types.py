@@ -11,6 +11,7 @@ from schematics.exceptions import DataError, ValidationError
 from schematics.types.serializable import serializable
 from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType
 
+
 # TODO JSONDECODE
 def validate_model(validation_model):
     """
@@ -230,6 +231,7 @@ class CompanyMetadata(Model):
 
     class Options:
         serialize_when_none = False
+
 
 class EntityData(Model):
     personal_details = ModelType(PersonalDetails, default=None)
