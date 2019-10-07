@@ -89,12 +89,13 @@ def search(request_data: 'CreditSafeSearchRequest'):
         })
 
     handler = CreditSafeHandler(request_data.credentials)
-    raw, companies = handler.search(request_data.input_data, fuzz_factor=70)
+    raw, companies = handler.search(request_data.input_data, fuzz_factor=90)
     return jsonify({
         'output_data': companies,
         'raw_data': raw,
         'errors': []
     })
+
 
 @app.route('/company_report', methods=['POST'])
 @validate_model(CreditSafeCompanyReportRequest)
