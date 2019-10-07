@@ -216,15 +216,14 @@ class CreditSafeCompanySearchResponse(Model):
         matcher = CompanyNameMatcher()
         return matcher.match_ratio(search.name, self.name)
 
-    def matches_search(self, search: SearchInput, fuzz_factor=90) -> bool:
-        if search.number:
-            if search.number.lower().strip() != self.registration_number.lower().strip():
-                return False
-            else:
-                # Company number matches so be less strict with name matching
-                fuzz_factor = 50
+    def matches_search(self, search: SearchInput, fuzz_factor) -> bool:
+        matches_number = search.number and search.number.lower().strip() != self.registration_number.lower().strip()
+        if search.number and not matches_number:
+            return False
 
-        matcher = CompanyNameMatcher(fuzz_factor)
+        # If Company number matches be less strict with name matching
+        matcher = CompanyNameMatcher(50 if matches_number else fuzz_factor)
+
         if search.name and not matcher.match(search.name, self.name):
             return False
 
