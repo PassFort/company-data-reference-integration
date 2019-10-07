@@ -5,16 +5,17 @@ from .file_utils import get_response_from_file
 class DemoHandler:
 
     def search(self, input_data: 'SearchInput'):
-        if 'fail' in input_data.query.lower():
+        search_query = (input_data.query or input_data.name or '').lower()
+        if 'fail' in search_query:
             return []
 
         creditsafe_id = 'pass'
         name = 'PASSFORT LIMITED'
-        if 'partial' in input_data.query.lower():
+        if 'partial' in search_query:
             creditsafe_id = 'partial'
             name = 'PASSFORT PARTIAL LIMITED'
 
-        result =  {
+        result = {
             'name': name,
             'number': '09565115',
             'creditsafe_id': creditsafe_id,

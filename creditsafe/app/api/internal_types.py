@@ -204,17 +204,27 @@ class CreditSafeCompanySearchResponse(Model):
             result['state_of_incorporation'] = state_from_search or state
         return result
 
-
     @classmethod
     def from_json(cls, data):
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
         return model
 
-    def matches_search(self, search: SearchInput) -> bool:
-        if search.number and search.number.lower().strip() != self.registration_number.lower().strip():
-            return False
+    def name_match_confidence(self, search):
+        if not search.name:
+            return 100
         matcher = CompanyNameMatcher()
+        return matcher.match_ratio(search.name, self.name)
+
+    def matches_search(self, search: SearchInput, fuzz_factor) -> bool:
+        numbers_present = search.number is not None and self.registration_number is not None
+        matches_number = numbers_present and search.number.lower().strip() == self.registration_number.lower().strip()
+        if numbers_present and not matches_number:
+            return False
+
+        # If Company number matches be less strict with name matching
+        matcher = CompanyNameMatcher(50 if matches_number else fuzz_factor)
+
         if search.name and not matcher.match(search.name, self.name):
             return False
 
