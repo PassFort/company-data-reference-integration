@@ -1,7 +1,27 @@
 import unittest
 
 from ..file_utils import get_response_from_file
-from .internal_types import CreditSafeCompanyReport, CompanyDirectorsReport, build_resolver_id
+from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, build_resolver_id
+from .types import SearchInput
+
+
+class TestCompanySearchResponse(unittest.TestCase):
+    def test_name_matching_less_strict_if_number_matches(self):
+        searchResp = CreditSafeCompanySearchResponse.from_json({
+            'creditsafe_id': '1000',
+            'regNo': '09565115',
+            'name': 'PASSFORT LIMITED',
+        })
+
+        # Produces match ratio of 86 which is < 90 but > 50
+        self.assertTrue(searchResp.matches_search(SearchInput({
+            'name': 'PASSF LMITED',
+            'number': '09565115'
+        }), fuzz_factor=90))
+
+        self.assertFalse(searchResp.matches_search(SearchInput({
+            'name': 'PASSF LMITED',
+        }), fuzz_factor=90))
 
 
 class TestCompanyReport(unittest.TestCase):

@@ -72,7 +72,6 @@ class GenericMatcher:
 
     def match(self, left, right):
         match_ratio = self.match_ratio(left, right)
-
         if self.fuzz_factor:
             return match_ratio > self.fuzz_factor
 

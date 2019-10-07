@@ -217,8 +217,9 @@ class CreditSafeCompanySearchResponse(Model):
         return matcher.match_ratio(search.name, self.name)
 
     def matches_search(self, search: SearchInput, fuzz_factor) -> bool:
-        matches_number = search.number and search.number.lower().strip() != self.registration_number.lower().strip()
-        if search.number and not matches_number:
+        numbers_present = search.number is not None and self.registration_number is not None
+        matches_number = numbers_present and search.number.lower().strip() == self.registration_number.lower().strip()
+        if numbers_present and not matches_number:
             return False
 
         # If Company number matches be less strict with name matching
