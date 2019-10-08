@@ -97,17 +97,17 @@ class DeviceData(Model):
 
 class DeviceMetadata(Model):
     token = StringType()
-    stated_ip = StringType()
+    stated_ip = StringType(default=None)
     action = StringType()
-    reference_id = StringType()
-    device_id = StringType()
-    device_type = StringType()
+    reference_id = StringType(default=None)
+    device_id = StringType(default=None)
+    device_type = StringType(default=None)
 
     def as_iovation_device_data(self):
         return DeviceData({
-            'account_code': self.get('reference_id'),
+            'account_code': self.reference_id,
             'blackbox': self.token,
-            'statedip': self.get('stated_ip'),
+            'statedip': self.stated_ip,
             'type': self.action
         })
 
@@ -127,19 +127,19 @@ class IovationCheckRequest(Model):
 
 
 class IovationIpLocation(Model):
-    city = StringType()
-    country_code = StringType(serialized_name="countryCode")
-    region = StringType()
+    city = StringType(default=None)
+    country_code = StringType(serialized_name="countryCode", default=None)
+    region = StringType(default=None)
 
 
 class IpDetails(Model):
-    address = StringType()
-    ip_location = ModelType(IovationIpLocation, serialized_name="ipLocation")
+    address = StringType(default=None)
+    ip_location = ModelType(IovationIpLocation, serialized_name="ipLocation", default=None)
 
 
 class DeviceEntity(Model):
-    type = StringType()
-    alias = IntType()
+    type = StringType(default=None)
+    alias = IntType(default=None)
 
 
 class IovationDeviceFraudRule(Model):
@@ -155,15 +155,15 @@ class IovationDeviceFraudRule(Model):
         }
 
 class DeviceFraudRuleResults(Model):
-    score = IntType()
-    rules_matched = IntType(serialized_name="rulesMatched")
-    rules = ListType(ModelType(IovationDeviceFraudRule))
+    score = IntType(default=None)
+    rules_matched = IntType(serialized_name="rulesMatched", default=None)
+    rules = ListType(ModelType(IovationDeviceFraudRule), default=None)
 
 
 class DeviceCheckDetails(Model):
-    device = ModelType(DeviceEntity)
-    real_ip = ModelType(IpDetails, serialized_name="realIp")
-    rule_results = ModelType(DeviceFraudRuleResults, serialized_name="ruleResults")
+    device = ModelType(DeviceEntity, default=None)
+    real_ip = ModelType(IpDetails, serialized_name="realIp", default=None)
+    rule_results = ModelType(DeviceFraudRuleResults, serialized_name="ruleResults", default=None)
 
 
 class IovationOutput(Model):
@@ -225,9 +225,9 @@ class IovationCheckResponse(Model):
             'reference_id': output.account_code
         })
 
-        if output.details and output.details.get('device'):
-            device_metadata.device_id = output.details.device.get('alias')
-            device_metadata.device_type = output.details.device.get('type')
+        if output.details and output.details.device:
+            device_metadata.device_id = output.details.device.alias
+            device_metadata.device_type = output.details.device.type
 
         device_fraud_detection = DeviceFraudDetection({
             'provider_reference': output.tracking_number,
@@ -235,24 +235,24 @@ class IovationCheckResponse(Model):
             'recommendation_reason': output.reason
         })
 
-        if output.details and output.details.get('rule_results'):
-            device_fraud_detection.total_score = output.details.rule_results.get('score')
+        if output.details and output.details.rule_results:
+            device_fraud_detection.total_score = output.details.rule_results.score
 
-            if output.details.rule_results.get('rules'):
+            if output.details.rule_results.rules:
                 matched_rules = []
                 for rule in output.details.rule_results.rules:
                     matched_rules.append(rule.as_passfort_device_fraud_rule())
                 device_fraud_detection.matched_rules = matched_rules
 
-        if output.details and output.details.get('real_ip'):
+        if output.details and output.details.real_ip:
             ip_location = IPLocation()
-            ip_location.ip_address = output.details.real_ip.get('address')
-            if output.details.real_ip.get('ip_location'):
+            ip_location.ip_address = output.details.real_ip.address
+            if output.details.real_ip.ip_location:
                 real_ip_location = output.details.real_ip.ip_location
-                if real_ip_location.get('country_code'):
+                if real_ip_location.country_code:
                     ip_location.country = pycountry.countries.get(alpha_2=real_ip_location.country_code).alpha_3
-                ip_location.region = output.details.real_ip.ip_location.get('region')
-                ip_location.city = output.details.real_ip.ip_location.get('city')
+                ip_location.region = output.details.real_ip.ip_location.region
+                ip_location.city = output.details.real_ip.ip_location.city
             return cls({
                 'device_metadata': device_metadata,
                 'device_fraud_detection': device_fraud_detection,
