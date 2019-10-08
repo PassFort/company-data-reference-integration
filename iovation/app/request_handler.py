@@ -52,7 +52,7 @@ class IovationHandler:
         response = response.json()
         raw_data, output = IovationOutput.from_json(response)
 
-        return raw, IovationCheckResponse.from_iovation_output(output, input_data.device_metadata)
+        return raw_data, IovationCheckResponse.from_iovation_output(output, input_data.device_metadata)
 
     def get_authorization_token(self):
         token = f'{self.credentials["subscriber_id"]}/{self.credentials["subscriber_account"]}:{self.credentials["password"]}'

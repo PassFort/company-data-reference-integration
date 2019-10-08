@@ -65,8 +65,6 @@ class IovationTestExamples(unittest.TestCase):
                 "city": "PORTLAND" }
         }
 
-        print(response_json)
-        self.maxDiff = None
         self.assertEqual(expected_output, response_json['output_data'])
         self.assertIsNotNone(response_json['raw_data'])
 
@@ -165,3 +163,22 @@ class IovationTestExamples(unittest.TestCase):
         response_json = json.loads(response.data)
 
         self.assertEqual('Allow', response_json['output_data']['device_fraud_detection']['recommendation'])
+
+    def test_demo_without_optional_input(self):
+        request = {
+            'input_data': {
+                'device_metadata': {
+                    'token': 'BLACKBOX',
+                    'action': 'new_account'
+                }
+            },
+            'credentials': {
+                'subscriber_id': '388702',
+                'subscriber_account': 'OLTP',
+                'password': 'CRJSGGFH',
+                'use_test_environment': True
+            }
+        }
+
+        response = self.testing_app.post('/run_check', content_type='application/json', json=request)
+        self.assertEqual(200, response.status_code)

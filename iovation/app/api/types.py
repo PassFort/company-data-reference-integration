@@ -105,9 +105,9 @@ class DeviceMetadata(Model):
 
     def as_iovation_device_data(self):
         return DeviceData({
-            'account_code': self.reference_id,
+            'account_code': self.get('reference_id'),
             'blackbox': self.token,
-            'statedip': self.stated_ip,
+            'statedip': self.get('stated_ip'),
             'type': self.action
         })
 
@@ -214,7 +214,7 @@ IOVATION_RECOMMENDATION_MAPPING = {
 class IovationCheckResponse(Model):
     device_metadata = ModelType(DeviceMetadata)
     device_fraud_detection = ModelType(DeviceFraudDetection)
-    ip_location = ModelType(IPLocation)
+    ip_location = ModelType(IPLocation, serialize_when_none=False)
 
     @classmethod
     def from_iovation_output(cls, output, input_data):
@@ -225,9 +225,9 @@ class IovationCheckResponse(Model):
             'reference_id': output.account_code
         })
 
-        if output.details and output.details.device:
-            device_metadata.device_id = output.details.device.alias
-            device_metadata.device_type = output.details.device.type
+        if output.details and output.details.get('device'):
+            device_metadata.device_id = output.details.device.get('alias')
+            device_metadata.device_type = output.details.device.get('type')
 
         device_fraud_detection = DeviceFraudDetection({
             'provider_reference': output.tracking_number,
@@ -235,25 +235,31 @@ class IovationCheckResponse(Model):
             'recommendation_reason': output.reason
         })
 
-        if output.details and output.details.rule_results:
-            device_fraud_detection.total_score = output.details.rule_results.score
+        if output.details and output.details.get('rule_results'):
+            device_fraud_detection.total_score = output.details.rule_results.get('score')
 
-        if output.details.rule_results:
-            matched_rules = []
-            for rule in output.details.rule_results.rules:
-                matched_rules.append(rule.as_passfort_device_fraud_rule())
-            device_fraud_detection.matched_rules = matched_rules
+            if output.details.rule_results.get('rules'):
+                matched_rules = []
+                for rule in output.details.rule_results.rules:
+                    matched_rules.append(rule.as_passfort_device_fraud_rule())
+                device_fraud_detection.matched_rules = matched_rules
 
-
-        ip_location = IPLocation()
-        if output.details and output.details.real_ip:
-            ip_location.ip_address = output.details.real_ip.address
-            ip_location.country = pycountry.countries.get(alpha_2=output.details.real_ip.ip_location.country_code).alpha_3
-            ip_location.region = output.details.real_ip.ip_location.region
-            ip_location.city = output.details.real_ip.ip_location.city
+        if output.details and output.details.get('real_ip'):
+            ip_location = IPLocation()
+            ip_location.ip_address = output.details.real_ip.get('address')
+            if output.details.real_ip.get('ip_location'):
+                real_ip_location = output.details.real_ip.ip_location
+                if real_ip_location.get('country_code'):
+                    ip_location.country = pycountry.countries.get(alpha_2=real_ip_location.country_code).alpha_3
+                ip_location.region = output.details.real_ip.ip_location.get('region')
+                ip_location.city = output.details.real_ip.ip_location.get('city')
+            return cls({
+                'device_metadata': device_metadata,
+                'device_fraud_detection': device_fraud_detection,
+                'ip_location': ip_location
+            })
 
         return cls({
             'device_metadata': device_metadata,
-            'device_fraud_detection': device_fraud_detection,
-            'ip_location': ip_location
+            'device_fraud_detection': device_fraud_detection
         })
