@@ -107,32 +107,14 @@ def handle_error(check_error):
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'Unable to perform a check using the parameters provided',
-                    'info': {
-                        'provider_error': {
-                             'message': response_content.get('message')
-                        }
-                    }
-                }
+                Error.provider_unhandled_error(response_content.get('message'))
             ]
         ), 200
     elif response.status_code == 401 or response.status_code == 403:
         return jsonify(
             raw=response_content,
             errors=[
-                {
-                    'code': ErrorCode.MISCONFIGURATION_ERROR.value,
-                    'source': 'PROVIDER',
-                    'message': 'The request could not be authorised',
-                    'info': {
-                        'provider_error': {
-                            'message': response_content.get('message')
-                        }
-                    }
-                }
+                Error.provider_misconfiguration_error(response_content.get('message'))
             ]
         ), 200
     else:
@@ -151,7 +133,7 @@ def connection_error(error):
         {
             'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
             'source': 'PROVIDER',
-            'message': 'Connection error when contacting Iovation',
+            'message': "Provider Error: connection to 'Iovation' service encountered an error.",
             'info': {
                 'raw': '{}'.format(error)
             }
@@ -166,7 +148,7 @@ def timeout_error(error):
         {
             'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
             'source': 'PROVIDER',
-            'message': 'Timeout error when contacting Iovation',
+            'message': "Provider Error: connection to 'Iovation' service timed out",
             'info': {
                 'raw': '{}'.format(error)
             }

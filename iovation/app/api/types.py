@@ -72,11 +72,24 @@ class Error:
         return {
             'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
             'source': 'PROVIDER',
-            'message': 'Provider unhandled error',
+            'message': "Provider Error: {!r} while running 'Iovation' service.".format(provider_message),
             'info': {
-                'provider_error': {
-                    'message': provider_message
-                }
+               'provider': 'Iovation',
+               'original_error': provider_message,
+               'timestamp': str(datetime.now())
+            }
+        }
+
+    @staticmethod
+    def provider_misconfiguration_error(provider_message: str):
+        return {
+            'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': "Provider Configuration Error: {!r} while running 'Iovation' service".format(provider_message),
+            'info': {
+                'provider': 'Iovation',
+                'original_error': provider_message,
+                'timestamp': str(datetime.now())
             }
         }
 
@@ -157,7 +170,7 @@ class IovationDeviceFraudRule(Model):
 class DeviceFraudRuleResults(Model):
     score = IntType(default=None)
     rules_matched = IntType(serialized_name="rulesMatched", default=None)
-    rules = ListType(ModelType(IovationDeviceFraudRule), default=None)
+    rules = ListType(ModelType(IovationDeviceFraudRule), default=[])
 
 
 class DeviceCheckDetails(Model):
@@ -238,7 +251,7 @@ class IovationCheckResponse(Model):
         if output.details and output.details.rule_results:
             device_fraud_detection.total_score = output.details.rule_results.score
 
-            if output.details.rule_results.rules:
+            if len(output.details.rule_results.rules):
                 matched_rules = []
                 for rule in output.details.rule_results.rules:
                     matched_rules.append(rule.as_passfort_device_fraud_rule())
