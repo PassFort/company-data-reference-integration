@@ -210,13 +210,18 @@ class PassFortMetadata(Model):
 
 
 class FullName(Model):
+    title = StringType(default=None)
     given_names = ListType(StringType, required=True)
     family_name = StringType(required=True, min_length=1)
+
+    class Options:
+        serialize_when_none = False
 
 
 class PersonalDetails(Model):
     name = ModelType(FullName, required=True)
     dob = StringType(default=None)
+    nationality = StringType(default=None)
 
     class Options:
         serialize_when_none = False
@@ -239,7 +244,7 @@ class EntityData(Model):
     entity_type = StringType(required=True)
 
     @classmethod
-    def as_individual(cls, first_names, last_name, dob):
+    def as_individual(cls, first_names, last_name, dob, nationality=None, title=None):
         if dob:
             if dob.day == 1:
                 dob_str = dob.strftime("%Y-%m")
@@ -250,10 +255,12 @@ class EntityData(Model):
         return cls({
             'personal_details': {
                 'name': {
+                    'title': title,
                     'given_names': first_names,
                     'family_name': last_name
                 },
-                'dob': dob_str
+                'dob': dob_str,
+                'nationality': nationality
             },
             'entity_type': 'INDIVIDUAL'
         })
@@ -272,6 +279,7 @@ class EntityData(Model):
     class Options:
         serialize_when_none = False
 
+
 class PassFortAssociate(Model):
     resolver_id = UUIDType(default=None)
     entity_type = StringType(required=True)
@@ -283,6 +291,7 @@ class PassFortAssociate(Model):
 
     class Options:
         serialize_when_none = False
+
 
 class PassFortOfficer(PassFortAssociate):
     original_role = StringType(default=None, serialize_when_none=False)
@@ -311,11 +320,13 @@ class PassFortShareholding(Model):
 
 
 class PassFortShareholder(PassFortAssociate):
-    shareholdings = ListType(ModelType(PassFortShareholding), required=True)
+    shareholdings = ListType(ModelType(PassFortShareholding), default=None)
 
     @serializable
     def total_percentage(self):
-        return float(sum(x.percentage for x in self.shareholdings))
+        if self.shareholdings:
+            return float(sum(x.percentage for x in self.shareholdings))
+        return None
 
     class Options:
         serialize_when_none = False

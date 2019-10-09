@@ -129,7 +129,6 @@ Works Director
 '''
 
 
-
 def split_name(name, expect_title=False):
     parsed_name = nameparser.HumanName(name)
     given_names = parsed_name.first.split() + parsed_name.middle.split()
@@ -538,6 +537,88 @@ class CompanySummary(Model):
         return None
 
 
+class PersonOfSignificantControl(Model):
+    title = StringType(default=None)
+    name = StringType(required=True)
+    nationality = StringType(default=None)
+    country = StringType(default=None)
+    country_of_registration = StringType(default=None, serialized_name="countryOfRegistration")
+    dob = UTCDateTimeType(default=None, serialized_name="dateOfBirth")
+    registration_number = StringType(default=None, serialized_name="registrationNumber")
+    legal_form = StringType(default=None, serialized_name="legalForm")
+    kind = StringType(default=None)
+    person_type = StringType(default=None, serialized_name="personType")
+
+    @property
+    def entity_type(self):
+        if self.person_type == 'Person':
+            return 'INDIVIDUAL'
+        if self.person_type == 'Company':
+            return 'COMPANY'
+        if self.kind:
+            if 'individual' in self.kind:
+                return 'INDIVIDUAL'
+            else:
+                return 'COMPANY'
+        # Duedil also returns None if it can't determine the entity type
+        return None
+
+    @property
+    def country_of_nationality(self):
+        from .nationality_to_ISO3 import convert_nationality_to_iso3
+        if self.nationality:
+            return convert_nationality_to_iso3(self.nationality)
+        return None
+
+    @property
+    def country_of_incorporation(self):
+        country_name = self.country_of_registration or self.country
+
+        if country_name:
+            country = pycountry.countries.get(name=country_name) or pycountry.countries.get(official_name=country_name)
+            if not country:
+                country_list = pycountry.countries.search_fuzzy(country_name)
+                if len(country_list) == 1:
+                    country = country_list[0]
+
+            if country:
+                return country.alpha_3
+
+        return None
+
+    def to_passfort_shareholder(self):
+        if self.entity_type:
+            if self.entity_type == 'INDIVIDUAL':
+                first_names, last_name = split_name(self.name, expect_title=True)
+                immediate_data = EntityData.as_individual(
+                    first_names,
+                    last_name,
+                    self.dob,
+                    self.country_of_nationality,
+                    self.title
+                )
+            else:
+                immediate_data = EntityData.as_company(self.name, search_data={
+                    'name': self.name,
+                    'number': self.registration_number,
+                    'country_of_incorporation': self.country_of_incorporation,
+                })
+            return PassFortShareholder({
+                'resolver_id': uuid.uuid4(),
+                'immediate_data': immediate_data,
+                'entity_type': self.entity_type,
+            })
+        return None
+
+
+class PSCReport(Model):
+    active_psc = ListType(ModelType(PersonOfSignificantControl), serialized_name="activePSC", default=[])
+
+
+class AdditionalInformation(Model):
+    psc_report = ModelType(PSCReport, serialized_name="personsWithSignificantControl", default=None)
+
+
 class CreditSafeCompanyReport(Model):
     creditsafe_id = StringType(required=True, serialized_name="companyId")
     summary = ModelType(CompanySummary, required=True, serialized_name="companySummary")
@@ -545,6 +626,7 @@ class CreditSafeCompanyReport(Model):
     contact_information = ModelType(ContactInformation, required=True, serialized_name="contactInformation")
     directors = ModelType(CompanyDirectorsReport, default=None)
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
+    additional_information = ModelType(AdditionalInformation, default=None, serialized_name="additionalInformation")
 
     @classmethod
     def from_json(cls, data):
@@ -582,10 +664,15 @@ class CreditSafeCompanyReport(Model):
             request_handler,
             self.summary.country_code
         ) if self.share_capital_structure else []
+
+        pscs = []
+
+        if self.additional_information and self.additional_information.psc_report:
+            pscs = [psc.to_passfort_shareholder() for psc in self.additional_information.psc_report.active_psc]
         return {
             'metadata': metadata.serialize(),
             'officers': officers,
             'ownership_structure': {
-                'shareholders': shareholders
+                'shareholders': shareholders + [psc.serialize() for psc in pscs if psc is not None]
             }
         }

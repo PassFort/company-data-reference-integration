@@ -1,7 +1,8 @@
 import unittest
 
 from ..file_utils import get_response_from_file
-from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, build_resolver_id
+from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
+    build_resolver_id, PersonOfSignificantControl
 from .types import SearchInput
 
 
@@ -22,6 +23,30 @@ class TestCompanySearchResponse(unittest.TestCase):
         self.assertFalse(searchResp.matches_search(SearchInput({
             'name': 'PASSF LMITED',
         }), fuzz_factor=90))
+
+
+class TestPSC(unittest.TestCase):
+    def test_country_of_incorporation(self):
+        psc = PersonOfSignificantControl({
+            'name': 'Test',
+            'personType': 'Company',
+            'country': 'England'
+        })
+        self.assertEqual(psc.country_of_incorporation, 'GBR')
+
+        psc = PersonOfSignificantControl({
+            'name': 'Test',
+            'personType': 'Company',
+            'country': 'United States'
+        })
+        self.assertEqual(psc.country_of_incorporation, 'USA')
+
+        psc = PersonOfSignificantControl({
+            'name': 'Test',
+            'personType': 'Company',
+            'countryOfRegistration': 'United States of America'
+        })
+        self.assertEqual(psc.country_of_incorporation, 'USA')
 
 
 class TestCompanyReport(unittest.TestCase):
@@ -186,7 +211,7 @@ class TestCompanyReport(unittest.TestCase):
 
     def test_returns_shareholders(self):
         shareholders = self.formatted_report['ownership_structure']['shareholders']
-        self.assertEqual(len(shareholders), 26)
+        self.assertEqual(len(shareholders), 28)
 
         self.assertDictEqual(
             shareholders[1]['shareholdings'][0],
@@ -208,7 +233,8 @@ class TestCompanyReport(unittest.TestCase):
             )
             donald_shareholder = next(
                 s for s in shareholders if s['entity_type'] == 'INDIVIDUAL' and
-                s['immediate_data']['personal_details']['name']['family_name'] == 'GILLIES'
+                s['immediate_data']['personal_details']['name']['family_name'] == 'GILLIES' and
+                s.get('shareholdings')
             )
 
             self.assertEqual(
@@ -238,3 +264,12 @@ class TestCompanyReport(unittest.TestCase):
             self.assertEqual(episode_shareholder['shareholdings'][0]['percentage'], 15.99)
             self.assertEqual(episode_shareholder['shareholdings'][1]['share_class'], 'PREFERRED A1')
             self.assertEqual(episode_shareholder['shareholdings'][1]['percentage'], 5.15)
+
+        with self.subTest('returns psc'):
+            donald_psc = next(
+                s for s in shareholders if s['entity_type'] == 'INDIVIDUAL' and
+                s['immediate_data']['personal_details']['name']['family_name'] == 'Gillies' and
+                not s.get('shareholdings')
+            )
+
+            self.assertIsNotNone(donald_psc)
