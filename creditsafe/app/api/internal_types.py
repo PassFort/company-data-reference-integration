@@ -897,7 +897,7 @@ class CreditSafeCompanyReport(Model):
             'metadata': metadata.serialize(),
             'officers': officers,
             'ownership_structure': {
-                'shareholders': shareholders + [psc.serialize() for psc in pscs if psc is not None]
+                'shareholders': shareholders
             }
         }
 

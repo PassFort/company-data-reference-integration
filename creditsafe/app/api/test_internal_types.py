@@ -212,7 +212,7 @@ class TestCompanyReport(unittest.TestCase):
 
     def test_returns_shareholders(self):
         shareholders = self.formatted_report['ownership_structure']['shareholders']
-        self.assertEqual(len(shareholders), 28)
+        self.assertEqual(len(shareholders), 26)
 
         self.assertDictEqual(
             shareholders[1]['shareholdings'][0],
@@ -264,15 +264,6 @@ class TestCompanyReport(unittest.TestCase):
             self.assertEqual(episode_shareholder['shareholdings'][0]['percentage'], 15.99)
             self.assertEqual(episode_shareholder['shareholdings'][1]['share_class'], 'PREFERRED A1')
             self.assertEqual(episode_shareholder['shareholdings'][1]['percentage'], 5.15)
-
-        with self.subTest('returns psc'):
-            donald_psc = next(
-                s for s in shareholders if s['entity_type'] == 'INDIVIDUAL' and
-                s['immediate_data']['personal_details']['name']['family_name'] == 'Gillies' and
-                not s.get('shareholdings')
-            )
-
-            self.assertIsNotNone(donald_psc)
 
 
 class TestDuplicateResolver(unittest.TestCase):
