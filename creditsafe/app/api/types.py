@@ -366,7 +366,10 @@ class PassFortAssociatev41(Model):
             raise AssertionError('attempting to merge different entity types')
 
         self.immediate_data.merge(other.immediate_data)
-        self.relationships.extend(other.relationships)
+        # UI can't display this properly. don;t merge beneficial owner relationships if shareholder ones exist
+        if not(any(r.associated_role == 'SHAREHOLDER' for r in self.relationships) and
+               any(r.associated_role == 'BENEFICIAL_OWNER' for r in other.relationships)):
+            self.relationships.extend(other.relationships)
 
 
 class OfficerRelationship(BaseRelationship):
