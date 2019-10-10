@@ -118,10 +118,33 @@ def company_report(request_data: 'CreditSafeCompanyReportRequest'):
     })
 
 
+# Temporary endpoint to allow us to migrate to the 41 representation
+@app.route('/4.1/company_report', methods=['POST'])
+@validate_model(CreditSafeCompanyReportRequest)
+def company_report_41(request_data: 'CreditSafeCompanyReportRequest'):
+    if request_data.is_demo:
+        demo_handler = DemoHandler()
+        report = demo_handler.get_report(request_data.input_data, new_format=True)
+        return jsonify({
+            'output_data': report,
+            'raw_data': {},
+            'errors': []
+        })
+
+    handler = CreditSafeHandler(request_data.credentials)
+    raw, report = handler.get_report_41(request_data.input_data)
+    return jsonify({
+        'output_data': report,
+        'raw_data': raw,
+        'errors': []
+    })
+
+
 @app.errorhandler(400)
 def api_400(error):
     logging.error(error.description)
     return jsonify(errors=[error.description]), 400
+
 
 @app.errorhandler(CreditSafeAuthenticationError)
 def handle_auth_error(auth_error):
