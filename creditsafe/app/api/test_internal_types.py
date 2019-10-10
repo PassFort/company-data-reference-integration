@@ -340,8 +340,11 @@ class TestDuplicateResolver(unittest.TestCase):
         )
 
         self.assertIsNotNone(donald)
-        self.assertEqual(len(donald['relationships']), 3)
+        # Field from psc
+        self.assertEqual(donald['immediate_data']['personal_details']['nationality'], 'GBR')
+
+        self.assertEqual(len(donald['relationships']), 2)
         r_types = [r['relationship_type'] for r in donald['relationships']]
-        self.assertListEqual(sorted(r_types), ['OFFICER', 'SHAREHOLDER', 'SHAREHOLDER'])
+        self.assertListEqual(sorted(r_types), ['OFFICER', 'SHAREHOLDER'])
         a_types = [r['associated_role'] for r in donald['relationships']]
-        self.assertListEqual(sorted(a_types), ['BENEFICIAL_OWNER', 'DIRECTOR', 'SHAREHOLDER'])
+        self.assertListEqual(sorted(a_types), ['DIRECTOR', 'SHAREHOLDER'])
