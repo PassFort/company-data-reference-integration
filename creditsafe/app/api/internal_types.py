@@ -327,17 +327,20 @@ class PersonOfSignificantControl(Model):
 
     @property
     def country_of_incorporation(self):
-        country_name = self.country_of_registration or self.country
+        for country_name in [self.country_of_registration, self.country]:
+            # Sometimes the country of registration is not searchable
+            if country_name:
+                country = pycountry.countries.get(name=country_name) or pycountry.countries.get(official_name=country_name)
+                if not country:
+                    try:
+                        country_list = pycountry.countries.search_fuzzy(country_name)
+                        if len(country_list) == 1:
+                            country = country_list[0]
+                    except LookupError:
+                        pass
 
-        if country_name:
-            country = pycountry.countries.get(name=country_name) or pycountry.countries.get(official_name=country_name)
-            if not country:
-                country_list = pycountry.countries.search_fuzzy(country_name)
-                if len(country_list) == 1:
-                    country = country_list[0]
-
-            if country:
-                return country.alpha_3
+                if country:
+                    return country.alpha_3
 
         return None
 
