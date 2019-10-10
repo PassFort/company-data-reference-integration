@@ -49,6 +49,29 @@ class TestPSC(unittest.TestCase):
         })
         self.assertEqual(psc.country_of_incorporation, 'USA')
 
+        psc = PersonOfSignificantControl().import_data({
+            "address": {
+                "city": "London",
+                "houseNumber": "83",
+                "postalCode": "SW1H 0HW",
+                "simpleValue": "83, Victoria Street, London, England",
+                "street": "Victoria Street"
+            },
+            "country": "England",
+            "countryOfRegistration": "England & Wales",
+            "governingLaw": "English",
+            "insertDate": "2019-10-09T20:11:13Z",
+            "kind": "corporate-entity-person-with-significant-control",
+            "legalForm": "Limited Company",
+            "name": "Venture Founders Limited",
+            "natureOfControl": "ownership-of-shares-75-to-100-percent,voting-rights-75-to-100-percent",
+            "notifiedOn": "2016-04-06T00:00:00Z",
+            "personType": "Company",
+            "placeRegistered": "Companies House",
+            "registrationNumber": "8636143"
+        })
+        self.assertEqual(psc.country_of_incorporation, 'GBR')
+
 
 class TestCompanyReport(unittest.TestCase):
 
