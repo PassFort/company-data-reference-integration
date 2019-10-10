@@ -24,11 +24,11 @@ class DemoHandler:
 
         return [result]
 
-    def get_report(self, input_data: 'ReportInput'):
+    def get_report(self, input_data: 'ReportInput', new_format=False):
         passfort_report = get_response_from_file('passfort', folder='demo_data/reports')
         report = CreditSafeCompanyReport.from_json(passfort_report['report'])
 
-        formatted_report = report.as_passfort_format()
+        formatted_report = report.as_passfort_format_41() if new_format else report.as_passfort_format()
 
         if input_data.creditsafe_id == 'partial':
             formatted_report['metadata']['number'] = '1111111' # just return a different number

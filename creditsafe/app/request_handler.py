@@ -140,3 +140,23 @@ class CreditSafeHandler:
 
         raw = response.json()
         return raw, CreditSafeCompanyReport.from_json(raw['report']).as_passfort_format(self)
+
+    def get_report_41(self, input_data):
+        # Valid for 1 hour. Multiple valid tokens can exist at the same time.
+        token = self.get_token(self.credentials.username, self.credentials.password)
+        url = f'{self.base_url}/companies/{input_data.creditsafe_id}'
+        if input_data.country_of_incorporation == 'DEU':
+            url = f'{url}?customData=de_reason_code::1'  # 1 is code for Credit Decisioning
+        response = self.session.get(
+            url,
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+        )
+
+        if response.status_code != 200:
+            raise CreditSafeReportError(response)
+
+        raw = response.json()
+        return raw, CreditSafeCompanyReport.from_json(raw['report']).as_passfort_format_41(self)
