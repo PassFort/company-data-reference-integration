@@ -351,4 +351,6 @@ class TestDuplicateResolver(unittest.TestCase):
         self.assertIsNotNone(donald)
         self.assertEqual(len(donald['relationships']), 3)
         r_types = [r['relationship_type'] for r in donald['relationships']]
-        self.assertListEqual(sorted(r_types), ['BENEFICIAL_OWNER', 'OFFICER', 'SHAREHOLDER'])
+        self.assertListEqual(sorted(r_types), ['OFFICER', 'SHAREHOLDER', 'SHAREHOLDER'])
+        a_types = [r['associated_role'] for r in donald['relationships']]
+        self.assertListEqual(sorted(a_types), ['BENEFICIAL_OWNER', 'DIRECTOR', 'SHAREHOLDER'])

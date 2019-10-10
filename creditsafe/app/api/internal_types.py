@@ -393,7 +393,7 @@ class PersonOfSignificantControl(Model):
         })
 
         result.relationships.append(BeneficialOwnerRelationship({
-            'associated_role': 'SHAREHOLDER',
+            'associated_role': 'BENEFICIAL_OWNER',
             'is_active': True,
         }))
 

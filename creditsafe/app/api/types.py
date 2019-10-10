@@ -426,7 +426,7 @@ class BeneficialOwnerRelationship(BaseRelationship):
 
     @serializable
     def relationship_type(self):
-        return 'BENEFICIAL_OWNER'
+        return 'SHAREHOLDER'
 
     class Options:
         serialize_when_none = False
