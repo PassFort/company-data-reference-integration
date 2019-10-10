@@ -2,9 +2,6 @@ import pycountry
 import uuid
 import nameparser
 import concurrent.futures
-from queue import Queue
-import copy
-from requests_threads import AsyncSession
 
 from collections import defaultdict
 from typing import Dict, Optional, Set, List
