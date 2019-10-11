@@ -305,19 +305,6 @@ class EntityData(Model):
         serialize_when_none = False
 
 
-class PassFortAssociate(Model):
-    resolver_id = UUIDType(default=None)
-    entity_type = StringType(required=True)
-    immediate_data = ModelType(EntityData, required=True)
-
-    @serializable
-    def provider_name(self):
-        return 'CreditSafe'
-
-    class Options:
-        serialize_when_none = False
-
-
 class BaseRelationship(Model):
     relationship_type = StringType(required=True, choices=["OFFICER", "SHAREHOLDER"])
     associated_role = StringType(
@@ -334,7 +321,7 @@ class BaseRelationship(Model):
     is_active = BooleanType(required=True)
 
 
-class PassFortAssociatev41(Model):
+class PassFortAssociate(Model):
     associate_id = UUIDType(default=None)
     entity_type = StringType(required=True)
     immediate_data = ModelType(EntityData, required=True)
@@ -347,21 +334,7 @@ class PassFortAssociatev41(Model):
     class Options:
         serialize_when_none = False
 
-    @classmethod
-    def from_shareholder(cls, shareholder: 'PassFortShareholder'):
-        return cls({
-            'associate_id': shareholder.resolver_id,
-            'entity_type': shareholder.entity_type,
-            'immediate_data': shareholder.immediate_data,
-            'relationships': [
-                {
-                    'shareholdings': shareholder.shareholdings,
-                    'associated_role': 'SHAREHOLDER'
-                }
-            ]
-        })
-
-    def merge(self, other: 'PassFortAssociatev41') -> ():
+    def merge(self, other: 'PassFortAssociate') -> ():
         if self.entity_type != other.entity_type:
             raise AssertionError('attempting to merge different entity types')
 
@@ -379,14 +352,6 @@ class OfficerRelationship(BaseRelationship):
     @serializable
     def relationship_type(self):
         return 'OFFICER'
-
-    class Options:
-        serialize_when_none = False
-
-
-class PassFortOfficer(PassFortAssociate):
-    original_role = StringType(default=None, serialize_when_none=False)
-    appointed_on = DateType(default=None, serialize_when_none=False)
 
     class Options:
         serialize_when_none = False
@@ -430,19 +395,6 @@ class BeneficialOwnerRelationship(BaseRelationship):
     @serializable
     def relationship_type(self):
         return 'SHAREHOLDER'
-
-    class Options:
-        serialize_when_none = False
-
-
-class PassFortShareholder(PassFortAssociate):
-    shareholdings = ListType(ModelType(PassFortShareholding), default=None)
-
-    @serializable
-    def total_percentage(self):
-        if self.shareholdings:
-            return float(sum(x.percentage for x in self.shareholdings))
-        return None
 
     class Options:
         serialize_when_none = False
