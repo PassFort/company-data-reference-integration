@@ -1,11 +1,10 @@
 import unittest
-import uuid
 
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
     build_resolver_id, PersonOfSignificantControl
 from .types import SearchInput
-from .internal_types import AssociateIdDeduplicator, process_associate_data
+from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload
 
 
 class TestCompanySearchResponse(unittest.TestCase):
@@ -80,7 +79,8 @@ class TestPSC(unittest.TestCase):
             "notifiedOn": "2018-03-13T00:00:00Z",
             "statement": {
                 "code": "no-individual-or-entity-with-signficant-control",
-                "description": "The company knows or has reasonable cause to believe that there is no registrable person or registrable relevant legal entity in relation to the company"
+                "description": "The company knows or has reasonable cause to believe that there is no "
+                               "registrable person or registrable relevant legal entity in relation to the company"
             }
         })
         psc.validate()
@@ -94,8 +94,15 @@ class TestCompanyReport(unittest.TestCase):
         cls.passfort_report = get_response_from_file('passfort', folder='demo_data/reports')
         cls.report = CreditSafeCompanyReport.from_json(cls.passfort_report['report'])
 
-        cls.formatted_report = cls.report.as_passfort_format()
+        cls.formatted_report = cls.report.as_passfort_format_41()
         cls.maxDiff = None
+
+    def get_associates_by_role(self, role, report=None):
+        formatted_report = report or self.formatted_report
+        return [
+            a for a in formatted_report['associated_entities']
+            if any(r['associated_role'] == role for r in a['relationships'])
+        ]
 
     def test_returns_company_metadata(self):
         self.assertDictEqual(
@@ -163,7 +170,7 @@ class TestCompanyReport(unittest.TestCase):
         })
 
         self.assertDictEqual(
-            report.as_passfort_format()['metadata'],
+            report.as_passfort_format_41()['metadata'],
             {
                 'name': 'PASSFORT LIMITED',
                 'number': '09565115',
@@ -173,34 +180,40 @@ class TestCompanyReport(unittest.TestCase):
         )
 
     def test_returns_officers_that_are_companies(self):
-        company_officer = self.formatted_report['officers']['secretaries'][0]
+        company_officer = self.get_associates_by_role('COMPANY_SECRETARY')[0]
+
         self.assertDictEqual(
             company_officer,
             {
-                'resolver_id': str(build_resolver_id('918883145')),
+                'associate_id': str(build_resolver_id('918883145')),
                 'entity_type': 'COMPANY',
-                'original_role': 'Company Secretary',
-                'appointed_on': '2018-08-07',
                 'provider_name': 'CreditSafe',
                 'immediate_data': {
                     'metadata': {
                         'name': 'CC SECRETARIES LIMITED'
                     },
                     'entity_type': 'COMPANY',
-                }
+                },
+                'relationships': [
+                    {
+                        'appointed_on': '2018-08-07',
+                        'associated_role': 'COMPANY_SECRETARY',
+                        'original_role': 'Company Secretary',
+                        'relationship_type': 'OFFICER',
+                        'is_active': True
+                    }
+                ]
             }
         )
 
     def test_returns_officers_that_are_individuals(self):
-        directors = self.formatted_report['officers']['directors']
+        directors = self.get_associates_by_role('DIRECTOR')
         self.assertEqual(len(directors), 4)
         self.assertDictEqual(
             directors[0],
             {
-                'resolver_id': str(build_resolver_id('925098862')),
+                'associate_id': str(build_resolver_id('925098862')),
                 'entity_type': 'INDIVIDUAL',
-                'original_role': 'Director',
-                'appointed_on': '2018-08-31',
                 'provider_name': 'CreditSafe',
                 'immediate_data': {
                     'personal_details': {
@@ -211,7 +224,16 @@ class TestCompanyReport(unittest.TestCase):
                         'dob': '1968-05'
                     },
                     'entity_type': 'INDIVIDUAL',
-                }
+                },
+                'relationships': [
+                    {
+                        'appointed_on': '2018-08-31',
+                        'associated_role': 'DIRECTOR',
+                        'original_role': 'Director',
+                        'relationship_type': 'OFFICER',
+                        'is_active' : True
+                    }
+                ]
             }
         )
 
@@ -240,19 +262,20 @@ class TestCompanyReport(unittest.TestCase):
             ]
         }, apply_defaults=True)
 
-        formatted_report = report.to_serialized_passfort_format(None, 'GBR')
-        self.assertEqual(len(formatted_report['directors']), 1)
-        self.assertEqual(len(formatted_report['secretaries']), 1)
-
-        self.assertEqual(formatted_report['directors'][0]['resolver_id'], str(build_resolver_id('test')))
-        self.assertEqual(formatted_report['secretaries'][0]['resolver_id'], str(build_resolver_id('test')))
+        # use to_associate()
+        associate = report.current_directors[0].to_associate('INDIVIDUAL', None)
+        self.assertEqual(len(associate['relationships']), 2)
+        self.assertEqual(associate['relationships'][0]['associated_role'], 'DIRECTOR')
+        self.assertEqual(associate['relationships'][1]['associated_role'], 'COMPANY_SECRETARY')
+        self.assertEqual(associate['relationships'][0]['relationship_type'], 'OFFICER')
+        self.assertEqual(associate['relationships'][1]['relationship_type'], 'OFFICER')
 
     def test_returns_shareholders(self):
-        shareholders = self.formatted_report['ownership_structure']['shareholders']
+        shareholders = self.get_associates_by_role('SHAREHOLDER')
         self.assertEqual(len(shareholders), 26)
 
         self.assertDictEqual(
-            shareholders[1]['shareholdings'][0],
+            shareholders[1]['relationships'][0]['shareholdings'][0],
             {
                 'share_class': 'ORDINARY',
                 'currency': 'GBP',
@@ -261,46 +284,72 @@ class TestCompanyReport(unittest.TestCase):
                 'provider_name': 'CreditSafe'
             }
         )
+        # test against donald
+        donald = next(
+            d for d in shareholders
+            if d['entity_type'] == 'INDIVIDUAL' and
+            d['immediate_data']['personal_details']['name']['family_name'] == 'GILLIES'
+        )
 
         with self.subTest('should resolve ids against directors'):
-            # test against donald
-            donald_director = next(
-                d for d in self.formatted_report['officers']['directors']
-                if d['entity_type'] == 'INDIVIDUAL' and
-                d['immediate_data']['personal_details']['name']['family_name'] == 'Gillies'
-            )
-            donald_shareholder = next(
-                s for s in shareholders if s['entity_type'] == 'INDIVIDUAL' and
-                s['immediate_data']['personal_details']['name']['family_name'] == 'GILLIES' and
-                s.get('shareholdings')
-            )
 
-            self.assertEqual(
-                donald_director['immediate_data']['personal_details']['name']['given_names'],
-                ['Donald', 'Andrew']
-            )
+            self.assertEqual(donald['entity_type'], 'INDIVIDUAL')
+            self.assertEqual(len(donald['relationships']), 2)
+            r_types = [r['relationship_type'] for r in donald['relationships']]
+            self.assertListEqual(sorted(r_types), ['OFFICER', 'SHAREHOLDER'])
 
-            self.assertEqual(
-                donald_shareholder['immediate_data']['personal_details']['name']['given_names'],
-                ['DONALD', 'ANDREW']
+        with self.subTest('should merge data from all sources'):
+            self.assertDictEqual(
+                donald['immediate_data'],
+                {
+                    'entity_type': 'INDIVIDUAL',
+                    'personal_details': {
+                        'name': {
+                            'given_names': ['DONALD', 'ANDREW'], # merge with shareholders
+                            'family_name': 'GILLIES',
+                            'title': 'Mr'
+                        },
+                        'nationality': 'GBR',  # merge with psc
+                        'dob': '1992-05-30'  # merge with directors or psc
+                    }
+                }
             )
-
-            self.assertEqual(donald_shareholder['entity_type'], 'INDIVIDUAL')
-            self.assertEqual(donald_director['entity_type'], 'INDIVIDUAL')
-            self.assertEqual(donald_director['resolver_id'], donald_shareholder['resolver_id'])
 
         with self.subTest('should merge shareholders with multiple classes'):
             episode_shareholder = next(
                 s for s in shareholders if s['entity_type'] == 'COMPANY' and
                 s['immediate_data']['metadata']['name'] == 'EPISODE (GP) LTD')
 
-            self.assertEqual(len(episode_shareholder['shareholdings']), 2)
+            shareholder_relationship = episode_shareholder['relationships'][0]
+            self.assertEqual(len(shareholder_relationship['shareholdings']), 2)
 
-            self.assertEqual(episode_shareholder['total_percentage'], 21.14)
-            self.assertEqual(episode_shareholder['shareholdings'][0]['share_class'], 'SEED')
-            self.assertEqual(episode_shareholder['shareholdings'][0]['percentage'], 15.99)
-            self.assertEqual(episode_shareholder['shareholdings'][1]['share_class'], 'PREFERRED A1')
-            self.assertEqual(episode_shareholder['shareholdings'][1]['percentage'], 5.15)
+            self.assertEqual(shareholder_relationship['total_percentage'], 21.14)
+            self.assertEqual(shareholder_relationship['shareholdings'][0]['share_class'], 'SEED')
+            self.assertEqual(shareholder_relationship['shareholdings'][0]['percentage'], 15.99)
+            self.assertEqual(shareholder_relationship['shareholdings'][1]['share_class'], 'PREFERRED A1')
+            self.assertEqual(shareholder_relationship['shareholdings'][1]['percentage'], 5.15)
+
+    def test_returns_company_psc(self):
+        duedil_report = get_response_from_file('duedil', folder='demo_data/reports')
+        report = CreditSafeCompanyReport.from_json(duedil_report['report'])
+
+        formatted_report = report.as_passfort_format_41()
+        shareholders = self.get_associates_by_role('SHAREHOLDER', formatted_report)
+        oak_shareholder = next(
+            s for s in shareholders if s['entity_type'] == 'COMPANY' and
+            'OAK' in s['immediate_data']['metadata']['name']
+        )
+        self.assertEqual(
+            oak_shareholder['immediate_data'],
+            {
+                'entity_type': 'COMPANY',
+                'metadata': {
+                    'name': 'OAK INVESTMENT PARTNERS XIII L.P.',
+                    'country_of_incorporation': 'USA',  # data from PSC report
+                    'number': '4704792'  # data from PSC report
+                }
+            }
+        )
 
 
 class TestDuplicateResolver(unittest.TestCase):
@@ -385,3 +434,43 @@ class TestDuplicateResolver(unittest.TestCase):
         self.assertListEqual(sorted(r_types), ['OFFICER', 'SHAREHOLDER'])
         a_types = [r['associated_role'] for r in donald['relationships']]
         self.assertListEqual(sorted(a_types), ['DIRECTOR', 'SHAREHOLDER'])
+
+    def test_default_entities(self):
+        with self.subTest('default for officer is individual'):
+            result = process_associate_data(ProcessQueuePayload({
+                'officer': {
+                    'name': 'John',
+                    'positions': [
+                        {
+                            'position_name': 'Director'
+                        }
+                    ]
+                }
+            }), 'GBR')
+            self.assertEqual(result.entity_type, 'INDIVIDUAL')
+        with self.subTest('default for secretary is company'):
+            result = process_associate_data(ProcessQueuePayload({
+                'officer': {
+                    'name': 'John',
+                    'positions': [
+                        {
+                            'position_name': 'Company Secretary'
+                        }
+                    ]
+                }
+            }), 'GBR')
+            self.assertEqual(result.entity_type, 'COMPANY')
+
+        with self.subTest('default for director and secretary is individual'):
+            result = process_associate_data(ProcessQueuePayload({
+                'officer': {
+                    'name': 'John',
+                    'positions': [
+                        {
+                            'position_name': 'Director & Company Secretary'
+                        }
+                    ]
+                }
+            }), 'GBR')
+            self.assertEqual(result.entity_type, 'INDIVIDUAL')
+

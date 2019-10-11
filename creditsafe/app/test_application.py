@@ -281,6 +281,9 @@ class TestDemoData(unittest.TestCase):
         with self.subTest('returns demo company report, with pass id'):
             self.assertEqual(report_response['output_data']['metadata']['number'], '09565115')
 
+        with self.subTest('returns associates'):
+            self.assertEqual(len(report_response['output_data']['associated_entities']), 29)
+
     def test_partial(self):
         search_response = self.app.post(
             '/search',
