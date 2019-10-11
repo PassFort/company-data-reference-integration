@@ -1,4 +1,5 @@
 import unittest
+import uuid
 
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
@@ -71,6 +72,19 @@ class TestPSC(unittest.TestCase):
             "registrationNumber": "8636143"
         })
         self.assertEqual(psc.country_of_incorporation, 'GBR')
+
+    def test_handles_statement_returned_instead_of_psc(self):
+        psc = PersonOfSignificantControl().import_data({
+            "insertDate": "2019-10-10T20:23:57Z",
+            "kind": "persons-with-significant-control-statement",
+            "notifiedOn": "2018-03-13T00:00:00Z",
+            "statement": {
+                "code": "no-individual-or-entity-with-signficant-control",
+                "description": "The company knows or has reasonable cause to believe that there is no registrable person or registrable relevant legal entity in relation to the company"
+            }
+        })
+        psc.validate()
+        self.assertIsNone(psc.name)
 
 
 class TestCompanyReport(unittest.TestCase):

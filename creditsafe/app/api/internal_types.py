@@ -294,7 +294,7 @@ class CurrentOfficer(Model):
 
 class PersonOfSignificantControl(Model):
     title = StringType(default=None)
-    name = StringType(required=True)
+    name = StringType(default=None)
     nationality = StringType(default=None)
     country = StringType(default=None)
     country_of_registration = StringType(default=None, serialized_name="countryOfRegistration")
@@ -345,7 +345,7 @@ class PersonOfSignificantControl(Model):
         return None
 
     def to_passfort_shareholder(self):
-        if self.entity_type:
+        if self.name and self.entity_type:
             if self.entity_type == INDIVIDUAL_ENTITY:
                 first_names, last_name = split_name(self.name, expect_title=True)
                 immediate_data = EntityData.as_individual(
@@ -933,7 +933,7 @@ class CreditSafeCompanyReport(Model):
             pscs = [
                 psc
                 for psc in self.additional_information.psc_report.active_psc
-                if psc.entity_type
+                if psc.entity_type and psc.name
             ]
 
         associates = merge_associates(
