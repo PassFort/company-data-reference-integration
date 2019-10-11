@@ -10,8 +10,8 @@ from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
     UUIDType, DateType
 
-from .types import PassFortOfficer, PassFortShareholder, PassFortShareholding, PassFortMetadata, EntityData, \
-    SearchInput, PassFortAssociatev41, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship
+from .types import PassFortShareholding, PassFortMetadata, EntityData, \
+    SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship
 
 from .fuzzy import CompanyNameMatcher
 
@@ -169,7 +169,7 @@ class CreditsafeSingleShareholder(Model):
         else:
             immediate_data = EntityData.as_company(self.name, search_data)
 
-        result = PassFortAssociatev41({
+        result = PassFortAssociate({
             'associate_id': associate_id,
             'entity_type': entity_type,
             'immediate_data': immediate_data,
@@ -214,8 +214,14 @@ class CurrentOfficer(Model):
         return None
 
     @property
-    def original_role(self):
-        return self.positions.position_name
+    def default_entity_type(self):
+        if self.entity_type:
+            return self.entity_type
+        if any(position.position_name in DIRECTOR_POSITIONS for position in self.positions):
+            return INDIVIDUAL_ENTITY
+        if any(position.position_name in SECRETARY_POSITIONS for position in self.positions):
+            return COMPANY_ENTITY
+        return INDIVIDUAL_ENTITY
 
     def format_name(self, entity_type):
         if entity_type == INDIVIDUAL_ENTITY:
@@ -236,7 +242,7 @@ class CurrentOfficer(Model):
             return EntityData.as_company(last_name, search_data)
 
     def to_associate(self, entity_type, search_data):
-        result = PassFortAssociatev41({
+        result = PassFortAssociate({
             'associate_id': build_resolver_id(self.id),
             'entity_type': entity_type,
             'immediate_data': self.to_immediate_data(entity_type, search_data),
@@ -262,34 +268,6 @@ class CurrentOfficer(Model):
                     'is_active': True
                 }))
         return result
-
-    def to_passfort_officer_roles(self, request_handler, country_of_incorporation):
-        search_data = None
-
-        entity_type = self.entity_type
-        if entity_type != INDIVIDUAL_ENTITY and request_handler:
-            search_data = request_handler.exact_search(self.name, country_of_incorporation)
-
-            if search_data:
-                entity_type = COMPANY_ENTITY
-            else:
-                entity_type = INDIVIDUAL_ENTITY
-
-        expanded_result = []
-        if not entity_type and any(position.position_name in SECRETARY_POSITIONS for position in self.positions):
-            entity_type = COMPANY_ENTITY
-        else:
-            entity_type = INDIVIDUAL_ENTITY
-
-        for position in self.positions:
-            expanded_result.append(PassFortOfficer({
-                'resolver_id': build_resolver_id(self.id),
-                'entity_type': entity_type,
-                'immediate_data': self.to_immediate_data(entity_type, search_data),
-                'original_role': position.position_name,
-                'appointed_on': position.date_appointed
-            }))
-        return expanded_result
 
 
 class PersonOfSignificantControl(Model):
@@ -344,30 +322,6 @@ class PersonOfSignificantControl(Model):
 
         return None
 
-    def to_passfort_shareholder(self):
-        if self.name and self.entity_type:
-            if self.entity_type == INDIVIDUAL_ENTITY:
-                first_names, last_name = split_name(self.name, expect_title=True)
-                immediate_data = EntityData.as_individual(
-                    first_names,
-                    last_name,
-                    self.dob,
-                    self.country_of_nationality,
-                    self.title
-                )
-            else:
-                immediate_data = EntityData.as_company(self.name, search_data={
-                    'name': self.name,
-                    'number': self.registration_number,
-                    'country_of_incorporation': self.country_of_incorporation,
-                })
-            return PassFortShareholder({
-                'resolver_id': uuid.uuid4(),
-                'immediate_data': immediate_data,
-                'entity_type': self.entity_type,
-            })
-        return None
-
     def to_associate(self, associate_id):
         if self.entity_type == INDIVIDUAL_ENTITY:
             first_names, last_name = split_name(self.name)
@@ -385,7 +339,7 @@ class PersonOfSignificantControl(Model):
                 'country_of_incorporation': self.country_of_incorporation,
             })
 
-        result = PassFortAssociatev41({
+        result = PassFortAssociate({
             'associate_id': associate_id,
             'entity_type': self.entity_type,
             'immediate_data': immediate_data,
@@ -406,7 +360,7 @@ class ProcessQueuePayload(Model):
     psc = ModelType(PersonOfSignificantControl, default=None)
     entity_type = StringType(default=None)
     associate_id = UUIDType(required=True)
-    result = ModelType(PassFortAssociatev41, default=None)
+    result = ModelType(PassFortAssociate, default=None)
 
 
 class ResolverIdMatcher:
@@ -683,42 +637,6 @@ class CompanyStatus(Model):
 class CompanyDirectorsReport(Model):
     current_directors = ListType(ModelType(CurrentOfficer), default=[], serialized_name="currentDirectors")
 
-    def officers(self):
-        return [d.officer_base_data() for d in self.current_directors]
-
-    def to_serialized_passfort_format(self, request_handler, country_of_incorporation):
-        directors = []
-        secretaries = []
-        partners = []
-        other = []
-        for officer in self.current_directors:
-            formatted_officer_by_role = officer.to_passfort_officer_roles(
-                request_handler,
-                country_of_incorporation
-            )
-
-            for officer_by_role in formatted_officer_by_role:
-                is_other = True
-
-                if officer_by_role['original_role'] in DIRECTOR_POSITIONS:
-                    directors.append(officer_by_role)
-                    is_other = False
-                if officer_by_role['original_role'] in SECRETARY_POSITIONS:
-                    secretaries.append(officer_by_role)
-                    is_other = False
-                if officer_by_role['original_role'] in PARTNER_POSITIONS:
-                    partners.append(officer_by_role)
-                    is_other = False
-                if is_other:
-                    other.append(officer_by_role)
-
-        return {
-            'directors': [d.serialize() for d in directors],
-            'secretaries': [s.serialize() for s in secretaries],
-            'partners': [p.serialize() for p in partners],
-            'other': [o.serialize() for o in other]
-        }
-
 
 class Shareholder(Model):
     name = StringType(required=True)
@@ -754,34 +672,6 @@ class Shareholder(Model):
 class ShareholdersReport(Model):
     shareholders = ListType(ModelType(Shareholder), default=[], serialized_name="shareHolders")
 
-    def merge_shareholdings(self, request_handler, country_of_incorporation) -> Dict[str, 'PassFortShareholder']:
-        # Merge shareholdings for shareholders with the same name
-        unique_shareholders = {}
-        for s in self.shareholders:
-            if s.name not in unique_shareholders:
-                search_data = None
-                entity_type = s.entity_type
-                if entity_type != 'INDIVIDUAL' and request_handler:
-                    search_data = request_handler.exact_search(s.name, country_of_incorporation)
-                    if search_data:
-                        entity_type = 'COMPANY'
-
-                first_names, last_name = s.format_name(entity_type)
-                unique_shareholders[s.name] = PassFortShareholder({
-                    'entity_type': entity_type,
-                    'immediate_data':
-                        EntityData.as_company(
-                            last_name, search_data
-                        ) if entity_type == 'COMPANY' else EntityData.as_individual(
-                            first_names, last_name, search_data),
-                    'shareholdings': []
-                })
-
-            unique_shareholders[s.name].shareholdings.append(
-                PassFortShareholding(s.shareholding)
-            )
-        return unique_shareholders
-
     def unique_shareholders(self):
         # Merge shareholdings for shareholders with the same name
         unique_shareholders = {}
@@ -798,25 +688,6 @@ class ShareholdersReport(Model):
                 PassFortShareholding(s.shareholding)
             )
         return unique_shareholders.values()
-
-    def as_passfort_format(self, resolver_id_matcher, request_handler, country_of_incorporation):
-        unique_shareholders = self.merge_shareholdings(request_handler, country_of_incorporation)
-        for name, passfort_shareholder in unique_shareholders.items():
-            passfort_shareholder.resolver_id = resolver_id_matcher.find_or_create_resolver_id(
-                name, passfort_shareholder.entity_type)
-
-            director_data: 'CurrentOfficer' = resolver_id_matcher.get_director_by_resolver_id(
-                passfort_shareholder.resolver_id
-            )
-            if director_data:
-                if passfort_shareholder.entity_type == INDIVIDUAL_ENTITY:
-                    dst_data = passfort_shareholder.immediate_data
-                    src_data = director_data.to_immediate_data(INDIVIDUAL_ENTITY)
-                    # Dob is the only field that needs merging for now (we match on name and search the other fields)
-                    if src_data.personal_details.dob and not dst_data.personal_details.dob:
-                        dst_data.personal_details.dob = src_data.personal_details.dob
-
-        return [ds.serialize() for ds in unique_shareholders.values()]
 
 
 class CompanySummary(Model):
@@ -861,50 +732,7 @@ class CreditSafeCompanyReport(Model):
         model.validate()
         return model
 
-    def as_passfort_format(self, request_handler = None):
-        addresses = [
-            self.contact_information.main_address.as_passfort_address()
-        ]
-        addresses.extend([
-            address.as_passfort_address()
-            for address in self.contact_information.other_addresses
-        ])
-
-        metadata = PassFortMetadata({
-            'name': self.identification.basic_info.name,
-            'number': self.summary.number,
-            'addresses': addresses,
-            'country_of_incorporation': self.summary.country_code,
-            'is_active': self.summary.is_active,
-            'incorporation_date': self.identification.incorporation_date,
-            'company_type': self.identification.raw_company_type,
-            'structured_company_type': self.identification.structured_company_type
-        })
-
-        officers = self.directors.to_serialized_passfort_format(
-            request_handler,
-            self.summary.country_code
-        ) if self.directors else []
-
-        shareholders = self.share_capital_structure.as_passfort_format(
-            ResolverIdMatcher(self.directors),
-            request_handler,
-            self.summary.country_code
-        ) if self.share_capital_structure else []
-
-        pscs = []
-
-        if self.additional_information and self.additional_information.psc_report:
-            pscs = [psc.to_passfort_shareholder() for psc in self.additional_information.psc_report.active_psc]
-        return {
-            'metadata': metadata.serialize(),
-            'officers': officers,
-            'ownership_structure': {
-                'shareholders': shareholders
-            }
-        }
-
-    def as_passfort_format_41(self, request_handler = None):
+    def as_passfort_format_41(self, request_handler=None):
         addresses = [
             self.contact_information.main_address.as_passfort_address()
         ]
@@ -954,7 +782,7 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
     if associate_data.entity_type != INDIVIDUAL_ENTITY:
         default_entity = COMPANY_ENTITY
         if associate_data.officer:
-            default_entity = INDIVIDUAL_ENTITY
+            default_entity = associate_data.officer.default_entity_type
             name = associate_data.officer.name
         elif associate_data.shareholder:
             name = associate_data.shareholder.name

@@ -110,7 +110,7 @@ def company_report(request_data: 'CreditSafeCompanyReportRequest'):
         })
 
     handler = CreditSafeHandler(request_data.credentials)
-    raw, report = handler.get_report(request_data.input_data)
+    raw, report = handler.get_report_41(request_data.input_data)
     return jsonify({
         'output_data': report,
         'raw_data': raw,
@@ -124,7 +124,7 @@ def company_report(request_data: 'CreditSafeCompanyReportRequest'):
 def company_report_41(request_data: 'CreditSafeCompanyReportRequest'):
     if request_data.is_demo:
         demo_handler = DemoHandler()
-        report = demo_handler.get_report(request_data.input_data, new_format=True)
+        report = demo_handler.get_report(request_data.input_data)
         return jsonify({
             'output_data': report,
             'raw_data': {},
@@ -210,7 +210,8 @@ def handle_report_error(report_error):
         return jsonify(
             raw=response_content,
             errors=[
-                Error.provider_misconfiguration_error(f"The request could not be authorised: {response_content.get('details')}")
+                Error.provider_misconfiguration_error(
+                    f"The request could not be authorised: {response_content.get('details')}")
             ]
         ), 200
     else:
