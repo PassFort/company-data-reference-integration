@@ -2,7 +2,7 @@ import unittest
 
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
-    build_resolver_id, PersonOfSignificantControl
+    build_resolver_id, PersonOfSignificantControl, CreditsafeSingleShareholder
 from .types import SearchInput
 from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload
 
@@ -187,7 +187,7 @@ class TestCompanyReport(unittest.TestCase):
             {
                 'associate_id': str(build_resolver_id('918883145')),
                 'entity_type': 'COMPANY',
-                'provider_name': 'CreditSafe',
+                'provider_name': 'Creditsafe',
                 'immediate_data': {
                     'metadata': {
                         'name': 'CC SECRETARIES LIMITED'
@@ -214,7 +214,7 @@ class TestCompanyReport(unittest.TestCase):
             {
                 'associate_id': str(build_resolver_id('925098862')),
                 'entity_type': 'INDIVIDUAL',
-                'provider_name': 'CreditSafe',
+                'provider_name': 'Creditsafe',
                 'immediate_data': {
                     'personal_details': {
                         'name': {
@@ -281,7 +281,7 @@ class TestCompanyReport(unittest.TestCase):
                 'currency': 'GBP',
                 'amount': 4100000,
                 'percentage': 20.69,
-                'provider_name': 'CreditSafe'
+                'provider_name': 'Creditsafe'
             }
         )
         # test against donald
@@ -374,7 +374,7 @@ class TestDuplicateResolver(unittest.TestCase):
                 'currency': 'GBP',
                 'amount': 4100000,
                 'percentage': 20.69,
-                'provider_name': 'CreditSafe'
+                'provider_name': 'Creditsafe'
             }
         )
 
@@ -474,3 +474,394 @@ class TestDuplicateResolver(unittest.TestCase):
             }), 'GBR')
             self.assertEqual(result.entity_type, 'INDIVIDUAL')
 
+
+class TestMergingEntities(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.maxDiff = None
+
+    def setUp(self):
+        self.individual_officer_deduplicator = AssociateIdDeduplicator(CompanyDirectorsReport({
+            'currentDirectors': [
+                {
+                    'name': 'Named Star',
+                    'dob': '1990-01-01T00:00:00Z'
+                }
+            ]
+        }))
+
+        self.unknown_officer_deduplicator = AssociateIdDeduplicator(CompanyDirectorsReport({
+            'currentDirectors': [
+                {
+                    'name': 'Some Star'
+                }
+            ]
+        }))
+
+        self.no_officer_deduplicator = AssociateIdDeduplicator(CompanyDirectorsReport({
+            'currentDirectors': []
+        }))
+
+    def test_merges_individual_director_with_individual_shareholder(self):
+        self.individual_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'named star',
+                    'entity_type': 'INDIVIDUAL'
+                })
+            ]
+        )
+        associates = self.individual_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+
+    def test_merges_individual_director_with_unknown_shareholder(self):
+        self.individual_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'named star'
+                })
+            ]
+        )
+        associates = self.individual_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+
+    def test_does_not_merge_individual_director_with_company_shareholder(self):
+        self.individual_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'named star',
+                    'entity_type': 'COMPANY'
+                })
+            ]
+        )
+        associates = self.individual_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 2)
+
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+        self.assertEqual(associates[1].entity_type, 'COMPANY')
+        self.assertTrue(associates[0].associate_id != associates[1].associate_id)
+
+    def test_merges_unknown_director_with_individual_shareholder(self):
+        self.unknown_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'some star',
+                    'entity_type': 'INDIVIDUAL'
+                })
+            ]
+        )
+        associates = self.unknown_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+
+    def test_merges_unknown_director_with_unknown_shareholder(self):
+        self.unknown_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'some star',
+                })
+            ]
+        )
+        associates = self.unknown_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertEqual(associates[0].entity_type, None)
+
+        self.assertDictEqual(
+            process_associate_data(associates[0], 'GBR').serialize(),
+            {
+                'entity_type': 'INDIVIDUAL',
+                'associate_id': str(associates[0].associate_id),
+                'provider_name': 'Creditsafe',
+                'immediate_data': {
+                    'entity_type': 'INDIVIDUAL',
+                    'personal_details': {
+                        'name': {
+                            'family_name': 'star',
+                            'given_names': ['some']
+                        }
+                    }
+                },
+                'relationships': [
+                    {
+                        'associated_role': 'SHAREHOLDER',
+                        'is_active': True,
+                        'relationship_type': 'SHAREHOLDER',
+                        'total_percentage': 0.0
+                    },
+                    {
+                        'associated_role': 'OTHER',
+                        'is_active': True,
+                        'original_role': 'Unknown',
+                        'relationship_type': 'OFFICER'
+                    }
+                ]
+            }
+        )
+
+    def test_merges_unknown_director_with_company_shareholder(self):
+        self.unknown_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'some star',
+                    'entity_type': 'COMPANY'
+                })
+            ]
+        )
+        associates = self.unknown_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertEqual(associates[0].entity_type, 'COMPANY')
+
+    def test_merges_individual_director_with_individual_psc(self):
+        self.individual_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'named star',
+                    'nationality': 'British',
+                    'personType': 'Person'
+                })
+            ]
+        )
+        associates = self.individual_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].psc)
+
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+        self.assertDictEqual(
+            process_associate_data(associates[0], 'GBR').serialize(),
+            {
+                'entity_type': 'INDIVIDUAL',
+                'associate_id': str(associates[0].associate_id),
+                'provider_name': 'Creditsafe',
+                'immediate_data': {
+                    'entity_type': 'INDIVIDUAL',
+                    'personal_details': {
+                        'name': {
+                            'family_name': 'Star',
+                            'given_names': ['Named']
+                        },
+                        'dob': '1990-01',
+                        'nationality': 'GBR'
+                    }
+                },
+                'relationships': [
+                    {
+                        'associated_role': 'OTHER',
+                        'is_active': True,
+                        'original_role': 'Unknown',
+                        'relationship_type': 'OFFICER'
+                    },
+                    {
+                        'associated_role': 'BENEFICIAL_OWNER',
+                        'is_active': True,
+                        'relationship_type': 'SHAREHOLDER'
+                    }
+                ]
+            }
+        )
+
+    def test_merges_unknown_director_with_individual_psc(self):
+        self.unknown_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'some star',
+                    'nationality': 'British',
+                    'personType': 'Person'
+                })
+            ]
+        )
+        associates = self.unknown_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+
+    def test_merges_unknown_director_with_company_psc(self):
+        self.unknown_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'some star',
+                    'personType': 'Company'
+                })
+            ]
+        )
+        associates = self.unknown_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'COMPANY')
+
+    def test_does_not_merge_individual_director_with_company_psc(self):
+        self.individual_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'named star',
+                    'personType': 'Company'
+                })
+            ]
+        )
+        associates = self.individual_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 2)
+
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[1].psc)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+        self.assertEqual(associates[1].entity_type, 'COMPANY')
+
+    def test_merges_individual_shareholder_with_individual_psc(self):
+        self.no_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'galaxy bar',
+                    'entity_type': 'INDIVIDUAL'
+                })
+            ]
+        )
+        self.no_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'galaxy bar',
+                    'personType': 'Person'
+                })
+            ]
+        )
+        associates = self.no_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+
+    def test_merges_company_shareholder_with_company_psc(self):
+        self.no_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'galaxy bar',
+                    'entity_type': 'COMPANY'
+                })
+            ]
+        )
+        self.no_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'galaxy bar',
+                    'personType': 'Company'
+                })
+            ]
+        )
+        associates = self.no_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'COMPANY')
+
+    def test_merges_unknown_shareholder_with_individual_psc(self):
+        self.no_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'galaxy bar'
+                })
+            ]
+        )
+        self.no_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'galaxy bar',
+                    'personType': 'Person'
+                })
+            ]
+        )
+        associates = self.no_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+
+    def test_merges_unknown_shareholder_with_company_psc(self):
+        self.no_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'galaxy bar'
+                })
+            ]
+        )
+        self.no_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'galaxy bar',
+                    'personType': 'Company'
+                })
+            ]
+        )
+        associates = self.no_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'COMPANY')
+
+    def test_does_not_merge_individual_shareholder_with_company_psc(self):
+        self.no_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'galaxy bar',
+                    'entity_type': 'INDIVIDUAL'
+                })
+            ]
+        )
+        self.no_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'galaxy bar',
+                    'personType': 'Company'
+                })
+            ]
+        )
+        associates = self.no_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 2)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[1].psc)
+        self.assertEqual(associates[0].entity_type, 'INDIVIDUAL')
+        self.assertEqual(associates[1].entity_type, 'COMPANY')
+
+    def test_does_not_merge_company_shareholder_with_individual_psc(self):
+        self.no_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'galaxy bar',
+                    'entity_type': 'COMPANY'
+                })
+            ]
+        )
+        self.no_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'galaxy bar',
+                    'personType': 'Person'
+                })
+            ]
+        )
+        associates = self.no_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 2)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[1].psc)
+        self.assertEqual(associates[0].entity_type, 'COMPANY')
+        self.assertEqual(associates[1].entity_type, 'INDIVIDUAL')
