@@ -224,7 +224,7 @@ class PersonalDetails(Model):
     nationality = StringType(default=None)
 
     def merge(self, other: 'PersonalDetails'):
-        if self.dob is None or len(self.dob) < len(other.dob):
+        if self.dob is None or (other.dob and (len(self.dob) < len(other.dob))):
             self.dob = other.dob
         if self.nationality is None:
             self.nationality = other.nationality
@@ -329,7 +329,7 @@ class PassFortAssociate(Model):
 
     @serializable
     def provider_name(self):
-        return 'CreditSafe'
+        return 'Creditsafe'
 
     class Options:
         serialize_when_none = False
@@ -369,7 +369,7 @@ class PassFortShareholding(Model):
 
     @serializable
     def provider_name(self):
-        return 'CreditSafe'
+        return 'Creditsafe'
 
     class Options:
         serialize_when_none = False

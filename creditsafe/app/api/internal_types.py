@@ -145,7 +145,7 @@ def resolver_key(name, entity_type=INDIVIDUAL_ENTITY):
     lower_name = name.lower()
     if entity_type == INDIVIDUAL_ENTITY:
         given_names, family_name = split_name(lower_name)
-        return ' '.join(given_names + [family_name])
+        return ' '.join(given_names + [family_name]).strip()
     return lower_name.replace(',', '')
 
 
@@ -156,7 +156,7 @@ def build_resolver_id(original_id):
 class CreditsafeSingleShareholder(Model):
     entity_type = StringType(choices=[INDIVIDUAL_ENTITY, COMPANY_ENTITY], default=None)
     name = StringType(required=True)
-    shareholdings = ListType(ModelType(PassFortShareholding), required=True)
+    shareholdings = ListType(ModelType(PassFortShareholding), default=[], required=True)
 
     @property
     def total_percentage(self):
@@ -267,6 +267,12 @@ class CurrentOfficer(Model):
                     'associated_role': role,
                     'is_active': True
                 }))
+        if len(self.positions) == 0:
+            result.relationships.append(OfficerRelationship({
+                'original_role': 'Unknown',
+                'associated_role': 'OTHER',
+                'is_active': True
+            }))
         return result
 
 
@@ -363,35 +369,6 @@ class ProcessQueuePayload(Model):
     result = ModelType(PassFortAssociate, default=None)
 
 
-class ResolverIdMatcher:
-    resolver_ids: Dict[str, uuid.UUID] = ...
-    resolver_ids_to_officers: Dict[uuid.UUID, 'CurrentOfficer'] = ...
-
-    def __init__(self, directors_report: 'CompanyDirectorsReport'):
-        # Converts to passfort format and in order to the shareholder names against the directors
-        resolver_ids = {}
-        resolver_ids_to_officers = {}
-        if directors_report is not None:
-            for d in directors_report.current_directors:
-                key = resolver_key(d.name, d.entity_type or INDIVIDUAL_ENTITY)
-                resolver_ids[key] = build_resolver_id(d.id)
-                resolver_ids_to_officers[resolver_ids[key]] = d
-        self.resolver_ids = resolver_ids
-        self.resolver_ids_to_officers = resolver_ids_to_officers
-
-    def find_or_create_resolver_id(self, shareholder_name, entity_type) -> uuid.UUID:
-        name_key = resolver_key(shareholder_name, entity_type)
-        potential_resolver_id = self.resolver_ids.get(name_key)
-
-        if potential_resolver_id:
-            return potential_resolver_id
-
-        return build_resolver_id(name_key)
-
-    def get_director_by_resolver_id(self, resolver_id: uuid.UUID) -> Optional['CurrentOfficer']:
-        return self.resolver_ids_to_officers.get(resolver_id)
-
-
 class AssociateIdDeduplicator:
     associate_ids: Dict[str, uuid.UUID] = ...
     associate_ids_to_payload: Dict[uuid.UUID, 'ProcessQueuePayload'] = ...
@@ -422,11 +399,10 @@ class AssociateIdDeduplicator:
         return build_resolver_id(name_key)
 
     def add_shareholders(self, shareholders: List['CreditsafeSingleShareholder']):
-        non_matched = []
         for unique_shareholder in shareholders:
-            name_key = resolver_key(unique_shareholder.name, unique_shareholder.entity_type)
+            name_key = resolver_key(unique_shareholder.name, unique_shareholder.entity_type or 'COMPANY')
             associate_id = self.find_or_create_associate_id(
-                unique_shareholder.name, unique_shareholder.entity_type)
+                unique_shareholder.name, unique_shareholder.entity_type or 'COMPANY')
             associate_payload = self.get_associate_payload_by_id(associate_id)
 
             if associate_payload:
@@ -447,7 +423,6 @@ class AssociateIdDeduplicator:
                 else:
                     associate_payload.shareholder = unique_shareholder
                     associate_payload.entity_type = shareholder_type
-
             else:
                 # No officer found to merge with
                 self.associate_ids[name_key] = associate_id
@@ -489,7 +464,7 @@ class AssociateIdDeduplicator:
         ]
 
     def associates(self):
-        return self.associate_ids_to_payload.values()
+        return list(self.associate_ids_to_payload.values())
 
 
 class CreditsafeSearchAddress(Model):
