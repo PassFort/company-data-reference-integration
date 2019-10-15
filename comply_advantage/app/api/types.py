@@ -104,7 +104,7 @@ class Error:
 
 
 class ComplyAdvantageCredentials(Model):
-    api_key = StringType(required=True)
+    api_key = StringType()
 
     @property
     def base_url(self):
@@ -305,10 +305,6 @@ class ScreeningRequestData(Model):
         if data['entity_type'] == 'COMPANY' and not value:
             raise ValidationError('Company metadata is required for companies')
         return value
-
-    @property
-    def search_term(self):
-        raise NotImplementedError()
 
     @property
     def comply_advantage_entity_type(self):
