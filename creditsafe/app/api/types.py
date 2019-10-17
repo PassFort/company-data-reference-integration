@@ -121,6 +121,12 @@ class SearchInput(Model):
     def get_creditsafe_country(self):
         country = pycountry.countries.get(alpha_3=self.country)
         return country.alpha_2
+    
+    @property
+    def supports_state(self):
+        return self.country in {
+            'USA', 'CAN'
+        }
 
     def build_queries(self):
         country_code = self.get_creditsafe_country()
@@ -128,7 +134,7 @@ class SearchInput(Model):
         any_queries = []
         all_queries.append(f'countries={country_code}')
 
-        if self.state:
+        if self.supports_state and self.state:
             # Only supports state and name search, not state and number
             if self.name:
                 any_queries.append(f'name={quote_plus(self.name)}&province={quote_plus(self.state)}')
