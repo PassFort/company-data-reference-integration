@@ -69,6 +69,8 @@ def get_result_by_search_ids(
                     search_model and search_model.message,
                     search_model and search_model.errors))
 
+            events += search_model.to_validated_events(config)
+
     except Exception as e:
         errors = [Error.provider_connection_error(e)]
 
@@ -80,14 +82,12 @@ def get_result_by_search_ids(
             'events': events
         }
     else:
-        # Run a new search, because the Comply Advantage api does not return the new entities otherwise
-        # (to be fixed early 2019_
-        return comply_advantage_search_request(
-            f'{credentials.base_url}/searches',
-            ComplyAdvantageSearchRequest.from_response_data(search_model.content.data),
-            config,
-            credentials
-        )
+        return {
+            "search_ids": search_ids,
+            "raw": [raw_response],
+            "errors": [],
+            "events": events,
+        }
 
 
 def update_monitoring_request(
