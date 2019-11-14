@@ -177,7 +177,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                     for field in address_fields
                 }
 
-                if all((
+                if fields_sent and all((
                     True for field_sent in fields_sent
                     if address_matches.get(field_sent) == 'match'
                 )):

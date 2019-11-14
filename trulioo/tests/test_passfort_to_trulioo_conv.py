@@ -159,7 +159,7 @@ def test_gender(client):
 def test_empty_address_history(client):
     input_data = {
         'input_data': {
-            'address_history': {}
+            'address_history': []
         }
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
@@ -170,14 +170,16 @@ def test_empty_address_history(client):
 def test_one_simple_address(client):
     input_data = {
         'input_data': {
-            'address_history': {
-                "current": {    
-                    "country": "GBR",
-                    "postal_code": "SW1A 2AA",
-                    "street_number": "10",
-                    "type": "STRUCTURED"
-                }
-            }
+            'address_history': [
+                {    
+                    'address': {
+                        "country": "GBR",
+                        "postal_code": "SW1A 2AA",
+                        "street_number": "10",
+                        "type": "STRUCTURED"
+                    },
+                },
+            ]
         }
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
@@ -192,14 +194,16 @@ def test_one_simple_address(client):
 def test_one_simple_address_diff_country(client):
     input_data = {
         'input_data': {
-            'address_history': {
-                "current": {
-                    "country": "BRA",
-                    "postal_code": "SW1A 2AA",
-                    "street_number": "10",
-                    "type": "STRUCTURED"
-                }
-            }
+            'address_history': [
+                {
+                    'address': {
+                        "country": "BRA",
+                        "postal_code": "SW1A 2AA",
+                        "street_number": "10",
+                        "type": "STRUCTURED"
+                    },
+                },
+            ]
         }
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
@@ -215,21 +219,23 @@ def test_one_simple_address_diff_country(client):
 def test_one_complete_address(client):
     input_data = {
         'input_data': {
-            'address_history': {
-                "current": {
-                    "country": "GBR",
-                    "street_number": "10",
-                    "premise": 'My building',
-                    "subpremise" : '0',
-                    "route": "Downing St",
-                    "postal_town": "London",
-                    "locality": 'Westminster',
-                    "county": 'City of London',
-                    "state_province": 'Greater London',
-                    "postal_code": "SW1A 2AA",
-                    "type": "STRUCTURED",
+            'address_history': [
+                {
+                    'address': {
+                        "country": "GBR",
+                        "street_number": "10",
+                        "premise": 'My building',
+                        "subpremise" : '0',
+                        "route": "Downing St",
+                        "postal_town": "Westminster",
+                        "locality": 'London',
+                        "county": 'City of London',
+                        "state_province": 'Greater London',
+                        "postal_code": "SW1A 2AA",
+                        "type": "STRUCTURED",
+                    },
                 }
-            }
+            ],
         }
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
