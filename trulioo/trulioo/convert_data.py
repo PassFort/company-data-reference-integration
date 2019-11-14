@@ -1,5 +1,27 @@
 import pycountry
 
+basic_components = {
+    'StreetName',
+    'PostalCode',
+}
+
+valid_address_combinations = [
+    {
+        *basic_components,
+        'BuildingName',
+    },
+    {
+        *basic_components,
+        'BuildingNumber',
+    },
+]
+
+def is_full_address(components):
+    return any((
+        True for valid_combination in valid_address_combinations
+        if components.issuperset(valid_combination)
+    ))
+
 def passfort_to_trulioo_data(passfort_data):
     trulioo_pkg = {}
     country_code = 'GB' #Default
@@ -168,7 +190,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                 #If all the fiels belonging to address found in the datasource filds are with match status
                 address_sent = trulioo_request.get('Location', {})
                 fields_sent = set((
-                    field for field, value in enumerate(address_sent)
+                    field for field, value in address_sent.items()
                     if value
                 ))
 
@@ -177,7 +199,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                     for field in address_fields
                 }
 
-                if fields_sent and all((
+                if is_full_address(fields_sent) and all((
                     True for field_sent in fields_sent
                     if address_matches.get(field_sent) == 'match'
                 )):

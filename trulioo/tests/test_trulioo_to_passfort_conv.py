@@ -342,6 +342,8 @@ def test_record_with_one_datasource_with_address_match(client):
     response_body = trulioo_to_passfort_data({
         'Location': {
             'BuildingNumber': '10',
+            'StreetName': 'Wellbeing street',
+            'PostalCode': 'PPC CCC',
         },
     }, trulioo_data)
 
