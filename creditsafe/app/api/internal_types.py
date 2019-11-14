@@ -157,6 +157,7 @@ class CreditsafeSingleShareholder(Model):
     entity_type = StringType(choices=[INDIVIDUAL_ENTITY, COMPANY_ENTITY], default=None)
     name = StringType(required=True)
     shareholdings = ListType(ModelType(PassFortShareholding), default=[], required=True)
+    should_search = True
 
     @property
     def total_percentage(self):
@@ -367,6 +368,21 @@ class ProcessQueuePayload(Model):
     entity_type = StringType(default=None)
     associate_id = UUIDType(required=True)
     result = ModelType(PassFortAssociate, default=None)
+
+    def skip_search(self):
+        # If this entity is a PSC, and we already have enough information,
+        # don't do the extra search.
+        if self.psc and \
+                self.psc.country_of_incorporation and \
+                self.psc.registration_number:
+            return True
+        # Or, if this entity is just a non PSC shareholder, don't do the extra
+        # search on them if not required (>50 shareholders with larger holdings)
+        if not self.officer and not self.psc:
+            if self.shareholder and not self.shareholder.should_search:
+                return True
+
+        return False
 
 
 class AssociateIdDeduplicator:
@@ -731,6 +747,10 @@ class CreditSafeCompanyReport(Model):
             key=lambda s: s.total_percentage, reverse=True
         ) if self.share_capital_structure else []
 
+        # Only perform an additional search on the first 50 non-PSC shareholders
+        for sh in unique_shareholders[50:]:
+            sh.should_search = False
+
         pscs = []
         if self.additional_information and self.additional_information.psc_report:
             pscs = [
@@ -764,11 +784,9 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
         else:
             name = associate_data.psc.name
 
-        if request_handler:
-            if not associate_data.psc or not \
-                    associate_data.psc.country_of_incorporation or not associate_data.psc.registration_number:
-                # only search if we have to
-                search_data = request_handler.exact_search(name, country)
+        if request_handler and not associate_data.skip_search():
+            # only search if we have to
+            search_data = request_handler.exact_search(name, country)
 
     entity_type = COMPANY_ENTITY if search_data else default_entity
     result = None
