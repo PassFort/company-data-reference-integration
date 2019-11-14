@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-python3
+FROM python:3.7.4-alpine3.10
 
 ARG git_key
 
@@ -13,8 +13,7 @@ WORKDIR /src
 COPY Pipfile Pipfile.lock package.json yarn.lock /src/
 
 RUN mkdir /srv/logs/ && \
-    pip install pip==18.0 && \	    
-    pip install pipenv==2018.7.1 && \
+    pip install pipenv && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
