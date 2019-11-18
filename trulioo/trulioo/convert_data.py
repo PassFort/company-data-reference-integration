@@ -226,7 +226,7 @@ def check_errors(error_section, response_body):
         if error.get('Code') in ['InternalServerError', '2000']:
             response_body['errors'].append(make_error(
                 code=303,
-                message='Provider connection error',
+                message='Unknown provider error',
                 info={
                     'raw': error,
                 },

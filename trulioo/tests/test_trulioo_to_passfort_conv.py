@@ -809,7 +809,7 @@ def test_record_error_unknown_error(client):
                     'Code': '2000',
                 },
             },
-            'message': 'Provider connection error',
+            'message': 'Unknown provider error',
         }],
     }
 
