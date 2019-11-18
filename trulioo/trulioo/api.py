@@ -38,7 +38,7 @@ def verify(user, password, country_code, data_fields):
 
 def consents(user, password, country_code):
     headers = {'Content-Type': 'application/json'}
-    url = 'https://api.globaldatacompany.com/configuration/v1/consents/Identity%20Verification/AU'
+    url = f'https://api.globaldatacompany.com/configuration/v1/consents/Identity%20Verification/{country_code}'
 
     response = requests.get(
         url, 
