@@ -8,6 +8,7 @@ from trulioo.api import validate_authentication
 from trulioo.api import verify
 from trulioo.convert_data import passfort_to_trulioo_data, trulioo_to_passfort_data, make_error
 
+
 class Ekyc_check(Resource):
 
     def post(self):
@@ -25,9 +26,9 @@ class Ekyc_check(Resource):
                 ]
             }
             return response_body
-        if not (request_json.get('credentials') and\
-             request_json['credentials'].get('username') and\
-             request_json['credentials'].get('password')):
+        if not (request_json.get('credentials') and
+                request_json['credentials'].get('username') and
+                request_json['credentials'].get('password')):
 
             response_body = {
                 "output_data": {
@@ -49,10 +50,13 @@ class Ekyc_check(Resource):
             passfort_to_trulioo_data(request_json)
             response = create_demo_response(request_json)
         else:
-            trulioo_request_data, country_code = passfort_to_trulioo_data(request_json)
+            trulioo_request_data, country_code = passfort_to_trulioo_data(
+                request_json)
             try:
-                trulioo_response_data = verify(username, password, country_code, trulioo_request_data)
-                response = trulioo_to_passfort_data(trulioo_request_data, trulioo_response_data)
+                trulioo_response_data = verify(
+                    username, password, country_code, trulioo_request_data)
+                response = trulioo_to_passfort_data(
+                    trulioo_request_data, trulioo_response_data)
             except HTTPError as error:
                 raw = error.response.text
                 return {

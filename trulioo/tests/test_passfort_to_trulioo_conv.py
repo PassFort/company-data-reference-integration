@@ -1,6 +1,7 @@
-import pytest 
+import pytest
 
 from trulioo.convert_data import passfort_to_trulioo_data
+
 
 def test_empty_package(client):
     trulioo_request_data, country_code = passfort_to_trulioo_data({})
@@ -8,11 +9,14 @@ def test_empty_package(client):
     assert trulioo_request_data == {}
     assert country_code == 'GB'
 
+
 def test_empty_input_data(client):
-    trulioo_request_data, country_code = passfort_to_trulioo_data({'input_data':None})
+    trulioo_request_data, country_code = passfort_to_trulioo_data(
+        {'input_data': None})
 
     assert trulioo_request_data == {}
     assert country_code == 'GB'
+
 
 def test_single_name_without_surname(client):
     input_data = {
@@ -47,10 +51,11 @@ def test_two_names_without_surname(client):
     output_data = {
         'PersonInfo': {
             'FirstGivenName': 'Todd',
-            'MiddleName':'Astor'
+            'MiddleName': 'Astor'
         }
     }
     assert trulioo_request_data == output_data
+
 
 def test_many_names_without_surname(client):
     input_data = {
@@ -66,10 +71,11 @@ def test_many_names_without_surname(client):
     output_data = {
         'PersonInfo': {
             'FirstGivenName': 'Todd',
-            'MiddleName':'Astor Royal Tony'
+            'MiddleName': 'Astor Royal Tony'
         }
     }
     assert trulioo_request_data == output_data
+
 
 def test_just_surname(client):
     input_data = {
@@ -89,6 +95,7 @@ def test_just_surname(client):
     }
     assert trulioo_request_data == output_data
 
+
 def test_dob_complete(client):
     input_data = {
         'input_data': {
@@ -107,6 +114,7 @@ def test_dob_complete(client):
     }
     assert trulioo_request_data == output_data
 
+
 def test_dob_year_month(client):
     input_data = {
         'input_data': {
@@ -124,6 +132,7 @@ def test_dob_year_month(client):
     }
     assert trulioo_request_data == output_data
 
+
 def test_dob_year(client):
     input_data = {
         'input_data': {
@@ -139,6 +148,7 @@ def test_dob_year(client):
         }
     }
     assert trulioo_request_data == output_data
+
 
 def test_gender(client):
     input_data = {
@@ -156,6 +166,7 @@ def test_gender(client):
     }
     assert trulioo_request_data == output_data
 
+
 def test_empty_address_history(client):
     input_data = {
         'input_data': {
@@ -171,7 +182,7 @@ def test_one_simple_address(client):
     input_data = {
         'input_data': {
             'address_history': [
-                {    
+                {
                     'address': {
                         "country": "GBR",
                         "postal_code": "SW1A 2AA",
@@ -184,12 +195,13 @@ def test_one_simple_address(client):
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
-        'Location':{
-            'BuildingNumber':'10',
-            'PostalCode':'SW1A 2AA'
+        'Location': {
+            'BuildingNumber': '10',
+            'PostalCode': 'SW1A 2AA'
         }
     }
     assert trulioo_request_data == output_data
+
 
 def test_one_simple_address_diff_country(client):
     input_data = {
@@ -208,13 +220,14 @@ def test_one_simple_address_diff_country(client):
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
-        'Location':{
-            'BuildingNumber':'10',
-            'PostalCode':'SW1A 2AA'
+        'Location': {
+            'BuildingNumber': '10',
+            'PostalCode': 'SW1A 2AA'
         }
     }
     assert trulioo_request_data == output_data
     assert country_code == 'BR'
+
 
 def test_one_complete_address(client):
     input_data = {
@@ -225,7 +238,7 @@ def test_one_complete_address(client):
                         "country": "GBR",
                         "street_number": "10",
                         "premise": 'My building',
-                        "subpremise" : '0',
+                        "subpremise": '0',
                         "route": "Downing St",
                         "postal_town": "Westminster",
                         "locality": 'London',
@@ -240,8 +253,8 @@ def test_one_complete_address(client):
     }
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {
-        'Location':{
-            'BuildingNumber':'10',
+        'Location': {
+            'BuildingNumber': '10',
             'BuildingName': 'My building',
             'UnitNumber': '0',
             'StreetName': 'Downing St',
@@ -249,10 +262,11 @@ def test_one_complete_address(client):
             'Suburb': 'Westminster',
             'County': 'City of London',
             'StateProvinceCode': 'Greater London',
-            'PostalCode':'SW1A 2AA'
+            'PostalCode': 'SW1A 2AA'
         }
     }
     assert trulioo_request_data == output_data
+
 
 def test_communication_with_empty_values(client):
     input_data = {
@@ -263,6 +277,7 @@ def test_communication_with_empty_values(client):
     trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
     output_data = {}
     assert trulioo_request_data == output_data
+
 
 def test_communication_with_email(client):
     input_data = {
@@ -280,6 +295,7 @@ def test_communication_with_email(client):
     }
     assert trulioo_request_data == output_data
 
+
 def test_communication_with_telephone(client):
     input_data = {
         'input_data': {
@@ -295,6 +311,7 @@ def test_communication_with_telephone(client):
         }
     }
     assert trulioo_request_data == output_data
+
 
 def test_communication_with_full_values(client):
     input_data = {
@@ -313,4 +330,3 @@ def test_communication_with_full_values(client):
         }
     }
     assert trulioo_request_data == output_data
-
