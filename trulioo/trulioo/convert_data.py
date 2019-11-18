@@ -141,16 +141,6 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
             }
 
             if datasource.get('DatasourceFields'):
-                #check national id
-                national_id_field = next((field for field in datasource['DatasourceFields'] if field['FieldName'].lower() in [
-                    'nationalid',
-                    'health',
-                    'socialservice',
-                    'taxidnumber',
-                ]), None)
-                if national_id_field and national_id_field['Status'] == 'match':
-                    match['matched_fields'].append('IDENTITY_NUMBER')
-
                 #check forename
                 forename_field = next((field for field in datasource['DatasourceFields'] if field["FieldName"] == "FirstGivenName"), None)
                 if forename_field and forename_field['Status'] == 'match':
@@ -200,8 +190,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                 }
 
                 if is_full_address(fields_sent) and all((
-                    True for field_sent in fields_sent
-                    if address_matches.get(field_sent) == 'match'
+                    address_matches.get(field_sent) == 'match' for field_sent in fields_sent
                 )):
                     match['matched_fields'].append('ADDRESS')
 
