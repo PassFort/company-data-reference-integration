@@ -318,6 +318,42 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
                                 "errors": []
                             }  
 
+def test_partial_address_match(client):
+    trulioo_data = {
+        'Record': {
+            'DatasourceResults': [
+                {
+                    'DatasourceName': 'Credit Agency', 
+                    'DatasourceFields': [
+                        {
+                            'FieldName': 'StreetName', 
+                            'Status': 'match'
+                        },
+                    ], 
+                    'Errors': [], 
+                    'FieldGroups': []
+                }, 
+            ], 
+            'Errors': []
+        }, 
+        'Errors': []
+    }
+    
+    response_body = trulioo_to_passfort_data({
+        'Location': {
+            'BuildingNumber': '10',
+            'StreetName': 'Wellbeing street',
+            'PostalCode': 'PPC CCC',
+        },
+    }, trulioo_data)
+
+    assert response_body == {
+                                "output_data": {},
+                                "raw": trulioo_data,
+                                "errors": []
+                            }  
+
+
 def test_record_with_one_datasource_with_address_match(client):
     trulioo_data = {
         'Record': {
@@ -328,7 +364,15 @@ def test_record_with_one_datasource_with_address_match(client):
                         {
                             'FieldName': 'BuildingNumber', 
                             'Status': 'match'
-                        }
+                        },
+                        {
+                            'FieldName': 'StreetName', 
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'PostalCode', 
+                            'Status': 'match'
+                        },
                     ], 
                     'Errors': [], 
                     'FieldGroups': []
