@@ -803,7 +803,7 @@ def test_record_error_unknown_error(client):
         "raw": trulioo_data,
         "errors": [{
             'source': 'PROVIDER',
-            'code': 302,
+            'code': 303,
             'info': {
                 'raw': {
                     'Code': '2000',

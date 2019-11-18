@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectTimeout
 
 from api.demo_response import create_demo_response
 
@@ -57,6 +57,17 @@ class Ekyc_check(Resource):
                     username, password, country_code, trulioo_request_data)
                 response = trulioo_to_passfort_data(
                     trulioo_request_data, trulioo_response_data)
+            except ConnectTimeout:
+                return {
+                    'output_data': {},
+                    'errors': [make_error(
+                        code=302,
+                        message='Provider connection error',
+                        info={
+                            'raw': raw,
+                        },
+                    )],
+                }
             except HTTPError as error:
                 raw = error.response.text
                 return {

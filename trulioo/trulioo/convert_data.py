@@ -225,7 +225,7 @@ def check_errors(error_section, response_body):
     for error in error_section.get('Errors', []):
         if error.get('Code') in ['InternalServerError', '2000']:
             response_body['errors'].append(make_error(
-                code=302,
+                code=303,
                 message='Provider connection error',
                 info={
                     'raw': error,
