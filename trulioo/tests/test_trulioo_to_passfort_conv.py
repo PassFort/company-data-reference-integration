@@ -724,45 +724,69 @@ def test_record_with_two_datasource_with_diff_database_type(client):
 
 
 def test_record_error_missing_required_fields_1001(client):
-    trulioo_data = {'Errors': [{'Code': '1001'}]}
+    trulioo_data = {'Errors': [{'Code': '1001', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{'code': 101, 'info': {}, 'message': 'Missing required fields'}]
-    }
-
+                                "output_data": {},
+                                "raw": trulioo_data,
+                                "errors": [{
+                                    'source': 'PROVIDER',
+                                    'code': 101, 
+                                    'info': {
+                                        'raw': {'Code': '1001', 'Message': 'Missing required field: BuildingName'},
+                                    }, 
+                                    'message': 'Missing required field: BuildingName',
+                                }]
+                            } 
 
 def test_record_error_missing_required_fields_4001(client):
-    trulioo_data = {'Errors': [{'Code': '4001'}]}
+    trulioo_data = {'Errors': [{'Code': '4001', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{'code': 101, 'info': {}, 'message': 'Missing required fields'}]
-    }
-
+                                "output_data": {},
+                                "raw": trulioo_data,
+                                "errors": [{
+                                    'source': 'PROVIDER',
+                                    'code': 101, 
+                                    'info': {
+                                        'raw': {'Code': '4001', 'Message': 'Missing required field: BuildingName'},
+                                    }, 
+                                    'message': 'Missing required field: BuildingName',
+                                }]
+                            } 
 
 def test_record_error_missing_required_fields_3005(client):
-    trulioo_data = {'Errors': [{'Code': '3005'}]}
+    trulioo_data = {'Errors': [{'Code': '3005', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{'code': 101, 'info': {}, 'message': 'Missing required fields'}]
-    }
-
+                                "output_data": {},
+                                "raw": trulioo_data,
+                                "errors": [{
+                                    'source': 'PROVIDER',
+                                    'code': 101, 
+                                    'info': {
+                                        'raw': {'Code': '3005', 'Message': 'Missing required field: BuildingName'},
+                                    }, 
+                                    'message': 'Missing required field: BuildingName',
+                                }]
+                            } 
 
 def test_record_error_missing_required_fields_not_duplicated(client):
     trulioo_data = {'Errors': [{'Code': '1001'},
                                {'Code': '4001'}, {'Code': '3005'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{'code': 101, 'info': {}, 'message': 'Missing required fields'}]
-    }
-
+                                "output_data": {},
+                                "raw": trulioo_data,
+                                "errors": [{
+                                    'source': 'PROVIDER',
+                                    'code': 101, 
+                                    'info': {
+                                        'raw': {'Code': '1001', 'Message': 'Missing required fields'},
+                                    }, 
+                                    'message': 'Missing required fields',
+                                }]
+                            } 
 
 def test_record_error_unknown_error(client):
     trulioo_data = {'Errors': [{'Code': '2000'}]}

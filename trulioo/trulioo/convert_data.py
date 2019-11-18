@@ -130,9 +130,6 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
 
         for datasource in trulioo_data['Record']['DatasourceResults']:
 
-            #Check datasource errors
-            check_errors(datasource, response_body)
-
             match = {
                 'database_name': datasource['DatasourceName'],
                 'database_type': 'CREDIT' if 'credit' in datasource['DatasourceName'].lower() else 'CIVIL',
@@ -205,20 +202,42 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
 
     return response_body
 
+def make_error(*, code, message, info={}, source='PROVIDER'): 
+    return {
+        'code': code,
+        'source': source,
+        'message': message,
+        'info': info,
+    }
+
 def check_errors(error_section, response_body):
     #Check errors:
     for error in error_section.get('Errors', []):
         if error.get('Code') in ['InternalServerError', '2000']:
-            response_body['errors'].append({'code': 401, 'info': {}, 'message': 'Unknown internal error'})
-        
+            response_body['errors'].append(make_error(
+                code=401, 
+                message='Unknown provider error',
+                info={
+                    'raw': error,
+                },
+            ))
+
         elif error.get('Code') in ['1001', '4001', '3005'] and\
                 not next((error for error in response_body['errors'] if error['code'] == 101), None):
-            response_body['errors'].append({'code': 101, 'info': {}, 'message': 'Missing required fields'})
+            response_body['errors'].append(make_error(
+                code=101,
+                message=error.get('Messsage') or 'Missing required fields',
+                info={
+                    'raw': error,
+                },
+            ))
         
         elif error.get('Code') in ['1006', '1008'] and\
                 not next((error for error in response_body['errors'] if error['code'] == 201), None):
-            response_body['errors'].append({
-                'code': 201,
-                'message': f'The submitted data was invalid. Provider returned error code {error.get("Code")}',
-                'info': {},
-            })
+            response_body['errors'].append(make_error(
+                code=201,
+                message=f'The submitted data was invalid. Provider returned error code {error.get("Code")}',
+                info={
+                    'raw': error,
+                },
+            ))
