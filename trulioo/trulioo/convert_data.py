@@ -1,32 +1,54 @@
 import pycountry
 
+basic_components = {
+    'StreetName',
+    'PostalCode',
+}
+
+valid_address_combinations = [
+    {
+        *basic_components,
+        'BuildingName',
+    },
+    {
+        *basic_components,
+        'BuildingNumber',
+    },
+]
+
+def is_full_address(components):
+    return any((
+        components.issuperset(valid_combination)
+        for valid_combination in valid_address_combinations
+    ))
+
 def passfort_to_trulioo_data(passfort_data):
-    
     trulioo_pkg = {}
     country_code = 'GB' #Default
 
 
     if passfort_data.get('input_data'):
         #Check Personal details 
-        if passfort_data['input_data'].get('personal_details'):
+        personal_details = passfort_data['input_data'].get('personal_details')
+        if personal_details:
             trulioo_pkg['PersonInfo'] = {}
 
             #Check name
-            if passfort_data['input_data']['personal_details'].get('name'):
-                if passfort_data['input_data']['personal_details']['name'].get('given_names'):
-                    given_names = passfort_data['input_data']['personal_details']['name']['given_names']
+            if personal_details.get('name'):
+                if personal_details['name'].get('given_names'):
+                    given_names = personal_details['name']['given_names']
                     
                     trulioo_pkg['PersonInfo']['FirstGivenName'] = given_names[0]
 
                     if given_names[1:]:
                         trulioo_pkg['PersonInfo']['MiddleName'] = ' '.join(given_names[1:])
 
-                if passfort_data['input_data']['personal_details']['name'].get('family_name'):
-                    trulioo_pkg['PersonInfo']['FirstSurName'] = passfort_data['input_data']['personal_details']['name']['family_name']
+                if personal_details['name'].get('family_name'):
+                    trulioo_pkg['PersonInfo']['FirstSurName'] = personal_details['name']['family_name']
 
             #Check date of birthday
-            if passfort_data['input_data']['personal_details'].get('dob'):
-                date_of_birth = passfort_data['input_data']['personal_details']['dob'].split('-')
+            if personal_details.get('dob'):
+                date_of_birth = personal_details['dob'].split('-')
 
                 date_of_birth_options = ['YearOfBirth', 'MonthOfBirth', 'DayOfBirth']
 
@@ -34,48 +56,49 @@ def passfort_to_trulioo_data(passfort_data):
                     trulioo_pkg['PersonInfo'][date_of_birth_options[index]] = int(part_of_date)
 
             #Check gender
-            if passfort_data['input_data']['personal_details'].get('gender'):
-                trulioo_pkg['PersonInfo']['Gender'] = passfort_data['input_data']['personal_details']['gender']
+            if personal_details.get('gender'):
+                trulioo_pkg['PersonInfo']['Gender'] = personal_details['gender']
 
 
         #Check address
         if passfort_data['input_data'].get('address_history'):
-            if passfort_data['input_data']['address_history'].get('current'):
-                address_to_check = passfort_data['input_data']['address_history']['current']
+            address_to_check = passfort_data['input_data']['address_history'][0]['address']
+            trulioo_pkg['Location'] = {}
 
-                trulioo_pkg['Location'] = {}
-               
-                if address_to_check.get('street_number'):
-                    trulioo_pkg['Location']['BuildingNumber'] = address_to_check['street_number']
+            if address_to_check.get('street_number'):
+                trulioo_pkg['Location']['BuildingNumber'] = address_to_check['street_number']
 
-                if address_to_check.get('premise'):
-                    trulioo_pkg['Location']['BuildingName'] = address_to_check['premise']
+            if address_to_check.get('premise'):
+                trulioo_pkg['Location']['BuildingName'] = address_to_check['premise']
 
-                if address_to_check.get('subpremise'):
-                    trulioo_pkg['Location']['UnitNumber'] = address_to_check['subpremise']
+            if address_to_check.get('subpremise'):
+                trulioo_pkg['Location']['UnitNumber'] = address_to_check['subpremise']
 
-                if address_to_check.get('route'):
-                    trulioo_pkg['Location']['StreetName'] = address_to_check['route']
+            if address_to_check.get('route'):
+                trulioo_pkg['Location']['StreetName'] = address_to_check['route']
 
-                if address_to_check.get('postal_town'):
-                    trulioo_pkg['Location']['City'] = address_to_check['postal_town']
+            locality = address_to_check.get('locality')
+            postal_town = address_to_check.get('postal_town')
+            city = locality or postal_town
+            if city:
+                trulioo_pkg['Location']['City'] = city
 
-                if address_to_check.get('locality'):
-                    trulioo_pkg['Location']['Suburb'] = address_to_check['locality']
+            if locality and postal_town:
+                trulioo_pkg['Location']['Suburb'] = postal_town
 
-                if address_to_check.get('county'):
-                    trulioo_pkg['Location']['County'] = address_to_check['county']        
+            if address_to_check.get('county'):
+                trulioo_pkg['Location']['County'] = address_to_check['county']
 
-                if address_to_check.get('state_province'):
-                    trulioo_pkg['Location']['StateProvinceCode'] = address_to_check['state_province']
+            if address_to_check.get('state_province'):
+                trulioo_pkg['Location']['StateProvinceCode'] = address_to_check['state_province']
 
-                if address_to_check.get('postal_code'):
-                    trulioo_pkg['Location']['PostalCode'] = address_to_check['postal_code']
+            if address_to_check.get('postal_code'):
+                trulioo_pkg['Location']['PostalCode'] = address_to_check['postal_code']
 
-                if address_to_check.get('country'):
-                    #Convert the country code from 3 to 2 alpha ( like "GBR" to "GB")
-                    country = pycountry.countries.get(alpha_3=address_to_check['country'])
-                    country_code = country.alpha_2
+            if address_to_check.get('country'):
+                #Convert the country code from 3 to 2 alpha ( like "GBR" to "GB")
+                country = pycountry.countries.get(alpha_3=address_to_check['country'])
+                country_code = country.alpha_2
             
         #Check Communication
         if passfort_data['input_data'].get('contact_details'):
@@ -90,7 +113,7 @@ def passfort_to_trulioo_data(passfort_data):
     return trulioo_pkg, country_code
 
 
-def trulioo_to_passfort_data(trulioo_data):
+def trulioo_to_passfort_data(trulioo_request, trulioo_data):
     #base response
     response_body = {
         "output_data": {
@@ -113,7 +136,8 @@ def trulioo_to_passfort_data(trulioo_data):
             match = {
                 'database_name': datasource['DatasourceName'],
                 'database_type': 'CREDIT' if 'credit' in datasource['DatasourceName'].lower() else 'CIVIL',
-                'matched_fields': []
+                'count': 1,
+                'matched_fields': [],
             }
 
             if datasource.get('DatasourceFields'):
@@ -154,7 +178,21 @@ def trulioo_to_passfort_data(trulioo_data):
                     if address_field_check:
                         address_fields.append(address_field_check)
                 #If all the fiels belonging to address found in the datasource filds are with match status
-                if address_fields and (not next((field for field in address_fields if field["Status"] == "nomatch"), False)):
+                address_sent = trulioo_request.get('Location', {})
+                fields_sent = set((
+                    field for field, value in address_sent.items()
+                    if value
+                ))
+
+                address_matches = {
+                    field['FieldName']: field['Status']
+                    for field in address_fields
+                }
+
+
+                if is_full_address(fields_sent) and all((
+                    address_matches.get(field_sent) == 'match' for field_sent in fields_sent
+                )):
                     match['matched_fields'].append('ADDRESS')
 
                 #if have matches add
@@ -171,15 +209,16 @@ def check_errors(error_section, response_body):
     #Check errors:
     for error in error_section.get('Errors', []):
         if error.get('Code') in ['InternalServerError', '2000']:
-            response_body['errors'].append({'code': 401, 'message': 'Unknown internal error'})
+            response_body['errors'].append({'code': 401, 'info': {}, 'message': 'Unknown internal error'})
         
         elif error.get('Code') in ['1001', '4001', '3005'] and\
                 not next((error for error in response_body['errors'] if error['code'] == 101), None):
-            response_body['errors'].append({'code': 101, 'message': 'Missing required fields'})
+            response_body['errors'].append({'code': 101, 'info': {}, 'message': 'Missing required fields'})
         
         elif error.get('Code') in ['1006', '1008'] and\
                 not next((error for error in response_body['errors'] if error['code'] == 201), None):
             response_body['errors'].append({
                 'code': 201,
-                'message': f'The submitted data was invalid. Provider returned error code {error.get("Code")}'
+                'message': f'The submitted data was invalid. Provider returned error code {error.get("Code")}',
+                'info': {},
             })

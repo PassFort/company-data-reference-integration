@@ -46,13 +46,13 @@ class Ekyc_check(Resource):
         password = request_json['credentials']['password']
 
         if request_json.get('is_demo'):
+            passfort_to_trulioo_data(request_json)
             response = create_demo_response(request_json)
-
         else:
             trulioo_request_data, country_code = passfort_to_trulioo_data(request_json)
             trulioo_response_data = verify(username, password, country_code, trulioo_request_data)
 
-            response = trulioo_to_passfort_data(trulioo_response_data)
+            response = trulioo_to_passfort_data(trulioo_request_data, trulioo_response_data)
 
         return response
 
