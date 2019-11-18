@@ -18,8 +18,8 @@ valid_address_combinations = [
 
 def is_full_address(components):
     return any((
-        True for valid_combination in valid_address_combinations
-        if components.issuperset(valid_combination)
+        components.issuperset(valid_combination)
+        for valid_combination in valid_address_combinations
     ))
 
 def passfort_to_trulioo_data(passfort_data):
@@ -188,6 +188,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                     field['FieldName']: field['Status']
                     for field in address_fields
                 }
+
 
                 if is_full_address(fields_sent) and all((
                     address_matches.get(field_sent) == 'match' for field_sent in fields_sent
