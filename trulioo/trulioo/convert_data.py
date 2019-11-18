@@ -215,8 +215,8 @@ def check_errors(error_section, response_body):
     for error in error_section.get('Errors', []):
         if error.get('Code') in ['InternalServerError', '2000']:
             response_body['errors'].append(make_error(
-                code=401, 
-                message='Unknown provider error',
+                code=302, 
+                message='Provider connection error',
                 info={
                     'raw': error,
                 },
@@ -226,7 +226,7 @@ def check_errors(error_section, response_body):
                 not next((error for error in response_body['errors'] if error['code'] == 101), None):
             response_body['errors'].append(make_error(
                 code=101,
-                message=error.get('Messsage') or 'Missing required fields',
+                message=error.get('Message') or 'Missing required fields',
                 info={
                     'raw': error,
                 },

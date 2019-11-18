@@ -788,7 +788,7 @@ def test_record_error_missing_required_fields_not_duplicated(client):
             'source': 'PROVIDER',
             'code': 101,
             'info': {
-                'raw': {'Code': '1001', 'Message': 'Missing required fields'},
+                'raw': {'Code': '1001'},
             },
             'message': 'Missing required fields',
         }]
@@ -801,7 +801,16 @@ def test_record_error_unknown_error(client):
     assert response_body == {
         "output_data": {},
         "raw": trulioo_data,
-        "errors": [{'code': 401, 'info': {}, 'message': 'Unknown internal error'}]
+        "errors": [{
+            'source': 'PROVIDER',
+            'code': 302,
+            'info': {
+                'raw': {
+                    'Code': '2000',
+                },
+            },
+            'message': 'Provider connection error',
+        }],
     }
 
 
@@ -812,8 +821,13 @@ def test_record_error_invalid_input_data_1006(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
+            'source': 'PROVIDER',
             'code': 201,
-            'info': {},
+            'info': {
+                'raw': {
+                    'Code': '1006',
+                },
+            },
             'message': 'The submitted data was invalid. Provider returned error code 1006'
         }]
     }
@@ -826,27 +840,13 @@ def test_record_error_invalid_input_data_1008(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
+            'source': 'PROVIDER',
             'code': 201,
-            'info': {},
+            'info': {
+                'raw': {
+                    'Code': '1008',
+                },
+            },
             'message': 'The submitted data was invalid. Provider returned error code 1008'
         }]
-    }
-
-
-def test_record_error_missing_required_fields_1001_datasource_error(client):
-    trulioo_data = {
-        "Record": {
-            "DatasourceResults": [
-                {
-                    "DatasourceName": "Credit Agency",
-                    "Errors": [{"Code": "1001", "Message": "Missing required field: FirstSurName"}]
-                }
-            ]
-        }
-    }
-    response_body = trulioo_to_passfort_data({}, trulioo_data)
-    assert response_body == {
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{'code': 101, 'info': {}, 'message': 'Missing required fields'}]
     }

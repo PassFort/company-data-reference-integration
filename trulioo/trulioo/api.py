@@ -31,10 +31,8 @@ def verify(user, password, country_code, data_fields):
         data=json.dumps(base_body), 
         headers=headers)
 
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return response.text
+    response.raise_for_status()
+    return response.json()
 
 def consents(user, password, country_code):
     headers = {'Content-Type': 'application/json'}

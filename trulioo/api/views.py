@@ -1,12 +1,12 @@
 from flask_restful import Resource
 from flask import request
+from requests.exceptions import HTTPError
 
 from api.demo_response import create_demo_response
 
 from trulioo.api import validate_authentication
 from trulioo.api import verify
-from trulioo.convert_data import passfort_to_trulioo_data
-from trulioo.convert_data import trulioo_to_passfort_data
+from trulioo.convert_data import passfort_to_trulioo_data, trulioo_to_passfort_data, make_error
 
 class Ekyc_check(Resource):
 
@@ -50,9 +50,22 @@ class Ekyc_check(Resource):
             response = create_demo_response(request_json)
         else:
             trulioo_request_data, country_code = passfort_to_trulioo_data(request_json)
-            trulioo_response_data = verify(username, password, country_code, trulioo_request_data)
-
-            response = trulioo_to_passfort_data(trulioo_request_data, trulioo_response_data)
+            try:
+                trulioo_response_data = verify(username, password, country_code, trulioo_request_data)
+                response = trulioo_to_passfort_data(trulioo_request_data, trulioo_response_data)
+            except HTTPError as error:
+                raw = error.response.text
+                return {
+                    'output_data': {},
+                    'raw': raw,
+                    'errors': [make_error(
+                        code=303,
+                        message='Unknown provider error',
+                        info={
+                            'raw': raw,
+                        },
+                    )],
+                }
 
         return response
 
