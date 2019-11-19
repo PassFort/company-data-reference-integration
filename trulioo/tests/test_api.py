@@ -114,8 +114,6 @@ def test_ekyc_check_with_raw_data(client):
     )
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
-    import pdb
-    pdb.set_trace()
     assert response.json == {
         "output_data": {
             "entity_type": "INDIVIDUAL",
