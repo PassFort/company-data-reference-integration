@@ -723,6 +723,24 @@ def test_record_with_two_datasource_with_diff_database_type(client):
     }
 
 
+def test_record_error_missing_required_fields_generic(client):
+    trulioo_data = {'Errors': [
+        {'Code': '1001', 'Message': 'Missing required field: unsupported field name'}]}
+    response_body = trulioo_to_passfort_data({}, trulioo_data)
+    assert response_body == {
+        "output_data": {},
+        "raw": trulioo_data,
+        "errors": [{
+            'source': 'PROVIDER',
+            'code': 101,
+            'info': {
+                'raw': [{'Code': '1001', 'Message': 'Missing required field: unsupported field name'}],
+            },
+            'message': 'Missing required fields',
+        }]
+    }
+
+
 def test_record_error_missing_required_fields_1001(client):
     trulioo_data = {'Errors': [
         {'Code': '1001', 'Message': 'Missing required field: BuildingName'}]}
@@ -734,9 +752,12 @@ def test_record_error_missing_required_fields_1001(client):
             'source': 'PROVIDER',
             'code': 101,
             'info': {
-                'raw': {'Code': '1001', 'Message': 'Missing required field: BuildingName'},
+                'raw': [{'Code': '1001', 'Message': 'Missing required field: BuildingName'}],
+                'missing_fields': [
+                    '/address_history/0/premise',
+                ],
             },
-            'message': 'Missing required field: BuildingName',
+            'message': 'Missing required fields',
         }]
     }
 
@@ -752,9 +773,12 @@ def test_record_error_missing_required_fields_4001(client):
             'source': 'PROVIDER',
             'code': 101,
             'info': {
-                'raw': {'Code': '4001', 'Message': 'Missing required field: BuildingName'},
+                'raw': [{'Code': '4001', 'Message': 'Missing required field: BuildingName'}],
+                'missing_fields': [
+                    '/address_history/0/premise',
+                ],
             },
-            'message': 'Missing required field: BuildingName',
+            'message': 'Missing required fields',
         }]
     }
 
@@ -770,14 +794,17 @@ def test_record_error_missing_required_fields_3005(client):
             'source': 'PROVIDER',
             'code': 101,
             'info': {
-                'raw': {'Code': '3005', 'Message': 'Missing required field: BuildingName'},
+                'raw': [{'Code': '3005', 'Message': 'Missing required field: BuildingName'}],
+                'missing_fields': [
+                    '/address_history/0/premise',
+                ],
             },
-            'message': 'Missing required field: BuildingName',
+            'message': 'Missing required fields',
         }]
     }
 
 
-def test_record_error_missing_required_fields_not_duplicated(client):
+def test_record_error_missing_required_fields_concatened(client):
     trulioo_data = {'Errors': [{'Code': '1001'},
                                {'Code': '4001'}, {'Code': '3005'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
@@ -788,7 +815,7 @@ def test_record_error_missing_required_fields_not_duplicated(client):
             'source': 'PROVIDER',
             'code': 101,
             'info': {
-                'raw': {'Code': '1001'},
+                'raw': [{'Code': '1001'}, {'Code': '4001'}, {'Code': '3005'}],
             },
             'message': 'Missing required fields',
         }]
