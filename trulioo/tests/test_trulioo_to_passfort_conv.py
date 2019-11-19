@@ -58,6 +58,16 @@ def test_record_with_one_datasource_without_match(client):
 
     assert response_body == {
         "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [
+                    {
+                        "database_name": "Credit Agency",
+                        "database_type": "CREDIT",
+                        "matched_fields": []
+                    },
+                ]
+            }
         },
         "raw": trulioo_data,
         "errors": []
@@ -318,7 +328,18 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "output_data": {},
+        "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [
+                    {
+                        "database_name": "Credit Agency",
+                        "database_type": "CREDIT",
+                        "matched_fields": []
+                    },
+                ]
+            }
+        },
         "raw": trulioo_data,
         "errors": []
     }
@@ -354,7 +375,18 @@ def test_partial_address_match(client):
     }, trulioo_data)
 
     assert response_body == {
-        "output_data": {},
+        "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [
+                    {
+                        "database_name": "Credit Agency",
+                        "database_type": "CREDIT",
+                        "matched_fields": []
+                    },
+                ]
+            }
+        },
         "raw": trulioo_data,
         "errors": []
     }
