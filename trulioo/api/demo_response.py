@@ -18,21 +18,22 @@ def create_demo_response(passfort_data):
         "ADDRESS",
         "DOB",
     ]
-         
-    #Get complete name to check what kind of demo response will be returned
+
+    # Get complete name to check what kind of demo response will be returned
     names = passfort_data['input_data']['personal_details']['name']['given_names']
     if passfort_data['input_data']['personal_details']['name'].get('family_name'):
-        names.append(passfort_data['input_data']['personal_details']['name']['family_name'])
+        names.append(passfort_data['input_data']
+                     ['personal_details']['name']['family_name'])
 
-    #Convert all names in lower case to compare
+    # Convert all names in lower case to compare
     names = list(map(lambda x: x.lower(), names))
 
     if 'fail' in names:
-        #all response will fail
+        # all response will fail
         demo_response = {}
 
     elif '1+1' in names:
-        #Mach with one database
+        # Mach with one database
         demo_response['electronic_id_check']['matches'].append(
             {
                 "database_name": databases[0]['name'],
@@ -43,7 +44,7 @@ def create_demo_response(passfort_data):
         )
 
     else:
-        #Mach all databases
+        # Mach all databases
         for database in databases:
             demo_response['electronic_id_check']['matches'].append(
                 {
@@ -61,4 +62,3 @@ def create_demo_response(passfort_data):
     }
 
     return response
-        
