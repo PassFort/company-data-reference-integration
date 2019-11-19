@@ -9,7 +9,7 @@ TRULIOO_RESPONSE_DATA = {
     'ProductName': 'Identity Verification',
     'Record': {
         'TransactionRecordID': '1ea59f23-6d9d-4559-8c9a-b1c145674ce8',
-        'RecordStatus': 'match',
+        'RecordStatus': 'nomatch',
         'DatasourceResults': [
             {
                 'DatasourceName': 'Credit Agency',
@@ -72,6 +72,7 @@ def test_ekyc_check_empty_package(client):
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == {
+        "decision": "ERROR",
         "output_data": {
         },
         "raw": {},
@@ -88,6 +89,7 @@ def test_ekyc_check_api_key_empty(client):
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == {
+        "decision": "ERROR",
         "output_data": {
         },
         "raw": {},
@@ -115,6 +117,7 @@ def test_ekyc_check_with_raw_data(client):
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == {
+        "decision": "FAIL",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
@@ -159,6 +162,7 @@ def test_ekyc_check_demo_fail_data(client):
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == {
+        "decision": "FAIL",
         "output_data": {
         },
         "raw": "Demo response, Generated Automatically",
@@ -192,7 +196,9 @@ def test_ekyc_check_demo_1_valid_data(client):
         "ADDRESS",
         "DOB"
     ]
+
     demo_response = {
+        "decision": "PASS",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {

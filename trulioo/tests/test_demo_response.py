@@ -14,6 +14,7 @@ def test_fail_package(client):
         }
     }
     demo_response = {
+        "decision": "FAIL",
         "output_data": {},
         "raw": "Demo response, Generated Automatically",
         "errors": []
@@ -40,6 +41,7 @@ def test_full_valid_package(client):
         "DOB"
     ]
     demo_response = {
+        "decision": "PASS",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
@@ -84,6 +86,7 @@ def test_1_plus_1_valid_package(client):
         "DOB"
     ]
     demo_response = {
+        "decision": "PASS",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {

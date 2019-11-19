@@ -56,6 +56,7 @@ def create_demo_response(passfort_data):
             )
 
     response = {
+        "decision": 'FAIL' if 'fail' in names else 'PASS',
         "output_data": demo_response,
         "raw": "Demo response, Generated Automatically",
         "errors": []
