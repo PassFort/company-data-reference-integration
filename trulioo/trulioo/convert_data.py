@@ -174,7 +174,6 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
         decision = 'FAIL'
 
     response_body = {
-        'decision': 'PASS' if trulioo_record.get('RecordStatus') == 'match' else 'FAIL',
         'decision': decision,
         'output_data': {},
         'raw': trulioo_data,
