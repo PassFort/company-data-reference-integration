@@ -114,8 +114,25 @@ def test_ekyc_check_with_raw_data(client):
     )
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
+    import pdb
+    pdb.set_trace()
     assert response.json == {
         "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [
+                    {
+                        "database_name": "Credit Agency",
+                        "database_type": "CREDIT",
+                        "matched_fields": []
+                    },
+                    {
+                        "database_name": "Credit Agency 3",
+                        "database_type": "CREDIT",
+                        "matched_fields": []
+                    }
+                ]
+            }
         },
         "raw": TRULIOO_RESPONSE_DATA,
         "errors": []

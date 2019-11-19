@@ -179,7 +179,6 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
             match = {
                 'database_name': datasource['DatasourceName'],
                 'database_type': 'CREDIT' if 'credit' in datasource['DatasourceName'].lower() else 'CIVIL',
-                'count': 1,
                 'matched_fields': [],
             }
 
@@ -253,7 +252,9 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
 
                 # if have matches add
                 if match['matched_fields']:
-                    matches.append(match)
+                    match['count'] = 1
+
+                matches.append(match)
 
         if matches:
             response_body['output_data']["entity_type"] = "INDIVIDUAL"
