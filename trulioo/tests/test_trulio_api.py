@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 import json
 from unittest.mock import Mock, patch
 from collections import namedtuple
@@ -8,6 +8,7 @@ from trulioo.api import consents
 from trulioo.api import verify
 
 Response = namedtuple('Response', ['status_code', 'json'])
+
 
 @patch('trulioo.api.requests.get', Mock(return_value=Response(200, lambda: 'Ok')))
 def test_authentication(client):
@@ -45,28 +46,23 @@ def test_empty_list_of_consents(client):
 def test_verify_request(mock_post_verify, client):
     user = 'dummy_user'
     password = 'dummy_pass'
-    verify(user, password, 'GB', {"PersonInfo":{"FirstGivenName":"Julia"}})
+    verify(user, password, 'GB', {"PersonInfo": {"FirstGivenName": "Julia"}})
 
     headers = {'Content-Type': 'application/json'}
     url = 'https://api.globaldatacompany.com/verifications/v1/verify'
 
     base_body = {
-        "AcceptTruliooTermsAndConditions": True, 
-        "CleansedAddress": False, 
-        "ConfigurationName": "Identity Verification", 
+        "AcceptTruliooTermsAndConditions": True,
+        "CleansedAddress": False,
+        "ConfigurationName": "Identity Verification",
         "CountryCode": 'GB',
-        "DataFields": {"PersonInfo":{"FirstGivenName":"Julia"}}, 
+        "DataFields": {"PersonInfo": {"FirstGivenName": "Julia"}},
         "VerboseMode": False,
         "ConsentForDataSources": ["Birth Registry"]
     }
 
     mock_post_verify.assert_called_with(
-        url, 
-        auth=(user, password), 
-        data=json.dumps(base_body), 
+        url,
+        auth=(user, password),
+        data=json.dumps(base_body),
         headers=headers)
-
-
-
-
-
