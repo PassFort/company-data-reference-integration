@@ -63,7 +63,7 @@ def get_national_id_type(country_code, number):
 
 def passfort_to_trulioo_data(passfort_data):
     trulioo_pkg = {}
-    country_code = 'GB'  # Default
+    country = pycountry.countries.get(alpha_3='GBR') # Default
 
     if passfort_data.get('input_data'):
         # Check Personal details
@@ -148,7 +148,6 @@ def passfort_to_trulioo_data(passfort_data):
                 # Convert the country code from 3 to 2 alpha ( like "GBR" to "GB")
                 country = pycountry.countries.get(
                     alpha_3=address_to_check['country'])
-                country_code = country.alpha_2
 
         # Check Communication
         if passfort_data['input_data'].get('contact_details'):
@@ -160,7 +159,19 @@ def passfort_to_trulioo_data(passfort_data):
             if passfort_data['input_data']['contact_details'].get('phone_number'):
                 trulioo_pkg['Communication']['Telephone'] = passfort_data['input_data']['contact_details']['phone_number']
 
-    return trulioo_pkg, country_code
+        # Driving licence
+        licence = next(
+            (doc for doc
+             in passfort_data['input_data'].get('documents_metadata', [])
+             if doc['document_type'] == 'DRIVING_LICENCE' and doc['country_code'] == country.alpha_3)
+            , None
+        )
+        if licence and licence['number']:
+            trulioo_pkg['DriverLicence'] = {'Number': licence['number']}
+            if licence['issuing_state']:
+                trulioo_pkg['DriverLicence']['State'] = licence['issuing_state']
+
+    return trulioo_pkg, country.alpha_2
 
 
 def trulioo_to_passfort_data(trulioo_request, trulioo_data):
@@ -209,7 +220,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                 if dob_field_check:
                     dob_fields.append(dob_field_check)
 
-            # If all the fiels belonging to dob found in the datasource filds are with match status
+            # If all the fields belonging to dob found in the datasource fields are matches
             if dob_fields and all(field["Status"] == "match" for field in dob_fields):
                 match['matched_fields'].append('DOB')
 
