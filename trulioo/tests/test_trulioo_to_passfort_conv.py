@@ -807,6 +807,27 @@ def test_record_with_national_id_match(client):
         }
 
 
+def test_record_error_missing_required_fields_generic(client):
+    trulioo_data = {'Errors': [
+        {'Code': '1001', 'Message': 'Missing required field: unsupported field name'}]}
+    response_body = trulioo_to_passfort_data({}, trulioo_data)
+    assert response_body == {
+        "output_data": {},
+        "raw": trulioo_data,
+        "errors": [{
+            'source': 'PROVIDER',
+            'code': 101,
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': [{'Code': '1001', 'Message': 'Missing required field: unsupported field name'}],
+            }),
+            'message': 'Missing required fields',
+        }]
+    }
+
+    assert 'timestamp' in response_body['errors'][0]['info']
+
+
 def test_record_error_missing_required_fields_1001(client):
     trulioo_data = {'Errors': [
         {'Code': '1001', 'Message': 'Missing required field: BuildingName'}]}
@@ -817,12 +838,13 @@ def test_record_error_missing_required_fields_1001(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 101,
-            'info': {
-                'raw': [{'Code': '1001', 'Message': 'Missing required field: BuildingName'}],
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': [{'Code': '1001', 'Message': 'Missing required field: BuildingName'}],
                 'missing_fields': [
                     '/address_history/0/premise',
                 ],
-            },
+            }),
             'message': 'Missing required fields',
         }]
     }
@@ -838,12 +860,13 @@ def test_record_error_missing_required_fields_4001(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 101,
-            'info': {
-                'raw': [{'Code': '4001', 'Message': 'Missing required field: BuildingName'}],
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': [{'Code': '4001', 'Message': 'Missing required field: BuildingName'}],
                 'missing_fields': [
                     '/address_history/0/premise',
                 ],
-            },
+            }),
             'message': 'Missing required fields',
         }]
     }
@@ -859,12 +882,13 @@ def test_record_error_missing_required_fields_3005(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 101,
-            'info': {
-                'raw': [{'Code': '3005', 'Message': 'Missing required field: BuildingName'}],
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': [{'Code': '3005', 'Message': 'Missing required field: BuildingName'}],
                 'missing_fields': [
                     '/address_history/0/premise',
                 ],
-            },
+            }),
             'message': 'Missing required fields',
         }]
     }
@@ -880,9 +904,10 @@ def test_record_error_missing_required_fields_concatened(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 101,
-            'info': {
-                'raw': [{'Code': '1001'}, {'Code': '4001'}, {'Code': '3005'}],
-            },
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': [{'Code': '1001'}, {'Code': '4001'}, {'Code': '3005'}],
+            }),
             'message': 'Missing required fields',
         }]
     }
@@ -897,12 +922,13 @@ def test_record_error_unknown_error(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 303,
-            'info': {
-                'raw': {
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': {
                     'Code': '2000',
                 },
-            },
-            'message': 'Unknown provider error',
+            }),
+            'message': "Provider Error: Unknown error while running 'Trulioo' service",
         }],
     }
 
@@ -916,11 +942,12 @@ def test_record_error_invalid_input_data_1006(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 201,
-            'info': {
-                'raw': {
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': {
                     'Code': '1006',
                 },
-            },
+            }),
             'message': 'The submitted data was invalid. Provider returned error code 1006'
         }]
     }
@@ -935,11 +962,25 @@ def test_record_error_invalid_input_data_1008(client):
         "errors": [{
             'source': 'PROVIDER',
             'code': 201,
-            'info': {
-                'raw': {
+            'info': PartialComparator({
+                'provider': 'Trulioo',
+                'original_error': {
                     'Code': '1008',
                 },
-            },
+            }),
             'message': 'The submitted data was invalid. Provider returned error code 1008'
         }]
     }
+
+
+class PartialComparator:
+    def __init__(self, partial_dict={}):
+        self.partial_dict = partial_dict
+
+    def __repr__(self):
+        return f'({self.__name__}) {repr(self.partial_dict)}'
+
+    def __eq__(self, other):
+        if type(other) is not dict:
+            return False
+        return self.partial_dict.items() <= other.items()
