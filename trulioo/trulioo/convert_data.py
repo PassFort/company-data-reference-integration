@@ -63,7 +63,7 @@ def get_national_id_type(country_code, number):
 
 def passfort_to_trulioo_data(passfort_data):
     trulioo_pkg = {}
-    country_code = 'GB'  # Default
+    country = pycountry.countries.get(alpha_3='GBR') # Default
 
     if passfort_data.get('input_data'):
         # Check Personal details
@@ -148,7 +148,6 @@ def passfort_to_trulioo_data(passfort_data):
                 # Convert the country code from 3 to 2 alpha ( like "GBR" to "GB")
                 country = pycountry.countries.get(
                     alpha_3=address_to_check['country'])
-                country_code = country.alpha_2
 
         # Check Communication
         if passfort_data['input_data'].get('contact_details'):
@@ -160,107 +159,122 @@ def passfort_to_trulioo_data(passfort_data):
             if passfort_data['input_data']['contact_details'].get('phone_number'):
                 trulioo_pkg['Communication']['Telephone'] = passfort_data['input_data']['contact_details']['phone_number']
 
-    return trulioo_pkg, country_code
+        # Driving licence
+        licence = next(
+            (doc for doc
+             in passfort_data['input_data'].get('documents_metadata', [])
+             if doc['document_type'] == 'DRIVING_LICENCE' and doc['country_code'] == country.alpha_3)
+            , None
+        )
+        if licence and licence['number']:
+            trulioo_pkg['DriverLicence'] = {'Number': licence['number']}
+            if licence['issuing_state']:
+                trulioo_pkg['DriverLicence']['State'] = licence['issuing_state']
+
+    return trulioo_pkg, country.alpha_2
 
 
 def trulioo_to_passfort_data(trulioo_request, trulioo_data):
-    # base response
+    trulioo_record = trulioo_data.get('Record', {})
+    errors = trulioo_to_passfort_errors(trulioo_data.get('Errors', []))
+    if trulioo_record.get('RecordStatus') == 'match':
+        decision = 'PASS'
+    elif errors:
+        decision = 'ERROR'
+    else:
+        decision = 'FAIL'
+
     response_body = {
-        "output_data": {
-        },
-        "raw": trulioo_data,
-        "errors": trulioo_to_passfort_errors(trulioo_data.get('Errors', [])),
+        'decision': decision,
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': errors,
     }
 
-    if trulioo_data.get('Record') and trulioo_data['Record'].get('DatasourceResults'):
-        matches = []
+    matches = []
+    for datasource in trulioo_record.get('DatasourceResults', []):
+        match = {
+            'database_name': datasource['DatasourceName'],
+            'database_type': 'CREDIT' if 'credit' in datasource['DatasourceName'].lower() else 'CIVIL',
+            'matched_fields': [],
+        }
 
-        for datasource in trulioo_data['Record']['DatasourceResults']:
+        if datasource.get('DatasourceFields'):
+            # check forename
+            forename_field = next(
+                (field for field in datasource['DatasourceFields'] if field["FieldName"] == "FirstGivenName"), None)
+            if forename_field and forename_field['Status'] == 'match':
+                match['matched_fields'].append('FORENAME')
 
-            match = {
-                'database_name': datasource['DatasourceName'],
-                'database_type': 'CREDIT' if 'credit' in datasource['DatasourceName'].lower() else 'CIVIL',
-                'matched_fields': [],
+            # check surname
+            surname_field = next(
+                (field for field in datasource['DatasourceFields'] if field["FieldName"] == "FirstSurName"), None)
+            if surname_field and surname_field['Status'] == 'match':
+                match['matched_fields'].append('SURNAME')
+
+            # check date of birthday (DOB)
+            dob_fields = []
+            for dob_field in ['DayOfBirth', 'MonthOfBirth', 'YearOfBirth']:
+                dob_field_check = next(
+                    (field for field in datasource['DatasourceFields'] if field["FieldName"] == dob_field), None)
+                if dob_field_check:
+                    dob_fields.append(dob_field_check)
+
+            # If all the fields belonging to dob found in the datasource fields are matches
+            if dob_fields and all(field["Status"] == "match" for field in dob_fields):
+                match['matched_fields'].append('DOB')
+
+            address_fields = []
+            for address_field in ['BuildingNumber',
+                                  'BuildingName',
+                                  'UnitNumber',
+                                  'StreetName',
+                                  'City',
+                                  'Suburb',
+                                  'County',
+                                  'StateProvinceCode',
+                                  'PostalCode']:
+                address_field_check = next(
+                    (field for field in datasource['DatasourceFields'] if field["FieldName"] == address_field), None)
+                if address_field_check:
+                    address_fields.append(address_field_check)
+            # If all the fiels belonging to address found in the datasource filds are with match status
+            address_sent = trulioo_request.get('Location', {})
+            fields_sent = set((
+                field for field, value in address_sent.items()
+                if value
+            ))
+
+            address_matches = {
+                field['FieldName']: field['Status']
+                for field in address_fields
             }
 
-            if datasource.get('DatasourceFields'):
-                # check forename
-                forename_field = next(
-                    (field for field in datasource['DatasourceFields'] if field["FieldName"] == "FirstGivenName"), None)
-                if forename_field and forename_field['Status'] == 'match':
-                    match['matched_fields'].append('FORENAME')
+            if is_full_address(fields_sent) and all((
+                address_matches.get(field_sent) == 'match' for field_sent in fields_sent
+            )):
+                match['matched_fields'].append('ADDRESS')
 
-                # check surname
-                surname_field = next(
-                    (field for field in datasource['DatasourceFields'] if field["FieldName"] == "FirstSurName"), None)
-                if surname_field and surname_field['Status'] == 'match':
-                    match['matched_fields'].append('SURNAME')
+            # check national id
+            national_id_field = next((field for field in datasource['DatasourceFields'] if field['FieldName'].lower() in [
+                'nationalid',
+                'health',
+                'socialservice',
+                'taxidnumber',
+            ]), None)
+            if national_id_field and national_id_field['Status'] == 'match':
+                match['matched_fields'].append('IDENTITY_NUMBER')
 
-                # check date of birthday (DOB)
-                dob_fields = []
-                for dob_field in ['DayOfBirth', 'MonthOfBirth', 'YearOfBirth']:
-                    dob_field_check = next(
-                        (field for field in datasource['DatasourceFields'] if field["FieldName"] == dob_field), None)
-                    if dob_field_check:
-                        dob_fields.append(dob_field_check)
+            # if have matches add
+            if match['matched_fields']:
+                match['count'] = 1
 
-                # If all the fiels belonging to dob found in the datasource filds are with match status
-                if dob_fields and (not next((field for field in dob_fields if field["Status"] == "nomatch"), False)):
-                    match['matched_fields'].append('DOB')
+            matches.append(match)
 
-                ## TODO - ADDRESS
-
-                address_fields = []
-                for address_field in ['BuildingNumber',
-                                      'BuildingName',
-                                      'UnitNumber',
-                                      'StreetName',
-                                      'City',
-                                      'Suburb',
-                                      'County',
-                                      'StateProvinceCode',
-                                      'PostalCode']:
-                    address_field_check = next(
-                        (field for field in datasource['DatasourceFields'] if field["FieldName"] == address_field), None)
-                    if address_field_check:
-                        address_fields.append(address_field_check)
-                # If all the fiels belonging to address found in the datasource filds are with match status
-                address_sent = trulioo_request.get('Location', {})
-                fields_sent = set((
-                    field for field, value in address_sent.items()
-                    if value
-                ))
-
-                address_matches = {
-                    field['FieldName']: field['Status']
-                    for field in address_fields
-                }
-
-                if is_full_address(fields_sent) and all((
-                    address_matches.get(field_sent) == 'match' for field_sent in fields_sent
-                )):
-                    match['matched_fields'].append('ADDRESS')
-
-                # check national id
-                national_id_field = next((field for field in datasource['DatasourceFields'] if field['FieldName'].lower() in [
-                    'nationalid',
-                    'health',
-                    'socialservice',
-                    'taxidnumber',
-                ]), None)
-                if national_id_field and national_id_field['Status'] == 'match':
-                    match['matched_fields'].append('IDENTITY_NUMBER')
-
-                # if have matches add
-                if match['matched_fields']:
-                    match['count'] = 1
-
-                matches.append(match)
-
-        if matches:
-            response_body['output_data']["entity_type"] = "INDIVIDUAL"
-            response_body['output_data']["electronic_id_check"] = {
-                "matches": matches}
+    if matches:
+        response_body['output_data']["entity_type"] = "INDIVIDUAL"
+        response_body['output_data']["electronic_id_check"] = {
+            "matches": matches}
 
     return response_body
 

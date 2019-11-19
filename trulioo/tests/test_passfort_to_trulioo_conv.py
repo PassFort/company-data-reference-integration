@@ -330,3 +330,49 @@ def test_communication_with_full_values(client):
         }
     }
     assert trulioo_request_data == output_data
+
+
+def test_driving_licence_with_full_values(client):
+    input_data = {
+        'input_data': {
+            'address_history': [
+                {
+                    'address': {
+                        "country": "USA",
+                        "type": "STRUCTURED",
+                    },
+                }
+            ],
+            'documents_metadata': [{
+                'document_type': 'DRIVING_LICENCE',
+                'number': '123456',
+                'country_code': 'USA',
+                'issuing_state': 'CA'
+            }]
+        }
+    }
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    output_data = {
+        'DriverLicence': {
+            'Number': '123456',
+            'State': 'CA'
+        },
+        'Location': {}
+    }
+    assert trulioo_request_data == output_data
+
+
+def test_driving_licence_with_wrong_country(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'DRIVING_LICENCE',
+                'number': '123456',
+                'country_code': 'USA',
+                'issuing_state': 'CA'
+            }]
+        }
+    }
+    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    output_data = {}
+    assert trulioo_request_data == output_data
