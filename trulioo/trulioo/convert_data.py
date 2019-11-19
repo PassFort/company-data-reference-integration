@@ -1,3 +1,4 @@
+from datetime import datetime
 import pycountry
 
 basic_components = {
@@ -213,7 +214,11 @@ def make_error(*, code, message, info={}, source='PROVIDER'):
         'code': code,
         'source': source,
         'message': message,
-        'info': info,
+        'info': {
+            'provider': 'Trulioo',
+            'timestamp': str(datetime.now()),
+            **info,
+        },
     }
 
 
@@ -242,7 +247,6 @@ def extract_passfort_missing_field(trulioo_error):
     message = trulioo_error.get('Message')
     if message:
         components = message.split('Missing required field: ')
-        print('components', components)
         if len(components) == 2:
             return missing_field_mapping.get(components[1])
 
@@ -250,7 +254,7 @@ def extract_passfort_missing_field(trulioo_error):
 
 
 def interpret_missing_field_errors(trulioo_errors):
-    info = {'raw': trulioo_errors}
+    info = {'original_error': trulioo_errors}
     missing_fields = [
         missing_field for missing_field in {
             extract_passfort_missing_field(trulioo_error)
@@ -281,15 +285,16 @@ def trulioo_to_passfort_errors(trulioo_errors):
                 code=201,
                 message=f'The submitted data was invalid. Provider returned error code {error_code}',
                 info={
-                    'raw': trulioo_error,
+                    'original_error': trulioo_error,
                 },
             ))
         else:
+            message = trulioo_error.get('Message', 'Unknown error')
             errors.append(make_error(
                 code=303,
-                message='Unknown provider error',
+                message=f"Provider Error: {message} while running 'Trulioo' service",
                 info={
-                    'raw': trulioo_error,
+                    'original_error': trulioo_error,
                 },
             ))
 

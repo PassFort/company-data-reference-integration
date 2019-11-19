@@ -62,9 +62,9 @@ class Ekyc_check(Resource):
                     'output_data': {},
                     'errors': [make_error(
                         code=302,
-                        message='Provider connection error',
+                        message="Provider Error: connection to 'Trulioo' service timed out",
                         info={
-                            'raw': raw,
+                            'original_error': raw,
                         },
                     )],
                 }
@@ -77,7 +77,7 @@ class Ekyc_check(Resource):
                         code=303,
                         message='Unknown provider error',
                         info={
-                            'raw': raw,
+                            'original_error': raw,
                         },
                     )],
                 }
