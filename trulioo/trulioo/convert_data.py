@@ -30,7 +30,7 @@ def get_national_id_type(country_code, number):
     if country_code == 'IND':
         return 'SocialService' if len(number) == 10 else 'NationalID'
     if country_code == 'MEX':
-        return 'SocialService' if len(number) == 13 else 'NationalID'
+        return 'SocialService' if len(number) in (12, 13) else 'NationalID'
     if country_code == 'AUS':
         return 'Health' if len(number) == 11 else 'SocialService'
     if country_code == 'RUS':
@@ -241,7 +241,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                 )):
                     match['matched_fields'].append('ADDRESS')
 
-                #check national id
+                # check national id
                 national_id_field = next((field for field in datasource['DatasourceFields'] if field['FieldName'].lower() in [
                     'nationalid',
                     'health',
@@ -291,6 +291,7 @@ missing_field_mapping = {
     'Telephone': '/contact_details/phone_number',
     'IPAddress': '/ip_location',
 }
+
 
 def extract_passfort_missing_field(trulioo_error):
     message = trulioo_error.get('Message')
