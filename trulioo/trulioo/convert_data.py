@@ -24,6 +24,42 @@ def is_full_address(components):
     ))
 
 
+def get_national_id_type(country_code, number):
+    if country_code == 'GBP':
+        return 'Health' if len(number) == 10 else 'SocialService'
+    if country_code == 'IND':
+        return 'SocialService' if len(number) == 10 else 'NationalID'
+    if country_code == 'MEX':
+        return 'SocialService' if len(number) == 13 else 'NationalID'
+    if country_code == 'AUS':
+        return 'Health' if len(number) == 11 else 'SocialService'
+    if country_code == 'RUS':
+        return 'TaxIDNumber' if len(number) == 12 else 'SocialService'
+
+    if country_code in [
+        'CHN',
+        'FIN',
+        'FRA',
+        'HKG',
+        'MYS',
+        'SGP',
+        'SWE',
+        'ESP',
+        'TUR',
+    ]:
+        return 'NationalID'
+
+    if country_code in [
+        'CAN',
+        'IRL',
+        'ITA',
+        'USA'
+    ]:
+        return 'SocialService'
+
+    return 'NationalID'
+
+
 def passfort_to_trulioo_data(passfort_data):
     trulioo_pkg = {}
     country_code = 'GB'  # Default
@@ -33,6 +69,15 @@ def passfort_to_trulioo_data(passfort_data):
         personal_details = passfort_data['input_data'].get('personal_details')
         if personal_details:
             trulioo_pkg['PersonInfo'] = {}
+
+            national_id = personal_details.get('national_identity_number')
+            if national_id:
+                trulioo_pkg['NationalIds'] = [
+                    {
+                        'Type': get_national_id_type(country_code, number),
+                        'Number': number,
+                    } for country_code, number in national_id.items()
+                ]
 
             # Check name
             if personal_details.get('name'):
@@ -196,6 +241,16 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                 )):
                     match['matched_fields'].append('ADDRESS')
 
+                #check national id
+                national_id_field = next((field for field in datasource['DatasourceFields'] if field['FieldName'].lower() in [
+                    'nationalid',
+                    'health',
+                    'socialservice',
+                    'taxidnumber',
+                ]), None)
+                if national_id_field and national_id_field['Status'] == 'match':
+                    match['matched_fields'].append('IDENTITY_NUMBER')
+
                 # if have matches add
                 if match['matched_fields']:
                     matches.append(match)
@@ -236,7 +291,6 @@ missing_field_mapping = {
     'Telephone': '/contact_details/phone_number',
     'IPAddress': '/ip_location',
 }
-
 
 def extract_passfort_missing_field(trulioo_error):
     message = trulioo_error.get('Message')
