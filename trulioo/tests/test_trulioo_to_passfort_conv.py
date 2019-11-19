@@ -7,6 +7,7 @@ def test_empty_package(client):
     response_body = trulioo_to_passfort_data({}, {})
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
         },
         "raw": {},
@@ -26,6 +27,7 @@ def test_record_with_empty_datasource_results(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
         },
         "raw": trulioo_data,
@@ -57,6 +59,7 @@ def test_record_with_one_datasource_without_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
@@ -98,6 +101,7 @@ def test_record_with_one_datasource_with_surname_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -140,6 +144,7 @@ def test_record_with_one_datasource_with_forename_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -190,6 +195,7 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -236,6 +242,7 @@ def test_record_with_one_datasource_with_dob_year_month_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -278,6 +285,7 @@ def test_record_with_one_datasource_with_dob_year_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -328,6 +336,7 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
@@ -375,6 +384,7 @@ def test_partial_address_match(client):
     }, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
@@ -430,6 +440,7 @@ def test_record_with_one_datasource_with_address_match(client):
     }, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -516,6 +527,7 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
     }, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -594,6 +606,7 @@ def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(clien
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -636,6 +649,7 @@ def test_record_with_one_datasource_with_database_type_credit(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -678,6 +692,7 @@ def test_record_with_one_datasource_with_database_type_civil(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -731,6 +746,7 @@ def test_record_with_two_datasource_with_diff_database_type(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
+        "decision": "FAIL",
         "output_data": {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
@@ -789,6 +805,7 @@ def test_record_with_national_id_match(client):
         response_body = trulioo_to_passfort_data({}, trulioo_data)
 
         assert response_body == {
+            "decision": "FAIL",
             "output_data": {
                 'entity_type': 'INDIVIDUAL',
                 'electronic_id_check': {
@@ -812,6 +829,7 @@ def test_record_error_missing_required_fields_generic(client):
         {'Code': '1001', 'Message': 'Missing required field: unsupported field name'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -833,6 +851,7 @@ def test_record_error_missing_required_fields_1001(client):
         {'Code': '1001', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -855,6 +874,7 @@ def test_record_error_missing_required_fields_4001(client):
         {'Code': '4001', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -877,6 +897,7 @@ def test_record_error_missing_required_fields_3005(client):
         {'Code': '3005', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -899,6 +920,7 @@ def test_record_error_missing_required_fields_concatened(client):
                                {'Code': '4001'}, {'Code': '3005'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -917,6 +939,7 @@ def test_record_error_unknown_error(client):
     trulioo_data = {'Errors': [{'Code': '2000'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -937,6 +960,7 @@ def test_record_error_invalid_input_data_1006(client):
     trulioo_data = {'Errors': [{'Code': '1006'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
@@ -957,6 +981,7 @@ def test_record_error_invalid_input_data_1008(client):
     trulioo_data = {'Errors': [{'Code': '1008'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
+        "decision": "ERROR",
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{

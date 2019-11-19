@@ -15,6 +15,7 @@ class Ekyc_check(Resource):
         request_json = request.json
         if not request_json:
             response_body = {
+                "decision": "ERROR",
                 "output_data": {
                 },
                 "raw": {},
@@ -31,6 +32,7 @@ class Ekyc_check(Resource):
                 request_json['credentials'].get('password')):
 
             response_body = {
+                "decision": "ERROR",
                 "output_data": {
                 },
                 "raw": {},
@@ -59,6 +61,7 @@ class Ekyc_check(Resource):
                     trulioo_request_data, trulioo_response_data)
             except ConnectTimeout:
                 return {
+                    'decision': 'ERROR',
                     'output_data': {},
                     'errors': [make_error(
                         code=302,
@@ -71,6 +74,7 @@ class Ekyc_check(Resource):
             except HTTPError as error:
                 raw = error.response.text
                 return {
+                    'decision': 'ERROR',
                     'output_data': {},
                     'raw': raw,
                     'errors': [make_error(
