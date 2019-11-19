@@ -1,3 +1,4 @@
+from datetime import datetime
 import pycountry
 
 basic_components = {
@@ -123,11 +124,8 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
         "output_data": {
         },
         "raw": trulioo_data,
-        "errors": []
+        "errors": trulioo_to_passfort_errors(trulioo_data.get('Errors', [])),
     }
-
-    # Check global errors
-    check_errors(trulioo_data, response_body)
 
     if trulioo_data.get('Record') and trulioo_data['Record'].get('DatasourceResults'):
         matches = []
@@ -216,38 +214,91 @@ def make_error(*, code, message, info={}, source='PROVIDER'):
         'code': code,
         'source': source,
         'message': message,
-        'info': info,
+        'info': {
+            'provider': 'Trulioo',
+            'timestamp': str(datetime.now()),
+            **info,
+        },
     }
 
 
-def check_errors(error_section, response_body):
-    # Check errors:
-    for error in error_section.get('Errors', []):
-        if error.get('Code') in ['InternalServerError', '2000']:
-            response_body['errors'].append(make_error(
-                code=303,
-                message='Unknown provider error',
-                info={
-                    'raw': error,
-                },
-            ))
+missing_field_mapping = {
+    'DayOfBirth': '/personal_details/dob',
+    'MonthOfBirth': '/personal_details/dob',
+    'YearOfBirth': '/personal_details/dob',
+    'FirstGivenName': '/personal_details/name/given_names/0',
+    'MiddleName': '/personal_details/name/given_names/1',
+    'FirstSurName': '/personal_details/name/family_name',
+    'BuildingNumber': '/address_history/0/street_number',
+    'BuildingName': '/address_history/0/premise',
+    'UnitNumber': '/address_history/0/subpremise',
+    'StreetName': '/address_history/0/route',
+    'PostalCode': '/address_history/0/postal_code',
+    'Suburb': '/address_history/0/postal_town',
+    'City': '/address_history/0/locality',
+    'StateProvinceCode': '/address_history/0/state_province',
+    'EmailAddress': '/contact_details/email',
+    'Telephone': '/contact_details/phone_number',
+    'IPAddress': '/ip_location',
+}
 
-        elif error.get('Code') in ['1001', '4001', '3005'] and\
-                not next((error for error in response_body['errors'] if error['code'] == 101), None):
-            response_body['errors'].append(make_error(
-                code=101,
-                message=error.get('Message') or 'Missing required fields',
-                info={
-                    'raw': error,
-                },
-            ))
 
-        elif error.get('Code') in ['1006', '1008'] and\
-                not next((error for error in response_body['errors'] if error['code'] == 201), None):
-            response_body['errors'].append(make_error(
+def extract_passfort_missing_field(trulioo_error):
+    message = trulioo_error.get('Message')
+    if message:
+        components = message.split('Missing required field: ')
+        if len(components) == 2:
+            return missing_field_mapping.get(components[1])
+
+    return None
+
+
+def interpret_missing_field_errors(trulioo_errors):
+    info = {'original_error': trulioo_errors}
+    missing_fields = [
+        missing_field for missing_field in {
+            extract_passfort_missing_field(trulioo_error)
+            for trulioo_error in trulioo_errors
+        }
+        if missing_field is not None
+    ]
+
+    if missing_fields:
+        info['missing_fields'] = missing_fields
+
+    return make_error(
+        code=101,
+        message='Missing required fields',
+        info=info,
+    )
+
+
+def trulioo_to_passfort_errors(trulioo_errors):
+    errors = []
+    missing_field_errors = []
+    for trulioo_error in trulioo_errors:
+        error_code = trulioo_error.get('Code')
+        if error_code in ('1001', '4001', '3005'):
+            missing_field_errors.append(trulioo_error)
+        elif error_code in ('1006', '1008'):
+            errors.append(make_error(
                 code=201,
-                message=f'The submitted data was invalid. Provider returned error code {error.get("Code")}',
+                message=f'The submitted data was invalid. Provider returned error code {error_code}',
                 info={
-                    'raw': error,
+                    'original_error': trulioo_error,
                 },
             ))
+        else:
+            message = trulioo_error.get('Message', 'Unknown error')
+            errors.append(make_error(
+                code=303,
+                message=f"Provider Error: {message} while running 'Trulioo' service",
+                info={
+                    'original_error': trulioo_error,
+                },
+            ))
+
+    if missing_field_errors:
+        errors.append(interpret_missing_field_errors(missing_field_errors))
+
+    return errors
