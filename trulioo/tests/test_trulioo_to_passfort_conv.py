@@ -723,6 +723,58 @@ def test_record_with_two_datasource_with_diff_database_type(client):
     }
 
 
+def test_record_with_national_id_match(client):
+    for id_field_name in [
+        'nationalid',
+        'health',
+        'socialservice',
+        'taxidnumber',
+    ]:
+        trulioo_data = {
+            'Record': {
+                'DatasourceResults': [
+                    {
+                        'DatasourceName': 'National id database',
+                        'DatasourceFields': [
+                            {
+                                'FieldName': 'FirstSurName',
+                                'Status': 'match'
+                            },
+                            {
+                                'FieldName': id_field_name,
+                                'Status': 'match'
+                            }
+                        ],
+                        'Errors': [],
+                        'FieldGroups': []
+                    },
+                ],
+                'Errors': []
+            },
+            'Errors': []
+        }
+
+        response_body = trulioo_to_passfort_data({}, trulioo_data)
+
+        assert response_body == {
+            "output_data": {
+                'entity_type': 'INDIVIDUAL',
+                'electronic_id_check': {
+                    'matches': [
+                        {
+                            'database_name': 'National id database',
+                            'database_type': 'CIVIL',
+                            'matched_fields': ['SURNAME', 'IDENTITY_NUMBER'],
+                            'count': 1,
+                        },
+                    ]
+                }
+            },
+            "raw": trulioo_data,
+            "errors": []
+        }
+
+
 def test_record_error_missing_required_fields_generic(client):
     trulioo_data = {'Errors': [
         {'Code': '1001', 'Message': 'Missing required field: unsupported field name'}]}
