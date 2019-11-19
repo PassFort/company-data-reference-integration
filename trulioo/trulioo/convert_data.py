@@ -210,7 +210,7 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
                     dob_fields.append(dob_field_check)
 
             # If all the fiels belonging to dob found in the datasource filds are with match status
-            if dob_fields and (not next((field for field in dob_fields if field["Status"] == "nomatch"), False)):
+            if dob_fields and all((field["Status"] == "match" for field in dob_fields):
                 match['matched_fields'].append('DOB')
 
             address_fields = []
