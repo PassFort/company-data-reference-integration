@@ -279,10 +279,9 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
     return response_body
 
 
-def make_error(*, code, message, info={}, source='PROVIDER'):
+def make_error(*, code, message, info={}):
     return {
         'code': code,
-        'source': source,
         'message': message,
         'info': {
             'provider': 'Trulioo',

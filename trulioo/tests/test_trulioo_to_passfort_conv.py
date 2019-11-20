@@ -833,7 +833,6 @@ def test_record_error_missing_required_fields_generic(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -855,7 +854,6 @@ def test_record_error_missing_required_fields_1001(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -878,7 +876,6 @@ def test_record_error_missing_required_fields_4001(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -901,7 +898,6 @@ def test_record_error_missing_required_fields_3005(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -924,7 +920,6 @@ def test_record_error_missing_required_fields_concatened(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -943,7 +938,6 @@ def test_record_error_unknown_error(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 303,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -964,7 +958,6 @@ def test_record_error_invalid_input_data_1006(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 201,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -985,7 +978,6 @@ def test_record_error_invalid_input_data_1008(client):
         "output_data": {},
         "raw": trulioo_data,
         "errors": [{
-            'source': 'PROVIDER',
             'code': 201,
             'info': PartialComparator({
                 'provider': 'Trulioo',
