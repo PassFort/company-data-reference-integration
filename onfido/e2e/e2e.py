@@ -150,6 +150,7 @@ url = 'http://127.0.0.1:8001/ekyc-check'
 
 
 class EndToEndTests(unittest.TestCase):
+    @unittest.skip("Need new test credentials ")
     def test_success_correct_shape(self):
         response = requests.request('POST', url, json=mock_request)
 
@@ -163,6 +164,7 @@ class EndToEndTests(unittest.TestCase):
         self.assertIn('applicant', json_data['raw'])
         self.assertEqual(json_data['errors'], [])
 
+    @unittest.skip("Need new test credentials ")
     def test_failed_applicant(self):
         response = requests.request('POST', url, json=mock_failed_applicant_request)
 
