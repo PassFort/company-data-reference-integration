@@ -148,7 +148,7 @@ class IdentityReportItemNonUK(IdentityReportItem):
                 }
 
         sources = self.properties.sources or ['Unknown Database']
-        return [map_source(source) for source in self.properties.sources]
+        return [map_source(source) for source in sources]
 
 
 class IdentityReportInnerBreakdown(Model):
