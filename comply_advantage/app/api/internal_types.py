@@ -228,7 +228,7 @@ class ComplyAdvantageMatch(Model):
         (
             DictType(ModelType(ComplyAdvantageMatchTypeDetails), default={}),
             ListType
-        ), field=BaseType)
+        ), field=BaseType, default=[])
 
     def to_events(self, share_url: StringType, config: ComplyAdvantageConfig):
         if self.match_types_details:
