@@ -4,7 +4,7 @@ default_setup: &default_setup
         at: workspace
     - add_ssh_keys:
         fingerprints:
-            - "e4:b4:92:9b:6a:57:f5:8a:5d:ee:0a:29:b4:6a:cf:65"
+            - "ac:6b:35:cb:bd:84:53:fb:16:67:ea:91:d3:bc:91:f3"
     - run: sudo pip install pipenv==2018.7.1
 
 
@@ -15,7 +15,7 @@ aliases:
     - &auth_ssh
         add_ssh_keys:
             fingerprints:
-                - "e4:b4:92:9b:6a:57:f5:8a:5d:ee:0a:29:b4:6a:cf:65"
+                - "ac:6b:35:cb:bd:84:53:fb:16:67:ea:91:d3:bc:91:f3"
     - &setup_gcp
         run:
           name: Authenticate to GCP
@@ -28,7 +28,7 @@ aliases:
       docker:
         - image: passfort/python-builder
       environment:
-        - GITHUB_KEY_LOCATION: id_rsa_e4b4929b6a57f58a5dee0a29b46acf65
+
       steps:
         - checkout
         - *attach_to_workspace
