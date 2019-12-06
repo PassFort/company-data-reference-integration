@@ -178,3 +178,30 @@ class TestGetResults(unittest.TestCase):
 
             self.assertEqual(result['errors'], [])
             self.assertEqual(len(result['events']), 9)
+
+
+
+class TestFieldDefaultValue(unittest.TestCase):
+
+    @responses.activate
+    def test_field_default_value(self):
+        search_ids = []
+
+        mock_response = get_response_from_file(f'reproduce_default_value_error', folder='test_data')
+        search_id = mock_response["content"]["data"]["id"]
+        search_ids.append(search_id)
+        responses.add(
+            responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}', json=mock_response
+        )
+        responses.add(
+            responses.POST, f'{SEARCH_REQUEST_URL}', json=mock_response
+        )
+
+        result = get_result_by_search_ids(
+            ComplyAdvantageConfig(),
+            ComplyAdvantageCredentials({
+                'api_key': 'TEST'
+            }),
+            search_ids
+        )
+        self.assertEqual(len(result['errors']), 0)
