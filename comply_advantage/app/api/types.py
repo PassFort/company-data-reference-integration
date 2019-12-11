@@ -33,13 +33,19 @@ def validate_model(validation_model):
     return validates_model
 
 
-def validate_partial_date(value):
+def parse_partial_date(value):
     for fmt in ['%Y-%m-%d', '%Y-%m', '%Y']:
         try:
             return datetime.datetime.strptime(value, fmt)
         except (ValueError, TypeError):
             continue
-    raise ValidationError(f'Input is not valid date: {value}')
+
+    return None
+
+
+def validate_partial_date(value):
+    if parse_partial_date(value) is None:
+        raise ValidationError(f'Input is not valid date: {value}')
 
 
 @unique
@@ -139,10 +145,10 @@ class PersonalDetails(Model):
     def year_from_dob(self):
         if self.dob is None:
             return None
-        try:
-            return datetime.datetime.strptime(self.dob, '%Y').date().year
-        except (ValueError, TypeError):
-            return None
+
+        maybe_date = parse_partial_date(self.dob)
+
+        return maybe_date.year if maybe_date is not None else maybe_date
 
 
 class CompanyMetadata(Model):
