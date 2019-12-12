@@ -244,6 +244,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_cifas:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo cifas > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build_comply_advantage:
         <<: *build
 
@@ -275,6 +286,9 @@ jobs:
         <<: *build
 
     build_uk_charities_commission:
+        <<: *build
+
+    build_cifas:
         <<: *build
 
     lint:
@@ -320,6 +334,9 @@ jobs:
         <<: *unit
 
     unit_uk_charities_commission:
+        <<: *unit
+
+    unit_cifas:
         <<: *unit
 
     e2e_comply_advantage:
@@ -382,6 +399,9 @@ jobs:
     deploy_uk_charities_commission_staging:
         <<: *deploy_staging_common
 
+    deploy_cifas_staging:
+        <<: *deploy_staging_common
+
     deploy_comply_advantage_production:
       <<: *deploy_production_common
 
@@ -414,6 +434,9 @@ jobs:
 
     deploy_uk_charities_commission_production:
         <<: *deploy_production_common
+
+    deploy_cifas_staging:
+        <<: *deploy_staging_common
 
 workflows:
     version: 2
@@ -720,6 +743,30 @@ workflows:
                 requires:
                   - unit_uk_charities_commission
                   - e2e_uk_charities_commission
+                filters:
+                    branches:
+                        only:
+                          - master
+
+    cifas:
+        jobs:
+            - set_integration_cifas
+            - build_cifas:
+                requires:
+                  - set_integration_cifas
+            - unit_cifas:
+                requires:
+                  - build_cifas
+            - deploy_cifas_staging:
+                requires:
+                  - unit_cifas
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_cifas_production:
+                requires:
+                  - unit_cifas
                 filters:
                     branches:
                         only:
