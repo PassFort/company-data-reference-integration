@@ -139,7 +139,7 @@ class TestCompanyReport(unittest.TestCase):
 
             }
         )
-        
+
     def test_handles_missing_data(self):
         report = CreditSafeCompanyReport.from_json({
             'companyId': 'GB001-0-09565115',
@@ -704,6 +704,35 @@ class TestMergingEntities(unittest.TestCase):
         self.assertIsNotNone(associates[0].officer)
         self.assertIsNotNone(associates[0].psc)
         self.assertEqual(associates[0].entity_type, 'COMPANY')
+
+    def test_merges_and_processes_unknown_director_with_company_psc_and_shareholder(self):
+        self.unknown_officer_deduplicator.add_shareholders(
+            [
+                CreditsafeSingleShareholder({
+                    'name': 'some star',
+                    'entity_type': 'COMPANY'
+                })
+            ]
+        )
+        self.unknown_officer_deduplicator.add_pscs(
+            [
+                PersonOfSignificantControl({
+                    'name': 'some star',
+                    'personType': 'Company'
+                })
+            ]
+        )
+        associates = self.unknown_officer_deduplicator.associates()
+        self.assertEqual(len(associates), 1)
+
+        self.assertIsNotNone(associates[0].shareholder)
+        self.assertIsNotNone(associates[0].officer)
+        self.assertIsNotNone(associates[0].psc)
+        self.assertEqual(associates[0].entity_type, 'COMPANY')
+
+        associate = process_associate_data(associates[0], 'GBR', None)
+        self.assertEqual(associate.entity_type, 'COMPANY')
+
 
     def test_does_not_merge_individual_director_with_company_psc(self):
         self.individual_officer_deduplicator.add_pscs(
