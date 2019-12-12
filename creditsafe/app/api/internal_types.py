@@ -775,14 +775,20 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
     search_data = None
     default_entity = associate_data.entity_type
     if associate_data.entity_type != INDIVIDUAL_ENTITY:
-        default_entity = COMPANY_ENTITY
-        if associate_data.officer:
-            default_entity = associate_data.officer.default_entity_type
-            name = associate_data.officer.name
-        elif associate_data.shareholder:
+        default_entity = INDIVIDUAL_ENTITY
+        if associate_data.shareholder:
             name = associate_data.shareholder.name
-        else:
+            if associate_data.shareholder.entity_type is not None:
+                default_entity = associate_data.shareholder.entity_type
+        elif associate_data.psc:
             name = associate_data.psc.name
+            if associate_data.psc.entity_type is not None:
+                default_entity = associate_data.psc.entity_type
+        else:
+            # Officer has lowest priority as CreditSafe does not communicate whether
+            # an officer is an individual or person reliably
+            name = associate_data.officer.name
+            default_entity = associate_data.officer.default_entity_type
 
         if request_handler and not associate_data.skip_search():
             # only search if we have to
@@ -815,7 +821,6 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
     associate_data.result = result
     return result
 
-
 def merge_associates(
         directors,
         unique_shareholders,
@@ -829,7 +834,15 @@ def merge_associates(
     processing_queue = duplicate_resolver.associates()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        for obj in processing_queue:
-            executor.submit(process_associate_data, obj, country_of_incorporation, request_handler)
+        jobs = [executor.submit(process_associate_data, obj, country_of_incorporation, request_handler) for obj in processing_queue]
+        concurrent.futures.wait(jobs, return_when=concurrent.futures.FIRST_EXCEPTION)
+        failed_jobs = filter(lambda e: e is not None, map(lambda j: j.exception(), jobs))
+        try:
+            e = next(failed_jobs)
+        except StopIteration:
+            pass
+        else:
+            raise e
+
 
     return [a.result for a in processing_queue]
