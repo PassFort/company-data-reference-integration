@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <FullSearchResponse xmlns="http://objects.find-cifas.org.uk/Direct">
+            <MemberSearchReference>4wq6d465wq3</MemberSearchReference>
+            <FINDsearchReference>29255623</FINDsearchReference>
+            <SearchFeedback>
+                <PartySearchFeedback>
+                    <PartySequence>1</PartySequence>
+                    <UnexecutedDMR>C01F</UnexecutedDMR>
+                    <UnexecutedDMR>C01G</UnexecutedDMR>
+                    <UnexecutedDMR>C02A</UnexecutedDMR>
+                    <UnexecutedDMR>C02B</UnexecutedDMR>
+                    <UnexecutedDMR>C02C</UnexecutedDMR>
+                    <UnexecutedDMR>C02D</UnexecutedDMR>
+                    <UnexecutedDMR>C02E</UnexecutedDMR>
+                    <UnexecutedDMR>C06A</UnexecutedDMR>
+                    <UnexecutedDMR>C06B</UnexecutedDMR>
+                    <UnexecutedDMR>C09A</UnexecutedDMR>
+                    <UnexecutedDMR>C09B</UnexecutedDMR>
+                    <UnexecutedDMR>C10A</UnexecutedDMR>
+                    <UnexecutedDMR>C10B</UnexecutedDMR>
+                    <UnexecutedDMR>C11A</UnexecutedDMR>
+                    <UnexecutedDMR>C11B</UnexecutedDMR>
+                </PartySearchFeedback>
+            </SearchFeedback>
+        </FullSearchResponse>
+    </soap:Body>
+</soap:Envelope>
