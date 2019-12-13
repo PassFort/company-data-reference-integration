@@ -209,8 +209,8 @@ class TestCompanyReport(unittest.TestCase):
                             'currency_code': 'GBP',
                             'value': 7953.0,
                             'value_type': 'CURRENCY'
-                        },
-                        'yoy': None},
+                        }
+                    },
                     {
                         'group_name': 'profit_before_tax',
                         'name': 'audit_fees',
@@ -218,41 +218,34 @@ class TestCompanyReport(unittest.TestCase):
                             'currency_code': 'GBP',
                             'value': 0.0,
                             'value_type': 'CURRENCY'
-                        },
-                        'yoy': None}
+                        }
+                    }
                 ],
                 'groups': [
                     {
                         'name': 'turnover',
-                        'value': {'currency_code': 'GBP','value': None,'value_type': 'CURRENCY'},
-                        'yoy': None
+                        'value': {'currency_code': 'GBP', 'value_type': 'CURRENCY'},
                     },
                     {
                         'name': 'operating_profit',
                         'value': {
                             'currency_code': 'GBP',
-                            'value': None,
                             'value_type': 'CURRENCY'
-                        },
-                        'yoy': None
+                        }
                     },
                     {
                         'name': 'profit_before_tax',
                         'value': {
                             'currency_code': 'GBP',
-                            'value': None,
                             'value_type': 'CURRENCY'
-                        },
-                        'yoy': None
+                        }
                     },
                     {
                         'name': 'retained_profit',
                         'value': {
                             'currency_code': 'GBP',
-                            'value': None,
                             'value_type': 'CURRENCY'
-                        },
-                        'yoy': None
+                        }
                     }],
                 'statement_type': 'PROFIT_AND_LOSS'
             }
@@ -293,12 +286,7 @@ class TestCompanyReport(unittest.TestCase):
                 'name': 'PASSFORT LIMITED',
                 'number': '09565115',
                 'company_type': 'Unknown',
-                'country_of_incorporation': 'GBR',
-                'financials': {
-                    'credit_history': [],
-                    'statements': [],
-                    'contract_limit': None,
-                }
+                'country_of_incorporation': 'GBR'
             }
         )
 
@@ -1094,9 +1082,8 @@ class TestFinancials(unittest.TestCase):
                         'date': '2009-08-20 00:00:00',
                         'credit_rating': {'value': '21', 'description': 'High Risk'}
                     }
-                ],
-                'statements': [],
-                'contract_limit': None}
+                ]
+            }
         )
 
     def test_handles_missing_value_and_description(self):
@@ -1128,9 +1115,7 @@ class TestFinancials(unittest.TestCase):
             {
                 'credit_history': [{
                     'date': '2011-03-29 00:00:00'
-                }],
-                'statements': [],
-                'contract_limit': None
+                }]
             }
         )
 
@@ -1155,9 +1140,7 @@ class TestFinancials(unittest.TestCase):
             {
                 'credit_history': [{
                     'date': '2011-03-29 00:00:00'
-                }],
-                'statements': [],
-                'contract_limit': None
+                }]
             }
         )
 
@@ -1189,8 +1172,6 @@ class TestFinancials(unittest.TestCase):
                     'date': '2011-03-29 00:00:00',
                     'credit_rating': {'value': '20'},
                     'international_rating': {'value': 'A'}
-                }],
-                'statements': [],
-                'contract_limit': None
+                }]
             }
         )

@@ -242,6 +242,9 @@ class StatementValue(Model):
     value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
     currency_code = StringType(default=None)
 
+    class Options:
+        serialize_when_none = False
+
 
 class StatementEntry(Model):
     name = StringType(required=True)
@@ -254,6 +257,8 @@ class StatementEntry(Model):
         if self.yoy:
             return float(self.yoy)
 
+    class Options:
+        serialize_when_none = False
 
 class StatementEntryGroup(Model):
     name = StringType(required=True)
@@ -264,6 +269,9 @@ class StatementEntryGroup(Model):
     def yoy_out(self):
         if self.yoy:
             return float(self.yoy)
+
+    class Options:
+        serialize_when_none = False
 
 
 class Statement(Model):
@@ -282,6 +290,9 @@ class Financials(Model):
     credit_history = ListType(ModelType(CreditChangeEntry), default=[])
     contract_limit = ModelType(MonetaryValue, default=None)
     statements = ListType(ModelType(Statement), default=[])
+
+    class Options:
+        serialize_when_none = False
 
 
 class PassFortMetadata(Model):
