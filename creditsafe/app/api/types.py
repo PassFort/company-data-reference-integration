@@ -207,7 +207,7 @@ class MonetaryValue(Model):
     value = DecimalType(required=True)
 
     @serializable(serialized_name="value")
-    def percentage_out(self):
+    def value_out(self):
         return float(self.value)
 
 
