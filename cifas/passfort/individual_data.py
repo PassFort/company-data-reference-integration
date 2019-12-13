@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from dataclasses_json import config
 from passfort import EntityType
 from passfort.date import PartialDate
+from passfort.cifas_search import CifasSearch
 
 @dataclass
 class FullName:
@@ -22,8 +23,14 @@ class PersonalDetails:
 
 @dataclass
 class Address:
-    street_number: Optional[str]
-    premise: Optional[str]
+    street_number: Optional[str] = None
+    premise: Optional[str] = None
+    subpremise: Optional[str] = None
+    route: Optional[str] = None
+    locality: Optional[str] = None
+    postal_town: Optional[str] = None
+    postal_code: Optional[str] = None
+    country: Optional[str] = None
 
 
 @dataclass
@@ -46,6 +53,7 @@ class BankingDetails:
 class IndividualData:
     personal_details: PersonalDetails
     address_history: List[AddressHistoryItem]
-    contact_details: Optional[ContactDetails]
-    banking_details: Optional[BankingDetails]
+    contact_details: Optional[ContactDetails] = None
+    banking_details: Optional[BankingDetails] = None
+    cifas_search: Optional[CifasSearch] = None
     entity_type: EntityType = EntityType.INDIVIDUAL

@@ -5,12 +5,12 @@ from requests.exceptions import HTTPError
 
 from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest, IndividualParty, StructuredAddress
-from passfort.cifas_search import CifasConfig, CifasCredentials
+from passfort.cifas_check import CifasConfig, CifasCredentials
 from datetime import date
 
 
 def read_demo_file(name: str) -> str:
-    with open(path.join(path.dirname(__file__), '..', 'passfort_demo', name)) as file:
+    with open(path.join(path.dirname(__file__), name)) as file:
         return file.read()
 
 

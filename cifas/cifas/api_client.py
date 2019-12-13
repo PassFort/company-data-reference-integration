@@ -6,7 +6,7 @@ from zeep import Client
 from zeep.transports import Transport
 from requests import Session
 from requests.exceptions import HTTPError
-from passfort.cifas_search import CifasCredentials, CifasConfig
+from passfort.cifas_check import CifasCredentials, CifasConfig
 from cifas.search import FullSearchRequest, FullSearchResponse
 from cifas.soap_header import StandardHeader
 

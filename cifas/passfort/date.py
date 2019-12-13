@@ -18,6 +18,7 @@ class DatePrecision(Enum):
 
 class PartialDate:
     value: date
+    precision: DatePrecision
 
     def __init__(self, value: str, precision: DatePrecision):
         assert type(value) is str
