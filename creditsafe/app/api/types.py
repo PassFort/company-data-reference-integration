@@ -10,7 +10,7 @@ from schematics import Model
 from schematics.exceptions import DataError, ValidationError
 from schematics.types.serializable import serializable
 from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType, \
-    UTCDateTimeType
+    UTCDateTimeType, BaseType
 
 
 # TODO JSONDECODE
@@ -237,9 +237,51 @@ class CreditChangeEntry(Model):
         serialize_when_none = False
 
 
+class StatementValue(Model):
+    value = BaseType(default=None)
+    value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
+    currency_code = StringType(default=None)
+
+
+class StatementEntry(Model):
+    name = StringType(required=True)
+    value = ModelType(StatementValue, default=None)
+    yoy = DecimalType(default=None)
+    group_name = StringType(default=None)
+
+    @serializable(serialized_name="yoy")
+    def yoy_out(self):
+        if self.yoy:
+            return float(self.yoy)
+
+
+class StatementEntryGroup(Model):
+    name = StringType(required=True)
+    value = ModelType(StatementValue, default=None)
+    yoy = DecimalType(default=None)
+
+    @serializable(serialized_name="yoy")
+    def yoy_out(self):
+        if self.yoy:
+            return float(self.yoy)
+
+
+class Statement(Model):
+    statement_type = StringType(required=True, choices=['PROFIT_AND_LOSS', 'BALANCE_SHEET'])
+    currency_code = StringType(default=None)
+    date = UTCDateTimeType(required=True) # (Y-M-D, Y-M, or Y)
+    groups = ListType(ModelType(StatementEntryGroup), default=[])
+    entries = ListType(ModelType(StatementEntry), default=[])
+
+    @serializable(serialized_name="date")
+    def date_out(self):
+        return self.date.strftime("%Y-%m-%d")
+
+
 class Financials(Model):
     credit_history = ListType(ModelType(CreditChangeEntry), default=[])
     contract_limit = ModelType(MonetaryValue, default=None)
+    statements = ListType(ModelType(Statement), default=[])
 
 
 class PassFortMetadata(Model):
