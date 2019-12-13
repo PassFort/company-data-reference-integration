@@ -3,7 +3,7 @@ import unittest
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
     build_resolver_id, PersonOfSignificantControl, CreditsafeSingleShareholder
-from .types import SearchInput
+from .types import SearchInput, Financials
 from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload
 
 
@@ -135,8 +135,41 @@ class TestCompanyReport(unittest.TestCase):
                 'structured_company_type': {
                     'is_limited': True,
                     'is_public': False
+                },
+                'financials': {
+                    'contract_limit': {
+                        'currency_code': 'GBP', 'value': 49500.0
+                    },
+                    'credit_history': [
+                        {
+                            'credit_limit': {'currency_code': 'GBP', 'value': 33000.0},
+                            'credit_rating': {'value': '96', 'description': 'Very Low Risk'},
+                            'international_rating': {'value': 'A', 'description': 'Very Low Risk'},
+                            'date': '2018-03-08 23:56:33'
+                        },
+                        {
+                            'credit_limit': {'currency_code': 'GBP', 'value': 25000.0},
+                            'credit_rating': {'value': '87', 'description': 'Very Low Risk'},
+                            'international_rating': {'value': 'A', 'description': 'Very Low Risk'},
+                            'date': '2017-03-04 22:36:27'
+                        },
+                        {
+                            'credit_limit': {'currency_code': 'GBP', 'value': 46000.0},
+                            'credit_rating': {'value': '95', 'description': 'Very Low Risk'},
+                            'date': '2016-08-02 03:41:18'
+                        },
+                        {
+                            'credit_limit': {'currency_code': 'GBP', 'value': 500.0},
+                            'credit_rating': {'value': '47', 'description': 'Moderate Risk'},
+                            'date': '2016-07-07 12:44:15'
+                        },
+                        {
+                            'credit_limit': {'currency_code': 'GBP', 'value': 500.0},
+                            'credit_rating': {'value': '49', 'description': 'Moderate Risk'},
+                            'date': '2015-04-30 15:13:03'
+                        }
+                    ]
                 }
-
             }
         )
 
@@ -175,7 +208,11 @@ class TestCompanyReport(unittest.TestCase):
                 'name': 'PASSFORT LIMITED',
                 'number': '09565115',
                 'company_type': 'Unknown',
-                'country_of_incorporation': 'GBR'
+                'country_of_incorporation': 'GBR',
+                'financials': {
+                    'credit_history': [],
+                    'contract_limit': None,
+                }
             }
         )
 
@@ -894,3 +931,205 @@ class TestMergingEntities(unittest.TestCase):
         self.assertIsNotNone(associates[1].psc)
         self.assertEqual(associates[0].entity_type, 'COMPANY')
         self.assertEqual(associates[1].entity_type, 'INDIVIDUAL')
+
+
+class TestFinancials(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.base_metadata = {
+            'companyId': 'xyz',
+            'companySummary': {
+                'businessName': 'TEST',
+                'country': 'GB',
+                'companyNumber': 'UK124',
+                'companyRegistrationNumber': '01234',
+                'companyStatus': {}
+            },
+            'companyIdentification': {
+                'basicInformation': {
+                    'registeredCompanyName': 'TEST',
+                    'companyRegistrationNumber': '01234',
+                    'country': 'GB',
+                    'legalForm': {
+                        'description': 'Unknown'
+                    },
+                    'companyStatus': {}
+                }
+            },
+            'contactInformation': {
+                'mainAddress': {
+                    'type': 'Some Address',
+                    'postalCode': 'E1 6QH'
+                }
+            }
+        }
+        cls.maxDiff = None
+    
+    def test_handles_missing_entries(self):
+        report = CreditSafeCompanyReport.from_json({
+            **self.base_metadata,
+            'additionalInformation': {
+                'creditLimitHistory': [
+                    {
+                        'companyValue': {
+                            'currency': 'GBP',
+                            'value': 0
+                        },
+                        'date': '2011-03-29T00:00:00Z'
+                    },
+                    {
+                        'companyValue': {
+                            'currency': 'GBP',
+                            'value': 0
+                        },
+                        'date': '2009-08-27T00:00:00Z'
+                    }
+                ],
+                'ratingHistory': [
+                    {
+                        "companyValue": 6,
+                        "date": "2011-03-29T00:00:00Z",
+                        "ratingDescription": "High Risk"
+                    },
+                    {
+                        "companyValue": 32,
+                        "date": "2010-09-20T00:00:00Z",
+                        "ratingDescription": "Moderate Risk"
+                    },
+                    {
+                        "companyValue": 33,
+                        "date": "2010-04-26T00:00:00Z",
+                        "ratingDescription": "Moderate Risk"
+                    },
+                    {
+                        "companyValue": 21,
+                        "date": "2009-08-20T00:00:00Z",
+                        "ratingDescription": "High Risk"
+                    }
+                ]
+            }
+        })
+
+        # Handles dates and lengths not being the same
+        self.assertDictEqual(
+            Financials(report.to_financials()).serialize(),
+            {
+                'credit_history': [
+                    {
+                        'date': '2011-03-29 00:00:00',
+                        'credit_limit': {'currency_code': 'GBP', 'value': 0.0},
+                        'credit_rating': {'value': '6', 'description': 'High Risk'}
+                    },
+                    {
+                        'date': '2010-09-20 00:00:00',
+                        'credit_rating': {'value': '32', 'description': 'Moderate Risk'}
+                    },
+                    {
+                        'date': '2010-04-26 00:00:00',
+                        'credit_rating': {'value': '33', 'description': 'Moderate Risk'}
+                    },
+                    {
+                        'date': '2009-08-27 00:00:00',
+                        'credit_limit': {'currency_code': 'GBP', 'value': 0.0},
+                    },
+                    {
+                        'date': '2009-08-20 00:00:00',
+                        'credit_rating': {'value': '21', 'description': 'High Risk'}
+                    }
+                ],
+                'contract_limit': None}
+        )
+
+    def test_handles_missing_value_and_description(self):
+        report = CreditSafeCompanyReport.from_json({
+            **self.base_metadata,
+            'creditScore': {
+                'currentCreditRating': {
+                },
+            },
+            'additionalInformation': {
+                'creditLimitHistory': [
+                    {
+                        'companyValue': {
+                            'currency': 'GBP',
+                        },
+                        'date': '2011-03-29T00:00:00Z'
+                    }
+                ],
+                'ratingHistory': [
+                    {
+                        "date": "2011-03-29T00:00:00Z",
+                    }
+                ]
+            }
+        })
+
+        self.assertDictEqual(
+            Financials(report.to_financials()).serialize(),
+            {
+                'credit_history': [{
+                    'date': '2011-03-29 00:00:00'
+                }],
+                'contract_limit': None
+            }
+        )
+
+    def test_handles_bad_currency(self):
+        report = CreditSafeCompanyReport.from_json({
+            **self.base_metadata,
+            'additionalInformation': {
+                'creditLimitHistory': [
+                    {
+                        'companyValue': {
+                            'currency': 'WHO',
+                            'value': 0
+                        },
+                        'date': '2011-03-29T00:00:00Z'
+                    }
+                ]
+            }
+        })
+
+        self.assertDictEqual(
+            Financials(report.to_financials()).serialize(),
+            {
+                'credit_history': [{
+                    'date': '2011-03-29 00:00:00'
+                }],
+                'contract_limit': None
+            }
+        )
+
+    def test_ignores_missing_description(self):
+        report = CreditSafeCompanyReport.from_json({
+            **self.base_metadata,
+            'creditScore': {
+                'currentCreditRating': {
+                   'commonValue': 'A'
+                },
+                'previousCreditRating': {
+                    'commonValue': 'B'
+                }
+            },
+            'additionalInformation': {
+                'ratingHistory': [
+                    {
+                        "value": 20,
+                        "date": "2011-03-29T00:00:00Z",
+                    }
+                ]
+            }
+        })
+
+        self.assertDictEqual(
+            Financials(report.to_financials()).serialize(),
+            {
+                'credit_history': [{
+                    'date': '2011-03-29 00:00:00',
+                    'credit_rating': {'value': '20'},
+                    'international_rating': {'value': 'A'}
+                }],
+                'contract_limit': None
+            }
+        )

@@ -9,7 +9,8 @@ from urllib.parse import quote_plus
 from schematics import Model
 from schematics.exceptions import DataError, ValidationError
 from schematics.types.serializable import serializable
-from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType
+from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType, \
+    UTCDateTimeType
 
 
 # TODO JSONDECODE
@@ -201,6 +202,46 @@ class PassFortStructuredCompanyType(Model):
         serialize_when_none = False
 
 
+class MonetaryValue(Model):
+    currency_code = StringType(required=True)
+    value = DecimalType(required=True)
+
+    @serializable(serialized_name="value")
+    def value_out(self):
+        return float(self.value)
+
+
+def to_passfort_datetime_format(utc):
+    return utc.strftime("%Y-%m-%d %H:%M:%S")
+
+
+class Rating(Model):
+    value = StringType(required=True)
+    description = StringType(default=None)
+
+    class Options:
+        serialize_when_none = False
+
+
+class CreditChangeEntry(Model):
+    date = UTCDateTimeType(required=True)
+    credit_limit = ModelType(MonetaryValue, default=None)
+    credit_rating = ModelType(Rating, default=None)
+    international_rating = ModelType(Rating, default=None)
+
+    @serializable(serialized_name="date")
+    def date_out(self):
+        return to_passfort_datetime_format(self.date)
+
+    class Options:
+        serialize_when_none = False
+
+
+class Financials(Model):
+    credit_history = ListType(ModelType(CreditChangeEntry), default=[])
+    contract_limit = ModelType(MonetaryValue, default=None)
+
+
 class PassFortMetadata(Model):
     name = StringType(required=True)
     number = StringType(required=True)
@@ -210,6 +251,7 @@ class PassFortMetadata(Model):
     incorporation_date = DateType(default=None)
     company_type = StringType(default=None)
     structured_company_type = ModelType(PassFortStructuredCompanyType, default=None)
+    financials = ModelType(Financials, default=None)
 
     class Options:
         serialize_when_none = False

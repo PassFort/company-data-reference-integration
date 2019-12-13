@@ -2,6 +2,7 @@ import pycountry
 import uuid
 import nameparser
 import concurrent.futures
+from itertools import zip_longest
 
 from collections import defaultdict
 from typing import Dict, Optional, Set, List
@@ -11,10 +12,12 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
     UUIDType, DateType
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
-    SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship
+    SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
+    Financials, CreditChangeEntry
 
 from .fuzzy import CompanyNameMatcher
 
+SUPPORTED_CURRENCIES = [c.alpha_3 for c in pycountry.currencies]
 DIRECTOR_POSITIONS = [
     'Assistant Managing Director',
     'Chairman & Chief Executive',
@@ -704,8 +707,66 @@ class PSCReport(Model):
     active_psc = ListType(ModelType(PersonOfSignificantControl), serialized_name="activePSC", default=[])
 
 
+class CreditsafeMonetaryValue(Model):
+    value = DecimalType(default=None)
+    currency = StringType(default=None)
+
+    def to_json(self):
+        if self.value is not None and self.currency in SUPPORTED_CURRENCIES:
+            return {
+                'value': self.value,
+                'currency_code': self.currency
+            }
+        return None
+
+
+class SummarisedCreditRating(Model):
+    international_value = StringType(serialized_name="commonValue", default=None)
+    international_description = StringType(serialized_name="commonDescription", default=None)
+
+    def to_json(self):
+        if self.international_value:
+            return {
+                'international_rating': {
+                    'value': self.international_value,
+                    'description': self.international_description
+                }
+            }
+        return None
+
+
+class CreditScore(Model):
+    current_contract_limit = ModelType(CreditsafeMonetaryValue, serialized_name="currentContractLimit", default=None)
+    current_credit_rating = ModelType(SummarisedCreditRating, serialized_name="currentCreditRating", default=None)
+    previous_credit_rating = ModelType(SummarisedCreditRating, serialized_name="previousCreditRating", default=None)
+
+
+class CompanyRating(Model):
+    date = UTCDateTimeType(required=True)
+    value = IntType(default=None, serialized_name="companyValue")
+    description = StringType(default=None, serialized_name="ratingDescription")
+
+    def to_json(self):
+        if self.value is not None:
+            return {
+                'value': str(self.value),
+                'description': self.description
+            }
+        return None
+
+
+class CreditLimit(Model):
+    date = UTCDateTimeType(required=True)
+    value = ModelType(CreditsafeMonetaryValue, default=None, serialized_name="companyValue")
+
+    def to_json(self):
+        return self.value and self.value.to_json()
+
+
 class AdditionalInformation(Model):
     psc_report = ModelType(PSCReport, serialized_name="personsWithSignificantControl", default=None)
+    credit_limit_history = ListType(ModelType(CreditLimit), serialized_name="creditLimitHistory", default=[])
+    rating_history = ListType(ModelType(CompanyRating), serialized_name="ratingHistory", default=[])
 
 
 class CreditSafeCompanyReport(Model):
@@ -716,12 +777,63 @@ class CreditSafeCompanyReport(Model):
     directors = ModelType(CompanyDirectorsReport, default=None)
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
     additional_information = ModelType(AdditionalInformation, default=None, serialized_name="additionalInformation")
+    credit_score = ModelType(CreditScore, serialized_name="creditScore", default=None)
+
+    @property
+    def credit_limit_history(self):
+        if self.additional_information:
+            return self.additional_information.credit_limit_history
+        return []
+
+    @property
+    def rating_history(self):
+        if self.additional_information:
+            return self.additional_information.rating_history
+        return []
 
     @classmethod
     def from_json(cls, data):
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
         return model
+
+    def to_financials(self):
+        contract_limit = None
+        current_international_rating = None
+        previous_international_rating = None
+
+        if self.credit_score:
+            if self.credit_score.current_contract_limit:
+                contract_limit = self.credit_score.current_contract_limit.to_json()
+            if self.credit_score.current_credit_rating:
+                current_international_rating = self.credit_score.current_credit_rating.to_json()
+            if self.credit_score.previous_credit_rating:
+                previous_international_rating = self.credit_score.previous_credit_rating.to_json()
+
+        credit_history_dict = defaultdict(lambda: defaultdict(dict))
+        for rating, limit in zip_longest(self.rating_history, self.credit_limit_history, fillvalue=None):
+            if rating:
+                credit_history_dict[rating.date]['credit_rating'] = rating.to_json()
+            if limit:
+                credit_history_dict[limit.date]['credit_limit'] = limit.to_json()
+
+        credit_history = sorted(
+            [{'date': k, **v} for k,v in credit_history_dict.items()],
+            key=lambda elem: elem['date'],
+            reverse=True
+        )
+
+        if credit_history:
+            # Just make sure we add them in order.
+            if current_international_rating:
+                credit_history[0].update(current_international_rating)
+            if previous_international_rating and len(credit_history) > 1:
+                credit_history[1].update(previous_international_rating)
+
+        return {
+            'contract_limit': contract_limit,
+            'credit_history': credit_history
+        }
 
     def as_passfort_format_41(self, request_handler=None):
         addresses = [
@@ -740,8 +852,10 @@ class CreditSafeCompanyReport(Model):
             'is_active': self.summary.is_active,
             'incorporation_date': self.identification.incorporation_date,
             'company_type': self.identification.raw_company_type,
-            'structured_company_type': self.identification.structured_company_type
+            'structured_company_type': self.identification.structured_company_type,
+            'financials': self.to_financials()
         })
+
         unique_shareholders = sorted(
             self.share_capital_structure.unique_shareholders(),
             key=lambda s: s.total_percentage, reverse=True

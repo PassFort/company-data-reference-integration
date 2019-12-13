@@ -1,0 +1,12 @@
+/*
+!/Pipfile
+!/Pipfile.lock
+!/package.json
+!/yarn.lock
+!/app
+!/tests
+!/passfort
+!/passfort_demo
+!/cifas
+!/coverage
+!/main.py

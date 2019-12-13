@@ -21,6 +21,7 @@ integrations = {
     'worldcheck': './worldcheck',
     'trulioo': './trulioo',
     'uk_charities_commission': './uk_charities_commission',
+    'cifas': './cifas',
 }
 
 sentry = {
