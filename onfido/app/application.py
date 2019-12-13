@@ -29,8 +29,9 @@ def ekyc_check():
     input_data = json['input_data']
     api_key = json['credentials']['token']
     is_demo = json['is_demo']
+    use_dob = json['config'].get('use_dob', False)
     if is_demo:
-        demo_data = get_demo_ekyc_response(input_data['personal_details']['name']['v'])
+        demo_data = get_demo_ekyc_response(input_data['personal_details']['name']['v'], use_dob)
         return jsonify(demo_data)
 
     requestor = make_onfido_requestor(api_key)
@@ -44,7 +45,7 @@ def ekyc_check():
         if check_status < 400:
             logging.info({'message': 'Check successful', 'response': created_check})
             return jsonify(
-                output_data=onfido_check_to_individual(created_applicant, created_check),
+                output_data=onfido_check_to_individual(created_applicant, created_check, use_dob),
                 raw={'applicant': created_applicant, 'check': created_check},
                 errors=[],
                 price=0,

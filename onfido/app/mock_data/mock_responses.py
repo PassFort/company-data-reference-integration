@@ -58,6 +58,27 @@ mock_uk_matches_one_plus_one = [
     }
 ]
 
+mock_uk_matches_one_plus_one_dob = [
+    {
+        'count': 1,
+        'database_name': 'Onfido (credit source #1)',
+        'database_type': 'CREDIT',
+        'matched_fields': ['FORENAME', 'SURNAME', 'ADDRESS', 'DOB']
+    },
+    {
+        'count': 0,
+        'database_name': 'Telephone Database',
+        'database_type': 'CIVIL',
+        'matched_fields': []
+    },
+    {
+        'count': 0,
+        'database_name': 'Voting Register',
+        'database_type': 'CIVIL',
+        'matched_fields': []
+    }
+]
+
 mock_uk_matches_fail = [
     {
         'count': 0,
