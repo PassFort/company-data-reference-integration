@@ -165,7 +165,10 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
         return IndividualParty(
             Surname=full_name.family_name,
             FirstName=first_name,
-            BirthDate=personal_details.dob.value if personal_details.dob.precision == DatePrecision.YEAR_MONTH_DAY else None,
+
+            BirthDate=personal_details.dob.value if personal_details.dob and 
+            personal_details.dob.precision == DatePrecision.YEAR_MONTH_DAY else None,
+
             Address=StructuredAddress.from_passfort_address(address),
             EmailAddress=contact_details.email if contact_details else None,
             HomeTelephone=contact_details.phone_number if contact_details else None,

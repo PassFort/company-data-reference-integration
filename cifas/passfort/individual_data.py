@@ -1,13 +1,13 @@
 from typing import Union, List, Dict, Optional
+from enum import Enum
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json, config
-from passfort import EntityType
+from passfort import EntityType, union_list
 from passfort.date import PartialDate
 
 
 @dataclass
 class FullName:
-    title: Optional[str]
     given_names: Optional[List[str]]
     family_name: Optional[str]
 
@@ -15,10 +15,13 @@ class FullName:
 @dataclass
 class PersonalDetails:
     name: FullName
-    dob: PartialDate = field(metadata=config(decoder=PartialDate.decode))
-    nationality: Optional[str]
-    gender: Optional[str]
-    national_identity_number: Dict[str, str]
+    dob: Optional[PartialDate] = field(
+        metadata=config(
+            decoder=PartialDate.decode,
+        ), 
+        default_factory=type(None),
+    )
+    national_identity_number: Optional[Dict[str, str]] = None
 
 
 @dataclass
@@ -44,22 +47,24 @@ class ContactDetails:
     email: Optional[str]
 
 
-@dataclass
-class BankAccount:
-    type: str
+class BankAccountType(Enum):
+    UK_ACCOUNT = 'UK_ACCOUNT'
 
 
+@dataclass_json
 @dataclass
 class UKBankAccount:
     sort_code: str
     account_number: str
-    country: str
-    type: str = 'UK_ACCOUNT'
+    type: BankAccountType = BankAccountType.UK_ACCOUNT
 
 
 @dataclass
 class BankingDetails:
-    bank_accounts: List[Union[UKBankAccount, BankAccount]]
+    bank_accounts: List[Union[UKBankAccount, dict]] = union_list(
+        UKBankAccount,
+        unknown_type=dict,
+    )
 
 
 @dataclass_json

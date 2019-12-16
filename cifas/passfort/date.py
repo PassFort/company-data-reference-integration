@@ -27,6 +27,12 @@ class PartialDate:
     
     @classmethod
     def decode(cls, value):
+        if isinstance(value, PartialDate):
+            return value
+        
+        if value is None:
+            return value
+
         try:
             return cls(value, DatePrecision.YEAR_MONTH_DAY)
         except ValueError:
