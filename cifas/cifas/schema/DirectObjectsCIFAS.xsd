@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns="http://objects.find-cifas.org.uk/Direct"
+            targetNamespace="http://objects.find-cifas.org.uk/Direct" 
+            xmlns:fd="http://documentation.find-cifas.org.uk"
+            elementFormDefault="qualified" attributeFormDefault="unqualified" >
+  <xsd:annotation>
+    <xsd:appinfo>
+      <fd:Metadata>
+        <fd:Title>Direct Objects (CIFAS)</fd:Title>
+        <fd:StandardAbbreviation>DOC</fd:StandardAbbreviation>
+        <fd:SchemaType>XSD</fd:SchemaType>
+        <fd:DateCreated>2008-06-18</fd:DateCreated>
+        <fd:CreatedBy>Nick Locke</fd:CreatedBy>
+        <fd:Copyright>Logica UK Limited 2010</fd:Copyright>
+        <fd:Modification>
+          <fd:DateModified>2008-07-22</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>
+            Original version.
+          </fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2010-03-12</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Superfluous nillable=false clauses removed.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2013-05-08</fd:DateModified>
+          <fd:ModifiedBy>Robert James</fd:ModifiedBy>
+          <fd:ModificationDetail>v2-01 CaseLink included.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2016-09-15</fd:DateModified>
+          <fd:ModifiedBy>Robert James</fd:ModifiedBy>
+          <fd:ModificationDetail>v3-00 Location and EA included.</fd:ModificationDetail>
+        </fd:Modification>
+      </fd:Metadata>
+    </xsd:appinfo>
+  </xsd:annotation>
+  <xsd:include schemaLocation="DirectElementsGeneric.xsd"/>
+  <xsd:include schemaLocation="DirectElementsCIFAS.xsd"/>
+
+  <xsd:element name="CaseLookupRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        Retrieve summary details of a Case, based on its Id.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="Lookup" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="CaseLookupResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        Following a successful lookup, full details are returned. 
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="MemberSearchReference" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="FINDsearchReference" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="FullCaseDetail" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="BasicSearchRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        A standard search where only basic details are required to be returned
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="Search" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="BasicSearchResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        Following a successful search, basic details of all matched Cases
+        are returned.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="MemberSearchReference" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="FINDsearchReference" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="SearchFeedback" minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="BasicSearchResult" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="BasicCaseDetail" minOccurs="1" maxOccurs="1" />
+              <xsd:element ref="DMRoutcome" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element ref="CaseLink" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="Location" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="EnhancedAnalytics" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="FullSearchRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        A standard search where summary details are required to be returned
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="Search" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="FullSearchResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        Following a successful search, summary details of all matched Cases
+        are returned.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="MemberSearchReference" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="FINDsearchReference" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="SearchFeedback" minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="FullSearchResult" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="FullCaseDetail" minOccurs="1" maxOccurs="1" />
+              <xsd:element ref="DMRoutcome" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element ref="CaseLink" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="Location" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="EnhancedAnalytics" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

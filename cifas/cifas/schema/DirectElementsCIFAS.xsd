@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://objects.find-cifas.org.uk/Direct" targetNamespace="http://objects.find-cifas.org.uk/Direct" xmlns:fd="http://documentation.find-cifas.org.uk" elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:appinfo>
+			<fd:Metadata>
+				<fd:Title>Direct Elements (CIFAS)</fd:Title>
+				<fd:StandardAbbreviation>DEC</fd:StandardAbbreviation>
+				<fd:SchemaType>XSD</fd:SchemaType>
+				<fd:DateCreated>2008-06-17</fd:DateCreated>
+				<fd:CreatedBy>Nick Locke</fd:CreatedBy>
+				<fd:Copyright>Logica UK Limited 2010</fd:Copyright>
+				<fd:Modification>
+					<fd:DateModified>2008-09-24</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+					<fd:ModificationDetail>Original version.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2010-03-12</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+					<fd:ModificationDetail>Superfluous nillable=false clauses removed.
+           New base element used for card number in Finance element to support hiding digits.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2010-10-28</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+              			<fd:ModificationDetail>Searching on Document Reference included.
+			Searching on Vehicle Registration Number included.
+                        Added Vehicle Identification Numbr(VIN) 
+                                </fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2013-05-08</fd:DateModified>
+					<fd:ModifiedBy>Robert James</fd:ModifiedBy>
+					<fd:ModificationDetail>v2-01 CaseLink included.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2014-03-28</fd:DateModified>
+					<fd:ModifiedBy>Robert James</fd:ModifiedBy>
+					<fd:ModificationDetail>v2-02 DeviceId included.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2014-12-09</fd:DateModified>
+					<fd:ModifiedBy>Robert James</fd:ModifiedBy>
+					<fd:ModificationDetail>v2-03 Search on National Insurance Number included, and DeviceId, IPAddress.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2016-09-15</fd:DateModified>
+					<fd:ModifiedBy>Robert James</fd:ModifiedBy>
+					<fd:ModificationDetail>v3-00 Location and EA included.</fd:ModificationDetail>
+				</fd:Modification>
+			</fd:Metadata>
+		</xsd:appinfo>
+	</xsd:annotation>
+	<xsd:include schemaLocation="DirectElementsGeneric.xsd"/>
+
+	<!--=============================================================================-->
+
+	<xsd:element name="Lookup">
+		<xsd:annotation>
+			<xsd:documentation>It is possible to retrieve data for a specific Case by
+        specifying the Case Id.  This approach will be used
+        when the required Case has been identified by another
+        method, such as use of CIFAS Plus.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="CaseId" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Product" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="SearchType" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="MemberSearchReference" minOccurs="1" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!--=============================================================================-->
+
+	<xsd:element name="Search">
+		<xsd:annotation>
+			<xsd:documentation>The data which is submitted to FIND when a match
+        against the standard DMRs is required.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="Product" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="SearchType" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="MemberSearchReference" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="Party" minOccurs="1" maxOccurs="10">
+					<xsd:annotation>
+						<xsd:documentation>Information relating to the party/parties
+              being searched.  This will identify either
+              an individual or a corporate entity.
+
+              An arbitrary limit of ten parties per search has been 
+              imposed.  Realistically, it is unlikely that there will be 
+              more than ten parties to [for example] a loan application.</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element ref="PartySequence" minOccurs="1" maxOccurs="1"/>
+							<xsd:element name="Relevance" type="RefCode3" minOccurs="1" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>Each party has a relationship to the search, such as
+                    "applicant" or "introducer".
+                    The valid values are available in RELEVA.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element ref="Surname" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="FirstName" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="BirthDate" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="HomeTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="MobileTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="EmployerTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="WorkTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="EmailAddress" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="CompanyName" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="CompanyNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="CompanyTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="NationalInsuranceNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="VehicleRegistrationNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="VehicleIdentificationNumber" minOccurs="0" maxOccurs="1"/>
+              <xsd:element ref="DeviceId" minOccurs="0" maxOccurs="1"/>
+              <xsd:element ref="IPAddress" minOccurs="0" maxOccurs="1"/>
+
+              <xsd:element name="Finance" minOccurs="0" maxOccurs="10">
+								<xsd:annotation>
+									<xsd:documentation>Arbitrary limit of ten possible sets of financial details
+                    to check for the specific party</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:choice>
+										<xsd:element ref="CardNumber" minOccurs="0" maxOccurs="1"/>
+										<xsd:element ref="BankAccount" minOccurs="0" maxOccurs="1"/>
+									</xsd:choice>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DocumentReferences" minOccurs="0" maxOccurs="10">
+								<xsd:annotation>
+									<xsd:documentation>Arbitrary limit of ten document references to check for the specific party</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="DocumentReference">
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:minLength value="1"/>
+													<xsd:maxLength value="25"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+
+
+
+							<xsd:element name="Address" minOccurs="0" maxOccurs="10">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Address" type="SearchAddress" minOccurs="1" maxOccurs="1"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!--=============================================================================-->
+
+	<xsd:element name="BasicCaseDetail">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="CaseId" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="OwningMember" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="ManagingMember" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="CaseType" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Product" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="DoNotFilter" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="SupplyDate" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="ApplicationDate" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="ClaimDate" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!--=============================================================================-->
+
+	<xsd:element name="FullCaseDetail">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="BasicCaseDetail" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="FilingReason" type="RefCode3" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>Each CIFAS Case will have at least one reason for filing.  The reason(s)
+              for filing explain the rationale for the Case being identified as a fraud.
+              Available values are defined in the FILREA code table.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="DeliveryChannel" type="RefCode3" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Each CIFAS Case will have an indication of the method used by the 
+              fraudster to apply for the facility.
+              Available values are defined in the DELCHN code table.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+        <xsd:element ref="DeviceId" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="IPAddress" minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="Facility" type="RefCode3" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Each CIFAS Case will have an indication of the result of the facility.
+              Available values are defined in the FACLTY code table.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="LinkedCasesCount" type="xsd:integer" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Within FIND, Cases can be linked when there is a demonstrable connection
+              between them.  This element indicates the number of linked Cases held on
+              FIND which are available for further inspection if required.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Subject" minOccurs="1" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="SubjectId" type="xsd:integer" minOccurs="1" maxOccurs="1"/>
+							<xsd:element name="Role" type="RefCode3" minOccurs="1" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>The coded definition of the part played by the Subject in the Case.
+                    Available values are defined in the SUBROL code table.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Qualifier" type="RefCode3" minOccurs="1" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>A coded qualification of the part played by the Subject in the Case.
+                    Available values are defined in the SUBQUA code table.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="WithholdSubjectAccess" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+							<xsd:element ref="Surname" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="FirstName" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="MiddleNames" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="BirthDate" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="Gender" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="EmploymentType" type="RefCode3" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>The coded definition of the employment status of the Subject.
+                    Available values are defined in the EMPTYP code table.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="TimeWithEmployer" type="TimeAt" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="HomeTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="MobileTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="WorkTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="EmployerTelephone" type="TelephoneNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="CompanyName" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="CompanyNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="VATnumber" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>The VAT Number of a corporate entity.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:minLength value="1"/>
+										<xsd:maxLength value="10"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<xsd:element name="WebSiteAddress" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>The Web Site address of a corporate entity.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:minLength value="1"/>
+										<xsd:maxLength value="60"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<xsd:element ref="Document" minOccurs="0" maxOccurs="unbounded"/>
+							<xsd:element ref="EmailAddress" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="Finance" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:choice minOccurs="1" maxOccurs="1">
+											<xsd:element name="CardNumber" type="DisguisedCardNumber" minOccurs="0" maxOccurs="1"/>
+											<xsd:element ref="BankAccount" minOccurs="0" maxOccurs="1"/>
+										</xsd:choice>
+										<xsd:element name="RelevanceOfAccount" type="RefCode3" minOccurs="1" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>The role that the account played within the fraud Case.
+                          Available values are defined in the CASROL code table.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="TimeWithInstitution" type="TimeAt" minOccurs="0" maxOccurs="1"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="VictimsPasswordHeld" type="xsd:boolean">
+								<xsd:annotation>
+									<xsd:documentation>Indicates whether a victim's password has been 
+                    recorded on FIND.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="SubjectAddress" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="AddressType" type="RefCode2" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Each address has a type which defines its relevance to the Subject.
+                          Available values are defined in the ADDTYP code table.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="AddressId" type="xsd:integer" minOccurs="1" maxOccurs="1"/>
+										<xsd:element name="Address" type="FINDaddress"/>
+										<xsd:element name="TimeAtAddress" type="TimeAt" minOccurs="0" maxOccurs="1"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element ref="VehicleRegistrationNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="VehicleIdentificationNumber" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="NationalInsuranceNumber" minOccurs="0" maxOccurs="1"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!--=============================================================================-->
+
+	<!--Below here are the reusable elements that are specific to CIFAS-->
+
+	<xsd:element name="CaseType" type="RefCode3">
+		<xsd:annotation>
+			<xsd:documentation>Each CIFAS Case carries a Case Type to indicate the underlying type 
+        of fraud. Available values are defined in the CASTYP code table.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="Product" type="RefCode4">
+		<xsd:annotation>
+			<xsd:documentation>All searches of the CIFAS data must be annotated with a Product Code to
+        denote the type of product with which the search is associated.
+        Similarly, all Cases returned in search results carry a Product Code to
+        show the nature of the Case.
+        Available values are defined in the PRODCT code table.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="Facility" type="RefCode3">
+		<xsd:annotation>
+			<xsd:documentation>Each CIFAS Case carries an indication of whether the requested facility
+        was granted or not. Available values are defined in the FACLTY code table.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="FirstName">
+		<xsd:annotation>
+			<xsd:documentation>The first name of an individual, sometimes known 
+        as the Christian name or given name. Using the 
+        example of Arthur George Allen Jones, the first 
+        name would be Arthur.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:minLength value="1"/>
+				<xsd:maxLength value="25"/>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+
+	<xsd:element name="VehicleRegistrationNumber">
+		<xsd:annotation>
+			<xsd:documentation>The registration number of a vehicle.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:minLength value="1"/>
+				<xsd:maxLength value="10"/>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+
+        <xsd:element name="VehicleIdentificationNumber">
+	        <xsd:annotation>
+		        <xsd:documentation>The identification number (VIN) of a vehicle.</xsd:documentation>
+	        </xsd:annotation>
+		<xsd:simpleType>
+		       <xsd:restriction base="xsd:string">
+		             	<xsd:minLength value="1"/>
+		               	<xsd:maxLength value="50"/>
+		       </xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+
+  <xsd:element name="DeviceId">
+    <xsd:annotation>
+      <xsd:documentation>The DeviceId of a Case.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:minLength value="1"/>
+        <xsd:maxLength value="50"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+
+  <xsd:element name="IPAddress">
+    <xsd:annotation>
+      <xsd:documentation>The IP Address of a Case.
+      0-255.0-255.0-255.0-255</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:minLength value="7"/>
+        <xsd:maxLength value="15"/>
+        <xsd:pattern value="([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+
+  <xsd:element name="SearchType" type="RefCode2">
+		<xsd:annotation>
+			<xsd:documentation>All searches of the CIFAS data must be annotated with a Search Type to
+        denote the rationale for the search being performed.
+        Available values are defined in the SEATYP code table.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="TimeAt">
+		<xsd:sequence>
+			<xsd:element name="Format" minOccurs="1" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="[FMP]"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="YearPart" type="xsd:unsignedShort" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="MonthPart" type="xsd:unsignedShort" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="ApplicationDate" type="xsd:date">
+		<xsd:annotation>
+			<xsd:documentation>Each CIFAS Case can specify the date upon which the application for
+        a facility was made.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="ClaimDate" type="xsd:date">
+		<xsd:annotation>
+			<xsd:documentation>When a CIFAS Case relates to an event later than the initial application
+        (for example a fraudulent insurance claim), the date of that claim
+        can be specified.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="Document">
+		<xsd:annotation>
+			<xsd:documentation>The code which identifies a document and, optionally, the
+        nationality of the document.
+        Available document type values are defined in the FALDOC code table.
+        Nationalities are in the NATION code table.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Type" type="RefCode3" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="Nationality" type="RefCode3" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="DocumentReference" minOccurs="0" maxOccurs="1">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:minLength value="1"/>
+							<xsd:maxLength value="25"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+        <xsd:element name="NationalInsuranceNumber" >
+          <xsd:annotation>
+            <xsd:documentation>
+              The National Insurance number for an individual.
+			  Note that this is only relevant here for CIFAS submissions, not for Staff Fraud.
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:whiteSpace value="collapse"/>
+              <xsd:minLength value="1"/>
+              <xsd:maxLength value="9"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+
+	<!--=============================================================================-->
+	<!--CaseLink, Location and EnhancedAnalytics-->
+	<xsd:element name="CaseLink">
+		<xsd:complexType>
+			<xsd:sequence>
+			        <xsd:element name="Status" minOccurs="1" maxOccurs="1">
+			            <xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+					   <xsd:enumeration value="1">
+					      <xsd:annotation>
+					          <xsd:documentation>
+					             CaseLinks Exist at Level 1 only
+					          </xsd:documentation>
+					      </xsd:annotation>
+				      	    </xsd:enumeration>
+				            <xsd:enumeration value="2">
+					 	<xsd:annotation>
+					          <xsd:documentation>
+					            CaseLinks Exist at Level 1 and 2
+					          </xsd:documentation>
+					    	</xsd:annotation>
+					    </xsd:enumeration>
+					        <xsd:enumeration value="3">
+							<xsd:annotation>
+								<xsd:documentation>
+							 	  Too many CaseLinks at Level 1 
+							</xsd:documentation>
+						   </xsd:annotation>
+					    </xsd:enumeration>
+					    <xsd:enumeration value="4">
+					    		<xsd:annotation>
+					    			<xsd:documentation>
+					    			     Too many CaseLinks at Level 2 
+					    			</xsd:documentation>
+					    	       </xsd:annotation>
+					    </xsd:enumeration>
+					  </xsd:restriction>
+					</xsd:simpleType>
+			        </xsd:element>
+				<xsd:element name="SearchId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="Location">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Status" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="EnhancedAnalytics">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Status" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

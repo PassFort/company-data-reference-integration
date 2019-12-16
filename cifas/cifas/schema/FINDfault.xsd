@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            targetNamespace="http://fault.find-cifas.org.uk" xmlns="http://fault.find-cifas.org.uk"
+            xmlns:fd="http://documentation.find-cifas.org.uk">
+  <xsd:annotation>
+    <xsd:documentation>
+      Any processing error will result in a fault element being returned.
+    </xsd:documentation>
+    <xsd:appinfo>
+      <fd:Metadata>
+        <fd:Title>FIND Fault</fd:Title>
+        <fd:StandardAbbreviation>FF</fd:StandardAbbreviation>
+        <fd:SchemaType>XSD</fd:SchemaType>
+        <fd:DateCreated>2007-09-24</fd:DateCreated>
+        <fd:CreatedBy>Nick Locke</fd:CreatedBy>
+        <fd:Copyright>Logica UK Limited 2010</fd:Copyright>
+        <fd:Modification>
+          <fd:DateModified>2007-11-05</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Minor error elements removed.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2007-11-22</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Schema validation format included and standard SOAP details added.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2008-03-31</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Fault element renamed as StandardFault.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2008-06-30</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Release Version.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2010-03-12</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Superfluous nillable=false clauses removed.</fd:ModificationDetail>
+          <fd:ModificationDetail>maxOccurs=1 added to Detail element choices for clarity.</fd:ModificationDetail>
+        </fd:Modification>
+      </fd:Metadata>
+    </xsd:appinfo>
+  </xsd:annotation>
+  <xsd:element name="StandardFault">
+    <xsd:annotation>
+      <xsd:documentation>
+        This is the standard soap:Fault element which is returned within soap:Body
+        in the event of any error.  The purpose of this schema is to define the errors
+        which FIND may return in a soap:Fault.  It should be noted that other soap:Fault
+        variations could occur which have not been documented here.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="faultcode" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              A standard soap:Fault element, defining the type of error that has occurred.  Generally,
+              FIND will return a Client error if there is a problem with the submitted data and a 
+              Server error if an unexpected processing error occurs.
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="soap:Client"/>
+              <xsd:enumeration value="soap:Server"/>
+              <xsd:enumeration value="soap:VersionMismatch"/>
+              <xsd:enumeration value="soap:MustUnderstand"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="faultstring" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              A standard soap:Fault element, giving a human-readable, brief explanation of the problem.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="faultactor" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              A standard soap:Fault element, giving the URL of the service that failed.  In FIND,
+              this will always be the URL of the requested transaction.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="detail" minOccurs="0" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              A standard soap:Fault element, intended to include further details of the problem which has
+              occurred.  Within FIND, different formats may be present, depending on the specific problem.
+              Note that in some circumstances, the detail element may not be present.
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:choice minOccurs="1" maxOccurs="1">
+              <xsd:element ref="ErrorReport" minOccurs="0" maxOccurs="1"/>
+              <xsd:element ref="SchemaError" minOccurs="0" maxOccurs="1"/>
+            </xsd:choice>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ErrorReport">
+    <xsd:annotation>
+      <xsd:documentation>
+        A standard format for returning data related errors.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ErrorCode" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              Each error code returned by FIND has a unique reference.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="ShortErrorText" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              A short explanatory text which explains the meaning of an Error Code.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="LongErrorText" type="xsd:string" minOccurs="0" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              Text giving further detail regarding the meaning of an Error Code and elaborating on the Short Error Text.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SchemaError">
+    <xsd:annotation>
+      <xsd:documentation>
+        A standard format for returning errors relating to validation of incoming
+        XML against the schemata.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Element" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The name of the XML element which is causing the problem.
+              Presented in the format Namespace:ElementName
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Value" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The value presented in the XML element.
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Error" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              A textual indication of the type of error that occurred, for
+              example "The MaxInclusive constraint failed".
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Type" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The underlying data type of the element in error.  This is
+              presented as Namespace:TypeName.
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Schema" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The schema against which the XML was being validated
+              when the error occurred.
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="LineNumber" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The line number in the incoming XML which contained the
+              erroneous element value.
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="CharacterPosition" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The character position (within LineNumber) in the incoming 
+              XML which contained the erroneous element value.
+          </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

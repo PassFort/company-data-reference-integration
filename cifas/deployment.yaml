@@ -32,6 +32,13 @@ spec:
           value: {cluster}
         - name: SENTRY_URL
           value: {sentry_url}
+        - name: SENTRY_URL
+          value: {sentry_url}
+        - name: HTTPS_PROXY
+          valueFrom:
+            secretKeyRef:
+              name: webhooks
+              key: proxy_url
         readinessProbe:
           httpGet:
             path: '/health'

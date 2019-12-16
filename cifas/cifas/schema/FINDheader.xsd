@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            elementFormDefault="qualified" 
+            targetNamespace="http://header.find-cifas.org.uk" 
+            xmlns="http://header.find-cifas.org.uk" 
+            xmlns:fd="http://documentation.find-cifas.org.uk" >
+	<xsd:annotation>
+		<xsd:documentation>
+		  Each transaction sent to FIND must be accompanied by a SOAP header which provides 
+      standard information.  This schema defines the header.
+		</xsd:documentation>
+		<xsd:appinfo>
+			<fd:Metadata>
+				<fd:Title>Standard Header</fd:Title>
+				<fd:StandardAbbreviation>HF</fd:StandardAbbreviation>
+				<fd:SchemaType>XSD</fd:SchemaType>
+				<fd:DateCreated>2007-09-24</fd:DateCreated>
+				<fd:CreatedBy>Nick Locke</fd:CreatedBy>
+				<fd:Copyright>Logica UK Limited 2010</fd:Copyright>
+				<fd:Modification>
+					<fd:DateModified>2007-09-24</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+					<fd:ModificationDetail>Original version.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2008-03-31</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+					<fd:ModificationDetail>Updated following PA comments.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2008-06-30</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+					<fd:ModificationDetail>Release Version.</fd:ModificationDetail>
+				</fd:Modification>
+				<fd:Modification>
+					<fd:DateModified>2008-08-16</fd:DateModified>
+					<fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+					<fd:ModificationDetail>Agency Member now Requesting Institution.</fd:ModificationDetail>
+				</fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2010-03-12</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Superfluous nillable=false clauses removed.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2016-09-13</fd:DateModified>
+          <fd:ModifiedBy>Robert James</fd:ModifiedBy>
+          <fd:ModificationDetail>v3 schemas, Member Numbers > 999. URN:10 chars</fd:ModificationDetail>
+        </fd:Modification>
+			</fd:Metadata>
+		</xsd:appinfo>
+	</xsd:annotation>
+	<xsd:element name="StandardHeader">
+		<xsd:annotation>
+			<xsd:documentation>
+			  Defines the context of every transaction sent to FIND via a Web Service.  
+        Effectively, this forms the content of a SOAP header.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="RequestingInstitution" type="MemberNumber" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="OwningMemberNumber" type="MemberNumber" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="ManagingMemberNumber" type="MemberNumber" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="CurrentUser" type="UserLogon" minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="SchemaVersion">
+          <xsd:annotation>
+            <xsd:documentation>
+              To ensure that FIND uses the correct schema version to validate the request, a version number must be specified.  
+            </xsd:documentation>
+          </xsd:annotation>
+					<xsd:simpleType>
+					  <xsd:restriction base="xsd:string">
+						  <xsd:minLength value="4" />
+						</xsd:restriction>
+					</xsd:simpleType>
+        </xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:simpleType name="MemberNumber">
+		<xsd:annotation>
+			<xsd:documentation>
+			  Each organisation that interacts with CIFAS is allocated a unique Member number
+			</xsd:documentation>
+		</xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:pattern value="[123456789]\d*"/>
+    </xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="UserLogon" >
+		<xsd:annotation>
+			<xsd:documentation>
+			  Each communication with FIND is annotated with a user name, primarily to make
+        the on-line transaction histories easier to follow.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="20"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
