@@ -100,4 +100,4 @@ class CifasAPIClient:
                 Search=request.to_dict(),
             )
 
-            return FullSearchResponse.from_dict(serialize_object(response_object))
+        return FullSearchResponse.from_dict(serialize_object(response_object))

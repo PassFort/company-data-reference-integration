@@ -45,8 +45,21 @@ class ContactDetails:
 
 
 @dataclass
+class BankAccount:
+    type: str
+
+
+@dataclass
+class UKBankAccount:
+    sort_code: str
+    account_number: str
+    country: str
+    type: str = 'UK_ACCOUNT'
+
+
+@dataclass
 class BankingDetails:
-    bank_accounts: List[dict]
+    bank_accounts: List[Union[UKBankAccount, BankAccount]]
 
 
 @dataclass_json
