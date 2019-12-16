@@ -1,9 +1,9 @@
 from typing import Union, List, Dict, Optional
 from dataclasses import dataclass, field
-from dataclasses_json import config
+from dataclasses_json import dataclass_json, config
 from passfort import EntityType
 from passfort.date import PartialDate
-from passfort.cifas_search import CifasSearch
+
 
 @dataclass
 class FullName:
@@ -49,11 +49,11 @@ class BankingDetails:
     bank_accounts: List[dict]
 
 
+@dataclass_json
 @dataclass
 class IndividualData:
     personal_details: PersonalDetails
     address_history: List[AddressHistoryItem]
     contact_details: Optional[ContactDetails] = None
     banking_details: Optional[BankingDetails] = None
-    cifas_search: Optional[CifasSearch] = None
     entity_type: EntityType = EntityType.INDIVIDUAL

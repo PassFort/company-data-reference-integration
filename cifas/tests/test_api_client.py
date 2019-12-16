@@ -1,20 +1,11 @@
 import responses
 from unittest import TestCase
-from os import path
 from requests.exceptions import HTTPError
 
 from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest, IndividualParty, StructuredAddress
 from passfort.cifas_check import CifasConfig, CifasCredentials
 from datetime import date
-
-
-def read_demo_file(name: str) -> str:
-    with open(path.join(path.dirname(__file__), name)) as file:
-        return file.read()
-
-
-MATCH_RESPONSE = read_demo_file('match.xml')
 
 
 class TestAPIClient(TestCase):

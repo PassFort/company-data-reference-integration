@@ -4,6 +4,7 @@ from os import path, remove, getcwd, chdir
 from contextlib import contextmanager
 from zeep import Client
 from zeep.transports import Transport
+from zeep.helpers import serialize_object
 from requests import Session
 from requests.exceptions import HTTPError
 from passfort.cifas_check import CifasCredentials, CifasConfig
@@ -25,7 +26,8 @@ class CifasConnectionError(Exception):
 
 
 class CifasHTTPError(Exception):
-    pass
+    def __init__(self, http_error: HTTPError):
+        self.http_error = http_error
 
 
 @contextmanager
@@ -98,4 +100,4 @@ class CifasAPIClient:
                 Search=request.to_dict(),
             )
 
-            return FullSearchResponse.from_dict(response_object.__values__)
+            return FullSearchResponse.from_dict(serialize_object(response_object))

@@ -1,8 +1,8 @@
 from typing import List, Union
-from passfort.cifas_search import CifasSearch
-from passfort.cifas_check import CifasCheck
+from passfort.cifas_check import CifasCheck, OutputData
 from passfort.individual_data import IndividualData
 from passfort.company_data import CompanyData
+from passfort.fraud_detection import FraudDetection
 from os import path
 
 
@@ -26,17 +26,10 @@ def has_match(check: CifasCheck) -> bool:
     ))
 
 
-def get_demo_response(check: CifasCheck) -> Union[IndividualData, CompanyData]:
-    if isinstance(check.input_data, IndividualData):
-        return IndividualData(
-            personal_details=check.input_data.personal_details,
-            address_history=check.input_data.address_history,
-            cifas_search=CifasSearch(
-                member_search_reference='demo-reference',
-                search_reference=111111111,
-                has_match=has_match(check),
-            ),
-        )
-    else:
-        return CompanyData()
-
+def get_demo_response(check: CifasCheck) -> OutputData:
+    return OutputData(
+        fraud_detection=FraudDetection(
+            search_reference='111111111',
+            match_count=1 if has_match(check) else 0,
+        ),
+    )

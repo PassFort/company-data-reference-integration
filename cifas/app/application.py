@@ -1,8 +1,8 @@
 import os
 import logging
-from flask import Flask, jsonify, abort
+from flask import Flask, Response, request, abort
 from raven.contrib.flask import Sentry
-from passfort.cifas_check import CifasCheck
+from passfort.cifas_check import CifasCheck, CifasCheckResponse
 from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest
 from passfort_demo import get_demo_response
@@ -31,17 +31,19 @@ def run_cifas_search():
         output_data = get_demo_response(cifas_search)
     else:
         try:
-            api_client = CifasApiClient(cifas_search.config, cifas_search.credentials)
-            request = FullSearchRequest.from_passfort_entity_data(cifas_search.input_data)
-            response = api_client.full_search(request)
+            api_client = CifasAPIClient(cifas_search.config, cifas_search.credentials)
+            search_request = FullSearchRequest.from_passfort_data(cifas_search.input_data, cifas_search.config)
+            response = api_client.full_search(search_request)
             output_data = response.to_passfort_output_data()
-        except CifasConnectionError:
-            abort(500)
-        except CifasHTTPError:
-            abort(500)
+        except CifasConnectionError as exc:
+            error = Error.connection_error(exc)
+        except CifasHTTPError as exc:
+            error = Error.provider_error(exc)
+        finally:
+            api_client.destroy()
 
-    return jsonify(
+    return Response(CifasCheckResponse(
         output_data=output_data,
         errors=[error] if error else [],
-        price=0,
-    )
+    ).to_json(), mimetype='application/json')
+

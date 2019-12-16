@@ -1,4 +1,5 @@
 from enum import Enum
+from collections.abc import Mapping
 from dataclasses import field
 from dataclasses_json import config
 
@@ -21,7 +22,7 @@ def decode_tagged_union(*dataclasses, tag='type'):
         if not isinstance(value, Mapping):
             raise TypeError(f'Unexpected value {repr(value)} for tagged union field: {dataclasses}')
         val_tag = value[tag]
-        return tagged_classes[val_tag].from_dict(value)
+        return tagged_classes[val_tag].from_dict(value, infer_missing=True)
     return decoder
 
 
