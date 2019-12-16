@@ -105,71 +105,149 @@ class TestCompanyReport(unittest.TestCase):
         ]
 
     def test_returns_company_metadata(self):
-        self.assertDictEqual(
-            self.formatted_report['metadata'],
+        self.assertEqual(
+            self.formatted_report['metadata']['name'],
+            'PASSFORT LIMITED'
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['number'],
+            '09565115'
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['addresses'],
+            [
+                {
+                    'type': 'registered_address',
+                    'address': {
+                        'type': 'FREEFORM',
+                        'text': 'THE STUDIO 11 PRINCELET STREET, LONDON, E1 6QH',
+                        'country': 'GBR'
+                    }
+                },
+                {
+                    'type': 'trading_address',
+                    'address': {
+                        'type': 'FREEFORM',
+                        'text': 'The Studio 11 Princelet Street, London, E1 6QH',
+                        'country': 'GBR'
+                    }
+                }
+            ]
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['country_of_incorporation'],
+            'GBR'
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['is_active'],
+            True
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['incorporation_date'],
+            '2015-04-28'
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['company_type'],
+            'Private limited with Share Capital'
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['structured_company_type'],
             {
-                'name': 'PASSFORT LIMITED',
-                'number': '09565115',
-                'addresses': [
+                'is_limited': True,
+                'is_public': False
+            }
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['financials']['contract_limit'],
+            {
+                'currency_code': 'GBP', 'value': 49500.0
+            }
+        )
+        self.assertEqual(
+            self.formatted_report['metadata']['financials']['credit_history'],
+            [
+                {
+                    'credit_limit': {'currency_code': 'GBP', 'value': 33000.0},
+                    'credit_rating': {'value': '96', 'description': 'Very Low Risk'},
+                    'international_rating': {'value': 'A', 'description': 'Very Low Risk'},
+                    'date': '2018-03-08 23:56:33'
+                },
+                {
+                    'credit_limit': {'currency_code': 'GBP', 'value': 25000.0},
+                    'credit_rating': {'value': '87', 'description': 'Very Low Risk'},
+                    'international_rating': {'value': 'A', 'description': 'Very Low Risk'},
+                    'date': '2017-03-04 22:36:27'
+                },
+                {
+                    'credit_limit': {'currency_code': 'GBP', 'value': 46000.0},
+                    'credit_rating': {'value': '95', 'description': 'Very Low Risk'},
+                    'date': '2016-08-02 03:41:18'
+                },
+                {
+                    'credit_limit': {'currency_code': 'GBP', 'value': 500.0},
+                    'credit_rating': {'value': '47', 'description': 'Moderate Risk'},
+                    'date': '2016-07-07 12:44:15'
+                },
+                {
+                    'credit_limit': {'currency_code': 'GBP', 'value': 500.0},
+                    'credit_rating': {'value': '49', 'description': 'Moderate Risk'},
+                    'date': '2015-04-30 15:13:03'
+                }
+            ]
+        )
+
+        self.assertEqual(
+            self.formatted_report['metadata']['financials']['statements'][0],
+            {
+                'currency_code': 'GBP',
+                'date': '2017-12-31',
+                'entries': [
                     {
-                        'type': 'registered_address',
-                        'address': {
-                            'type': 'FREEFORM',
-                            'text': 'THE STUDIO 11 PRINCELET STREET, LONDON, E1 6QH',
-                            'country': 'GBR'
+                        'group_name': 'profit_before_tax',
+                        'name': 'depreciation',
+                        'value': {
+                            'currency_code': 'GBP',
+                            'value': 7953.0,
+                            'value_type': 'CURRENCY'
                         }
                     },
                     {
-                        'type': 'trading_address',
-                        'address': {
-                            'type': 'FREEFORM',
-                            'text': 'The Studio 11 Princelet Street, London, E1 6QH',
-                            'country': 'GBR'
+                        'group_name': 'profit_before_tax',
+                        'name': 'audit_fees',
+                        'value': {
+                            'currency_code': 'GBP',
+                            'value': 0.0,
+                            'value_type': 'CURRENCY'
                         }
                     }
                 ],
-                'country_of_incorporation': 'GBR',
-                'is_active': True,
-                'incorporation_date': '2015-04-28',
-                'company_type': 'Private limited with Share Capital',
-                'structured_company_type': {
-                    'is_limited': True,
-                    'is_public': False
-                },
-                'financials': {
-                    'contract_limit': {
-                        'currency_code': 'GBP', 'value': 49500.0
+                'groups': [
+                    {
+                        'name': 'turnover',
+                        'value': {'currency_code': 'GBP', 'value_type': 'CURRENCY'},
                     },
-                    'credit_history': [
-                        {
-                            'credit_limit': {'currency_code': 'GBP', 'value': 33000.0},
-                            'credit_rating': {'value': '96', 'description': 'Very Low Risk'},
-                            'international_rating': {'value': 'A', 'description': 'Very Low Risk'},
-                            'date': '2018-03-08 23:56:33'
-                        },
-                        {
-                            'credit_limit': {'currency_code': 'GBP', 'value': 25000.0},
-                            'credit_rating': {'value': '87', 'description': 'Very Low Risk'},
-                            'international_rating': {'value': 'A', 'description': 'Very Low Risk'},
-                            'date': '2017-03-04 22:36:27'
-                        },
-                        {
-                            'credit_limit': {'currency_code': 'GBP', 'value': 46000.0},
-                            'credit_rating': {'value': '95', 'description': 'Very Low Risk'},
-                            'date': '2016-08-02 03:41:18'
-                        },
-                        {
-                            'credit_limit': {'currency_code': 'GBP', 'value': 500.0},
-                            'credit_rating': {'value': '47', 'description': 'Moderate Risk'},
-                            'date': '2016-07-07 12:44:15'
-                        },
-                        {
-                            'credit_limit': {'currency_code': 'GBP', 'value': 500.0},
-                            'credit_rating': {'value': '49', 'description': 'Moderate Risk'},
-                            'date': '2015-04-30 15:13:03'
+                    {
+                        'name': 'operating_profit',
+                        'value': {
+                            'currency_code': 'GBP',
+                            'value_type': 'CURRENCY'
                         }
-                    ]
-                }
+                    },
+                    {
+                        'name': 'profit_before_tax',
+                        'value': {
+                            'currency_code': 'GBP',
+                            'value_type': 'CURRENCY'
+                        }
+                    },
+                    {
+                        'name': 'retained_profit',
+                        'value': {
+                            'currency_code': 'GBP',
+                            'value_type': 'CURRENCY'
+                        }
+                    }],
+                'statement_type': 'PROFIT_AND_LOSS'
             }
         )
 
@@ -208,11 +286,7 @@ class TestCompanyReport(unittest.TestCase):
                 'name': 'PASSFORT LIMITED',
                 'number': '09565115',
                 'company_type': 'Unknown',
-                'country_of_incorporation': 'GBR',
-                'financials': {
-                    'credit_history': [],
-                    'contract_limit': None,
-                }
+                'country_of_incorporation': 'GBR'
             }
         )
 
@@ -1037,8 +1111,8 @@ class TestFinancials(unittest.TestCase):
                         'date': '2009-08-20 00:00:00',
                         'credit_rating': {'value': '21', 'description': 'High Risk'}
                     }
-                ],
-                'contract_limit': None}
+                ]
+            }
         )
 
     def test_handles_missing_value_and_description(self):
@@ -1070,8 +1144,7 @@ class TestFinancials(unittest.TestCase):
             {
                 'credit_history': [{
                     'date': '2011-03-29 00:00:00'
-                }],
-                'contract_limit': None
+                }]
             }
         )
 
@@ -1096,8 +1169,7 @@ class TestFinancials(unittest.TestCase):
             {
                 'credit_history': [{
                     'date': '2011-03-29 00:00:00'
-                }],
-                'contract_limit': None
+                }]
             }
         )
 
@@ -1129,7 +1201,6 @@ class TestFinancials(unittest.TestCase):
                     'date': '2011-03-29 00:00:00',
                     'credit_rating': {'value': '20'},
                     'international_rating': {'value': 'A'}
-                }],
-                'contract_limit': None
+                }]
             }
         )

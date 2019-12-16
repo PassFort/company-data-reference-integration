@@ -15,6 +15,10 @@ class DemoHandler:
             creditsafe_id = 'partial'
             name = 'PASSFORT PARTIAL LIMITED'
 
+        if 'partial_financial' in search_query:
+            creditsafe_id = 'partial_financial'
+            name = 'PASSFORT PARTIAL FINANCIAL'
+
         result = {
             'name': name,
             'number': '09565115',
@@ -32,4 +36,10 @@ class DemoHandler:
 
         if input_data.creditsafe_id == 'partial':
             formatted_report['metadata']['number'] = '1111111' # just return a different number
+        if input_data.creditsafe_id == 'partial_financial':
+            formatted_report['metadata']['financials'] = {
+                'credit_history': [],
+                'statements': [],
+                'contract_limit': None
+            }
         return formatted_report
