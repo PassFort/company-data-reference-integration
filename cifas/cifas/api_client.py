@@ -98,4 +98,4 @@ class CifasAPIClient:
                 Search=request.to_dict(),
             )
 
-            return FullSearchResponse.from_dict(response_object.__values__)
+        return FullSearchResponse.from_dict(response_object.__values__)
