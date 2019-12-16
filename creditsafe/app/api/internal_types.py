@@ -1,15 +1,16 @@
 import pycountry
+import re
 import uuid
 import nameparser
 import concurrent.futures
-from itertools import zip_longest
+from itertools import zip_longest, chain
 
 from collections import defaultdict
 from typing import Dict, Optional, Set, List
 
 from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
-    UUIDType, DateType
+    UUIDType, DateType, DictType, BaseType
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
@@ -134,6 +135,9 @@ Works Director
 
 INDIVIDUAL_ENTITY = 'INDIVIDUAL'
 COMPANY_ENTITY = 'COMPANY'
+
+def to_snake_case(input):
+    return re.sub('(?!^)([A-Z]+)', r'_\1', input).lower()
 
 
 def split_name(name, expect_title=False):
@@ -769,6 +773,74 @@ class AdditionalInformation(Model):
     rating_history = ListType(ModelType(CompanyRating), serialized_name="ratingHistory", default=[])
 
 
+class CreditsafeFinancialStatement(Model):
+    scope = StringType(serialized_name="type", required=True)
+    date = UTCDateTimeType(serialized_name="yearEndDate", required=True)
+    currency = StringType(default=None)
+    profit_and_loss = DictType(BaseType, default={}, serialized_name="profitAndLoss")
+    balance_sheet = DictType(BaseType, default={}, serialized_name="balanceSheet")
+
+    def parse_dict_entries(self, group_map, input_dict):
+        entries = []
+        groups = []
+        for k, v in group_map.items():
+            groups.append({
+                'name': to_snake_case(k),
+                'value': {
+                    'value': input_dict.get(k, None),
+                    'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                    'value_type': 'CURRENCY'
+                }
+            })
+            for item in v:
+                if item in input_dict:
+                    entries.append({
+                        'name': to_snake_case(item),
+                        'value': {
+                            'value': input_dict[item],
+                            'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                            'value_type': 'CURRENCY'
+                        },
+                        'group_name': to_snake_case(k)
+                    })
+        return entries, groups
+
+    def to_json(self):
+        pl_groups = {
+            'turnover': [],
+            'operatingProfit': [],
+            'profitBeforeTax': ['depreciation', 'auditFees'],
+            'retainedProfit': ['tax', 'profitAfterTax']
+        }
+
+        balance_groups = {
+            'totalFixedAssets': ['tangibleAssets', 'intangibleAssets'],
+            'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors' 'otherDebtors', 'miscCurrentAssets'],
+            'totalCurrentLiabilities': ['tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'],
+            'totalLongTermLiabilities': ['otherLongTermFinance']
+        }
+
+        pl_entries, pl_groups = self.parse_dict_entries(pl_groups, self.profit_and_loss)
+        balance_entries, balance_groups = self.parse_dict_entries(balance_groups, self.balance_sheet)
+
+        return [
+            {
+                'statement_type': 'PROFIT_AND_LOSS',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': pl_entries,
+                'groups': pl_groups
+            },
+            {
+                'statement_type': 'BALANCE_SHEET',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': balance_entries,
+                'groups': balance_groups
+            }
+        ]
+
+
 class CreditSafeCompanyReport(Model):
     creditsafe_id = StringType(required=True, serialized_name="companyId")
     summary = ModelType(CompanySummary, required=True, serialized_name="companySummary")
@@ -778,7 +850,8 @@ class CreditSafeCompanyReport(Model):
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
     additional_information = ModelType(AdditionalInformation, default=None, serialized_name="additionalInformation")
     credit_score = ModelType(CreditScore, serialized_name="creditScore", default=None)
-
+    local_financial_statements = ListType(ModelType(CreditsafeFinancialStatement),
+                                          serialized_name="localFinancialStatements", default=[])
     @property
     def credit_limit_history(self):
         if self.additional_information:
@@ -830,9 +903,16 @@ class CreditSafeCompanyReport(Model):
             if previous_international_rating and len(credit_history) > 1:
                 credit_history[1].update(previous_international_rating)
 
+        statements = sorted(
+            list(chain(
+                *[s.to_json() for s in self.local_financial_statements if s.scope == 'LocalFinancialsCSUK'])),
+            key = lambda x: x['date'],
+            reverse=True
+        )
         return {
             'contract_limit': contract_limit,
-            'credit_history': credit_history
+            'credit_history': credit_history,
+            'statements': statements
         }
 
     def as_passfort_format_41(self, request_handler=None):
