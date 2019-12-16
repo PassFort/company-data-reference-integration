@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            elementFormDefault="qualified" 
+            targetNamespace="http://test.find-cifas.org.uk" 
+            xmlns="http://test.find-cifas.org.uk" 
+            xmlns:fd="http://documentation.find-cifas.org.uk" >
+  <xsd:annotation>
+    <xsd:documentation>
+		  The Test web service allows organisations to
+      issue a call to FIND and receive a standardised
+      response.  The intentions are to allow a simple
+      check of FIND's availability and to provide a way
+      for an organisation to obtain information which 
+      will be useful for problem determination.
+		</xsd:documentation>
+    <xsd:appinfo>
+      <fd:Metadata>
+        <fd:Title>FIND Test</fd:Title>
+        <fd:StandardAbbreviation>FT</fd:StandardAbbreviation>
+        <fd:SchemaType>XSD</fd:SchemaType>
+        <fd:DateCreated>2008-07-25</fd:DateCreated>
+        <fd:CreatedBy>Nick Locke</fd:CreatedBy>
+        <fd:Copyright>Logica UK Limited 2010</fd:Copyright>
+        <fd:Modification>
+          <fd:DateModified>2008-07-28</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Original version.</fd:ModificationDetail>
+        </fd:Modification>
+        <fd:Modification>
+          <fd:DateModified>2010-03-12</fd:DateModified>
+          <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+          <fd:ModificationDetail>Superfluous nillable=false clauses removed.</fd:ModificationDetail>
+        </fd:Modification>
+      </fd:Metadata>
+    </xsd:appinfo>
+  </xsd:annotation>
+  <xsd:element name="TestRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        The request for a test to be performed.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Reference" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The test request must carry some kind of reference.  However,
+              the reference is completely free format and can be used by the
+              Member/Agent to record any relevant information regarding the test.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="TestResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        The response from the test, giving a number of pieces
+        of information useful for debugging purposes.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Reference" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The reference originally supplied within the original call.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="WebServer" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The name of the web server which handled the request.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="DatabaseServer" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The name of the database server which handled the request.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="ClientIP" type="xsd:string" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The IP address from which the request originated.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Time" type="xsd:dateTime" minOccurs="1" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The date and time at which the request was processed by the server.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

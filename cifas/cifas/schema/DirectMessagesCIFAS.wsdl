@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:fd="http://documentation.find-cifas.org.uk" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:doc="http://objects.find-cifas.org.uk/Direct"
+                  xmlns:fh="http://header.find-cifas.org.uk" 
+                  xmlns:ff="http://fault.find-cifas.org.uk"
+                  xmlns:fc="http://codes.find-cifas.org.uk" 
+                  xmlns:ft="http://test.find-cifas.org.uk" 
+                  xmlns="http://messages.find-cifas.org.uk/Direct/CIFAS"
+                  targetNamespace="http://messages.find-cifas.org.uk/Direct/CIFAS">
+  <wsdl:documentation>
+    <fd:Metadata>
+      <fd:Title>Direct Messages (CIFAS)</fd:Title>
+      <fd:StandardAbbreviation>DMC</fd:StandardAbbreviation>
+      <fd:SchemaType>WSDL</fd:SchemaType>
+      <fd:DateCreated>2008-06-18</fd:DateCreated>
+      <fd:CreatedBy>Nick Locke</fd:CreatedBy>
+      <fd:Copyright>Logica UK Limited 2010</fd:Copyright>
+      <fd:Modification>
+        <fd:DateModified>2008-07-22</fd:DateModified>
+        <fd:ModifiedBy>Nick Locke</fd:ModifiedBy>
+        <fd:ModificationDetail>Original version.</fd:ModificationDetail>
+      </fd:Modification>
+    </fd:Metadata>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://objects.find-cifas.org.uk/Direct" elementFormDefault="qualified">
+      <xsd:include schemaLocation="DirectObjectsCIFAS.xsd"/>
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://header.find-cifas.org.uk" elementFormDefault="qualified">
+      <xsd:include schemaLocation="FINDheader.xsd"/>
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://fault.find-cifas.org.uk" elementFormDefault="qualified">
+      <xsd:include schemaLocation="FINDfault.xsd"/>
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://codes.find-cifas.org.uk" elementFormDefault="qualified">
+      <xsd:include schemaLocation="FINDcodes.xsd"/>
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://test.find-cifas.org.uk" elementFormDefault="qualified">
+      <xsd:include schemaLocation="FINDtest.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="DirectHeader">
+    <wsdl:part name="DirectHeader" element="fh:StandardHeader"/>
+  </wsdl:message>
+  <wsdl:message name="CaseLookupRequestMessage">
+    <wsdl:part name="CaseLookupRequest" element="doc:CaseLookupRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CaseLookupResponseMessage">
+    <wsdl:part name="CaseLookupResponse" element="doc:CaseLookupResponse"/>
+  </wsdl:message>
+  <wsdl:message name="BasicSearchRequestMessage">
+    <wsdl:part name="BasicSearchRequest" element="doc:BasicSearchRequest"/>
+  </wsdl:message>
+  <wsdl:message name="BasicSearchResponseMessage">
+    <wsdl:part name="BasicSearchResponse" element="doc:BasicSearchResponse"/>
+  </wsdl:message>
+  <wsdl:message name="FullSearchRequestMessage">
+    <wsdl:part name="FullSearchRequest" element="doc:FullSearchRequest"/>
+  </wsdl:message>
+  <wsdl:message name="FullSearchResponseMessage">
+    <wsdl:part name="FullSearchResponse" element="doc:FullSearchResponse"/>
+  </wsdl:message>
+  <wsdl:message name="DirectFault">
+    <wsdl:part name="DirectFault" element="ff:StandardFault"/>
+  </wsdl:message>
+  <wsdl:message name="CodeTableStatusRequestMessage">
+    <wsdl:part name="CodeTableStatusRequest" element="fc:CodeTableStatusRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CodeTableStatusResponseMessage">
+    <wsdl:part name="CodeTableStatusResponse" element="fc:CodeTableStatusResponse"/>
+  </wsdl:message>
+  <wsdl:message name="CodeTableValueRequestMessage">
+    <wsdl:part name="CodeTableValueRequest" element="fc:CodeTableValueRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CodeTableValueResponseMessage">
+    <wsdl:part name="CodeTableValueResponse" element="fc:CodeTableValueResponse"/>
+  </wsdl:message>
+  <wsdl:message name="TestRequestMessage">
+    <wsdl:part name="TestRequest" element="ft:TestRequest"/>
+  </wsdl:message>
+  <wsdl:message name="TestResponseMessage">
+    <wsdl:part name="TestResponse" element="ft:TestResponse"/>
+  </wsdl:message>
+</wsdl:definitions>
