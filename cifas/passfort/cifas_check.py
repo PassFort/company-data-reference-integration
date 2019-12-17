@@ -7,6 +7,8 @@ from passfort import EntityType, union_field
 from passfort.individual_data import IndividualData
 from passfort.company_data import CompanyData
 from passfort.date import PartialDate
+from passfort.fraud_detection import FraudDetection
+from passfort.error import Error
 
 
 @dataclass
@@ -24,7 +26,7 @@ class CifasCredentials:
 
 @dataclass_json
 @dataclass
-class CifasSearch:
+class CifasCheck:
     config: CifasConfig
     credentials: CifasCredentials
     input_data: Union[IndividualData, CompanyData] = union_field(
@@ -34,3 +36,16 @@ class CifasSearch:
     )
 
     is_demo: bool = False
+
+
+@dataclass_json
+@dataclass
+class OutputData:
+    fraud_detection: FraudDetection 
+
+
+@dataclass_json
+@dataclass
+class CifasCheckResponse:
+    output_data: OutputData
+    errors: List[Error] = field(default_factory=list)

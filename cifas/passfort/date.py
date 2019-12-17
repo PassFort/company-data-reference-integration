@@ -18,6 +18,7 @@ class DatePrecision(Enum):
 
 class PartialDate:
     value: date
+    precision: DatePrecision
 
     def __init__(self, value: str, precision: DatePrecision):
         assert type(value) is str
@@ -26,6 +27,12 @@ class PartialDate:
     
     @classmethod
     def decode(cls, value):
+        if isinstance(value, PartialDate):
+            return value
+        
+        if value is None:
+            return value
+
         try:
             return cls(value, DatePrecision.YEAR_MONTH_DAY)
         except ValueError:
