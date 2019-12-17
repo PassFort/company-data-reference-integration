@@ -7,15 +7,15 @@ from passfort.address import AddressHistoryItem
 
 @dataclass
 class CompanyContactDetails:
-    phone_number: Optional[str]
-    email: Optional[str]
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
 
 
 @dataclass
 class CompanyMetadata:
     number: str
     name: str
-    contact_details: Optional[CompanyContactDetails]
+    contact_details: Optional[CompanyContactDetails] = None
 
 
 @dataclass_json
