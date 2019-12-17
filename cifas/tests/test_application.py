@@ -1,14 +1,14 @@
 import responses
 from unittest import TestCase
 from app.application import app
-from tests import MATCH_RESPONSE, NOMATCH_RESPONSE
+from tests import MATCH_RESPONSE, NOMATCH_RESPONSE, INDIVIDUAL_DATA_MINIMAL, COMPANY_DATA_MINIMAL
 
 
 class TestApplication(TestCase):
     def setUp(self):
         self.client = app.test_client()
 
-    def run_cifas_search(self):
+    def run_cifas_search(self, input_data):
         return self.client.post(
             '/cifas-search',
             json={
@@ -21,50 +21,7 @@ class TestApplication(TestCase):
                 'credentials': {
                     'cert': 'IAMAMACERTIFICATECHAIN',
                 },
-                'input_data': {
-                    'entity_type': 'INDIVIDUAL',
-                    'contact_details': {},
-                    'personal_details': {
-                        'dob': '1965-11-13',
-                        'name': {
-                            'family_name': 'Bridges',
-                            'given_names': [
-                                'Sam',
-                                'Porter',
-                            ]
-                        }
-                    },
-                    'address_history': [
-                        {
-                            'address': {
-                                'country': 'GBR',
-                                'county': 'Tower Hamlets',
-                                'locality': 'London',
-                                'original_freeform_address': ', Passfort Ltd, 11, Princelet Street, London, , Tower Hamlets, , E1 6QH',
-                                'original_structured_address': {
-                                    'country': 'GBR',
-                                    'county': 'Tower Hamlets',
-                                    'locality': 'London',
-                                    'postal_code': 'E1 6QH',
-                                    'postal_town': '',
-                                    'premise': 'Passfort Ltd',
-                                    'route': 'Princelet Street',
-                                    'state_province': '',
-                                    'street_number': '11',
-                                    'subpremise': ''
-                                },
-                                'postal_code': 'E1 6QH',
-                                'postal_town': '',
-                                'premise': 'Passfort Ltd',
-                                'route': 'Princelet Street',
-                                'state_province': '',
-                                'street_number': '11',
-                                'subpremise': '',
-                                'type': 'STRUCTURED'
-                            }
-                        }
-                    ]
-                },
+                'input_data': input_data,
             },
         )
 
@@ -77,7 +34,7 @@ class TestApplication(TestCase):
             content_type='text/xml; charset=utf-8',
         )
 
-        response = self.run_cifas_search()
+        response = self.run_cifas_search(INDIVIDUAL_DATA_MINIMAL)
         output_data = response.json['output_data']
         errors = response.json['errors']
         fraud_detection = output_data['fraud_detection']
@@ -96,7 +53,45 @@ class TestApplication(TestCase):
             content_type='text/xml; charset=utf-8',
         )
 
-        response = self.run_cifas_search()
+        response = self.run_cifas_search(INDIVIDUAL_DATA_MINIMAL)
+        output_data = response.json['output_data']
+        errors = response.json['errors']
+        fraud_detection = output_data['fraud_detection']
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(fraud_detection['match_count'], 0)
+        self.assertEqual(type(fraud_detection['search_reference']), str)
+
+    @responses.activate
+    def test_company_match(self):
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MATCH_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
+        response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
+        output_data = response.json['output_data']
+        errors = response.json['errors']
+        fraud_detection = output_data['fraud_detection']
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(fraud_detection['match_count'], 1)
+        self.assertEqual(type(fraud_detection['search_reference']), str)
+
+    @responses.activate
+    def test_company_nomatch(self):
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=NOMATCH_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
+        response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
         output_data = response.json['output_data']
         errors = response.json['errors']
         fraud_detection = output_data['fraud_detection']
