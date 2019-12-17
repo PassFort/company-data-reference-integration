@@ -15,6 +15,7 @@ class CompanyContactDetails:
 class CompanyMetadata:
     number: str
     name: str
+    addresses: List[AddressHistoryItem]
     contact_details: Optional[CompanyContactDetails] = None
 
 
@@ -22,5 +23,4 @@ class CompanyMetadata:
 @dataclass
 class CompanyData:
     metadata: CompanyMetadata
-    addresses: List[AddressHistoryItem]
     entity_type: EntityType = EntityType.COMPANY

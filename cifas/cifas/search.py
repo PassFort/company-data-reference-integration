@@ -197,6 +197,6 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
         Address=[
             StructuredAddress.from_passfort_address(item.address)
             # Cifas API accepts 10 addresses max
-            for item in entity_data.addresses[:10] 
+            for item in entity_data.metadata.addresses[:10] 
         ],
     )
