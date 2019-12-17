@@ -789,17 +789,17 @@ class CreditsafeFinancialStatement(Model):
                 'value': {
                     'value': input_dict.get(k, None),
                     'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
-                    'value_type': 'CURRENCY'
-                }
+                },
+                'value_type': 'CURRENCY'
             })
             for item in v:
                 if item in input_dict:
                     entries.append({
                         'name': to_snake_case(item),
+                        'value_type': 'CURRENCY',
                         'value': {
                             'value': input_dict[item],
                             'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
-                            'value_type': 'CURRENCY'
                         },
                         'group_name': to_snake_case(k)
                     })
@@ -933,7 +933,6 @@ class CreditSafeCompanyReport(Model):
             'incorporation_date': self.identification.incorporation_date,
             'company_type': self.identification.raw_company_type,
             'structured_company_type': self.identification.structured_company_type,
-            'financials': self.to_financials()
         })
 
         unique_shareholders = sorted(
@@ -961,6 +960,7 @@ class CreditSafeCompanyReport(Model):
             request_handler)
         return {
             'metadata': metadata.serialize(),
+            'financials': Financials(self.to_financials()).serialize(),
             'associated_entities': [a.serialize() for a in associates]
         }
 
