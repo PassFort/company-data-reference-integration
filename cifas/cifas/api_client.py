@@ -13,11 +13,11 @@ from cifas.soap_header import StandardHeader
 
 
 WSDL_DIR = path.join(path.dirname(__file__), 'schema')
-WSDL_FILENAME = 'DirectServiceCIFAS.wsdl'
+WSDL_FILENAME = 'cifas/schema/DirectServiceCIFAS.wsdl'
 CIFAS_SCHEMA_VERSION = '3-00'
 PASSFORT_CURRENT_USER = 'PassfortUser1105'
 PASSFORT_MEMBER_ID = 1106
-TRAINING_WSDL_FILENAME = 'TrainingDirectServiceCIFAS.wsdl'
+TRAINING_WSDL_FILENAME = 'cifas/schema/TrainingDirectServiceCIFAS.wsdl'
 CERTS_DIRECTORY = mkdtemp(prefix='cifas-certs-')
 
 
@@ -28,16 +28,6 @@ class CifasConnectionError(Exception):
 class CifasHTTPError(Exception):
     def __init__(self, http_error: HTTPError):
         self.http_error = http_error
-
-
-@contextmanager
-def change_cwd(cwd: str):
-    # This changes the current directory
-    # and restores it back to normal afterwards...
-    original_cwd = getcwd()
-    chdir(cwd)
-    yield cwd
-    chdir(original_cwd)
 
 
 @contextmanager
@@ -54,9 +44,7 @@ def create_soap_client(cert_file: str, wsdl_path: str) -> Client:
     session = Session()
     session.cert = cert_file
 
-    with change_cwd(WSDL_DIR), request_ctx():
-        soap_client = Client(wsdl_path, transport=Transport(session=session))
-
+    soap_client = Client(wsdl_path, transport=Transport(session=session))
     soap_client.set_ns_prefix('fh', 'http://header.find-cifas.org.uk')
     soap_client.set_ns_prefix('doc', 'http://objects.find-cifas.org.uk/Direct')
     return soap_client

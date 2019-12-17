@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json, config
 from passfort import EntityType, union_list
 from passfort.date import PartialDate
+from passfort.address import AddressHistoryItem, Address
 
 
 @dataclass
@@ -22,23 +23,6 @@ class PersonalDetails:
         default_factory=type(None),
     )
     national_identity_number: Optional[Dict[str, str]] = None
-
-
-@dataclass
-class Address:
-    street_number: Optional[str] = None
-    premise: Optional[str] = None
-    subpremise: Optional[str] = None
-    route: Optional[str] = None
-    locality: Optional[str] = None
-    postal_town: Optional[str] = None
-    postal_code: Optional[str] = None
-    country: Optional[str] = None
-
-
-@dataclass
-class AddressHistoryItem:
-    address: Address
 
 
 @dataclass
