@@ -158,13 +158,13 @@ class TestCompanyReport(unittest.TestCase):
             }
         )
         self.assertEqual(
-            self.formatted_report['metadata']['financials']['contract_limit'],
+            self.formatted_report['financials']['contract_limit'],
             {
                 'currency_code': 'GBP', 'value': 49500.0
             }
         )
         self.assertEqual(
-            self.formatted_report['metadata']['financials']['credit_history'],
+            self.formatted_report['financials']['credit_history'],
             [
                 {
                     'credit_limit': {'currency_code': 'GBP', 'value': 33000.0},
@@ -197,7 +197,7 @@ class TestCompanyReport(unittest.TestCase):
         )
 
         self.assertEqual(
-            self.formatted_report['metadata']['financials']['statements'][0],
+            self.formatted_report['financials']['statements'][0],
             {
                 'currency_code': 'GBP',
                 'date': '2017-12-31',
@@ -208,8 +208,8 @@ class TestCompanyReport(unittest.TestCase):
                         'value': {
                             'currency_code': 'GBP',
                             'value': 7953.0,
-                            'value_type': 'CURRENCY'
-                        }
+                        },
+                        'value_type': 'CURRENCY'
                     },
                     {
                         'group_name': 'profit_before_tax',
@@ -217,35 +217,38 @@ class TestCompanyReport(unittest.TestCase):
                         'value': {
                             'currency_code': 'GBP',
                             'value': 0.0,
-                            'value_type': 'CURRENCY'
-                        }
+                        },
+                        'value_type': 'CURRENCY'
                     }
                 ],
                 'groups': [
                     {
                         'name': 'turnover',
-                        'value': {'currency_code': 'GBP', 'value_type': 'CURRENCY'},
+                        'value': {
+                            'currency_code': 'GBP',
+                        },
+                        'value_type': 'CURRENCY'
                     },
                     {
                         'name': 'operating_profit',
                         'value': {
                             'currency_code': 'GBP',
-                            'value_type': 'CURRENCY'
-                        }
+                        },
+                        'value_type': 'CURRENCY'
                     },
                     {
                         'name': 'profit_before_tax',
                         'value': {
                             'currency_code': 'GBP',
-                            'value_type': 'CURRENCY'
-                        }
+                        },
+                        'value_type': 'CURRENCY'
                     },
                     {
                         'name': 'retained_profit',
                         'value': {
                             'currency_code': 'GBP',
-                            'value_type': 'CURRENCY'
-                        }
+                        },
+                        'value_type': 'CURRENCY'
                     }],
                 'statement_type': 'PROFIT_AND_LOSS'
             }

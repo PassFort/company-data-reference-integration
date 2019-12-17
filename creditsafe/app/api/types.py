@@ -239,7 +239,6 @@ class CreditChangeEntry(Model):
 
 class StatementValue(Model):
     value = BaseType(default=None)
-    value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
     currency_code = StringType(default=None)
 
     class Options:
@@ -249,6 +248,7 @@ class StatementValue(Model):
 class StatementEntry(Model):
     name = StringType(required=True)
     value = ModelType(StatementValue, default=None)
+    value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
     yoy = DecimalType(default=None)
     group_name = StringType(default=None)
 
@@ -263,6 +263,7 @@ class StatementEntry(Model):
 class StatementEntryGroup(Model):
     name = StringType(required=True)
     value = ModelType(StatementValue, default=None)
+    value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
     yoy = DecimalType(default=None)
 
     @serializable(serialized_name="yoy")
@@ -304,7 +305,6 @@ class PassFortMetadata(Model):
     incorporation_date = DateType(default=None)
     company_type = StringType(default=None)
     structured_company_type = ModelType(PassFortStructuredCompanyType, default=None)
-    financials = ModelType(Financials, default=None)
 
     class Options:
         serialize_when_none = False

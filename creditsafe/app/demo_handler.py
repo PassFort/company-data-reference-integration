@@ -37,9 +37,5 @@ class DemoHandler:
         if input_data.creditsafe_id == 'partial':
             formatted_report['metadata']['number'] = '1111111' # just return a different number
         if input_data.creditsafe_id == 'partial_financial':
-            formatted_report['metadata']['financials'] = {
-                'credit_history': [],
-                'statements': [],
-                'contract_limit': None
-            }
+            formatted_report['financials'] = None
         return formatted_report
