@@ -2,7 +2,7 @@
 
 integration_name="cifas"
 
-pipenv run coverage run -m unittest tests && \
+pipenv run coverage run -m unittest discover tests && \
 pipenv run coverage xml -i && \
 
 sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml && \
