@@ -6,6 +6,7 @@ from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest, IndividualParty, StructuredAddress
 from passfort.cifas_check import CifasConfig, CifasCredentials
 from datetime import date
+from tests import MATCH_RESPONSE
 
 
 class TestAPIClient(TestCase):

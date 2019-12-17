@@ -14,13 +14,13 @@ from passfort.date import DatePrecision
 
 @dataclass
 class StructuredAddress:
-    HouseNumber: Optional[str]
-    HouseName: Optional[str]
-    FlatOrUnit: Optional[str]
-    Street: Optional[str]
-    Town: Optional[str]
-    District: Optional[str]
-    Postcode: Optional[str]
+    HouseNumber: Optional[str] = None
+    HouseName: Optional[str] = None
+    FlatOrUnit: Optional[str] = None
+    Street: Optional[str] = None
+    Town: Optional[str] = None
+    District: Optional[str] = None
+    Postcode: Optional[str] = None
 
     @staticmethod
     def encode(address):
@@ -43,15 +43,27 @@ class StructuredAddress:
 
 
 @dataclass
+class BankAccountDetails:
+    SortCode: str
+    AccountNumber: str
+
+
+@dataclass
+class FinancialDetails:
+    BankAccount: BankAccountDetails
+
+
+@dataclass
 class IndividualParty:
     Surname: Optional[str]
     FirstName: Optional[str]
     """CIFAS only accepts full dates"""
     BirthDate: Optional[date] = field(metadata=config(encoder=date.isoformat))
     Address: StructuredAddress = field(metadata=config(encoder=StructuredAddress.encode))
-    EmailAddress: Optional[str]
-    HomeTelephone: Optional[str]
-    NationalInsuranceNumber: Optional[str]
+    EmailAddress: Optional[str] = None
+    HomeTelephone: Optional[str] = None
+    Finance: Optional[List[FinancialDetails]] = None
+    NationalInsuranceNumber: Optional[str] = None
     Relevance: Optional[str] = 'APP'
     PartySequence: Optional[int] = 1
 
@@ -64,17 +76,6 @@ class CompanyParty:
     PartySequence: int = 1
 
 
-@dataclass
-class BankAccountDetails:
-    SortCode: str
-    AccountNumber: str
-
-
-@dataclass
-class FinancialDetails:
-    BankAccount: BankAccountDetails
-
-
 @dataclass_json
 @dataclass
 class FullSearchRequest:
@@ -82,7 +83,6 @@ class FullSearchRequest:
     SearchType: str
     MemberSearchReference: str
     Party: Union[IndividualParty, CompanyParty]
-    Finance: List[FinancialDetails]
 
     @classmethod
     def from_passfort_data(
@@ -90,25 +90,11 @@ class FullSearchRequest:
             entity_data: Union[IndividualData, CompanyData],
             config: CifasConfig,
     ) -> 'FullSearchRequest':
-        finance_items: List[FinancialDetails] = []
-        if isinstance(entity_data, IndividualData):
-            if entity_data.banking_details:
-                finance_items = [
-                    FinancialDetails(
-                        BankAccount=BankAccountDetails(
-                            SortCode=bank_account.sort_code,
-                            AccountNumber=bank_account.account_number,
-                        ),
-                    ) for bank_account in entity_data.banking_details.bank_accounts
-                    if isinstance(bank_account, UKBankAccount)
-                ]
-
         return cls(
             Product=config.product_code,
             SearchType=config.search_type,
             MemberSearchReference=str(uuid4())[:16],
             Party=create_party_from_passfort_data(entity_data),
-            Finance=finance_items,
         )
 
     def to_dict(self) -> dict:
@@ -162,6 +148,18 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
         else:
             address = PassFortAddress()
 
+        finance_items: List[FinancialDetails] = []
+        if entity_data.banking_details:
+            finance_items = [
+                FinancialDetails(
+                    BankAccount=BankAccountDetails(
+                        SortCode=bank_account.sort_code,
+                        AccountNumber=bank_account.account_number,
+                    ),
+                ) for bank_account in entity_data.banking_details.bank_accounts
+                if isinstance(bank_account, UKBankAccount)
+            ]
+
         return IndividualParty(
             Surname=full_name.family_name,
             FirstName=first_name,
@@ -173,6 +171,7 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
             EmailAddress=contact_details.email if contact_details else None,
             HomeTelephone=contact_details.phone_number if contact_details else None,
             NationalInsuranceNumber=national_identity_number.get('GBR') if national_identity_number else None,
+            Finance=finance_items,
         )
 
     raise NotImplemented()

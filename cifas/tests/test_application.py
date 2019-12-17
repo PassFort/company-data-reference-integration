@@ -1,7 +1,7 @@
 import responses
 from unittest import TestCase
 from app.application import app
-from . import MATCH_RESPONSE, NOMATCH_RESPONSE
+from tests import MATCH_RESPONSE, NOMATCH_RESPONSE
 
 
 class TestApplication(TestCase):
