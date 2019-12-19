@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, Response, request, abort
+from flask import Flask, Response, request, abort, jsonify
 from raven.contrib.flask import Sentry
 from passfort.cifas_check import CifasCheck, CifasCheckResponse
 from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
