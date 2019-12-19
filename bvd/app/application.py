@@ -32,8 +32,6 @@ def get_bvd_id(credentials, input_data):
         if error:
             return error, result
         elif result:
-            assert country_alpha2to3(result['Country']) == input_data['country_of_incorporation'], \
-                "result should have the same country"
             assert result['NationalId'] == input_data['number'], "result should have the same number"
             return None, result['BvDID']
         else:

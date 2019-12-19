@@ -6,6 +6,7 @@
             "bvd9": "004086504",
             "bvd_id": "GB01493087",
             "company_type": "Public limited companies",
+            "country_of_incorporation": "GBR",
             "structured_company_type": {
                 "is_public": false,
                 "is_limited": true,
