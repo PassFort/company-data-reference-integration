@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-passfort-deployment = {git = "git@github.com:PassFort/deployment.git@3de7b3f8d634795912b1a2e94fa55fee64f9f378", editable = true}
+passfort-deployment = {git = "git@github.com:PassFort/deployment.git@3f5bd8f9833588eb708281f9988eb4466a420d6b", editable = true}
 requests = "*"
 slacker-cli = "*"
 coverage = "*"
