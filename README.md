@@ -27,4 +27,4 @@ To work with CI, your service should:
     - You can then duplicate an existing workflow.
 - [x] Update the kubernetes file `deployment.yaml`
 
-> Please note how private keys are passed into the docker builder (for accessing private git repositories) as a build_arg. I recommend not disturbing this code as it's a little fragile!
+> Please note how private keys are passed into the docker builder (for accessing private git repositories) as a build_arg. I recommend not disturbing this code as it's a little fragile! 

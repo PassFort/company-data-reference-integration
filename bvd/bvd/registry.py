@@ -2,7 +2,7 @@ from typing import Optional, List, cast
 from enum import Enum
 from datetime import datetime
 
-from bvd.utils import BvDServiceException, CompanyRawData, send_sentry_exception
+from bvd.utils import BvDServiceException, CompanyRawData, send_sentry_exception, country_alpha2to3
 from bvd.format_utils import BaseObject, EntityType, format_date
 from bvd.officers import format_officers, Officers
 
@@ -187,6 +187,7 @@ class CompanyMetadata(BaseObject):
     name: Optional[str]
     company_type: Optional[str]
     structured_company_type: Optional[StructuredCompanyType]
+    country_of_incorporation: Optional[str]
     incorporation_date: Optional[datetime]
     previous_names: List[PreviousName]
     sic_codes: List[SICCode]
@@ -216,6 +217,7 @@ class CompanyMetadata(BaseObject):
 
         metadata.name = raw_data.get('NAME')
         metadata.company_type = format_company_type(raw_data)
+        metadata.country_of_incorporation = country_alpha2to3(raw_data.get('CTRYISO'))
         metadata.structured_company_type = format_structured_company_type(raw_data)
         metadata.is_active = format_is_active(raw_data)
         metadata.incorporation_date = format_date(raw_data.get('DATEINC'))
