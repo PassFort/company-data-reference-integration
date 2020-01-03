@@ -20,6 +20,7 @@ integrations = {
     'bvd': './bvd',
     'worldcheck': './worldcheck',
     'trulioo': './trulioo',
+    'equifax_au': './equifax_au',
     'uk_charities_commission': './uk_charities_commission',
     'cifas': './cifas',
 }

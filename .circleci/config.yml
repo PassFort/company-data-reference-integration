@@ -233,6 +233,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_equifax_au:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo equifax_au > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     set_integration_uk_charities_commission:
         docker:
             - image: circleci/python
@@ -285,6 +296,9 @@ jobs:
     build_trulioo:
         <<: *build
 
+    build_equifax_au:
+        <<: *build
+
     build_uk_charities_commission:
         <<: *build
 
@@ -332,6 +346,9 @@ jobs:
 
     unit_trulioo:
         <<: *unit
+
+    unit_equifax_au:
+       <<: *unit
 
     unit_uk_charities_commission:
         <<: *unit
@@ -396,6 +413,9 @@ jobs:
     deploy_trulioo_staging:
         <<: *deploy_staging_common
 
+    deploy_equifax_au_staging:
+        <<: *deploy_staging_common
+
     deploy_uk_charities_commission_staging:
         <<: *deploy_staging_common
 
@@ -430,6 +450,9 @@ jobs:
         <<: *deploy_production_common
 
     deploy_trulioo_production:
+        <<: *deploy_production_common
+
+    deploy_equifax_au_production:
         <<: *deploy_production_common
 
     deploy_uk_charities_commission_production:
@@ -714,6 +737,30 @@ workflows:
             - deploy_trulioo_production:
                 requires:
                   - unit_trulioo
+                filters:
+                    branches:
+                        only:
+                          - master
+
+    equifax_au:
+        jobs:
+            - set_integration_equifax_au
+            - build_equifax_au:
+                requires:
+                  - set_integration_equifax_au
+            - unit_equifax_au:
+                requires:
+                  - build_equifax_au
+            - deploy_equifax_au_staging:
+                requires:
+                  - unit_equifax_au
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_equifax_au_production:
+                requires:
+                  - unit_equifax_au
                 filters:
                     branches:
                         only:
