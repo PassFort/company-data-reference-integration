@@ -47,12 +47,12 @@ $ docker run -p 8001:8001 --name equifax_integration Equifax:0.1
 # End points
 ```sh
 POST /ekyc-check
-POST /health-check
+POST /health
 ```
 Health check example
 ```sh
 curl --request POST \
-  --url http://127.0.0.1:8001/health-check \
+  --url http://127.0.0.1:8001/health \
   --header ': ' \
   --header 'Content-Type: application/json' \
   --data '{"credentials": {"username":"equifax_user","password":"equifax_pass","url": "https://apiconnect.equifax.com.au/"}}'

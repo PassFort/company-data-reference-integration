@@ -22,7 +22,7 @@ def test_health_check(mock_authentication, client):
     mock_authentication.return_value = ("Equifax Integration", 200,)
 
     response = client.post(
-        '/health-check',
+        '/health',
         data=json.dumps({
             'credentials': {
                 'username': 'dummy_user',
@@ -43,7 +43,7 @@ def test_health_check(mock_authentication, client):
 
 def test_health_check_empty(client):
     response = client.post(
-        '/health-check',
+        '/health',
         data=json.dumps({}),
         content_type='application/json'
     )
@@ -51,7 +51,7 @@ def test_health_check_empty(client):
     assert response.status_code == 200
 
 def test_health_check_get_method(client):
-    response = client.get('/health-check')
+    response = client.get('/health')
     assert response.status_code == 200
 
 
