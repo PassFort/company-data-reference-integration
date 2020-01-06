@@ -92,6 +92,31 @@ aliases:
             eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION \
             make coverage
 
+    - &unit_appengine
+      docker:
+        - image: circleci/python:3.7
+      steps:
+        - checkout
+        - *attach_to_workspace
+        - run:
+            name: Install dependencies
+            command: |
+              sudo pip install -r `cat workspace/integration_name`/requirements.txt -r `cat workspace/integration_name`/requirements-dev.txt
+        - run:
+            name: Run tests
+            command: |
+              mkdir -p test-results/pytest
+              pytest --junitxml=test-results/pytest/pytest.xml --cov=app `cat workspace/integration_name`
+        - store_test_results:
+            path: test-results
+        - store_artifacts:
+            path: test-results
+        - run:
+            name: Upload coverage
+            command: |
+              coverage xml -i
+              codecov -F `cat workspace/integration_name` -X search -f coverage.xml
+
     - &deploy_staging_common
       docker:
           - image: passfort/python-builder
@@ -119,6 +144,18 @@ aliases:
               pipenv --three
               pipenv install
               pipenv run python deploy.py -ds `cat workspace/integration_name` production
+
+    - &deploy_staging_appengine
+      docker:
+          - image: passfort/python-builder
+      steps:
+          - checkout
+          - *attach_to_workspace
+          - *auth_ssh
+          - *setup_gcp
+          - run: |
+              cat `cat workspace/integration_name`/env_variables.yaml.envsubst | envsubst > `cat workspace/integration_name`/env_variables.yaml
+              gcloud app deploy
 
 version: 2.0
 
@@ -266,6 +303,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_reference:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo reference_integration > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     build_comply_advantage:
         <<: *build
 
@@ -356,6 +404,9 @@ jobs:
     unit_cifas:
         <<: *unit
 
+    unit_reference:
+        <<: *unit_appengine
+
     e2e_comply_advantage:
       <<: *e2e
 
@@ -421,6 +472,9 @@ jobs:
 
     deploy_cifas_staging:
         <<: *deploy_staging_common
+
+    deploy_reference_staging:
+        <<: *deploy_staging_appengine
 
     deploy_comply_advantage_production:
       <<: *deploy_production_common
@@ -818,3 +872,17 @@ workflows:
                     branches:
                         only:
                           - master
+
+    reference:
+        jobs:
+            - set_integration_reference
+            - unit_reference:
+                requires:
+                  - set_integration_reference
+            - deploy_reference_staging:
+                requires:
+                  - unit_reference
+                filters:
+                    branches:
+                        only:
+                          - staging
