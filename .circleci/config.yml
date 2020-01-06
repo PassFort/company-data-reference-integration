@@ -435,8 +435,8 @@ jobs:
     deploy_uk_charities_commission_production:
         <<: *deploy_production_common
 
-    deploy_cifas_staging:
-        <<: *deploy_staging_common
+    deploy_cifas_production:
+        <<: *deploy_production_common
 
 workflows:
     version: 2
