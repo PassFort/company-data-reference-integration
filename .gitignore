@@ -8,3 +8,4 @@ node_modules/
 .mypy_cache/
 .DS_Store
 .vscode/
+/reference_integration/env_variables.yaml
