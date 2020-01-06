@@ -8,13 +8,12 @@ EXPOSE 8001
 
 WORKDIR /src
 
-RUN apk add --no-cache yarn openssh-client git 
-COPY Pipfile Pipfile.lock package.json yarn.lock /src/
+RUN apk add --no-cache make openssh-client git 
+COPY Pipfile Pipfile.lock Makefile /src/
 
 
 RUN pip install pipenv \
     && pipenv install \
-    && yarn \
     && apk del --no-cache git openssh-client
 
 COPY main.py /src

@@ -1,8 +1,7 @@
 /*
 !/Pipfile
 !/Pipfile.lock
-!/package.json
-!/yarn.lock
+!/Makefile
 !/app
 !/tests
 !/passfort

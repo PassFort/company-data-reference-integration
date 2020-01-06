@@ -10,7 +10,7 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /src
 
-COPY Pipfile Pipfile.lock package.json /src/
+COPY Pipfile Pipfile.lock Makefile /src/
 
 RUN mkdir /srv/logs/ && \
     pip install pip==18.0 && \	    
@@ -18,10 +18,9 @@ RUN mkdir /srv/logs/ && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
-    apk add --no-cache yarn openssh-client git && \
+    apk add --no-cache make openssh-client git && \
     pipenv run pip install --upgrade wheel && \
     pipenv install && \
-    yarn && \
     apk del --no-cache git openssh-client
 
 COPY main.py /src

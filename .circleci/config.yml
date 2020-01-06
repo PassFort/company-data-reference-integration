@@ -64,7 +64,7 @@ aliases:
             -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
             -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
             -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
-            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION make unit
 
     - &e2e
       docker:
@@ -90,7 +90,7 @@ aliases:
             -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
             -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
             eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION \
-            yarn run coverage
+            make coverage
 
     - &deploy_staging_common
       docker:
