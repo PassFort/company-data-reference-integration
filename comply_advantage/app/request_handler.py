@@ -58,7 +58,7 @@ def get_result_by_search_ids(
     session = requests_retry_session()
     try:
         if len(search_ids):
-            url = f'{credentials.base_url}/searches/{search_ids[0]}?api_key={credentials.api_key}'
+            url = f'{credentials.base_url}/searches/{search_ids[0]}/details?api_key={credentials.api_key}'
             response = session.get(url)
 
             errors = []
