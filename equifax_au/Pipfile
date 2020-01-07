@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+coverage = "*"
+codecov = "*"
+
+[packages]
+flask = "*"
+flask-restful = "*"
+gunicorn = "*"
+requests = "*"
+lxml = "*"
+xmltodict = "*"
+
+[requires]
+python_version = "3.7"

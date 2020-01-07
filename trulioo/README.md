@@ -47,7 +47,7 @@ $ docker run -p 8001:8001 --name trulioo_integration trulioo:1.1
 # End points
 ```sh
 POST /ekyc-check
-POST /health-check
+POST /health
 ```
 Health check example
 ```sh

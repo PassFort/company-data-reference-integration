@@ -8,14 +8,13 @@ EXPOSE 8001
 
 WORKDIR /app
 
-RUN apk add --no-cache yarn openssh-client git 
-COPY Pipfile Pipfile.lock package.json yarn.lock /app/
+RUN apk add --no-cache make openssh-client git 
+COPY Pipfile Pipfile.lock Makefile /app/
 
 ENV FLASK_APP="app"
 
 RUN pip install pipenv \
     && pipenv install \
-    && yarn \
     && apk del --no-cache git openssh-client
 
 COPY . /app

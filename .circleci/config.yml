@@ -64,7 +64,7 @@ aliases:
             -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
             -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
             -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
-            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION yarn run unit
+            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION make unit
 
     - &e2e
       docker:
@@ -90,7 +90,32 @@ aliases:
             -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
             -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
             eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION \
-            yarn run coverage
+            make coverage
+
+    - &unit_appengine
+      docker:
+        - image: circleci/python:3.7
+      steps:
+        - checkout
+        - *attach_to_workspace
+        - run:
+            name: Install dependencies
+            command: |
+              sudo pip install -r `cat workspace/integration_name`/requirements.txt -r `cat workspace/integration_name`/requirements-dev.txt
+        - run:
+            name: Run tests
+            command: |
+              mkdir -p test-results/pytest
+              pytest --junitxml=test-results/pytest/pytest.xml --cov=app `cat workspace/integration_name`
+        - store_test_results:
+            path: test-results
+        - store_artifacts:
+            path: test-results
+        - run:
+            name: Upload coverage
+            command: |
+              coverage xml -i
+              codecov -F `cat workspace/integration_name` -X search -f coverage.xml
 
     - &deploy_staging_common
       docker:
@@ -119,6 +144,18 @@ aliases:
               pipenv --three
               pipenv install
               pipenv run python deploy.py -ds `cat workspace/integration_name` production
+
+    - &deploy_staging_appengine
+      docker:
+          - image: passfort/python-builder
+      steps:
+          - checkout
+          - *attach_to_workspace
+          - *auth_ssh
+          - *setup_gcp
+          - run: |
+              cat `cat workspace/integration_name`/env_variables.yaml.envsubst | envsubst > `cat workspace/integration_name`/env_variables.yaml
+              gcloud app deploy
 
 version: 2.0
 
@@ -233,6 +270,17 @@ jobs:
                 paths:
                     - integration_name
 
+    set_integration_equifax_au:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo equifax_au > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
     set_integration_uk_charities_commission:
         docker:
             - image: circleci/python
@@ -250,6 +298,17 @@ jobs:
         steps:
             - run: mkdir -p workspace
             - run: echo cifas > workspace/integration_name
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - integration_name
+
+    set_integration_reference:
+        docker:
+            - image: circleci/python
+        steps:
+            - run: mkdir -p workspace
+            - run: echo reference_integration > workspace/integration_name
             - persist_to_workspace:
                 root: workspace
                 paths:
@@ -283,6 +342,9 @@ jobs:
         <<: *build
 
     build_trulioo:
+        <<: *build
+
+    build_equifax_au:
         <<: *build
 
     build_uk_charities_commission:
@@ -333,11 +395,17 @@ jobs:
     unit_trulioo:
         <<: *unit
 
+    unit_equifax_au:
+       <<: *unit
+
     unit_uk_charities_commission:
         <<: *unit
 
     unit_cifas:
         <<: *unit
+
+    unit_reference:
+        <<: *unit_appengine
 
     e2e_comply_advantage:
       <<: *e2e
@@ -396,11 +464,17 @@ jobs:
     deploy_trulioo_staging:
         <<: *deploy_staging_common
 
+    deploy_equifax_au_staging:
+        <<: *deploy_staging_common
+
     deploy_uk_charities_commission_staging:
         <<: *deploy_staging_common
 
     deploy_cifas_staging:
         <<: *deploy_staging_common
+
+    deploy_reference_staging:
+        <<: *deploy_staging_appengine
 
     deploy_comply_advantage_production:
       <<: *deploy_production_common
@@ -432,11 +506,14 @@ jobs:
     deploy_trulioo_production:
         <<: *deploy_production_common
 
+    deploy_equifax_au_production:
+        <<: *deploy_production_common
+
     deploy_uk_charities_commission_production:
         <<: *deploy_production_common
 
-    deploy_cifas_staging:
-        <<: *deploy_staging_common
+    deploy_cifas_production:
+        <<: *deploy_production_common
 
 workflows:
     version: 2
@@ -719,6 +796,30 @@ workflows:
                         only:
                           - master
 
+    equifax_au:
+        jobs:
+            - set_integration_equifax_au
+            - build_equifax_au:
+                requires:
+                  - set_integration_equifax_au
+            - unit_equifax_au:
+                requires:
+                  - build_equifax_au
+            - deploy_equifax_au_staging:
+                requires:
+                  - unit_equifax_au
+                filters:
+                    branches:
+                        only:
+                          - staging
+            - deploy_equifax_au_production:
+                requires:
+                  - unit_equifax_au
+                filters:
+                    branches:
+                        only:
+                          - master
+
     uk_charities_commission:
         jobs:
             - set_integration_uk_charities_commission
@@ -771,3 +872,17 @@ workflows:
                     branches:
                         only:
                           - master
+
+    reference:
+        jobs:
+            - set_integration_reference
+            - unit_reference:
+                requires:
+                  - set_integration_reference
+            - deploy_reference_staging:
+                requires:
+                  - unit_reference
+                filters:
+                    branches:
+                        only:
+                          - staging

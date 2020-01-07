@@ -10,17 +10,16 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /src
 
-COPY Pipfile Pipfile.lock package.json /src/
+COPY Pipfile Pipfile.lock Makefile /src/
 
 RUN mkdir /srv/logs/ && \
     pip install pipenv==2018.10.13 && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
-    apk add --no-cache build-base yarn openssh-client git libxml2-dev libxslt-dev python3-dev && \
+    apk add --no-cache build-base make openssh-client git libxml2-dev libxslt-dev python3-dev && \
     pipenv run pip install --upgrade wheel && \
     pipenv install && \
-    yarn && \
     apk del --no-cache git openssh-client build-base
 
 COPY main.py /src
