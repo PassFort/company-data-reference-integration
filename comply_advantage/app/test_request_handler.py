@@ -147,7 +147,7 @@ class TestGetResults(unittest.TestCase):
         search_id = mock_response["content"]["data"]["id"]
         search_ids.append(search_id)
         responses.add(
-            responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}', json=mock_response
+            responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}/details', json=mock_response
         )
         responses.add(
             responses.POST, f'{SEARCH_REQUEST_URL}', json=mock_response
@@ -191,7 +191,7 @@ class TestFieldDefaultValue(unittest.TestCase):
         search_id = mock_response["content"]["data"]["id"]
         search_ids.append(search_id)
         responses.add(
-            responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}', json=mock_response
+            responses.GET, f'{SEARCH_REQUEST_URL}/{search_id}/details', json=mock_response
         )
         responses.add(
             responses.POST, f'{SEARCH_REQUEST_URL}', json=mock_response
