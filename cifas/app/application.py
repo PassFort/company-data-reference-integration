@@ -3,6 +3,7 @@ import logging
 from flask import Flask, Response, request, abort, jsonify
 from raven.contrib.flask import Sentry
 from passfort.cifas_check import CifasCheck, CifasCheckResponse
+from passfort.error import Error
 from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest
 from passfort_demo import get_demo_response
