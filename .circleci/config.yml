@@ -206,7 +206,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gettext-base
           cat << parameters.package >>/env_variables.yaml.envsubst | envsubst > << parameters.package >>/env_variables.yaml
-          gcloud app deploy
+          cd << parameters.package >> && gcloud app deploy
 
 workflows:
   version: 2
