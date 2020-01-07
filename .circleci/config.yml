@@ -57,6 +57,9 @@ executors:
   python:
     docker:
       - image: circleci/python:3.7
+  cloud-deploy:
+    docker:
+      - image: passfort/cloud-deploy
 
 commands:
   auth_ssh:
@@ -194,13 +197,12 @@ jobs:
           pipenv run python deploy.py -ds << parameters.package >> << parameters.to >>
   
   deploy_appengine:
-    executor: python-builder
+    executor: cloud-deploy
     parameters:
       package:
         type: string
     steps:
       - checkout
-      - auth_ssh
       - setup_gcp
       - run: |
           sudo apt-get update
