@@ -1,888 +1,721 @@
-default_setup: &default_setup
-    - checkout
-    - attach_workspace:
-        at: workspace
-    - add_ssh_keys:
-        fingerprints:
+version: 2.1
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # A parameter per package
+  comply_advantage:
+    type: boolean
+    default: false
+  creditsafe:
+    type: boolean
+    default: false
+  duedil:
+    type: boolean
+    default: false
+  equifax:
+    type: boolean
+    default: false
+  onfido:
+    type: boolean
+    default: false
+  vsure:
+    type: boolean
+    default: false
+  iovation:
+    type: boolean
+    default: false
+  bvd:
+    type: boolean
+    default: false
+  worldcheck:
+    type: boolean
+    default: false
+  trulioo:
+    type: boolean
+    default: false
+  equifax_au:
+    type: boolean
+    default: false
+  uk_charities_commission:
+    type: boolean
+    default: false
+  cifas:
+    type: boolean
+    default: false
+  reference_integration:
+    type: boolean
+    default: false
+
+executors:
+  python-builder:
+    docker:
+      - image: passfort/python-builder
+  python:
+    docker:
+      - image: circleci/python:3.7
+
+commands:
+  auth_ssh:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
             - "ac:6b:35:cb:bd:84:53:fb:16:67:ea:91:d3:bc:91:f3"
-    - run: sudo pip install pipenv==2018.7.1
-
-
-aliases:
-    - &attach_to_workspace
-        attach_workspace:
-            at: workspace
-    - &auth_ssh
-        add_ssh_keys:
-            fingerprints:
-                - "ac:6b:35:cb:bd:84:53:fb:16:67:ea:91:d3:bc:91:f3"
-    - &setup_gcp
-        run:
+  setup_gcp:
+    steps:
+      - run:
           name: Authenticate to GCP
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
             gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
             gcloud config set compute/zone europe-west1-b
             gcloud config set project core-gearbox-112418
-    - &build
-      docker:
-        - image: passfort/python-builder
-      environment:
-
-      steps:
-        - checkout
-        - *attach_to_workspace
-        - *auth_ssh
-        - *setup_gcp
-        - setup_remote_docker:
-            docker_layer_caching:
-        - run: |
-            sudo pip install pipenv==2018.5.18
-            pipenv --three
-            pipenv install
-            pipenv run python deploy.py -bs `cat workspace/integration_name` staging
-    - &unit
-      docker:
-        - image: passfort/python-builder
-      steps:
-        - checkout
-        - *attach_to_workspace
-        - *setup_gcp
-        - setup_remote_docker:
-            docker_layer_caching:
-        - run:
-            name: Update PATH and Define Environment Variable at Runtime
-            command: |
-              echo 'export INTEGRATION=$(cat workspace/integration_name)' >> $BASH_ENV
-              echo 'export VERSION=$(git cat-file -p HEAD | head -c12 | tail -c7)' >> $BASH_ENV
-              source $BASH_ENV
-        - run: |
-            gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-        - run: |
-            docker run --name unit_$INTEGRATION \
-            -e CODECOV_TOKEN=$CODECOV_TOKEN \
-            -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
-            -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
-            -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
-            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION make unit
-
-    - &e2e
-      docker:
-        - image: passfort/python-builder
-      steps:
-        - checkout
-        - *attach_to_workspace
-        - *setup_gcp
-        - setup_remote_docker:
-            docker_layer_caching:
-        - run:
-            name: Update PATH and Define Environment Variable at Runtime
-            command: |
-              echo 'export INTEGRATION=$(cat workspace/integration_name)' >> $BASH_ENV
-              echo 'export VERSION=$(git cat-file -p HEAD | head -c12 | tail -c7)' >> $BASH_ENV
-              source $BASH_ENV
-        - run: |
-            gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION
-            docker run -ti --name e2e_$INTEGRATION \
-            -e INTEGRATION=$INTEGRATION \
-            -e CODECOV_TOKEN=$CODECOV_TOKEN \
-            -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
-            -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
-            -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
-            eu.gcr.io/core-gearbox-112418/integrations-$INTEGRATION:$VERSION \
-            make coverage
-
-    - &unit_appengine
-      docker:
-        - image: circleci/python:3.7
-      steps:
-        - checkout
-        - *attach_to_workspace
-        - run:
-            name: Install dependencies
-            command: |
-              sudo pip install -r `cat workspace/integration_name`/requirements.txt -r `cat workspace/integration_name`/requirements-dev.txt
-        - run:
-            name: Run tests
-            command: |
-              mkdir -p test-results/pytest
-              pytest --junitxml=test-results/pytest/pytest.xml --cov=app `cat workspace/integration_name`
-        - store_test_results:
-            path: test-results
-        - store_artifacts:
-            path: test-results
-        - run:
-            name: Upload coverage
-            command: |
-              coverage xml -i
-              codecov -F `cat workspace/integration_name` -X search -f coverage.xml
-
-    - &deploy_staging_common
-      docker:
-          - image: passfort/python-builder
-      steps:
-          - checkout
-          - *attach_to_workspace
-          - *auth_ssh
-          - *setup_gcp
-          - run: |
-              sudo pip install pipenv==2018.5.18
-              pipenv --three
-              pipenv install
-              pipenv run python deploy.py -ds `cat workspace/integration_name` staging
-
-    - &deploy_production_common
-      docker:
-          - image: passfort/python-builder
-      steps:
-          - checkout
-          - *attach_to_workspace
-          - *auth_ssh
-          - *setup_gcp
-          - run: |
-              sudo pip install pipenv==2018.5.18
-              pipenv --three
-              pipenv install
-              pipenv run python deploy.py -ds `cat workspace/integration_name` production
-
-    - &deploy_staging_appengine
-      docker:
-          - image: passfort/python-builder
-      steps:
-          - checkout
-          - *attach_to_workspace
-          - *auth_ssh
-          - *setup_gcp
-          - run: |
-              cat `cat workspace/integration_name`/env_variables.yaml.envsubst | envsubst > `cat workspace/integration_name`/env_variables.yaml
-              gcloud app deploy
-
-version: 2.0
+  determine_tree_hash:
+    steps:
+      - run:
+          name: Determine git tree hash
+          command: |
+            echo 'export VERSION=$(git cat-file -p HEAD | head -c12 | tail -c7)' >> $BASH_ENV
+            source $BASH_ENV
 
 jobs:
-    set_integration_comply_advantage:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo comply_advantage > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_creditsafe:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo creditsafe > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_duedil:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo duedil > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_equifax:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo equifax > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_onfido:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo onfido > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_vsure:
-        docker:
-          - image: circleci/python
-        steps:
-          - run: mkdir -p workspace
-          - run: echo vsure > workspace/integration_name
-          - persist_to_workspace:
-              root: workspace
-              paths:
-                  - integration_name
-
-    set_integration_iovation:
-        docker:
-          - image: circleci/python
-        steps:
-          - run: mkdir -p workspace
-          - run: echo iovation > workspace/integration_name
-          - persist_to_workspace:
-              root: workspace
-              paths:
-                  - integration_name
-
-    set_integration_bvd:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo bvd > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_worldcheck:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo worldcheck > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_trulioo:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo trulioo > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_equifax_au:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo equifax_au > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_uk_charities_commission:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo uk_charities_commission > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_cifas:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo cifas > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    set_integration_reference:
-        docker:
-            - image: circleci/python
-        steps:
-            - run: mkdir -p workspace
-            - run: echo reference_integration > workspace/integration_name
-            - persist_to_workspace:
-                root: workspace
-                paths:
-                    - integration_name
-
-    build_comply_advantage:
-        <<: *build
-
-    build_creditsafe:
-        <<: *build
-
-    build_duedil:
-        <<: *build
-
-    build_equifax:
-        <<: *build
-
-    build_onfido:
-        <<: *build
-
-    build_vsure:
-        <<: *build
-
-    build_iovation:
-        <<: *build
-
-    build_bvd:
-        <<: *build
-
-    build_worldcheck:
-        <<: *build
-
-    build_trulioo:
-        <<: *build
-
-    build_equifax_au:
-        <<: *build
-
-    build_uk_charities_commission:
-        <<: *build
-
-    build_cifas:
-        <<: *build
-
-    lint:
-        docker:
-            - image: passfort/python-builder
-        steps:
-            - checkout
-            - *attach_to_workspace
-            - run:
-                name: Check For Error Handling
-                command: |
-                    cd `cat workspace/integration_name`
-                    grep Raven src/*.py || exit 1
-
-    unit_comply_advantage:
-        <<: *unit
-
-    unit_creditsafe:
-        <<: *unit
-
-    unit_duedil:
-        <<: *unit
-
-    unit_equifax:
-        <<: *unit
-
-    unit_onfido:
-        <<: *unit
-
-    unit_vsure:
-        <<: *unit
-
-    unit_iovation:
-        <<: *unit
-
-    unit_bvd:
-        <<: *unit
-
-    unit_worldcheck:
-        <<: *unit
-
-    unit_trulioo:
-        <<: *unit
-
-    unit_equifax_au:
-       <<: *unit
-
-    unit_uk_charities_commission:
-        <<: *unit
-
-    unit_cifas:
-        <<: *unit
-
-    unit_reference:
-        <<: *unit_appengine
-
-    e2e_comply_advantage:
-      <<: *e2e
-
-    e2e_duedil:
-        <<: *e2e
-
-    e2e_equifax:
-        <<: *e2e
-
-    e2e_onfido:
-        <<: *e2e
-
-    e2e_vsure:
-        <<: *e2e
-
-    e2e_iovation:
-        <<: *e2e
-
-    e2e_bvd:
-        <<: *e2e
-
-    e2e_worldcheck:
-        <<: *e2e
-
-    e2e_uk_charities_commission:
-        <<: *e2e
-
-    deploy_comply_advantage_staging:
-        <<: *deploy_staging_common
-
-    deploy_creditsafe_staging:
-      <<: *deploy_staging_common
-
-    deploy_duedil_staging:
-        <<: *deploy_staging_common
-
-    deploy_equifax_staging:
-        <<: *deploy_staging_common
-
-    deploy_onfido_staging:
-        <<: *deploy_staging_common
-
-    deploy_vsure_staging:
-        <<: *deploy_staging_common
-
-    deploy_iovation_staging:
-        <<: *deploy_staging_common
-
-    deploy_bvd_staging:
-        <<: *deploy_staging_common
-
-    deploy_worldcheck_staging:
-        <<: *deploy_staging_common
-
-    deploy_trulioo_staging:
-        <<: *deploy_staging_common
-
-    deploy_equifax_au_staging:
-        <<: *deploy_staging_common
-
-    deploy_uk_charities_commission_staging:
-        <<: *deploy_staging_common
-
-    deploy_cifas_staging:
-        <<: *deploy_staging_common
-
-    deploy_reference_staging:
-        <<: *deploy_staging_appengine
-
-    deploy_comply_advantage_production:
-      <<: *deploy_production_common
-
-    deploy_creditsafe_production:
-      <<: *deploy_production_common
-
-    deploy_duedil_production:
-        <<: *deploy_production_common
-
-    deploy_equifax_production:
-        <<: *deploy_production_common
-
-    deploy_onfido_production:
-        <<: *deploy_production_common
-
-    deploy_vsure_production:
-        <<: *deploy_production_common
-
-    deploy_iovation_production:
-        <<: *deploy_production_common
-
-    deploy_bvd_production:
-        <<: *deploy_production_common
-
-    deploy_worldcheck_production:
-        <<: *deploy_production_common
-
-    deploy_trulioo_production:
-        <<: *deploy_production_common
-
-    deploy_equifax_au_production:
-        <<: *deploy_production_common
-
-    deploy_uk_charities_commission_production:
-        <<: *deploy_production_common
-
-    deploy_cifas_production:
-        <<: *deploy_production_common
+  trigger-workflows:
+    executor: python
+    steps:
+      - checkout
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
+  
+  build:
+    executor: python-builder
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - auth_ssh
+      - setup_gcp
+      - setup_remote_docker:
+          docker_layer_caching:
+      - run: |
+          sudo pip install pipenv==2018.5.18
+          pipenv --three
+          pipenv install
+          pipenv run python deploy.py -bs << parameters.package >> staging
+  
+  unit:
+    executor: python-builder
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - setup_gcp
+      - setup_remote_docker:
+          docker_layer_caching:
+      - determine_tree_hash
+      - run: |
+          gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION
+      - run: |
+          docker run --name unit_<< parameters.package >> \
+          -e CODECOV_TOKEN=$CODECOV_TOKEN \
+          -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
+          -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
+          -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
+          eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION make unit
+  
+  e2e:
+    executor: python-builder
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - setup_gcp
+      - setup_remote_docker:
+          docker_layer_caching:
+      - determine_tree_hash
+      - run: |
+          gcloud docker -- pull eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION
+          docker run -ti --name e2e_<< parameters.package >> \
+          -e INTEGRATION=<< parameters.package >> \
+          -e CODECOV_TOKEN=$CODECOV_TOKEN \
+          -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
+          -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
+          -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
+          eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION \
+          make coverage
+  
+  unit_appengine:
+    executor: python
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo pip install -r << parameters.package >>/requirements.txt -r << parameters.package >>/requirements-dev.txt
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p test-results/pytest
+            pytest --junitxml=test-results/pytest/pytest.xml --cov=app << parameters.package >>
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+      - run:
+          name: Upload coverage
+          command: |
+            coverage xml -i
+            codecov -F << parameters.package >> -X search -f coverage.xml
+
+  deploy_common:
+    executor: python-builder
+    parameters:
+      package:
+        type: string
+      to:
+        type: string
+    steps:
+      - checkout
+      - auth_ssh
+      - setup_gcp
+      - run: |
+          sudo pip install pipenv==2018.5.18
+          pipenv --three
+          pipenv install
+          pipenv run python deploy.py -ds << parameters.package >> << parameters.to >>
+  
+  deploy_appengine:
+    executor: python-builder
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - auth_ssh
+      - setup_gcp
+      - run: |
+          sudo apt-get install -y gettext-base
+          cat << parameters.package >>/env_variables.yaml.envsubst | envsubst > << parameters.package >>/env_variables.yaml
+          gcloud app deploy
 
 workflows:
-    version: 2
+  version: 2
 
-    comply_advantage:
-        jobs:
-            - set_integration_comply_advantage
-            - build_comply_advantage:
-                requires:
-                  - set_integration_comply_advantage
-            - unit_comply_advantage:
-                requires:
-                  - build_comply_advantage
-            - e2e_comply_advantage:
-                requires:
-                  - build_comply_advantage
-            - deploy_comply_advantage_staging:
-                requires:
-                  - e2e_comply_advantage
-                  - unit_comply_advantage
-                filters:
-                    branches:
-                      only:
-                        - staging
-            - deploy_comply_advantage_production:
-                requires:
-                  - e2e_comply_advantage
-                  - unit_comply_advantage
-                filters:
-                    branches:
-                        only:
-                          - master
-    creditsafe:
-        jobs:
-            - set_integration_creditsafe
-            - build_creditsafe:
-                requires:
-                    - set_integration_creditsafe
-            - unit_creditsafe:
-                requires:
-                    - build_creditsafe
-            - deploy_creditsafe_staging:
-                requires:
-                    - unit_creditsafe
-                filters:
-                    branches:
-                        only:
-                            - staging
-            - deploy_creditsafe_production:
-                requires:
-                    - unit_creditsafe
-                filters:
-                    branches:
-                        only:
-                            - master
-    duedil:
-        jobs:
-            - set_integration_duedil
-            - build_duedil:
-                requires:
-                  - set_integration_duedil
-            - unit_duedil:
-                requires:
-                  - build_duedil
-            - e2e_duedil:
-                requires:
-                  - build_duedil
-            - deploy_duedil_staging:
-                requires:
-                  - e2e_duedil
-                  - unit_duedil
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_duedil_production:
-                requires:
-                  - e2e_duedil
-                  - unit_duedil
-                filters:
-                    branches:
-                        only:
-                          - master
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows:
+          context: org-global
 
-    equifax:
-        jobs:
-            - set_integration_equifax
-            - build_equifax:
-                requires:
-                  - set_integration_equifax
-            - unit_equifax:
-                requires:
-                  - build_equifax
-            - e2e_equifax:
-                requires:
-                  - build_equifax
-            - deploy_equifax_staging:
-                requires:
-                  - unit_equifax
-                  - e2e_equifax
-                filters:
-                    branches:
-                        only:
-                            - staging
-            - deploy_equifax_production:
-                requires:
-                   - unit_equifax
-                   - e2e_equifax
-                filters:
-                    branches:
-                        only:
-                            - master
+  comply_advantage:
+    when: << pipeline.parameters.comply_advantage >>
+    jobs:
+      - build:
+          name: build_comply_advantage
+          package: comply_advantage
+      - unit:
+          name: unit_comply_advantage
+          package: comply_advantage
+          requires:
+            - build_comply_advantage
+      - e2e:
+          name: e2e_comply_advantage
+          package: comply_advantage
+          requires:
+            - build_comply_advantage
+      - deploy_common:
+          name: deploy_comply_advantage_staging
+          package: comply_advantage
+          to: staging
+          requires:
+            - e2e_comply_advantage
+            - unit_comply_advantage
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_comply_advantage_production
+          package: comply_advantage
+          to: production
+          requires:
+            - e2e_comply_advantage
+            - unit_comply_advantage
+          filters:
+              branches:
+                  only:
+                    - master
 
-    onfido:
-        jobs:
-            - set_integration_onfido
-            - build_onfido:
-                requires:
-                  - set_integration_onfido
-            - unit_onfido:
-                requires:
-                  - build_onfido
-            - e2e_onfido:
-                requires:
-                  - build_onfido
-            - deploy_onfido_staging:
-                requires:
-                  - e2e_onfido
-                  - unit_onfido
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_onfido_production:
-                requires:
-                  - e2e_onfido
-                  - unit_onfido
-                filters:
-                    branches:
-                        only:
-                          - master
+  duedil:
+    when: << pipeline.parameters.duedil >>
+    jobs:
+      - build:
+          name: build_duedil
+          package: duedil
+      - unit:
+          name: unit_duedil
+          package: duedil
+          requires:
+            - build_duedil
+      - e2e:
+          name: e2e_duedil
+          package: duedil
+          requires:
+            - build_duedil
+      - deploy_common:
+          name: deploy_duedil_staging
+          package: duedil
+          to: staging
+          requires:
+            - e2e_duedil
+            - unit_duedil
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_duedil_production
+          package: duedil
+          to: production
+          requires:
+            - e2e_duedil
+            - unit_duedil
+          filters:
+              branches:
+                  only:
+                    - master
 
-    vsure:
-        jobs:
-            - set_integration_vsure
-            - build_vsure:
-                requires:
-                  - set_integration_vsure
-            - unit_vsure:
-                requires:
-                  - build_vsure
-            - e2e_vsure:
-                requires:
-                  - build_vsure
-            - deploy_vsure_staging:
-                requires:
-                  - e2e_vsure
-                  - unit_vsure
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_vsure_production:
-                requires:
-                  - e2e_vsure
-                  - unit_vsure
-                filters:
-                  branches:
-                      only:
-                        - master
+  equifax:
+    when: << pipeline.parameters.equifax >>
+    jobs:
+      - build:
+          name: build_equifax
+          package: equifax
+      - unit:
+          name: unit_equifax
+          package: equifax
+          requires:
+            - build_equifax
+      - e2e:
+          name: e2e_equifax
+          package: equifax
+          requires:
+            - build_equifax
+      - deploy_common:
+          name: deploy_equifax_staging
+          package: equifax
+          to: staging
+          requires:
+            - e2e_equifax
+            - unit_equifax
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_equifax_production
+          package: equifax
+          to: production
+          requires:
+            - e2e_equifax
+            - unit_equifax
+          filters:
+              branches:
+                  only:
+                    - master
 
-    iovation:
-        jobs:
-            - set_integration_iovation
-            - build_iovation:
-                requires:
-                  - set_integration_iovation
-            - unit_iovation:
-                requires:
-                  - build_iovation
-            - e2e_iovation:
-                requires:
-                  - build_iovation
-            - deploy_iovation_staging:
-                requires:
-                  - e2e_iovation
-                  - unit_iovation
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_iovation_production:
-                requires:
-                  - e2e_iovation
-                  - unit_iovation
-                filters:
-                  branches:
-                      only:
-                        - master
+  onfido:
+    when: << pipeline.parameters.onfido >>
+    jobs:
+      - build:
+          name: build_onfido
+          package: onfido
+      - unit:
+          name: unit_onfido
+          package: onfido
+          requires:
+            - build_onfido
+      - e2e:
+          name: e2e_onfido
+          package: onfido
+          requires:
+            - build_onfido
+      - deploy_common:
+          name: deploy_onfido_staging
+          package: onfido
+          to: staging
+          requires:
+            - e2e_onfido
+            - unit_onfido
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_onfido_production
+          package: onfido
+          to: production
+          requires:
+            - e2e_onfido
+            - unit_onfido
+          filters:
+              branches:
+                  only:
+                    - master
 
-    bvd:
-        jobs:
-            - set_integration_bvd
-            - build_bvd:
-                requires:
-                  - set_integration_bvd
-            - unit_bvd:
-                requires:
-                  - build_bvd
-            - e2e_bvd:
-                requires:
-                  - build_bvd
-            - deploy_bvd_staging:
-                requires:
-                  - e2e_bvd
-                  - unit_bvd
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_bvd_production:
-                requires:
-                  - e2e_bvd
-                  - unit_bvd
-                filters:
-                    branches:
-                        only:
-                          - master
+  vsure:
+    when: << pipeline.parameters.vsure >>
+    jobs:
+      - build:
+          name: build_vsure
+          package: vsure
+      - unit:
+          name: unit_vsure
+          package: vsure
+          requires:
+            - build_vsure
+      - e2e:
+          name: e2e_vsure
+          package: vsure
+          requires:
+            - build_vsure
+      - deploy_common:
+          name: deploy_vsure_staging
+          package: vsure
+          to: staging
+          requires:
+            - e2e_vsure
+            - unit_vsure
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_vsure_production
+          package: vsure
+          to: production
+          requires:
+            - e2e_vsure
+            - unit_vsure
+          filters:
+              branches:
+                  only:
+                    - master
 
-    worldcheck:
-        jobs:
-            - set_integration_worldcheck
-            - build_worldcheck:
-                requires:
-                  - set_integration_worldcheck
-            - unit_worldcheck:
-                requires:
-                  - build_worldcheck
-            - e2e_worldcheck:
-                requires:
-                  - build_worldcheck
-            - deploy_worldcheck_staging:
-                requires:
-                  - e2e_worldcheck
-                  - unit_worldcheck
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_worldcheck_production:
-                requires:
-                  - e2e_worldcheck
-                  - unit_worldcheck
-                filters:
-                    branches:
-                        only:
-                          - master
+  iovation:
+    when: << pipeline.parameters.iovation >>
+    jobs:
+      - build:
+          name: build_iovation
+          package: iovation
+      - unit:
+          name: unit_iovation
+          package: iovation
+          requires:
+            - build_iovation
+      - e2e:
+          name: e2e_iovation
+          package: iovation
+          requires:
+            - build_iovation
+      - deploy_common:
+          name: deploy_iovation_staging
+          package: iovation
+          to: staging
+          requires:
+            - e2e_iovation
+            - unit_iovation
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_iovation_production
+          package: iovation
+          to: production
+          requires:
+            - e2e_iovation
+            - unit_iovation
+          filters:
+              branches:
+                  only:
+                    - master
 
-    trulioo:
-        jobs:
-            - set_integration_trulioo
-            - build_trulioo:
-                requires:
-                  - set_integration_trulioo
-            - unit_trulioo:
-                requires:
-                  - build_trulioo
-            - deploy_trulioo_staging:
-                requires:
-                  - unit_trulioo
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_trulioo_production:
-                requires:
-                  - unit_trulioo
-                filters:
-                    branches:
-                        only:
-                          - master
+  bvd:
+    when: << pipeline.parameters.bvd >>
+    jobs:
+      - build:
+          name: build_bvd
+          package: bvd
+      - unit:
+          name: unit_bvd
+          package: bvd
+          requires:
+            - build_bvd
+      - e2e:
+          name: e2e_bvd
+          package: bvd
+          requires:
+            - build_bvd
+      - deploy_common:
+          name: deploy_bvd_staging
+          package: bvd
+          to: staging
+          requires:
+            - e2e_bvd
+            - unit_bvd
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_bvd_production
+          package: bvd
+          to: production
+          requires:
+            - e2e_bvd
+            - unit_bvd
+          filters:
+              branches:
+                  only:
+                    - master
 
-    equifax_au:
-        jobs:
-            - set_integration_equifax_au
-            - build_equifax_au:
-                requires:
-                  - set_integration_equifax_au
-            - unit_equifax_au:
-                requires:
-                  - build_equifax_au
-            - deploy_equifax_au_staging:
-                requires:
-                  - unit_equifax_au
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_equifax_au_production:
-                requires:
-                  - unit_equifax_au
-                filters:
-                    branches:
-                        only:
-                          - master
+  worldcheck:
+    when: << pipeline.parameters.worldcheck >>
+    jobs:
+      - build:
+          name: build_worldcheck
+          package: worldcheck
+      - unit:
+          name: unit_worldcheck
+          package: worldcheck
+          requires:
+            - build_worldcheck
+      - e2e:
+          name: e2e_worldcheck
+          package: worldcheck
+          requires:
+            - build_worldcheck
+      - deploy_common:
+          name: deploy_worldcheck_staging
+          package: worldcheck
+          to: staging
+          requires:
+            - e2e_worldcheck
+            - unit_worldcheck
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_worldcheck_production
+          package: worldcheck
+          to: production
+          requires:
+            - e2e_worldcheck
+            - unit_worldcheck
+          filters:
+              branches:
+                  only:
+                    - master
 
-    uk_charities_commission:
-        jobs:
-            - set_integration_uk_charities_commission
-            - build_uk_charities_commission:
-                requires:
-                  - set_integration_uk_charities_commission
-            - unit_uk_charities_commission:
-                requires:
-                  - build_uk_charities_commission
-            - e2e_uk_charities_commission:
-                requires:
-                  - build_uk_charities_commission
-            - deploy_uk_charities_commission_staging:
-                requires:
-                  - unit_uk_charities_commission
-                  - e2e_uk_charities_commission
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_uk_charities_commission_production:
-                requires:
-                  - unit_uk_charities_commission
-                  - e2e_uk_charities_commission
-                filters:
-                    branches:
-                        only:
-                          - master
+  trulioo:
+    when: << pipeline.parameters.trulioo >>
+    jobs:
+      - build:
+          name: build_trulioo
+          package: trulioo
+      - unit:
+          name: unit_trulioo
+          package: trulioo
+          requires:
+            - build_trulioo
+      - e2e:
+          name: e2e_trulioo
+          package: trulioo
+          requires:
+            - build_trulioo
+      - deploy_common:
+          name: deploy_trulioo_staging
+          package: trulioo
+          to: staging
+          requires:
+            - e2e_trulioo
+            - unit_trulioo
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_trulioo_production
+          package: trulioo
+          to: production
+          requires:
+            - e2e_trulioo
+            - unit_trulioo
+          filters:
+              branches:
+                  only:
+                    - master
 
-    cifas:
-        jobs:
-            - set_integration_cifas
-            - build_cifas:
-                requires:
-                  - set_integration_cifas
-            - unit_cifas:
-                requires:
-                  - build_cifas
-            - deploy_cifas_staging:
-                requires:
-                  - unit_cifas
-                filters:
-                    branches:
-                        only:
-                          - staging
-            - deploy_cifas_production:
-                requires:
-                  - unit_cifas
-                filters:
-                    branches:
-                        only:
-                          - master
+  uk_charities_commission:
+    when: << pipeline.parameters.uk_charities_commission >>
+    jobs:
+      - build:
+          name: build_uk_charities_commission
+          package: uk_charities_commission
+      - unit:
+          name: unit_uk_charities_commission
+          package: uk_charities_commission
+          requires:
+            - build_uk_charities_commission
+      - e2e:
+          name: e2e_uk_charities_commission
+          package: uk_charities_commission
+          requires:
+            - build_uk_charities_commission
+      - deploy_common:
+          name: deploy_uk_charities_commission_staging
+          package: uk_charities_commission
+          to: staging
+          requires:
+            - e2e_uk_charities_commission
+            - unit_uk_charities_commission
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_uk_charities_commission_production
+          package: uk_charities_commission
+          to: production
+          requires:
+            - e2e_uk_charities_commission
+            - unit_uk_charities_commission
+          filters:
+              branches:
+                  only:
+                    - master
 
-    reference:
-        jobs:
-            - set_integration_reference
-            - unit_reference:
-                requires:
-                  - set_integration_reference
-            - deploy_reference_staging:
-                requires:
-                  - unit_reference
-                filters:
-                    branches:
-                        only:
-                          - staging
+  creditsafe:
+    when: << pipeline.parameters.creditsafe >>
+    jobs:
+      - build:
+          name: build_creditsafe
+          package: creditsafe
+      - unit:
+          name: unit_creditsafe
+          package: creditsafe
+          requires:
+            - build_creditsafe
+      - deploy_common:
+          name: deploy_creditsafe_staging
+          package: creditsafe
+          to: staging
+          requires:
+            - unit_creditsafe
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_creditsafe_production
+          package: creditsafe
+          to: production
+          requires:
+            - unit_creditsafe
+          filters:
+              branches:
+                  only:
+                    - master
+
+  equifax_au:
+    when: << pipeline.parameters.equifax_au >>
+    jobs:
+      - build:
+          name: build_equifax_au
+          package: equifax_au
+      - unit:
+          name: unit_equifax_au
+          package: equifax_au
+          requires:
+            - build_equifax_au
+      - deploy_common:
+          name: deploy_equifax_au_staging
+          package: equifax_au
+          to: staging
+          requires:
+            - unit_equifax_au
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_equifax_au_production
+          package: equifax_au
+          to: production
+          requires:
+            - unit_equifax_au
+          filters:
+              branches:
+                  only:
+                    - master
+
+  cifas:
+    when: << pipeline.parameters.cifas >>
+    jobs:
+      - build:
+          name: build_cifas
+          package: cifas
+      - unit:
+          name: unit_cifas
+          package: cifas
+          requires:
+            - build_cifas
+      - deploy_common:
+          name: deploy_cifas_staging
+          package: cifas
+          to: staging
+          requires:
+            - unit_cifas
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_cifas_production
+          package: cifas
+          to: production
+          requires:
+            - unit_cifas
+          filters:
+              branches:
+                  only:
+                    - master
+
+  reference_integration:
+    when: << pipeline.parameters.reference_integration >>
+    jobs:
+      - unit_appengine:
+          name: unit_reference_integration
+          package: reference_integration
+      - deploy_appengine:
+          name: deploy_reference_integration_staging
+          package: reference_integration
+          requires:
+            - unit_reference_integration
+          filters:
+              branches:
+                only:
+                  - staging
