@@ -205,8 +205,6 @@ jobs:
       - checkout
       - setup_gcp
       - run: |
-          sudo apt-get update
-          sudo apt-get install -y gettext-base
           cat << parameters.package >>/env_variables.yaml.envsubst | envsubst > << parameters.package >>/env_variables.yaml
           cd << parameters.package >> && gcloud app deploy
 
