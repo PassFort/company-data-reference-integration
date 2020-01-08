@@ -209,10 +209,10 @@ def passfort_to_equifax_data(passfort_data):
                     idm_current_address.append(
                         lxml_env.ns.idm.postcode(address_to_check['postal_code'])
                     )
-                # if address_to_check.get('country'):
-                #     idm_current_address.append(
-                #         lxml_env.ns.idm.country(address_to_check['country'])
-                #     )
+                if address_to_check.get('country'):
+                    idm_current_address.append(
+                        lxml_env.ns.idm.country(address_to_check['country'])
+                    )
 
             
         #Check Communication
@@ -357,32 +357,20 @@ def equifax_to_passfort_data(equifax_raw_data):
                                     int(search_result[f'{ns}:date-of-birth'].get('@match-score', 1)) > 0:
                                     match['matched_fields'].append('DOB')
 
-                            #check address
-                            address_match = False
+                            # Check Equifax interpretation of address match, giving precedence to current-address
                             if f'{ns}:current-address' in search_result.keys() and\
-                                int(search_result[f'{ns}:current-address'].get('@match-score-weight',0)) > 0:
-                                address_match = check_address(search_result[f'{ns}:current-address'])
-
-                            if f'{ns}:previous-address' in search_result.keys() and\
-                                int(search_result[f'{ns}:previous-address'].get('@match-score-weight',0)) > 0:
-                                address_match = check_address(search_result[f'{ns}:previous-address'])
-
-                            if address_match:
+                                int(search_result[f'{ns}:current-address'].get('@match-score-weight',0)) > 0 and\
+                                    int(search_result[f'{ns}:current-address'].get('@match-score', 0)) > 0:
                                 match['matched_fields'].append('ADDRESS')
+
+                            elif f'{ns}:previous-address' in search_result.keys() and\
+                                int(search_result[f'{ns}:previous-address'].get('@match-score-weight',0)) > 0 and\
+                                    int(search_result[f'{ns}:previous-address'].get('@match-score', 0)) > 0:
+                                match['matched_fields'].append('ADDRESS')
+
 
                     if matches:
                         response_body['output_data']["entity_type"] = "INDIVIDUAL"
                         response_body['output_data']["electronic_id_check"] = {"matches": matches}
 
     return response_body
-
-def check_address(address):
-    for field in [tag for tag in address.keys() if tag[0] not in ['@', "#"]]:
-        if address.get(field) and\
-            int(address[field].get('@match-score-weight', 0)) > 0 and \
-            int(address[field].get('@match-score', 1)) > 0:
-            #partial match
-            pass
-        else:
-            return False
-    return True
