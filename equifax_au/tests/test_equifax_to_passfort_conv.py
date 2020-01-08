@@ -1,12 +1,12 @@
-import pytest 
+import pytest
 from equifax.convert_data import equifax_to_passfort_data
 
 
 BASE_EQUIFAX_DATA = '''<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope
-    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-    xmlns:vh="http://vedaxml.com/soap/header/v-header-v1-8.xsd" 
-    xmlns:wsa="http://www.w3.org/2005/08/addressing" 
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:vh="http://vedaxml.com/soap/header/v-header-v1-8.xsd"
+    xmlns:wsa="http://www.w3.org/2005/08/addressing"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ns5="http://vedaxml.com/vxml2/idmatrix-v4-0.xsd">
     <soapenv:Body>
@@ -32,7 +32,7 @@ REJECT = '''<ns5:response-outcome>
             </ns5:response-outcome>'''
 
 BASE_EQUIFAX_DATA_ERROR = '''<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope 
+<soapenv:Envelope
     xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
     <soapenv:Body>{}</soapenv:Body>
 </soapenv:Envelope>'''
@@ -51,8 +51,8 @@ def test_empty_package(client):
 def test_record_with_one_datasource_without_match(client):
     equifax_data = BASE_EQUIFAX_DATA.format(REJECT
         , '''<ns5:search-result
-                 match-indicator="FAIL" 
-                 match-score="0" 
+                 match-indicator="FAIL"
+                 match-score="0"
                  search-name="VEDA-CBCOMM-0051">
              </ns5:search-result>''')
 
@@ -67,16 +67,17 @@ def test_record_with_one_datasource_without_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': []
+                                                'matched_fields': [],
+                                                'count': 0,
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }    
+                            }
 #['TIMEOUT', 'REJECT_ON_EXCLUSION', 'ERROR']:
-def test_record_with_one_datasource_without_match(client):
+def test_record_with_one_datasource_without_match_timeout(client):
     equifax_data = BASE_EQUIFAX_DATA.format(
         '''<ns5:response-outcome>
                <ns5:overall-outcome>TIMEOUT</ns5:overall-outcome>
@@ -89,10 +90,10 @@ def test_record_with_one_datasource_without_match(client):
                                     'decision': 'ERROR'
                                 },
                                 "raw": equifax_data,
-                                "errors": [{'code': 403, 'message': 'TIMEOUT'}]
+        "errors": [{'code': 403, 'message': 'Provider Error: TIMEOUT'}]
                             }
 
-def test_record_with_one_datasource_without_match(client):
+def test_record_with_one_datasource_without_match_error(client):
     equifax_data = BASE_EQUIFAX_DATA.format(
         '''<ns5:response-outcome>
                <ns5:overall-outcome>ERROR</ns5:overall-outcome>
@@ -105,18 +106,18 @@ def test_record_with_one_datasource_without_match(client):
                                     'decision': 'ERROR'
                                 },
                                 "raw": equifax_data,
-                                "errors": [{'code': 303, 'message': 'ERROR'}]
-                            }    
+        "errors": [{'code': 303, 'message': 'Provider Error: UNKNOWN ERROR'}]
+                            }
 
-def test_record_with_one_datasource_without_match(client):
+def test_record_with_one_datasource_without_match_rejection(client):
     reject_on_exclusion = '''<ns5:response-outcome>
                                 <ns5:overall-outcome>REJECT_ON_EXCLUSION</ns5:overall-outcome>
                             </ns5:response-outcome>'''
 
     equifax_data = BASE_EQUIFAX_DATA.format(reject_on_exclusion
         , '''<ns5:search-result
-                 match-indicator="FAIL" 
-                 match-score="0" 
+                 match-indicator="FAIL"
+                 match-score="0"
                  search-name="VEDA-CBCOMM-0051">
              </ns5:search-result>''')
 
@@ -131,14 +132,15 @@ def test_record_with_one_datasource_without_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': []
+                                                'matched_fields': [],
+                                                'count': 0,
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }    
+                            }
 
 def test_record_with_one_datasource_with_surname_match(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
@@ -149,7 +151,7 @@ def test_record_with_one_datasource_with_surname_match(client):
                 <ns5:other-given-name match-indicator="Middle_Names" match-score="0" match-score-weight="4" search-value="SPDMNNVH"/>
             </ns5:individual-name>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -161,14 +163,15 @@ def test_record_with_one_datasource_with_surname_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['SURNAME']
+                                                'matched_fields': ['SURNAME'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
 
 def test_record_with_one_datasource_with_forename_match(client):
@@ -180,7 +183,7 @@ def test_record_with_one_datasource_with_forename_match(client):
                 <ns5:other-given-name match-indicator="Middle_Names" match-score="0" match-score-weight="4" search-value="SPDMNNVH"/>
             </ns5:individual-name>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -192,14 +195,15 @@ def test_record_with_one_datasource_with_forename_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['FORENAME']
+                                                'matched_fields': ['FORENAME'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
 
 def test_record_with_one_datasource_with_dob_complete_match(client):
@@ -207,7 +211,7 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
         <ns5:search-result match-indicator="PASS" match-score="87" search-name="VEDA-CBCOMM-0051">
             <ns5:date-of-birth match-indicator="Date" match-score="100" match-score-weight="10" search-value="1980-11-13"/>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
     assert response_body == {
                                 "output_data": {
@@ -218,14 +222,15 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['DOB']
+                                                'matched_fields': ['DOB'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
 def test_record_with_one_datasource_with_address_match(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
@@ -239,7 +244,7 @@ def test_record_with_one_datasource_with_address_match(client):
                 <ns5:postcode match-indicator="Postal_Area" match-score="100" match-score-weight="4" search-value="2041"/>
             </ns5:current-address>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -251,14 +256,15 @@ def test_record_with_one_datasource_with_address_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['ADDRESS']
+                                                'matched_fields': ['ADDRESS'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
 def test_record_with_one_datasource_with_previous_address_match(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
@@ -280,7 +286,7 @@ def test_record_with_one_datasource_with_previous_address_match(client):
                 <ns5:postcode match-indicator="Postal_Area" match-score="100" match-score-weight="4" search-value="2041"/>
             </ns5:previous-address>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -292,14 +298,15 @@ def test_record_with_one_datasource_with_previous_address_match(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['ADDRESS']
+                                                'matched_fields': ['ADDRESS'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
 def test_record_with_one_datasource_with_address_match_full_fields(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
@@ -315,7 +322,7 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
                 <ns5:country match-indicator="Country" match-score="100" match-score-weight="4" search-value="AU"/>
             </ns5:current-address>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -327,16 +334,17 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['ADDRESS']
+                                                'matched_fields': ['ADDRESS'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
-def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(client):
+def test_record_with_one_datasource_with_address_match_honouring_match_score(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
         <ns5:search-result match-indicator="PASS" match-score="87" search-name="VEDA-CBCOMM-0051">
             <ns5:individual-name match-score="100" match-score-weight="12">
@@ -353,7 +361,7 @@ def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(clien
                 <ns5:postcode match-indicator="Postal_Area" match-score="0" match-score-weight="4" search-value="2041"/>
             </ns5:current-address>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -365,14 +373,15 @@ def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(clien
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['FORENAME']
+                                                'matched_fields': ['FORENAME', 'ADDRESS'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 def test_record_with_one_datasource_with_database_type_credit(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
         <ns5:search-result match-indicator="PASS" match-score="87" search-name="VEDA-CBCOMM-0051">
@@ -382,7 +391,7 @@ def test_record_with_one_datasource_with_database_type_credit(client):
                 <ns5:other-given-name match-indicator="Middle_Names" match-score="0" match-score-weight="4" search-value="SPDMNNVH"/>
             </ns5:individual-name>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -394,14 +403,15 @@ def test_record_with_one_datasource_with_database_type_credit(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['SURNAME']
+                                                'matched_fields': ['SURNAME'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            }  
+                            }
 
 def test_record_with_one_datasource_with_database_type_civil(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
@@ -412,7 +422,7 @@ def test_record_with_one_datasource_with_database_type_civil(client):
                 <ns5:other-given-name match-indicator="Middle_Names" match-score="0" match-score-weight="4" search-value="SPDMNNVH"/>
             </ns5:individual-name>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -424,14 +434,15 @@ def test_record_with_one_datasource_with_database_type_civil(client):
                                             {
                                                 'database_name': 'Drivers Licence - ACT (DVS)',
                                                 'database_type': 'CIVIL',
-                                                'matched_fields': ['SURNAME']
+                                                'matched_fields': ['SURNAME'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            } 
+                            }
 
 def test_record_with_two_datasource_with_diff_database_type(client):
     equifax_data = BASE_EQUIFAX_DATA.format(ACCEPT, '''
@@ -449,7 +460,7 @@ def test_record_with_two_datasource_with_diff_database_type(client):
                 <ns5:other-given-name match-indicator="Middle_Names" match-score="0" match-score-weight="4" search-value="SPDMNNVH"/>
             </ns5:individual-name>
         </ns5:search-result>''')
-    
+
     response_body = equifax_to_passfort_data(equifax_data)
 
     assert response_body == {
@@ -461,19 +472,21 @@ def test_record_with_two_datasource_with_diff_database_type(client):
                                             {
                                                 'database_name': 'Credit Bureau Commercial (v3)',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': ['SURNAME']
+                                                'matched_fields': ['SURNAME'],
+                                                'count': 1
                                             },
                                             {
                                                 'database_name': 'Drivers Licence - ACT (DVS)',
                                                 'database_type': 'CIVIL',
-                                                'matched_fields': ['SURNAME']
+                                                'matched_fields': ['SURNAME'],
+                                                'count': 1
                                             }
                                         ]
                                     }
                                 },
                                 "raw": equifax_data,
                                 "errors": []
-                            } 
+                            }
 
 def test_record_error_bad_request(client):
     equifax_data = BASE_EQUIFAX_DATA_ERROR.format('''
@@ -493,7 +506,7 @@ def test_record_error_bad_request(client):
                                 },
                                 "raw": equifax_data,
                                 "errors": [{'code': 201, 'message': 'Provider Error: Bad Request'}]
-                            } 
+                            }
 
 def test_record_error_auth_error(client):
     equifax_data = BASE_EQUIFAX_DATA_ERROR.format('''
@@ -513,7 +526,7 @@ def test_record_error_auth_error(client):
                                 },
                                 "raw": equifax_data,
                                 "errors": [{'code': 205, 'message': 'Provider Error: Authentication Failed'}]
-                            } 
+                            }
 
 def test_record_error_service_not_found(client):
     equifax_data = BASE_EQUIFAX_DATA_ERROR.format('''
@@ -534,7 +547,7 @@ def test_record_error_service_not_found(client):
                                 },
                                 "raw": equifax_data,
                                 "errors": [{'code': 205, 'message': 'Provider Error: Service Not Found. The request may have been sent to an invalid URL, or intended for an unsupported operation.'}]
-                            } 
+                            }
 
 def test_record_error_application_fault(client):
     equifax_data = BASE_EQUIFAX_DATA_ERROR.format('''
@@ -555,7 +568,7 @@ def test_record_error_application_fault(client):
                                 },
                                 "raw": equifax_data,
                                 "errors": [{'code': 303, 'message': 'Provider Error: Error in Assertion Processing'}]
-                            } 
+                            }
 
 def test_record_error_config_issue(client):
     equifax_data = BASE_EQUIFAX_DATA_ERROR.format('''

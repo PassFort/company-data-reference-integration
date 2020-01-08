@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 import json
 from equifax.convert_data import passfort_to_equifax_data
 from equifax.convert_data import xml_to_dict_response
@@ -27,14 +27,14 @@ def test_single_name_without_surname(client):
                 }
             }
         }
-    } 
+    }
     input_data.update(CREDENTIALS)
 
     equifax_request_data = passfort_to_equifax_data(input_data)
 
     assert list(xml_to_dict(equifax_request_data)['idm:request'].keys()) == ['@client-reference', '@reason-for-enquiry', 'idm:consents', 'idm:individual-name']
     assert xml_to_dict(equifax_request_data)['idm:request']['idm:individual-name'] == {'idm:first-given-name' :'Todd' }
-    
+
 
 def test_two_names_without_surname(client):
     input_data = {
@@ -47,7 +47,7 @@ def test_two_names_without_surname(client):
         }
     }
     input_data.update(CREDENTIALS)
-    
+
     equifax_request_data = passfort_to_equifax_data(input_data)
     output_data = {
         'idm:first-given-name': 'Todd',
@@ -103,7 +103,7 @@ def test_dob_complete(client):
     input_data.update(CREDENTIALS)
 
     equifax_request_data = passfort_to_equifax_data(input_data)
-    
+
     assert xml_to_dict(equifax_request_data)['idm:request']['idm:date-of-birth'] == '2019-01-31'
 
 def test_gender_male(client):
@@ -148,7 +148,7 @@ def test_one_simple_address(client):
         'input_data': {
             'address_history':[
                 {
-                    "address": {    
+                    "address": {
                         "country": "GBR",
                         "postal_code": "SW1A 2AA",
                         "street_number": "10",
@@ -162,8 +162,8 @@ def test_one_simple_address(client):
 
     equifax_request_data = passfort_to_equifax_data(input_data)
     output_data = {
-        #'idm:country': 'GBR', 
-        'idm:postcode': 'SW1A 2AA', 
+        'idm:country': 'GBR',
+        'idm:postcode': 'SW1A 2AA',
         'idm:street-number': '10'
     }
     assert xml_to_dict(equifax_request_data)['idm:request']['idm:current-address'] == output_data
@@ -173,7 +173,7 @@ def test_two_address(client):
         'input_data': {
             'address_history':[
                 {
-                    "address": {    
+                    "address": {
                         "country": "GBR",
                         "postal_code": "SW1A 2AA",
                         "street_number": "10",
@@ -181,7 +181,7 @@ def test_two_address(client):
                     }
                 },
                 {
-                    "address": {    
+                    "address": {
                         "country": "GBR-old",
                         "postal_code": "SW1A 2AA-old",
                         "street_number": "10-old",
@@ -195,43 +195,43 @@ def test_two_address(client):
 
     equifax_request_data = passfort_to_equifax_data(input_data)
     current_address = {
-        #'idm:country': 'GBR', 
-        'idm:postcode': 'SW1A 2AA', 
+        'idm:country': 'GBR',
+        'idm:postcode': 'SW1A 2AA',
         'idm:street-number': '10'
     }
     previous_address = {
-        #'idm:country': 'GBR-old', 
-        'idm:postcode': 'SW1A 2AA-old', 
+        'idm:country': 'GBR-old',
+        'idm:postcode': 'SW1A 2AA-old',
         'idm:street-number': '10-old'
     }
     assert xml_to_dict(equifax_request_data)['idm:request']['idm:current-address'] == current_address
     assert xml_to_dict(equifax_request_data)['idm:request']['idm:previous-address'] == previous_address
 
 
-# def test_one_simple_address_diff_country(client):
-#     input_data = {
-#         'input_data': {
-#             'address_history': [
-#                 {
-#                     "address": {
-#                         "country": "BRA",
-#                         "postal_code": "SW1A 2AA",
-#                         "street_number": "10",
-#                         "type": "STRUCTURED"
-#                     }
-#                 }
-#             ]
-#         }
-#     }
-#     input_data.update(CREDENTIALS)
+def test_one_simple_address_diff_country(client):
+    input_data = {
+        'input_data': {
+            'address_history': [
+                {
+                    "address": {
+                        "country": "BRA",
+                        "postal_code": "SW1A 2AA",
+                        "street_number": "10",
+                        "type": "STRUCTURED"
+                    }
+                }
+            ]
+        }
+    }
+    input_data.update(CREDENTIALS)
 
-#     equifax_request_data = passfort_to_equifax_data(input_data)
-#     output_data = {
-#         'idm:country': 'BRA', 
-#         'idm:postcode': 'SW1A 2AA', 
-#         'idm:street-number': '10'
-#     }
-#     assert xml_to_dict(equifax_request_data)['idm:request']['idm:current-address'] == output_data
+    equifax_request_data = passfort_to_equifax_data(input_data)
+    output_data = {
+        'idm:country': 'BRA',
+        'idm:postcode': 'SW1A 2AA',
+        'idm:street-number': '10'
+    }
+    assert xml_to_dict(equifax_request_data)['idm:request']['idm:current-address'] == output_data
 
 def test_one_complete_address(client):
     input_data = {
@@ -259,7 +259,7 @@ def test_one_complete_address(client):
 
     equifax_request_data = passfort_to_equifax_data(input_data)
     output_data = {
-        #'idm:country': 'GBR',
+        'idm:country': 'GBR',
         'idm:postcode': 'SW1A 2AA',
         'idm:property': 'My building',
         'idm:state': 'Greater London',
@@ -280,11 +280,11 @@ def test_communication_with_empty_values(client):
     input_data.update(CREDENTIALS)
 
     equifax_request_data = passfort_to_equifax_data(input_data)
-    
+
     request_keys = xml_to_dict(equifax_request_data)['idm:request'].keys()
     assert 'idm:email-address' not in request_keys
     assert 'idm:phone' not in request_keys
-    
+
 def test_communication_with_email(client):
     input_data = {
         'input_data': {

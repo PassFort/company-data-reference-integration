@@ -19,7 +19,7 @@ def create_demo_response(passfort_data):
         "ADDRESS",
         "DOB",
     ]
-         
+
     #Get complete name to check what kind of demo response will be returned
     names = passfort_data['input_data']['personal_details']['name']['given_names']
     if passfort_data['input_data']['personal_details']['name'].get('family_name'):
@@ -62,4 +62,4 @@ def create_demo_response(passfort_data):
     }
 
     return response
-        
+

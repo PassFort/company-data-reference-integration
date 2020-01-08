@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 import json
 from unittest.mock import Mock, patch
 from collections import namedtuple
@@ -65,6 +65,6 @@ def test_verify_request(mock_post_verify, client):
     verify(dummy_body, url)
 
     mock_post_verify.assert_called_with(
-        url+'/sys2/idmatrix-v4',  
-        data=dummy_body, 
+        url+'/sys2/idmatrix-v4',
+        data=dummy_body,
         headers=headers)

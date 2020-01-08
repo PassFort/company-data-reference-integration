@@ -54,7 +54,7 @@ class Ekyc_check(Resource):
             equifax_response_data = verify(equifax_request_data, request_json['credentials'].get('url'))
 
             response = equifax_to_passfort_data(equifax_response_data)
-            
+
         return response
 
 class HealthCheck(Resource):
@@ -71,7 +71,7 @@ class HealthCheck(Resource):
              request_json['credentials'].get('password') and\
              request_json['credentials'].get('url')):
             return 'MISSING_API_KEY', 203
-        
+
         return echo_test_request(request_json['credentials'])
 
 
