@@ -79,10 +79,10 @@ def passfort_to_equifax_ping(passfort_data):
         'wsse':'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd',
         'wsa': 'http://www.w3.org/2005/08/addressing',
         'ping': 'http://vedaxml.com/vxml2/ping-v1-0.xsd'
-    
+
     }
     lxml_env = EnvelopeBuilder(namespaces)
-    
+
     request_xml = lxml_env.soap.Envelope(
         lxml_env.soap.Header(
             lxml_env.build_security(passfort_data['username'], passfort_data['password']),
@@ -107,7 +107,7 @@ def passfort_to_equifax_data(passfort_data):
     lxml_env = EnvelopeBuilder(namespaces)
 
     credentials = passfort_data['credentials']
-    
+
     request_xml = lxml_env.soap.Envelope(
         lxml_env.soap.Header(
             lxml_env.build_security(credentials['username'], credentials['password']),
@@ -126,7 +126,7 @@ def passfort_to_equifax_data(passfort_data):
     body = lxml_env.soap.Body(
         idm_request
     )
-    
+
     if passfort_data.get('input_data'):
         #Check Personal details 
         if passfort_data['input_data'].get('personal_details'):
@@ -196,6 +196,7 @@ def passfort_to_equifax_data(passfort_data):
                     idm_current_address.append(
                         lxml_env.ns.idm('street-name', address_to_check['route'])
                     )
+
                 if address_to_check.get('locality'):
                     idm_current_address.append(
                         lxml_env.ns.idm.suburb(address_to_check['locality'])
@@ -320,15 +321,17 @@ def equifax_to_passfort_data(equifax_raw_data):
 
                     for search_result in search_results:
 
-                        datasource_name  = DATASOUCES.get(search_result["@search-name"], search_result["@search-name"] + ' - (Unknow Datasource)')
+                        datasource_name  = DATASOUCES.get(search_result["@search-name"], search_result["@search-name"] + ' - (Unknown Datasource)')
                         match = {
                             'database_name': datasource_name,
                             'database_type': 'CREDIT' if 'credit' in datasource_name.lower() else 'CIVIL',
-                            'matched_fields': []
+                            'matched_fields': [],
+                            'count': 0
                         }
                         matches.append(match)
 
                         if search_result['@match-indicator'] == 'PASS':
+                            match['count'] = 1
                         
                             #check names
                             individual_name = search_result.get(f'{ns}:individual-name')
