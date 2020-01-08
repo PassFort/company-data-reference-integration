@@ -128,16 +128,16 @@ def passfort_to_equifax_data(passfort_data):
     )
 
     if passfort_data.get('input_data'):
-        #Check Personal details 
+        #Check Personal details
         if passfort_data['input_data'].get('personal_details'):
             #Check name
             if passfort_data['input_data']['personal_details'].get('name'):
                 idm_individual_name = lxml_env.ns.idm('individual-name')
                 idm_request.append(idm_individual_name)
-                
+
                 if passfort_data['input_data']['personal_details']['name'].get('family_name'):
                     idm_individual_name.append(
-                        lxml_env.ns.idm('family-name', 
+                        lxml_env.ns.idm('family-name',
                             passfort_data['input_data']['personal_details']['name']['family_name'])
                     )
 
@@ -151,14 +151,14 @@ def passfort_to_equifax_data(passfort_data):
                             idm_individual_name.append(
                                 lxml_env.ns.idm('other-given-name', ' '.join(given_names[1:]))
                             )
-                    
+
             #Check date of birthday
             if passfort_data['input_data']['personal_details'].get('dob'):
                 idm_request.append(
                     lxml_env.ns.idm('date-of-birth',
                         passfort_data['input_data']['personal_details']['dob'])
                 )
-                
+
             #Check gender
             if passfort_data['input_data']['personal_details'].get('gender'):
                 equifax_gender = "male" if passfort_data['input_data']['personal_details']['gender'] == 'M' else 'female'
@@ -170,12 +170,12 @@ def passfort_to_equifax_data(passfort_data):
         #Check address
         if passfort_data['input_data'].get('address_history'):
             for idx, address in enumerate(passfort_data['input_data']['address_history'][:2]):
-                
+
                 if idx == 0:
                     idm_current_address = lxml_env.ns.idm('current-address')
                 else:
                     idm_current_address = lxml_env.ns.idm('previous-address')
-                    
+
                 idm_request.append(idm_current_address)
 
                 address_to_check = address['address']
@@ -214,7 +214,7 @@ def passfort_to_equifax_data(passfort_data):
                         lxml_env.ns.idm.country(address_to_check['country'])
                     )
 
-            
+
         #Check Communication
         if passfort_data['input_data'].get('contact_details'):
             if passfort_data['input_data']['contact_details'].get('email'):
@@ -240,7 +240,7 @@ def passfort_to_equifax_data(passfort_data):
                 )
 
     request_xml.append(body)
-    
+
     return lxml_env.print(request_xml)
 
 
@@ -266,26 +266,26 @@ def equifax_to_passfort_data(equifax_raw_data):
 
             if (server_fault.strip() == 'Authentication Failed') or ('Service Not Found' in server_fault):
                 response_body['errors'].append({
-                    'code': 205, 
+                    'code': 205,
                     'message': f'Provider Error: {server_fault.strip()}'})
             elif server_fault.strip() == 'Service Temporarily Unavailable':
                 response_body['errors'].append({
-                    'code': 302, 
+                    'code': 302,
                     'message': f'Provider Error: {server_fault.strip()}'})
             elif server_fault.strip() in [
                 'Error in Assertion Processing',
                 'Error in Assertion Processing',
                 'An error occurred when processing idMatixOperation']:
                 response_body['errors'].append({
-                    'code': 303, 
+                    'code': 303,
                     'message': f'Provider Error: {server_fault.strip()}'
                 })
             elif server_fault.strip() == 'Bad Request':
                 response_body['errors'].append({
-                    'code': 201, 
+                    'code': 201,
                     'message': f'Provider Error: {server_fault.strip()}'})
         else:
-        
+
             ns = [tag for tag in equifax_data.keys() if tag[0] not in ['@', "#"]][0].split(':')[0]
 
             indicator = equifax_data[f'{ns}:response']\
@@ -295,14 +295,14 @@ def equifax_to_passfort_data(equifax_raw_data):
             #Possible Values: ACCEPT, REJECT,TIMEOUT, ERROR]
             if indicator == 'TIMEOUT':
                 response_body['errors'].append({
-                    'code': 403, 
+                    'code': 403,
                     'message': 'Provider Error: TIMEOUT'})
             elif indicator in ['REJECT', 'REJECT_ON_EXCLUSION']:
                 response_body['output_data']['decision'] = 'FAIL'
             elif indicator == 'ERROR':
                 response_body['errors'].append({
-                    'code': 303, 
-                    'message': 'Provider Error: UNKNOW ERROR'})
+                    'code': 303,
+                    'message': 'Provider Error: UNKNOWN ERROR'})
             if indicator in 'ACCEPT':
                 response_body['output_data']['decision'] = 'PASS'
 
@@ -311,7 +311,7 @@ def equifax_to_passfort_data(equifax_raw_data):
                     [f'{ns}:component-responses']\
                     [f'{ns}:verification-response']\
                     [f'{ns}:search-results'].get(f'{ns}:search-result')
-                
+
                 if search_results:
                     matches = []
 
@@ -332,7 +332,7 @@ def equifax_to_passfort_data(equifax_raw_data):
 
                         if search_result['@match-indicator'] == 'PASS':
                             match['count'] = 1
-                        
+
                             #check names
                             individual_name = search_result.get(f'{ns}:individual-name')
                             if individual_name:

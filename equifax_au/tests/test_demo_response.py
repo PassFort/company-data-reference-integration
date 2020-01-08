@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 
 from api.demo_response import create_demo_response
 
