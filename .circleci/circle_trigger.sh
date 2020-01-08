@@ -21,28 +21,35 @@ function circle_ci() {
   local url="$1"
   local data="$2"
   if [[ -z "$data" ]]; then
-    >&2 echo "GET ${CIRCLE_API}${url}"
     curl -Ssf -u "${CIRCLE_TOKEN}:" "${CIRCLE_API}${url}"
   else
-    >&2 echo "POST ${CIRCLE_API}${url}"
     curl -Ssf -u "${CIRCLE_TOKEN}:" -X "POST" --header "Content-Type: application/json" -d "${data}" "${CIRCLE_API}${url}"
   fi
 }
 
 # Returns a line for each API-triggered pipeline, containing space-separated "id" "revision"
-RECENT_PIPELINES=`circle_ci "/v2/project/${PROJECT_SLUG}/pipeline?branch=${PARENT_BRANCH}" | jq -r '.items | map(select(.trigger.type == "api") | [.id, .vcs.revision] | @sh) | join("\n")'`
+RECENT_PIPELINES=`circle_ci "/v2/project/${PROJECT_SLUG}/pipeline?branch=${PARENT_BRANCH}" | jq -r '.items | map(select(.trigger.type == "api") | [.id, .vcs.revision, .created_at] | @tsv) | join("\n")'`
 
 # Find a pipeline where the commit hash is an ancestor, and where all the workflows succeeded.
 LAST_COMPLETED_BUILD_SHA=""
-echo "$RECENT_PIPELINES" | while read pipeline_id revision
+while read pipeline_id revision created_at
 do
+  BUILD_DATE=`date -d "$created_at" "+%Y-%m-%d %H:%M:%S"`
+  echo -n "Checking revision [${revision:0:7}] (built ${BUILD_DATE})... "
   if git merge-base --is-ancestor $revision HEAD; then
-    if circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq -e '.items | all(.status == "success")' > /dev/null; then
+    if circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq -e '.items | group_by(.name) | map(max_by(.created_at)) | all(.status == "success")' > /dev/null; then
       LAST_COMPLETED_BUILD_SHA="$revision"
+      echo -e "\e[92mOK!\e[0m"
       break
+    else
+      echo -e "\e[31mNot successful.\e[0m"
     fi
+  else
+    echo -e "\e[31mNot an ancestor.\e[0m"
   fi
-done
+done <<< "$RECENT_PIPELINES"
+
+echo
 
 ############################################
 ## 2. Changed packages
@@ -77,6 +84,8 @@ do
     fi
   fi
 done
+
+echo
 
 if [[ $COUNT -eq 0 ]]; then
   echo -e "\e[93mNo changes detected in packages. Skip triggering workflows.\e[0m"
