@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 from collections import OrderedDict
 
 from equifax.convert_data import xml_to_dict_response

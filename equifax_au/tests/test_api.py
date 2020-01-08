@@ -19,7 +19,7 @@ def test_ekyc_check(client):
     )
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
-    
+
 def test_ekyc_check_empty_package(client):
     response = client.post(
         '/ekyc-check',
