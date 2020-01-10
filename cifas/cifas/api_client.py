@@ -1,3 +1,5 @@
+import logging
+
 from typing import Tuple, Union
 from tempfile import mkdtemp, mkstemp
 from os import path, remove, getcwd, chdir
@@ -5,6 +7,7 @@ from contextlib import contextmanager
 from zeep import Client
 from zeep.transports import Transport
 from zeep.helpers import serialize_object
+from zeep.exceptions import Fault
 from requests import Session
 from requests.exceptions import HTTPError
 from passfort.cifas_check import CifasCredentials, CifasConfig
@@ -31,13 +34,19 @@ class CifasHTTPError(Exception):
 
 
 @contextmanager
-def request_ctx():
+def request_ctx(client):
     try:
         yield
     except ConnectionError as e:
         raise CifasConnectionError(e)
     except HTTPError as e:
         raise CifasHTTPError(e)
+    except Fault as e:
+        logging.error({
+            'message': 'soap_fault',
+            'soap_fault_detail': client.wsdl.types.deserialize(e.detail[0])
+        })
+        raise e
 
 
 def create_soap_client(cert_file: str, wsdl_path: str) -> Client:
@@ -82,7 +91,7 @@ class CifasAPIClient:
         )
 
     def full_search(self, request: FullSearchRequest) -> FullSearchResponse:
-        with request_ctx():
+        with request_ctx(self.soap_client):
             response_object = self.soap_client.service.FullSearch(
                 _soapheaders=[self.get_header(self.config.requesting_institution)],
                 Search=request.to_dict(),
