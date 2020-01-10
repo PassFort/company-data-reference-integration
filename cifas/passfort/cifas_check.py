@@ -3,7 +3,7 @@ from enum import Enum
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json, config
-from passfort import EntityType, union_field
+from passfort import EntityType, union_field, coerce_integer
 from passfort.individual_data import IndividualData
 from passfort.company_data import CompanyData
 from passfort.date import PartialDate
@@ -15,8 +15,8 @@ from passfort.error import Error
 class CifasConfig:
     product_code: str
     search_type: str
-    requesting_institution: int
     use_uat: bool
+    requesting_institution: int = coerce_integer()
 
 
 @dataclass
