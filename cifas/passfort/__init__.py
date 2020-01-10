@@ -36,6 +36,24 @@ def decode_tagged_union(*dataclasses: List[type], tag: str = 'type', unknown_typ
     return decoder
 
 
+def coerce_integer(default=None):
+    return field(
+        default_factory=lambda: default,
+        metadata=config(
+            decoder=int
+        ),
+    )
+
+
+def coerce_empty_string(default=None):
+    return field(
+        default_factory=lambda: default,
+        metadata=config(
+            decoder=lambda value: value if value else None
+        ),
+    )
+
+
 def union_field(*dataclasses, **kwargs):
     return field(metadata=config(decoder=decode_tagged_union(*dataclasses, **kwargs)))
 
