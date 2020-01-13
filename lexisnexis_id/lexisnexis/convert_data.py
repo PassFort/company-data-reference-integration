@@ -54,7 +54,7 @@ def passfort_to_lexisnexis_data(passfort_data):
                 lexisnexis_pkg['InstantIDRequest']['SearchBy']['Gender'] = \
                     passfort_data['input_data']['personal_details']['gender'].upper()
 
-            #  Check SSN ( Soßcial Security Number )
+            #  Check SSN ( Social Security Number )
             if passfort_data['input_data']['personal_details'].get('national_identity_number'):
                 nin_raw = passfort_data['input_data']['personal_details']['national_identity_number']
                 nin_numbers = ''.join(filter(str.isdigit, nin_raw))
@@ -168,7 +168,8 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
                     match['matched_fields'].append('SURNAME')
 
             # check date of birthday (DOB)
-            if 'DOB' in lexisnexis_data['InstantIDResponseEx']['response']['Result']['InputEcho']:
+            if 'DOB' in lexisnexis_data['InstantIDResponseEx']['response']['Result']['InputEcho'] \
+                    and verified_input.get('DOB'):
                 input_dob = lexisnexis_data['InstantIDResponseEx']['response']['Result']['InputEcho']['DOB'].keys()
                 verified_dob = verified_input['DOB'].keys()
 
@@ -179,6 +180,10 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
             # check address
             if verified_input.get('Address'):
                 match['matched_fields'].append('ADDRESS')
+
+            # check SSN
+            if verified_input.get('SSN'):
+                match['matched_fields'].append('IDENTITY_NUMBER')
 
             # Update decision
             if match['matched_fields']:
