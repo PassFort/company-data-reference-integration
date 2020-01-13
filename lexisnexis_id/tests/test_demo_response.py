@@ -1,6 +1,7 @@
-import pytest 
+import pytest
 
 from api.demo_response import create_demo_response
+
 
 def test_fail_package(client):
     input_data = {
@@ -20,6 +21,7 @@ def test_fail_package(client):
 
     response = create_demo_response(input_data)
     assert response == demo_response
+
 
 def test_full_valid_package(client):
     input_data = {
@@ -63,6 +65,7 @@ def test_full_valid_package(client):
 
     response = create_demo_response(input_data)
     assert response == demo_response
+
 
 def test_1_plus_1_valid_package(client):
     input_data = {

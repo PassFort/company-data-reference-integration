@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 from copy import deepcopy
 from lexisnexis.convert_data import passfort_to_lexisnexis_data
 
@@ -18,15 +18,18 @@ BASE_REQUEST = {
     }
 }
 
+
 def test_empty_package(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data({})
 
     assert lexisnexis_request_data == BASE_REQUEST
-    
+
+
 def test_empty_input_data(client):
-    lexisnexis_request_data = passfort_to_lexisnexis_data({'input_data':None})
+    lexisnexis_request_data = passfort_to_lexisnexis_data({'input_data': None})
 
     assert lexisnexis_request_data == BASE_REQUEST
+
 
 def test_single_name_without_surname(client):
     input_data = {
@@ -41,10 +44,10 @@ def test_single_name_without_surname(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Name':{
-                        'First': 'Todd'
-                    }
-                }
+        'Name': {
+            'First': 'Todd'
+        }
+    }
     assert lexisnexis_request_data == output_data
 
 
@@ -61,12 +64,13 @@ def test_two_names_without_surname(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Name':{
-                        'First': 'Todd',
-                        'Middle': 'Astor'
-                    }
-                }
+        'Name': {
+            'First': 'Todd',
+            'Middle': 'Astor'
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_many_names_without_surname(client):
     input_data = {
@@ -81,12 +85,13 @@ def test_many_names_without_surname(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Name':{
-                        'First': 'Todd',
-                        'Middle': 'Astor Royal Tony'
-                    }
-                }
+        'Name': {
+            'First': 'Todd',
+            'Middle': 'Astor Royal Tony'
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_just_surname(client):
     input_data = {
@@ -101,11 +106,12 @@ def test_just_surname(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Name':{
-                        'Last': 'Stark'
-                    }
-                }
+        'Name': {
+            'Last': 'Stark'
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_dob_complete(client):
     input_data = {
@@ -118,13 +124,14 @@ def test_dob_complete(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'DOB':{
-                        'Year': 2019,
-                        'Month': 1,
-                        'Day': 31
-                    }
-                }
+        'DOB': {
+            'Year': 2019,
+            'Month': 1,
+            'Day': 31
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_dob_year_month(client):
     input_data = {
@@ -137,12 +144,13 @@ def test_dob_year_month(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'DOB':{
-                        'Year': 2019,
-                        'Month': 1
-                    }
-                }
+        'DOB': {
+            'Year': 2019,
+            'Month': 1
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_dob_year(client):
     input_data = {
@@ -155,11 +163,12 @@ def test_dob_year(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'DOB':{
-                        'Year': 2019
-                    }
-                }
+        'DOB': {
+            'Year': 2019
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_gender(client):
     input_data = {
@@ -172,9 +181,10 @@ def test_gender(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Gender': 'M'
-                }
+        'Gender': 'M'
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_empty_address_history(client):
     input_data = {
@@ -189,9 +199,9 @@ def test_empty_address_history(client):
 def test_one_simple_address(client):
     input_data = {
         'input_data': {
-            'address_history':[
+            'address_history': [
                 {
-                    "address": {    
+                    "address": {
                         "postal_code": "12345",
                         "street_number": "10",
                         "type": "STRUCTURED"
@@ -203,23 +213,23 @@ def test_one_simple_address(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Address': {
-                        'Zip5': "12345",
-                        'StreetAddress1' : "10"
-                    }
-                }
+        'Address': {
+            'Zip5': "12345",
+            'StreetAddress1': "10"
+        }
+    }
     assert lexisnexis_request_data == output_data
 
 
 def test_one_complete_address(client):
     input_data = {
         'input_data': {
-            'address_history':[
+            'address_history': [
                 {
                     "address": {
                         "street_number": "10",
                         "premise": 'My building',
-                        "subpremise" : '0',
+                        "subpremise": '0',
                         "route": "Downing St",
                         "postal_town": 'MORNING VIEW',
                         "state_province": 'KY',
@@ -233,14 +243,15 @@ def test_one_complete_address(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Address': {
-                        'Zip5': "12345",
-                        'StreetAddress1' : "10 Downing St My building 0",
-                        'City': 'MORNING VIEW',
-                        'State': 'KY'
-                    }
-                }
+        'Address': {
+            'Zip5': "12345",
+            'StreetAddress1': "10 Downing St My building 0",
+            'City': 'MORNING VIEW',
+            'State': 'KY'
+        }
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_communication_with_empty_values(client):
     input_data = {
@@ -250,6 +261,7 @@ def test_communication_with_empty_values(client):
     }
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     assert lexisnexis_request_data == BASE_REQUEST
+
 
 def test_communication_with_email(client):
     input_data = {
@@ -262,9 +274,10 @@ def test_communication_with_email(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Email': 'test@test.com'
-                }
+        'Email': 'test@test.com'
+    }
     assert lexisnexis_request_data == output_data
+
 
 def test_communication_with_telephone(client):
     input_data = {
@@ -277,9 +290,9 @@ def test_communication_with_telephone(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'HomePhone': '+44 7911 123456',
-                    'WorkPhone': '+44 7911 123456'
-                }
+        'HomePhone': '+44 7911 123456',
+        'WorkPhone': '+44 7911 123456'
+    }
     assert lexisnexis_request_data == output_data
 
 
@@ -295,8 +308,8 @@ def test_communication_with_full_values(client):
     lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
     output_data = deepcopy(BASE_REQUEST)
     output_data['InstantIDRequest']["SearchBy"] = {
-                    'Email': 'test@test.com',
-                    'HomePhone': '+44 7911 123456',
-                    'WorkPhone': '+44 7911 123456'
-                }
+        'Email': 'test@test.com',
+        'HomePhone': '+44 7911 123456',
+        'WorkPhone': '+44 7911 123456'
+    }
     assert lexisnexis_request_data == output_data

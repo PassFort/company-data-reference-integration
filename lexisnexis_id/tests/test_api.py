@@ -2,7 +2,8 @@ import json
 import pytest
 from unittest.mock import Mock, patch
 
-LEXISNEXIS_RESPONSE_DATA = {'status': 200, 'body': {'InstantIDResponseEx':{'response': {'Result' : {}}}}}
+LEXISNEXIS_RESPONSE_DATA = {'status': 200, 'body': {'InstantIDResponseEx': {'response': {'Result': {}}}}}
+
 
 @patch('api.views.passfort_to_lexisnexis_data', Mock(return_value=({})))
 @patch('api.views.verify', Mock(return_value=LEXISNEXIS_RESPONSE_DATA))
@@ -10,7 +11,7 @@ def test_ekyc_check(client):
     response = client.post(
         '/ekyc-check',
         data=json.dumps({
-            'credentials' :{
+            'credentials': {
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
                 'url': 'dummy_url'}}),
@@ -18,7 +19,8 @@ def test_ekyc_check(client):
     )
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
-    
+
+
 def test_ekyc_check_empty_package(client):
     response = client.post(
         '/ekyc-check',
@@ -31,13 +33,14 @@ def test_ekyc_check_empty_package(client):
         "output_data": {
         },
         "raw": {},
-        "errors": [{'code': 201, 'message':'INVALID_INPUT_DATA'}]
+        "errors": [{'code': 201, 'message': 'INVALID_INPUT_DATA'}]
     }
+
 
 def test_ekyc_check_api_key_empty(client):
     response = client.post(
         '/ekyc-check',
-        data=json.dumps({'credentials':''}),
+        data=json.dumps({'credentials': ''}),
         content_type='application/json'
     )
     assert response.status_code == 200
@@ -46,8 +49,9 @@ def test_ekyc_check_api_key_empty(client):
         "output_data": {
         },
         "raw": {},
-        "errors": [{'code': 203, 'message':'MISSING_API_KEY'}]
+        "errors": [{'code': 203, 'message': 'MISSING_API_KEY'}]
     }
+
 
 def test_ekyc_check_wrong_method(client):
     response = client.get('/ekyc-check')
@@ -61,7 +65,7 @@ def test_ekyc_check_with_raw_data(client):
     response = client.post(
         '/ekyc-check',
         data=json.dumps({
-            'credentials' :{
+            'credentials': {
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
                 'url': 'dummy_url'}}),
@@ -77,11 +81,12 @@ def test_ekyc_check_with_raw_data(client):
         "errors": []
     }
 
+
 def test_ekyc_check_demo_fail_data(client):
     response = client.post(
         '/ekyc-check',
         data=json.dumps({
-            'credentials' :{
+            'credentials': {
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
                 'url': 'dummy_url'
@@ -106,11 +111,12 @@ def test_ekyc_check_demo_fail_data(client):
         "errors": []
     }
 
+
 def test_ekyc_check_demo_1_valid_data(client):
     response = client.post(
         '/ekyc-check',
         data=json.dumps({
-            'credentials' :{
+            'credentials': {
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
                 'url': 'dummy_url'
@@ -154,9 +160,3 @@ def test_ekyc_check_demo_1_valid_data(client):
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == demo_response
-
-
-
-
-
-
