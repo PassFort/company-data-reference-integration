@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+coverage = "*"
+codecov = "*"
+
+[packages]
+flask = "*"
+flask-restful = "*"
+gunicorn = "*"
+requests = {extras = ['socks']}
+pysocks = "*"
+sentry-sdk = {extras = ["flask"], version = "==0.14.0"}
+
+[requires]
+python_version = "3.7"
