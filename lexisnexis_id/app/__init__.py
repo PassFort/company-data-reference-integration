@@ -13,7 +13,10 @@ def create_app():
     if dsn:
         sentry_sdk.init(
             dsn=dsn,
-            integrations=[FlaskIntegration()]
+            integrations=[FlaskIntegration()],
+            # Prevent Sentry communicating via proxy (it doesn't support SOCKS5H and isn't needed)
+            http_proxy='',
+            https_proxy='',
         )
 
     app = Flask(__name__)
