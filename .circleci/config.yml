@@ -49,6 +49,9 @@ parameters:
   reference_integration:
     type: boolean
     default: false
+  lexisnexis_id:
+    type: boolean
+    default: false
 
 executors:
   python-builder:
@@ -720,3 +723,35 @@ workflows:
               branches:
                 only:
                   - staging
+
+  lexisnexis_id:
+    when: << pipeline.parameters.lexisnexis_id >>
+    jobs:
+      - build:
+          name: build_lexisnexis_id
+          package: lexisnexis_id
+      - unit:
+          name: unit_lexisnexis_id
+          package: lexisnexis_id
+          requires:
+            - build_lexisnexis_id
+      - deploy_common:
+          name: deploy_lexisnexis_id_staging
+          package: lexisnexis_id
+          to: staging
+          requires:
+            - unit_lexisnexis_id
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_lexisnexis_id_production
+          package: lexisnexis_id
+          to: production
+          requires:
+            - unit_lexisnexis_id
+          filters:
+              branches:
+                  only:
+                    - master
