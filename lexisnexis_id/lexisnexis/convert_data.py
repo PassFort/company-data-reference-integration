@@ -189,8 +189,12 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
             if match['matched_fields']:
                 response_body['output_data']['decision'] = 'PASS'
 
-            response_body['output_data']["entity_type"] = "INDIVIDUAL"
-            response_body['output_data']["electronic_id_check"] = {"matches": [match]}
+            response_body['output_data']['entity_type'] = "INDIVIDUAL"
+            response_body['output_data']['electronic_id_check'] = {"matches": [match]}
+
+            if 'UniqueId' in lexisnexis_data['InstantIDResponseEx']['response']['Result']:
+                response_body['output_data']["electronic_id_check"]['provider_reference_number'] = \
+                    lexisnexis_data['InstantIDResponseEx']['response']['Result']['UniqueId']
 
     # Check global errors
     # check_errors(lexisnexis_data, response_body)
