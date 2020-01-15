@@ -55,8 +55,10 @@ def passfort_to_lexisnexis_data(passfort_data):
                     passfort_data['input_data']['personal_details']['gender'].upper()
 
             #  Check SSN ( Social Security Number )
-            if passfort_data['input_data']['personal_details'].get('national_identity_number'):
-                nin_raw = passfort_data['input_data']['personal_details']['national_identity_number']
+            maybe_ssn = passfort_data['input_data']['personal_details'].get('national_identity_number')
+            # We only support USA SSNs currently as this is a USA-only integration.
+            if maybe_ssn and 'USA' in maybe_ssn:
+                nin_raw = maybe_ssn['USA']
                 nin_numbers = ''.join(filter(str.isdigit, nin_raw))
                 if nin_numbers:
                     lexisnexis_pkg['InstantIDRequest']['SearchBy']['SSN'] = nin_numbers
@@ -187,6 +189,7 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
 
             # Update decision
             if match['matched_fields']:
+                match['count'] = 1
                 response_body['output_data']['decision'] = 'PASS'
 
             response_body['output_data']['entity_type'] = "INDIVIDUAL"

@@ -68,7 +68,8 @@ def test_record_with_one_datasource_with_surname_match(client):
                     {
                         'database_name': 'LexisNexis DB',
                         'database_type': 'CIVIL',
-                        'matched_fields': ['SURNAME']
+                        'matched_fields': ['SURNAME'],
+                        'count': 1
                     }
                 ]
             },
@@ -111,7 +112,8 @@ def test_record_with_one_datasource_with_forename_match(client):
                     {
                         'database_name': 'LexisNexis DB',
                         'database_type': 'CIVIL',
-                        'matched_fields': ['FORENAME']
+                        'matched_fields': ['FORENAME'],
+                        'count': 1
                     }
                 ]
             },
@@ -158,7 +160,8 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
                     {
                         'database_name': 'LexisNexis DB',
                         'database_type': 'CIVIL',
-                        'matched_fields': ['DOB']
+                        'matched_fields': ['DOB'],
+                        'count': 1
                     }
                 ]
             },
@@ -203,7 +206,8 @@ def test_record_with_one_datasource_with_dob_year_month_match(client):
                     {
                         'database_name': 'LexisNexis DB',
                         'database_type': 'CIVIL',
-                        'matched_fields': ['DOB']
+                        'matched_fields': ['DOB'],
+                        'count': 1
                     }
                 ]
             },
@@ -246,7 +250,8 @@ def test_record_with_one_datasource_with_dob_year_match(client):
                     {
                         'database_name': 'LexisNexis DB',
                         'database_type': 'CIVIL',
-                        'matched_fields': ['DOB']
+                        'matched_fields': ['DOB'],
+                        'count': 1
                     }
                 ]
             },
@@ -322,7 +327,8 @@ def test_record_with_one_datasource_with_address_match(client):
                     {
                         'database_name': 'LexisNexis DB',
                         'database_type': 'CIVIL',
-                        'matched_fields': ['ADDRESS']
+                        'matched_fields': ['ADDRESS'],
+                        'count': 1
                     }
                 ]
             },
