@@ -14,7 +14,7 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
-    Financials, CreditChangeEntry
+    Financials, Statement, StatementEntryBase
 
 from .fuzzy import CompanyNameMatcher
 
@@ -909,11 +909,14 @@ class CreditSafeCompanyReport(Model):
             key = lambda x: x['date'],
             reverse=True
         )
-        return {
+        financials = Financials({
             'contract_limit': contract_limit,
             'credit_history': credit_history,
             'statements': statements
-        }
+        })
+        with_yoy([s for s in financials.statements if s.statement_type == 'PROFIT_AND_LOSS'])
+        with_yoy([s for s in financials.statements if s.statement_type == 'BALANCE_SHEET'])
+        return financials
 
     def as_passfort_format_41(self, request_handler=None):
         addresses = [
@@ -958,9 +961,10 @@ class CreditSafeCompanyReport(Model):
             pscs,
             self.summary.country_code,
             request_handler)
+
         return {
             'metadata': metadata.serialize(),
-            'financials': Financials(self.to_financials()).serialize(),
+            'financials': self.to_financials().serialize(),
             'associated_entities': [a.serialize() for a in associates]
         }
 
@@ -1015,6 +1019,7 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
     associate_data.result = result
     return result
 
+
 def merge_associates(
         directors,
         unique_shareholders,
@@ -1038,5 +1043,28 @@ def merge_associates(
         else:
             raise e
 
-
     return [a.result for a in processing_queue]
+
+
+def calculate_yoy(crt_year_entries: List[StatementEntryBase], prev_year_entries: List[StatementEntryBase]):
+    for entry in crt_year_entries:
+        crt_value = entry.value and entry.value.value
+        if entry.value_type == 'CURRENCY' and crt_value is not None:
+            prev_entry_value = next((e.value and e.value.value for e in prev_year_entries if e.name == entry.name),
+                                    None)
+            entry.yoy = None
+            if prev_entry_value is not None and prev_entry_value != 0:
+                entry.yoy = (crt_value - prev_entry_value) / prev_entry_value
+
+
+def with_yoy(sorted_statements: List[Statement]):
+    # Should only be used with statements of the same type
+    if len(sorted_statements) < 2:
+        return
+
+    for i in range(len(sorted_statements) - 1):
+        crt = sorted_statements[i]
+        prev_year = sorted_statements[i + 1]
+
+        calculate_yoy(crt.entries, prev_year.entries)
+        calculate_yoy(crt.groups, prev_year.groups)
