@@ -815,7 +815,7 @@ class CreditsafeFinancialStatement(Model):
 
         balance_groups = {
             'totalFixedAssets': ['tangibleAssets', 'intangibleAssets'],
-            'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors' 'otherDebtors', 'miscCurrentAssets'],
+            'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors', 'otherDebtors', 'miscCurrentAssets'],
             'totalCurrentLiabilities': ['tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'],
             'totalLongTermLiabilities': ['otherLongTermFinance']
         }
