@@ -779,6 +779,8 @@ class CreditsafeFinancialStatement(Model):
     currency = StringType(default=None)
     profit_and_loss = DictType(BaseType, default={}, serialized_name="profitAndLoss")
     balance_sheet = DictType(BaseType, default={}, serialized_name="balanceSheet")
+    other_financials = DictType(BaseType, default={}, serialized_name="otherFinancials")
+
 
     def parse_dict_entries(self, group_map, input_dict):
         entries = []
@@ -793,35 +795,41 @@ class CreditsafeFinancialStatement(Model):
                 'value_type': 'CURRENCY'
             })
             for item in v:
-                if item in input_dict:
-                    entries.append({
-                        'name': to_snake_case(item),
-                        'value_type': 'CURRENCY',
-                        'value': {
-                            'value': input_dict[item],
-                            'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
-                        },
-                        'group_name': to_snake_case(k)
-                    })
+                entries.append({
+                    'name': to_snake_case(item),
+                    'value_type': 'CURRENCY',
+                    'value': {
+                        'value': input_dict.get(item, None),
+                        'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                    },
+                    'group_name': to_snake_case(k)
+                })
         return entries, groups
 
     def to_json(self):
         pl_groups = {
             'turnover': [],
-            'operatingProfit': [],
-            'profitBeforeTax': ['depreciation', 'auditFees'],
-            'retainedProfit': ['tax', 'profitAfterTax']
+            'operatingProfit': [
+                'exports',
+                'costOfSales',
+                'grossProfit',
+                'wagesAndSalaries',
+                'directorsRemuneration'
+            ],
+            'profitBeforeTax': ['depreciation', 'auditFees', 'interestExpense'],
+            'retainedProfit': ['taxation', 'profitAfterTax', 'dividends']
         }
 
         balance_groups = {
             'totalFixedAssets': ['tangibleAssets', 'intangibleAssets'],
             'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors', 'otherDebtors', 'miscCurrentAssets'],
             'totalCurrentLiabilities': ['tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'],
-            'totalLongTermLiabilities': ['otherLongTermFinance']
+            'totalLongTermLiabilities': ['bankOverdraftAndLTL', 'otherLongTermFinance']
         }
 
         pl_entries, pl_groups = self.parse_dict_entries(pl_groups, self.profit_and_loss)
-        balance_entries, balance_groups = self.parse_dict_entries(balance_groups, self.balance_sheet)
+        balance_entries, balance_groups = self.parse_dict_entries(
+            balance_groups, {**self.other_financials, **self.balance_sheet})
 
         return [
             {
