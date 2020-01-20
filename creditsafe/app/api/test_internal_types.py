@@ -3,8 +3,8 @@ import unittest
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
     build_resolver_id, PersonOfSignificantControl, CreditsafeSingleShareholder
-from .types import SearchInput, Financials
-from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload
+from .types import SearchInput, Financials, Statement
+from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload, with_yoy
 
 
 class TestCompanySearchResponse(unittest.TestCase):
@@ -209,6 +209,7 @@ class TestCompanyReport(unittest.TestCase):
                             'currency_code': 'GBP',
                             'value': 7953.0,
                         },
+                        'yoy': 2.417705199828105,
                         'value_type': 'CURRENCY'
                     },
                     {
@@ -1207,3 +1208,109 @@ class TestFinancials(unittest.TestCase):
                 }]
             }
         )
+
+
+class TestYoy(unittest.TestCase):
+
+    @classmethod
+    def create_statement(cls, date, value_1, value_2):
+        r = Statement().import_data({
+            'currency_code': 'GBP',
+            'date': date,
+            'entries': [
+                {
+                    'group_name': 'profit_before_tax',
+                    'name': 'depreciation',
+                    'value': {
+                        'currency_code': 'GBP',
+                        'value': value_1,
+                    },
+                    'value_type': 'CURRENCY'
+                },
+                {
+                    'group_name': 'profit_before_tax',
+                    'name': 'audit_fees',
+                    'value': {
+                        'currency_code': 'GBP',
+                        'value': value_2,
+                    },
+                    'value_type': 'CURRENCY'
+                }
+            ],
+            'groups': [
+                {
+                    'name': 'turnover',
+                    'value': {
+                        'currency_code': 'GBP',
+                    },
+                    'value_type': 'CURRENCY'
+                },
+                {
+                    'name': 'profit_before_tax',
+                    'value': {
+                        'currency_code': 'GBP',
+                        'value': value_1 + value_2 if value_1 is not None and value_2 is not None else None,
+                    },
+                    'value_type': 'CURRENCY'
+                }
+            ],
+            'statement_type': 'PROFIT_AND_LOSS'
+        }, apply_defaults=True)
+        r.validate()
+        return r
+
+    def test_yoy_is_present(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 20, 4),
+            self.create_statement('2018-12-31T00:00:00Z', 16, 4),
+            self.create_statement('2017-12-31T00:00:00Z', 20, 4),
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertEqual(result[0]['entries'][0]['yoy'], 0.25)
+        self.assertEqual(result[0]['entries'][1]['yoy'], 0.0)
+        self.assertEqual(result[0]['groups'][1]['yoy'], 0.2)
+
+        self.assertEqual(result[1]['entries'][0]['yoy'], -0.2)
+        self.assertEqual(result[1]['entries'][1]['yoy'], 0.0)
+        self.assertEqual(result[1]['groups'][1]['yoy'], -0.16666666666666666)
+
+        self.assertNotIn('yoy', result[2]['entries'][0])
+        self.assertNotIn('yoy', result[2]['entries'][1])
+        self.assertNotIn('yoy', result[2]['groups'][1])
+
+    def test_yoy_if_current_value_0(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 0, 0),  # crt value 0
+            self.create_statement('2018-12-31T00:00:00Z', 1, None),
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertEqual(result[0]['entries'][0]['yoy'], -1.0)
+        self.assertNotIn('yoy', result[0]['entries'][1])
+
+    def test_no_yoy_if_no_value(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 0, None),  # crt value None
+            self.create_statement('2018-12-31T00:00:00Z', None, 3),  # prev value none
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertNotIn('yoy', result[0]['entries'][0])
+        self.assertNotIn('yoy', result[0]['entries'][1])
+        self.assertNotIn('yoy', result[0]['groups'][0])
+        self.assertNotIn('yoy', result[0]['groups'][1])
+
+    def test_no_yoy_if_previous_value_0(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 1, None),
+            self.create_statement('2018-12-31T00:00:00Z', 0, 0),  # prev value 0
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertNotIn('yoy', result[0]['entries'][0])
+        self.assertNotIn('yoy', result[0]['entries'][1])
