@@ -29,7 +29,12 @@ def create_demo_response(passfort_data):
 
     if 'fail' in names:
         # all response will fail
-        demo_response = {}
+        demo_response = {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": []
+            }
+        }
 
     elif '1+1' in names:
         # Mach with one database
