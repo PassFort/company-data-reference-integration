@@ -311,6 +311,49 @@ class TestCompanyReport(unittest.TestCase):
                 'total_long_term_liabilities',
             )
 
+        with self.subTest('returns capital & reserves'):
+            actual_cap_sheet = self.formatted_report['financials']['statements'][2]
+            self.assertEqual(actual_cap_sheet['statement_type'], 'CAPITAL_AND_RESERVES')
+
+            self.assert_entry_with(
+                actual_cap_sheet['entries'][0],
+                'issued_share_capital',
+                138.0,
+                'total_shareholders_equity',
+                yoy=0.14049586776859505
+            )
+
+            self.assert_entry_with(
+                actual_cap_sheet['groups'][0],
+                'total_shareholders_equity',
+                263198.0,
+                yoy=0.6043180377432097
+            )
+
+        with self.subTest('returns other financial items'):
+            actual_other_financials = self.formatted_report['financials']['statements'][3]
+            self.assertEqual(actual_other_financials['statement_type'], 'OTHER_FINANCIAL_ITEMS')
+
+            self.assertEqual(actual_other_financials['entries'], [])
+
+            self.assert_entry_with(
+                actual_other_financials['groups'][0],
+                'net_worth',
+                263198.0,
+                yoy=0.6043180377432097
+            )
+
+        with self.subTest('returns cash flow'):
+            actual_cash_flow = self.formatted_report['financials']['statements'][4]
+            self.assertEqual(actual_cash_flow['statement_type'], 'CASH_FLOW')
+
+            self.assertEqual(actual_cash_flow['entries'], [])
+
+            self.assert_entry_with(
+                actual_cash_flow['groups'][0],
+                'net_cash_flow_from_operations',
+                None
+            )
 
     def test_handles_missing_data(self):
         report = CreditSafeCompanyReport.from_json({

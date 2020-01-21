@@ -780,7 +780,7 @@ class CreditsafeFinancialStatement(Model):
     profit_and_loss = DictType(BaseType, default={}, serialized_name="profitAndLoss")
     balance_sheet = DictType(BaseType, default={}, serialized_name="balanceSheet")
     other_financials = DictType(BaseType, default={}, serialized_name="otherFinancials")
-
+    cash_flow = DictType(BaseType, default={}, serialized_name="cashFlow")
 
     def parse_dict_entries(self, group_map, input_dict):
         entries = []
@@ -807,7 +807,7 @@ class CreditsafeFinancialStatement(Model):
         return entries, groups
 
     def to_json(self):
-        pl_groups = {
+        pl_map = {
             'turnover': [],
             'operatingProfit': [
                 'exports',
@@ -820,16 +820,50 @@ class CreditsafeFinancialStatement(Model):
             'retainedProfit': ['taxation', 'profitAfterTax', 'dividends']
         }
 
-        balance_groups = {
+        balance_map = {
             'totalFixedAssets': ['tangibleAssets', 'intangibleAssets'],
             'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors', 'otherDebtors', 'miscCurrentAssets'],
-            'totalCurrentLiabilities': ['tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'],
+            'totalCurrentLiabilities': [
+                'tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'
+            ],
             'totalLongTermLiabilities': ['bankOverdraftAndLTL', 'otherLongTermFinance']
         }
 
-        pl_entries, pl_groups = self.parse_dict_entries(pl_groups, self.profit_and_loss)
+        cap_and_reserves_map = {
+            'totalShareholdersEquity': [
+                'issuedShareCapital', 'revaluationReserve', 'revenueReserves', 'otherReserves'
+            ]
+        }
+
+        # Use groups with no other entries for single items
+        # (keeps the logic simple in the UI, no need to worry about loose entries)
+        other_financials_map = {
+            'netWorth': [],	 # otherFinancials
+            'workingCapital': [],  # otherFinancials
+            'totalAssets': [],  # balanceSheet
+            'totalLiabilities': [],  # balanceSheet
+            'netAssets': [],  # balanceSheet
+        }
+
+        cash_flow_map = {
+            'netCashFlowFromOperations': [],
+            'netCashFlowBeforeFinancing': [],
+            'netCashFlowFromFinancing': [],
+            'increaseInCash': [],
+        }
+
+        pl_entries, pl_groups = self.parse_dict_entries(pl_map, self.profit_and_loss)
         balance_entries, balance_groups = self.parse_dict_entries(
-            balance_groups, {**self.other_financials, **self.balance_sheet})
+            balance_map, {**self.other_financials, **self.balance_sheet})
+
+        cap_and_reserves_entries, cap_and_reserves_groups = self.parse_dict_entries(
+            cap_and_reserves_map, self.balance_sheet)
+
+        other_fin_entries, other_fin_groups = self.parse_dict_entries(
+            other_financials_map, {**self.balance_sheet, **self.other_financials})
+
+        cash_flow_entries, cash_flow_groups = self.parse_dict_entries(
+            cash_flow_map, self.cash_flow)
 
         return [
             {
@@ -845,6 +879,27 @@ class CreditsafeFinancialStatement(Model):
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': balance_entries,
                 'groups': balance_groups
+            },
+            {
+                'statement_type': 'CAPITAL_AND_RESERVES',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': cap_and_reserves_entries,
+                'groups': cap_and_reserves_groups
+            },
+            {
+                'statement_type': 'OTHER_FINANCIAL_ITEMS',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': other_fin_entries,
+                'groups': other_fin_groups
+            },
+            {
+                'statement_type': 'CASH_FLOW',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': cash_flow_entries,
+                'groups': cash_flow_groups
             }
         ]
 
@@ -922,8 +977,12 @@ class CreditSafeCompanyReport(Model):
             'credit_history': credit_history,
             'statements': statements
         })
-        with_yoy([s for s in financials.statements if s.statement_type == 'PROFIT_AND_LOSS'])
-        with_yoy([s for s in financials.statements if s.statement_type == 'BALANCE_SHEET'])
+        financials.validate()
+
+        for s_type in [
+            'PROFIT_AND_LOSS', 'BALANCE_SHEET', 'CAPITAL_AND_RESERVES', 'OTHER_FINANCIAL_ITEMS', 'CASH_FLOW'
+        ]:
+            with_yoy([s for s in financials.statements if s.statement_type == s_type])
         return financials
 
     def as_passfort_format_41(self, request_handler=None):
