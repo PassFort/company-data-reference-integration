@@ -191,9 +191,12 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
             if match['matched_fields']:
                 match['count'] = 1
                 response_body['output_data']['decision'] = 'PASS'
+                matches = [match]
+            else:
+                matches = []
 
             response_body['output_data']['entity_type'] = "INDIVIDUAL"
-            response_body['output_data']['electronic_id_check'] = {"matches": [match]}
+            response_body['output_data']['electronic_id_check'] = {"matches": matches}
 
             if 'UniqueId' in lexisnexis_data['InstantIDResponseEx']['response']['Result']:
                 response_body['output_data']["electronic_id_check"]['provider_reference_number'] = \
