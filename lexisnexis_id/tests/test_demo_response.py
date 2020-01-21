@@ -14,9 +14,14 @@ def test_fail_package(client):
         }
     }
     demo_response = {
-        "output_data": {},
+        "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [],
+            }
+        },
         "raw": "Demo response, Generated Automatically",
-        "errors": []
+        "errors": [],
     }
 
     response = create_demo_response(input_data)

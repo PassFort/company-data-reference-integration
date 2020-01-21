@@ -106,6 +106,10 @@ def test_ekyc_check_demo_fail_data(client):
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == {
         "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [],
+            }
         },
         "raw": "Demo response, Generated Automatically",
         "errors": []
