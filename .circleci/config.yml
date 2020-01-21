@@ -194,6 +194,7 @@ jobs:
       - auth_ssh
       - setup_gcp
       - run: |
+          sudo pip install pip==18.0 &&
           sudo pip install pipenv==2018.5.18
           pipenv --three
           pipenv install
