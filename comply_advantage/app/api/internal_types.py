@@ -324,16 +324,6 @@ class ComplyAdvantageSearchRequest:
 
         return cls.build_request(input_data.search_term, config.fuzziness, type_filter, birth_year, nationality)
 
-    @classmethod
-    def from_response_data(cls, response_data: ComplyAdvantageResponseData):
-        return cls.build_request(
-            response_data.search_term,
-            response_data.filters.fuzziness,
-            response_data.filters.types,
-            response_data.filters.birth_year,
-            response_data.filters.nationality,
-        )
-
     def paginate(self, offset, limit):
         self.search_format['offset'] = offset
         self.search_format['limit'] = limit
