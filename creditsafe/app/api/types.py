@@ -245,46 +245,43 @@ class StatementValue(Model):
         serialize_when_none = False
 
 
-class StatementEntry(Model):
+class StatementEntryBase(Model):
     name = StringType(required=True)
     value = ModelType(StatementValue, default=None)
     value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
     yoy = DecimalType(default=None)
+
+    @serializable(serialized_name="yoy")
+    def yoy_out(self):
+        if self.yoy is not None:
+            return float(self.yoy)
+
+    class Options:
+        serialize_when_none = False
+
+
+class StatementEntry(StatementEntryBase):
     group_name = StringType(default=None)
 
-    @serializable(serialized_name="yoy")
-    def yoy_out(self):
-        if self.yoy:
-            return float(self.yoy)
-
     class Options:
         serialize_when_none = False
 
-class StatementEntryGroup(Model):
-    name = StringType(required=True)
-    value = ModelType(StatementValue, default=None)
-    value_type = StringType(choices=['CURRENCY', 'NUMBER', 'PERCENTAGE'])
-    yoy = DecimalType(default=None)
 
-    @serializable(serialized_name="yoy")
-    def yoy_out(self):
-        if self.yoy:
-            return float(self.yoy)
-
-    class Options:
-        serialize_when_none = False
+class StatementEntryGroup(StatementEntryBase):
+    pass
 
 
 class Statement(Model):
-    statement_type = StringType(required=True, choices=['PROFIT_AND_LOSS', 'BALANCE_SHEET'])
+    statement_type = StringType(required=True, choices=[
+        'PROFIT_AND_LOSS', 'BALANCE_SHEET', 'CAPITAL_AND_RESERVES', 'OTHER_FINANCIAL_ITEMS', 'CASH_FLOW'])
     currency_code = StringType(default=None)
-    date = UTCDateTimeType(required=True) # (Y-M-D, Y-M, or Y)
+    date = UTCDateTimeType(required=True)  # (Y-M-D, Y-M, or Y)
     groups = ListType(ModelType(StatementEntryGroup), default=[])
     entries = ListType(ModelType(StatementEntry), default=[])
 
     @serializable(serialized_name="date")
     def date_out(self):
-        return self.date.strftime("%Y-%m-%d")
+        return self.date and self.date.strftime("%Y-%m-%d")
 
 
 class Financials(Model):

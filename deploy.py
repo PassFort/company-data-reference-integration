@@ -23,6 +23,7 @@ integrations = {
     'equifax_au': './equifax_au',
     'uk_charities_commission': './uk_charities_commission',
     'cifas': './cifas',
+    'lexisnexis_id': './lexisnexis_id',
 }
 
 sentry = {

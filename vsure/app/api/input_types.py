@@ -23,6 +23,9 @@ def validate_model(validation_model):
                 model = validation_model().import_data(request.json, apply_defaults=True)
                 model.validate()
             except DataError as e:
+                if e.errors.get('credentials', {}).get('api_key') is not None:
+                    abort(400, Error.provider_misconfiguration_error('Key is required'))
+
                 abort(400, Error.bad_api_request(e))
 
             return fn(model, *args, **kwargs)
@@ -30,7 +33,6 @@ def validate_model(validation_model):
         return wrapped_fn
 
     return validates_model
-
 
 
 class VSureConfig(Model):
