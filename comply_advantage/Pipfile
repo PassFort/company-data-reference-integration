@@ -11,9 +11,13 @@ datadog = "*"
 gunicorn = "==19.5.0"
 flask = "==0.12.1"
 requests = "*"
-raven = {extras = ["flask"]}
 mock = "*"
 coverage = "*"
 codecov = "*"
 responses = "==0.9.0"
 schematics = "*"
+pycountry = "*"
+simplejson = "*"
+
+[packages.raven]
+extras = [ "flask",]
