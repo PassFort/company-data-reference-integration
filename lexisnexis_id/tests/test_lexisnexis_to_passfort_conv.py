@@ -7,7 +7,11 @@ def test_empty_package(client):
 
     assert response_body == {
         "output_data": {
-            "decision": "FAIL"
+            "decision": "FAIL",
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [],
+            }
         },
         "raw": {},
         "errors": []
@@ -29,7 +33,11 @@ def test_record_with_empty_datasource_results(client):
 
     assert response_body == {
         "output_data": {
-            "decision": "FAIL"
+            "decision": "FAIL",
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [],
+            }
         },
         "raw": lexisnexis_data['body'],
         "errors": []
@@ -283,7 +291,11 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
 
     assert response_body == {
         "output_data": {
-            "decision": "FAIL"
+            "decision": "FAIL",
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [],
+            }
         },
         "raw": lexisnexis_data['body'],
         "errors": []
@@ -347,7 +359,11 @@ def test_record_error_bad_request(client):
     response_body = lexisnexis_to_passfort_data(lexisnexis_data)
     assert response_body == {
         "output_data": {
-            'decision': 'ERROR'
+            'decision': 'ERROR',
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [],
+            }
         },
         "raw": lexisnexis_data['body'],
         "errors": [{'code': 303, 'message': f'Provider Error: UNKNOWN ERROR: {lexisnexis_data["body"]}'}]
@@ -362,7 +378,11 @@ def test_record_error_auth_error(client):
     response_body = lexisnexis_to_passfort_data(lexisnexis_data)
     assert response_body == {
         "output_data": {
-            'decision': 'ERROR'
+            'decision': 'ERROR',
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [],
+            }
         },
         "raw": lexisnexis_data['body'],
         "errors": [
@@ -378,7 +398,11 @@ def test_record_error_service_timeout(client):
     response_body = lexisnexis_to_passfort_data(lexisnexis_data)
     assert response_body == {
         "output_data": {
-            'decision': 'ERROR'
+            'decision': 'ERROR',
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [],
+            }
         },
         "raw": lexisnexis_data['body'],
         "errors": [{'code': 403, 'message': 'Provider Error: TIMEOUT'}]
@@ -393,7 +417,11 @@ def test_record_error_server_error(client):
     response_body = lexisnexis_to_passfort_data(lexisnexis_data)
     assert response_body == {
         "output_data": {
-            'decision': 'ERROR'
+            'decision': 'ERROR',
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [],
+            }
         },
         "raw": lexisnexis_data['body'],
         "errors": [{'code': 303, 'message': f"Provider Error: UNKNOWN ERROR: {lexisnexis_data['body']}"}]

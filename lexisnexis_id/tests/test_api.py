@@ -75,7 +75,11 @@ def test_ekyc_check_with_raw_data(client):
     assert response.headers['Content-Type'] == 'application/json'
     assert response.json == {
         "output_data": {
-            "decision": "FAIL"
+            "decision": "FAIL",
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [],
+            }
         },
         "raw": LEXISNEXIS_RESPONSE_DATA['body'],
         "errors": []
