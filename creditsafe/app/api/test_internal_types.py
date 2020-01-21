@@ -330,6 +330,15 @@ class TestCompanyReport(unittest.TestCase):
                 yoy=0.6043180377432097
             )
 
+            with self.subTest('handles yoy with negative numbers'):
+                self.assert_entry_with(
+                    actual_cap_sheet['entries'][2],
+                    'revenue_reserves',
+                    -1150078,
+                    'total_shareholders_equity',
+                    yoy=-1.3751146173227045
+                )
+
         with self.subTest('returns other financial items'):
             actual_other_financials = self.formatted_report['financials']['statements'][3]
             self.assertEqual(actual_other_financials['statement_type'], 'OTHER_FINANCIAL_ITEMS')

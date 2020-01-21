@@ -1121,7 +1121,7 @@ def calculate_yoy(crt_year_entries: List[StatementEntryBase], prev_year_entries:
                                     None)
             entry.yoy = None
             if prev_entry_value is not None and prev_entry_value != 0:
-                entry.yoy = (crt_value - prev_entry_value) / prev_entry_value
+                entry.yoy = (crt_value - prev_entry_value) / abs(prev_entry_value)
 
 
 def with_yoy(sorted_statements: List[Statement]):
