@@ -7,8 +7,11 @@ Integration tests for the request handler. A mix of requests that:
 import json
 import responses
 import unittest
+from unittest.mock import Mock
+from mock import patch
+from decimal import Decimal
 
-
+from . import request_handler
 from .request_handler import comply_advantage_search_request, get_result_by_search_ids
 from .api.types import ScreeningRequestData, ComplyAdvantageConfig, ComplyAdvantageCredentials, ErrorCode
 from .api.internal_types import ComplyAdvantageException, ComplyAdvantageSearchRequest
@@ -24,21 +27,69 @@ TEST_SCREENING_DATA = ScreeningRequestData({
     }
 })
 
+TEST_SCREENING_DATA_NATIONALITY = ScreeningRequestData({
+    "entity_type": "INDIVIDUAL",
+    "personal_details": {
+        "name": {
+            "family_name": "Hussein",
+            "given_names": ["Hugo"]
+        },
+        "nationality": "zwe"
+    }
+})
+
+TEST_SCREENING_DATA_BAD_NATIONALITY = ScreeningRequestData({
+    "entity_type": "INDIVIDUAL",
+    "personal_details": {
+        "name": {
+            "family_name": "Hussein",
+            "given_names": ["Hugo"]
+        },
+        "nationality": "BAD_STRING"
+    }
+})
+
 SEARCH_REQUEST_URL = 'https://api.complyadvantage.com/searches'
 
 
-class TestHandleSearchRequestErrors(unittest.TestCase):
+class TestHandleCallsPostCorrectly(unittest.TestCase):
 
-    def test_bad_key_resturns_configuration_error(self):
+    @patch.object(request_handler, 'requests_retry_session')
+    def test_call_with_nationality(self, fake_retry):
         result = comply_advantage_search_request(
             SEARCH_REQUEST_URL,
-            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA_NATIONALITY, ComplyAdvantageConfig()),
             ComplyAdvantageConfig(),
             ComplyAdvantageCredentials({
                 'api_key': 'TEST'
             }))
-        self.assertEqual(result['errors'][0]['code'], ErrorCode.MISCONFIGURATION_ERROR.value)
 
+        fake_retry().post.assert_called_with(
+            'https://api.complyadvantage.com/searches?api_key=TEST',
+            json={'search_term': 'Hugo Hussein', 'fuzziness': Decimal('0.5'), 'filters': {
+                'types': ['pep', 'sanction'], 'country_codes': ['ZW']
+                }, 'share_url': True, 'offset': 0, 'limit': 100}
+        )
+
+    @patch.object(request_handler, 'requests_retry_session')
+    def test_call_with_bad_nationality(self, fake_retry):
+        result = comply_advantage_search_request(
+            SEARCH_REQUEST_URL,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA_BAD_NATIONALITY, ComplyAdvantageConfig()),
+            ComplyAdvantageConfig(),
+            ComplyAdvantageCredentials({
+                'api_key': 'TEST'
+            }))
+
+        fake_retry().post.assert_called_with(
+            'https://api.complyadvantage.com/searches?api_key=TEST',
+            json={'search_term': 'Hugo Hussein', 'fuzziness': Decimal('0.5'), 'filters': {
+                'types': ['pep', 'sanction'],
+                }, 'share_url': True, 'offset': 0, 'limit': 100}
+        )
+
+
+class TestHandleSearchRequestErrors(unittest.TestCase):
     @responses.activate
     def test_provider_unreachable_returns_connection_error(self):
         # Not setting a response will make the unreachable
@@ -178,7 +229,6 @@ class TestGetResults(unittest.TestCase):
 
             self.assertEqual(result['errors'], [])
             self.assertEqual(len(result['events']), 9)
-
 
 
 class TestFieldDefaultValue(unittest.TestCase):

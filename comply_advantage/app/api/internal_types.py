@@ -5,6 +5,7 @@ from schematics.types.compound import ModelType, ListType, DictType
 from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType, DecimalType
 
 from simplejson import JSONDecodeError
+import pycountry
 
 from typing import List, TYPE_CHECKING
 
@@ -13,6 +14,9 @@ from .types import ReferMatchEvent, PepMatchEvent, SanctionsMatchEvent, Sanction
 
 if TYPE_CHECKING:
     from .types import MatchEvent, ScreeningRequestData
+
+import logging
+logger = logging.getLogger("json")
 
 
 class ComplyAdvantageException(Exception):
@@ -247,6 +251,7 @@ class ComplyAdvantageFilters(Model):
     types = ListType(StringType, required=True)
     fuzziness = DecimalType(required=True)
     birth_year = IntType(default=None)
+    country_codes = ListType(StringType, default=[])
 
 
 class ComplyAdvantageResponseData(Model):
@@ -281,7 +286,7 @@ class ComplyAdvantageSearchRequest:
         self.search_format = search_format
 
     @classmethod
-    def build_request(cls, search_term, fuzziness, type_filter, birth_year=None):
+    def build_request(cls, search_term, fuzziness, type_filter, birth_year=None, nationality=None):
         base_format = {
             "search_term": search_term,
             "fuzziness": fuzziness,
@@ -292,6 +297,12 @@ class ComplyAdvantageSearchRequest:
         }
         if birth_year:
             base_format['filters']['birth_year'] = birth_year
+        if nationality:
+            country = pycountry.countries.get(alpha_3=nationality.upper())
+            if country:
+                base_format['filters']['country_codes'] = [country.alpha_2]
+            else:
+                logger.warning('Can not understand nationality: {nationality}')
         return cls(base_format)
 
     @classmethod
@@ -306,15 +317,12 @@ class ComplyAdvantageSearchRequest:
             if input_data.personal_details.dob:
                 birth_year = input_data.personal_details.year_from_dob()
 
-        return cls.build_request(input_data.search_term, config.fuzziness, type_filter, birth_year)
+        nationality = None
+        if input_data.entity_type == 'INDIVIDUAL':
+            if input_data.personal_details.nationality:
+                nationality = input_data.personal_details.nationality
 
-    @classmethod
-    def from_response_data(cls, response_data: ComplyAdvantageResponseData):
-        return cls.build_request(
-            response_data.search_term,
-            response_data.filters.fuzziness,
-            response_data.filters.types,
-            response_data.filters.birth_year)
+        return cls.build_request(input_data.search_term, config.fuzziness, type_filter, birth_year, nationality)
 
     def paginate(self, offset, limit):
         self.search_format['offset'] = offset

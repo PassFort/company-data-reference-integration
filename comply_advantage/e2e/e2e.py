@@ -117,6 +117,25 @@ class TestApiValidation(unittest.TestCase):
                 is_demo=True
             )
 
+    def test_accepts_nationality(self):
+        for nationality in ["esp", "zwe", "BAD_STRING"]:
+            with self.subTest(f"Accepts nationality as {nationality}"):
+                self.assert_screening_request_returns(
+                    input_data={
+                        "entity_type": "INDIVIDUAL",
+                        "personal_details": {
+                            "name": {
+                                "family_name": "Mugabe",
+                                "given_names": ["Robert"]
+                            },
+                            "nationality": nationality,
+                            "dob": "1927"
+                        }
+                    },
+                    expected_status=200,
+                    expected_errors=[],
+                    is_demo=True
+                )
 
 class TestEvents(unittest.TestCase):
 

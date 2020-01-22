@@ -137,6 +137,8 @@ class PersonalDetails(Model):
     # Store dob as string. dateType loses the information on whether it's a partial date or not
     dob = StringType(default=None)
 
+    nationality = StringType(default=None)
+
     def validate_dob(self, data, value):
         if value:
             validate_partial_date(value)
