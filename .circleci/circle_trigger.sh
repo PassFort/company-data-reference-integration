@@ -27,27 +27,36 @@ function circle_ci() {
   fi
 }
 
-# Returns a line for each API-triggered pipeline, containing space-separated "id" "revision"
-RECENT_PIPELINES=`circle_ci "/v2/project/${PROJECT_SLUG}/pipeline?branch=${PARENT_BRANCH}" | jq -r '.items | map(select(.trigger.type == "api") | [.id, .vcs.revision, .created_at] | @tsv) | join("\n")'`
-
-# Find a pipeline where the commit hash is an ancestor, and where all the workflows succeeded.
+QUERY_PARAM="branch=${PARENT_BRANCH}"
 LAST_COMPLETED_BUILD_SHA=""
-while read pipeline_id revision created_at
+
+# Loop through a page of results at a time
+while [[ -z "$LAST_COMPLETED_BUILD_SHA" && -n "$QUERY_PARAM" ]]
 do
-  BUILD_DATE=`date -d "$created_at" "+%Y-%m-%d %H:%M:%S"`
-  echo -n "Checking revision [${revision:0:7}] (built ${BUILD_DATE})... "
-  if git merge-base --is-ancestor $revision HEAD; then
-    if circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq -e '.items | group_by(.name) | map(max_by(.created_at)) | all(.status == "success")' > /dev/null; then
-      LAST_COMPLETED_BUILD_SHA="$revision"
-      echo -e "\e[92mOK!\e[0m"
-      break
+  PIPELINE_JSON=`circle_ci "/v2/project/${PROJECT_SLUG}/pipeline?${QUERY_PARAM}"`
+  QUERY_PARAM=`echo "$PIPELINE_JSON" | jq -r '"page-token=\(.next_page_token | select(.))"'`
+
+  # Returns a line for each API-triggered pipeline, containing space-separated "id" "revision"
+  RECENT_PIPELINES=`echo "$PIPELINE_JSON" | jq -r '.items | map(select(.trigger.type == "api") | [.id, .vcs.revision, .created_at] | @tsv) | join("\n")'`
+
+  # Find a pipeline where the commit hash is an ancestor, and where all the workflows succeeded.
+  while read pipeline_id revision created_at
+  do
+    BUILD_DATE=`date -d "$created_at" "+%Y-%m-%d %H:%M:%S"`
+    echo -n "Checking revision [${revision:0:7}] (built ${BUILD_DATE})... "
+    if git merge-base --is-ancestor $revision HEAD; then
+      if circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq -e '.items | group_by(.name) | map(max_by(.created_at)) | all(.status == "success")' > /dev/null; then
+        LAST_COMPLETED_BUILD_SHA="$revision"
+        echo -e "\e[92mOK!\e[0m"
+        break
+      else
+        echo -e "\e[31mNot successful.\e[0m"
+      fi
     else
-      echo -e "\e[31mNot successful.\e[0m"
+      echo -e "\e[31mNot an ancestor.\e[0m"
     fi
-  else
-    echo -e "\e[31mNot an ancestor.\e[0m"
-  fi
-done <<< "$RECENT_PIPELINES"
+  done <<< "$RECENT_PIPELINES"
+done
 
 echo
 
