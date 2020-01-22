@@ -14,7 +14,7 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
-    Financials, CreditChangeEntry
+    Financials, Statement, StatementEntryBase
 
 from .fuzzy import CompanyNameMatcher
 
@@ -779,6 +779,8 @@ class CreditsafeFinancialStatement(Model):
     currency = StringType(default=None)
     profit_and_loss = DictType(BaseType, default={}, serialized_name="profitAndLoss")
     balance_sheet = DictType(BaseType, default={}, serialized_name="balanceSheet")
+    other_financials = DictType(BaseType, default={}, serialized_name="otherFinancials")
+    cash_flow = DictType(BaseType, default={}, serialized_name="cashFlow")
 
     def parse_dict_entries(self, group_map, input_dict):
         entries = []
@@ -793,35 +795,75 @@ class CreditsafeFinancialStatement(Model):
                 'value_type': 'CURRENCY'
             })
             for item in v:
-                if item in input_dict:
-                    entries.append({
-                        'name': to_snake_case(item),
-                        'value_type': 'CURRENCY',
-                        'value': {
-                            'value': input_dict[item],
-                            'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
-                        },
-                        'group_name': to_snake_case(k)
-                    })
+                entries.append({
+                    'name': to_snake_case(item),
+                    'value_type': 'CURRENCY',
+                    'value': {
+                        'value': input_dict.get(item, None),
+                        'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                    },
+                    'group_name': to_snake_case(k)
+                })
         return entries, groups
 
     def to_json(self):
-        pl_groups = {
+        pl_map = {
             'turnover': [],
-            'operatingProfit': [],
-            'profitBeforeTax': ['depreciation', 'auditFees'],
-            'retainedProfit': ['tax', 'profitAfterTax']
+            'operatingProfit': [
+                'exports',
+                'costOfSales',
+                'grossProfit',
+                'wagesAndSalaries',
+                'directorsRemuneration'
+            ],
+            'profitBeforeTax': ['depreciation', 'auditFees', 'interestExpense'],
+            'retainedProfit': ['taxation', 'profitAfterTax', 'dividends']
         }
 
-        balance_groups = {
+        balance_map = {
             'totalFixedAssets': ['tangibleAssets', 'intangibleAssets'],
-            'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors' 'otherDebtors', 'miscCurrentAssets'],
-            'totalCurrentLiabilities': ['tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'],
-            'totalLongTermLiabilities': ['otherLongTermFinance']
+            'totalCurrentAssets': ['cash', 'stock', 'tradeDebtors', 'otherDebtors', 'miscCurrentAssets'],
+            'totalCurrentLiabilities': [
+                'tradeCreditors', 'bankBorrowingsCurrent', 'otherShortTermFinance', 'miscCurrentLiabilities'
+            ],
+            'totalLongTermLiabilities': ['bankOverdraftAndLTL', 'otherLongTermFinance']
         }
 
-        pl_entries, pl_groups = self.parse_dict_entries(pl_groups, self.profit_and_loss)
-        balance_entries, balance_groups = self.parse_dict_entries(balance_groups, self.balance_sheet)
+        cap_and_reserves_map = {
+            'totalShareholdersEquity': [
+                'issuedShareCapital', 'revaluationReserve', 'revenueReserves', 'otherReserves'
+            ]
+        }
+
+        # Use groups with no other entries for single items
+        # (keeps the logic simple in the UI, no need to worry about loose entries)
+        other_financials_map = {
+            'netWorth': [],	 # otherFinancials
+            'workingCapital': [],  # otherFinancials
+            'totalAssets': [],  # balanceSheet
+            'totalLiabilities': [],  # balanceSheet
+            'netAssets': [],  # balanceSheet
+        }
+
+        cash_flow_map = {
+            'netCashFlowFromOperations': [],
+            'netCashFlowBeforeFinancing': [],
+            'netCashFlowFromFinancing': [],
+            'increaseInCash': [],
+        }
+
+        pl_entries, pl_groups = self.parse_dict_entries(pl_map, self.profit_and_loss)
+        balance_entries, balance_groups = self.parse_dict_entries(
+            balance_map, {**self.other_financials, **self.balance_sheet})
+
+        cap_and_reserves_entries, cap_and_reserves_groups = self.parse_dict_entries(
+            cap_and_reserves_map, self.balance_sheet)
+
+        other_fin_entries, other_fin_groups = self.parse_dict_entries(
+            other_financials_map, {**self.balance_sheet, **self.other_financials})
+
+        cash_flow_entries, cash_flow_groups = self.parse_dict_entries(
+            cash_flow_map, self.cash_flow)
 
         return [
             {
@@ -837,6 +879,27 @@ class CreditsafeFinancialStatement(Model):
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': balance_entries,
                 'groups': balance_groups
+            },
+            {
+                'statement_type': 'CAPITAL_AND_RESERVES',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': cap_and_reserves_entries,
+                'groups': cap_and_reserves_groups
+            },
+            {
+                'statement_type': 'OTHER_FINANCIAL_ITEMS',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': other_fin_entries,
+                'groups': other_fin_groups
+            },
+            {
+                'statement_type': 'CASH_FLOW',
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': cash_flow_entries,
+                'groups': cash_flow_groups
             }
         ]
 
@@ -909,11 +972,18 @@ class CreditSafeCompanyReport(Model):
             key = lambda x: x['date'],
             reverse=True
         )
-        return {
+        financials = Financials({
             'contract_limit': contract_limit,
             'credit_history': credit_history,
             'statements': statements
-        }
+        })
+        financials.validate()
+
+        for s_type in [
+            'PROFIT_AND_LOSS', 'BALANCE_SHEET', 'CAPITAL_AND_RESERVES', 'OTHER_FINANCIAL_ITEMS', 'CASH_FLOW'
+        ]:
+            with_yoy([s for s in financials.statements if s.statement_type == s_type])
+        return financials
 
     def as_passfort_format_41(self, request_handler=None):
         addresses = [
@@ -958,9 +1028,10 @@ class CreditSafeCompanyReport(Model):
             pscs,
             self.summary.country_code,
             request_handler)
+
         return {
             'metadata': metadata.serialize(),
-            'financials': Financials(self.to_financials()).serialize(),
+            'financials': self.to_financials().serialize(),
             'associated_entities': [a.serialize() for a in associates]
         }
 
@@ -1015,6 +1086,7 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
     associate_data.result = result
     return result
 
+
 def merge_associates(
         directors,
         unique_shareholders,
@@ -1038,5 +1110,28 @@ def merge_associates(
         else:
             raise e
 
-
     return [a.result for a in processing_queue]
+
+
+def calculate_yoy(crt_year_entries: List[StatementEntryBase], prev_year_entries: List[StatementEntryBase]):
+    for entry in crt_year_entries:
+        crt_value = entry.value and entry.value.value
+        if entry.value_type == 'CURRENCY' and crt_value is not None:
+            prev_entry_value = next((e.value and e.value.value for e in prev_year_entries if e.name == entry.name),
+                                    None)
+            entry.yoy = None
+            if prev_entry_value is not None and prev_entry_value != 0:
+                entry.yoy = (crt_value - prev_entry_value) / abs(prev_entry_value)
+
+
+def with_yoy(sorted_statements: List[Statement]):
+    # Should only be used with statements of the same type
+    if len(sorted_statements) < 2:
+        return
+
+    for i in range(len(sorted_statements) - 1):
+        crt = sorted_statements[i]
+        prev_year = sorted_statements[i + 1]
+
+        calculate_yoy(crt.entries, prev_year.entries)
+        calculate_yoy(crt.groups, prev_year.groups)

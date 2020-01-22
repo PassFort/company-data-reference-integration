@@ -41,7 +41,10 @@ def api_400(error):
 
 @app.errorhandler(VSureServiceException)
 def api_provider_error(error):
-    return jsonify(errors=[Error.provider_unknown_error(error)], raw=error.raw_output), 500
+    if error.message in {'Error: Invalid key', 'Error: Key is required'}:
+        return jsonify(errors=[Error.provider_misconfiguration_error(error.message)], raw=error.raw_output), 500
+    else:
+        return jsonify(errors=[Error.provider_unknown_error(error)], raw=error.raw_output), 500
 
 
 @app.errorhandler(Exception)

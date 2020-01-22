@@ -1,8 +1,10 @@
 from enum import unique, Enum
 
+
 @unique
 class ErrorCode(Enum):
     INVALID_INPUT_DATA = 201
+    PROVIDER_MISCONFIGURATION_ERROR = 205
     PROVIDER_CONNECTION_ERROR = 302
     PROVIDER_UNKNOWN_ERROR = 303
     UNKNOWN_INTERNAL_ERROR = 401
@@ -34,6 +36,15 @@ class Error(object):
             'info': {
                 'raw': '{}'.format(e)
             }
+        }
+
+    @staticmethod
+    def provider_misconfiguration_error(e):
+        return {
+            'code': ErrorCode.PROVIDER_MISCONFIGURATION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': f"Provider Configuration Error: '{e}' while running the 'vSure' service",
+            'info': {}
         }
 
     @staticmethod

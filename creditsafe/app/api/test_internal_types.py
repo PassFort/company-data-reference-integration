@@ -3,8 +3,64 @@ import unittest
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
     build_resolver_id, PersonOfSignificantControl, CreditsafeSingleShareholder
-from .types import SearchInput, Financials
-from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload
+from .types import SearchInput, Financials, Statement
+from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload, with_yoy
+
+DEMO_PL = {
+    'currency_code': 'GBP',
+    'date': '2017-12-31',
+    'entries': [
+        {
+            'group_name': 'profit_before_tax',
+            'name': 'depreciation',
+            'value': {
+                'currency_code': 'GBP',
+                'value': 7953.0,
+            },
+            'yoy': 2.417705199828105,
+            'value_type': 'CURRENCY'
+        },
+        {
+            'group_name': 'profit_before_tax',
+            'name': 'audit_fees',
+            'value': {
+                'currency_code': 'GBP',
+                'value': 0.0,
+            },
+            'value_type': 'CURRENCY'
+        }
+    ],
+    'groups': [
+        {
+            'name': 'turnover',
+            'value': {
+                'currency_code': 'GBP',
+            },
+            'value_type': 'CURRENCY'
+        },
+        {
+            'name': 'operating_profit',
+            'value': {
+                'currency_code': 'GBP',
+            },
+            'value_type': 'CURRENCY'
+        },
+        {
+            'name': 'profit_before_tax',
+            'value': {
+                'currency_code': 'GBP',
+            },
+            'value_type': 'CURRENCY'
+        },
+        {
+            'name': 'retained_profit',
+            'value': {
+                'currency_code': 'GBP',
+            },
+            'value_type': 'CURRENCY'
+        }],
+    'statement_type': 'PROFIT_AND_LOSS'
+}
 
 
 class TestCompanySearchResponse(unittest.TestCase):
@@ -104,6 +160,14 @@ class TestCompanyReport(unittest.TestCase):
             if any(r['associated_role'] == role for r in a['relationships'])
         ]
 
+    def assert_entry_with(self, entry, name, value, group_name=None, yoy=None):
+        self.assertEqual(entry['name'], name)
+
+        self.assertEqual(entry['value'].get('value', None), value)
+
+        self.assertEqual(entry.get('group_name', None), group_name)
+        self.assertEqual(entry.get('yoy', None), yoy)
+
     def test_returns_company_metadata(self):
         self.assertEqual(
             self.formatted_report['metadata']['name'],
@@ -196,63 +260,109 @@ class TestCompanyReport(unittest.TestCase):
             ]
         )
 
-        self.assertEqual(
-            self.formatted_report['financials']['statements'][0],
-            {
-                'currency_code': 'GBP',
-                'date': '2017-12-31',
-                'entries': [
-                    {
-                        'group_name': 'profit_before_tax',
-                        'name': 'depreciation',
-                        'value': {
-                            'currency_code': 'GBP',
-                            'value': 7953.0,
-                        },
-                        'value_type': 'CURRENCY'
-                    },
-                    {
-                        'group_name': 'profit_before_tax',
-                        'name': 'audit_fees',
-                        'value': {
-                            'currency_code': 'GBP',
-                            'value': 0.0,
-                        },
-                        'value_type': 'CURRENCY'
-                    }
-                ],
-                'groups': [
-                    {
-                        'name': 'turnover',
-                        'value': {
-                            'currency_code': 'GBP',
-                        },
-                        'value_type': 'CURRENCY'
-                    },
-                    {
-                        'name': 'operating_profit',
-                        'value': {
-                            'currency_code': 'GBP',
-                        },
-                        'value_type': 'CURRENCY'
-                    },
-                    {
-                        'name': 'profit_before_tax',
-                        'value': {
-                            'currency_code': 'GBP',
-                        },
-                        'value_type': 'CURRENCY'
-                    },
-                    {
-                        'name': 'retained_profit',
-                        'value': {
-                            'currency_code': 'GBP',
-                        },
-                        'value_type': 'CURRENCY'
-                    }],
-                'statement_type': 'PROFIT_AND_LOSS'
-            }
-        )
+        with self.subTest('returns profit and loss'):
+            actual_pl = self.formatted_report['financials']['statements'][0]
+            self.assertEqual(actual_pl['statement_type'], 'PROFIT_AND_LOSS')
+
+            self.assert_entry_with(
+                actual_pl['entries'][0],
+                'exports',
+                None,
+                'operating_profit'
+            )
+
+            self.assert_entry_with(
+                actual_pl['groups'][0],
+                'turnover',
+                None,
+            )
+
+            self.assert_entry_with(
+                actual_pl['entries'][5],
+                'depreciation',
+                7953.0,
+                'profit_before_tax',
+                yoy=2.417705199828105
+            )
+
+        with self.subTest('returns balance sheet'):
+            actual_balance_sheet = self.formatted_report['financials']['statements'][1]
+            self.assertEqual(actual_balance_sheet['statement_type'], 'BALANCE_SHEET')
+
+            self.assert_entry_with(
+                actual_balance_sheet['entries'][0],
+                'tangible_assets',
+                27588.0,
+                'total_fixed_assets',
+                yoy=2.723579430422459
+            )
+
+            self.assert_entry_with(
+                actual_balance_sheet['groups'][0],
+                'total_fixed_assets',
+                27588.0,
+                yoy=2.723579430422459
+            )
+
+            self.assert_entry_with(
+                actual_balance_sheet['entries'][11],
+                'bank_overdraft_and_ltl',
+                0.0,
+                'total_long_term_liabilities',
+            )
+
+        with self.subTest('returns capital & reserves'):
+            actual_cap_sheet = self.formatted_report['financials']['statements'][2]
+            self.assertEqual(actual_cap_sheet['statement_type'], 'CAPITAL_AND_RESERVES')
+
+            self.assert_entry_with(
+                actual_cap_sheet['entries'][0],
+                'issued_share_capital',
+                138.0,
+                'total_shareholders_equity',
+                yoy=0.14049586776859505
+            )
+
+            self.assert_entry_with(
+                actual_cap_sheet['groups'][0],
+                'total_shareholders_equity',
+                263198.0,
+                yoy=0.6043180377432097
+            )
+
+            with self.subTest('handles yoy with negative numbers'):
+                self.assert_entry_with(
+                    actual_cap_sheet['entries'][2],
+                    'revenue_reserves',
+                    -1150078,
+                    'total_shareholders_equity',
+                    yoy=-1.3751146173227045
+                )
+
+        with self.subTest('returns other financial items'):
+            actual_other_financials = self.formatted_report['financials']['statements'][3]
+            self.assertEqual(actual_other_financials['statement_type'], 'OTHER_FINANCIAL_ITEMS')
+
+            self.assertEqual(actual_other_financials['entries'], [])
+
+            self.assert_entry_with(
+                actual_other_financials['groups'][0],
+                'net_worth',
+                263198.0,
+                yoy=0.6043180377432097
+            )
+
+        with self.subTest('returns cash flow'):
+            actual_cash_flow = self.formatted_report['financials']['statements'][4]
+            self.assertEqual(actual_cash_flow['statement_type'], 'CASH_FLOW')
+
+            self.assertEqual(actual_cash_flow['entries'], [])
+
+            self.assert_entry_with(
+                actual_cash_flow['groups'][0],
+                'net_cash_flow_from_operations',
+                None
+            )
 
     def test_handles_missing_data(self):
         report = CreditSafeCompanyReport.from_json({
@@ -1207,3 +1317,109 @@ class TestFinancials(unittest.TestCase):
                 }]
             }
         )
+
+
+class TestYoy(unittest.TestCase):
+
+    @classmethod
+    def create_statement(cls, date, value_1, value_2):
+        r = Statement().import_data({
+            'currency_code': 'GBP',
+            'date': date,
+            'entries': [
+                {
+                    'group_name': 'profit_before_tax',
+                    'name': 'depreciation',
+                    'value': {
+                        'currency_code': 'GBP',
+                        'value': value_1,
+                    },
+                    'value_type': 'CURRENCY'
+                },
+                {
+                    'group_name': 'profit_before_tax',
+                    'name': 'audit_fees',
+                    'value': {
+                        'currency_code': 'GBP',
+                        'value': value_2,
+                    },
+                    'value_type': 'CURRENCY'
+                }
+            ],
+            'groups': [
+                {
+                    'name': 'turnover',
+                    'value': {
+                        'currency_code': 'GBP',
+                    },
+                    'value_type': 'CURRENCY'
+                },
+                {
+                    'name': 'profit_before_tax',
+                    'value': {
+                        'currency_code': 'GBP',
+                        'value': value_1 + value_2 if value_1 is not None and value_2 is not None else None,
+                    },
+                    'value_type': 'CURRENCY'
+                }
+            ],
+            'statement_type': 'PROFIT_AND_LOSS'
+        }, apply_defaults=True)
+        r.validate()
+        return r
+
+    def test_yoy_is_present(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 20, 4),
+            self.create_statement('2018-12-31T00:00:00Z', 16, 4),
+            self.create_statement('2017-12-31T00:00:00Z', 20, 4),
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertEqual(result[0]['entries'][0]['yoy'], 0.25)
+        self.assertEqual(result[0]['entries'][1]['yoy'], 0.0)
+        self.assertEqual(result[0]['groups'][1]['yoy'], 0.2)
+
+        self.assertEqual(result[1]['entries'][0]['yoy'], -0.2)
+        self.assertEqual(result[1]['entries'][1]['yoy'], 0.0)
+        self.assertEqual(result[1]['groups'][1]['yoy'], -0.16666666666666666)
+
+        self.assertNotIn('yoy', result[2]['entries'][0])
+        self.assertNotIn('yoy', result[2]['entries'][1])
+        self.assertNotIn('yoy', result[2]['groups'][1])
+
+    def test_yoy_if_current_value_0(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 0, 0),  # crt value 0
+            self.create_statement('2018-12-31T00:00:00Z', 1, None),
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertEqual(result[0]['entries'][0]['yoy'], -1.0)
+        self.assertNotIn('yoy', result[0]['entries'][1])
+
+    def test_no_yoy_if_no_value(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 0, None),  # crt value None
+            self.create_statement('2018-12-31T00:00:00Z', None, 3),  # prev value none
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertNotIn('yoy', result[0]['entries'][0])
+        self.assertNotIn('yoy', result[0]['entries'][1])
+        self.assertNotIn('yoy', result[0]['groups'][0])
+        self.assertNotIn('yoy', result[0]['groups'][1])
+
+    def test_no_yoy_if_previous_value_0(self):
+        statements = [
+            self.create_statement('2019-12-31T00:00:00Z', 1, None),
+            self.create_statement('2018-12-31T00:00:00Z', 0, 0),  # prev value 0
+        ]
+        with_yoy(statements)
+
+        result = [s.serialize() for s in statements]
+        self.assertNotIn('yoy', result[0]['entries'][0])
+        self.assertNotIn('yoy', result[0]['entries'][1])
