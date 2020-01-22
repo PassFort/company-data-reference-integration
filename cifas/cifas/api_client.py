@@ -4,10 +4,12 @@ from typing import Tuple, Union
 from tempfile import mkdtemp, mkstemp
 from os import path, remove, getcwd, chdir
 from contextlib import contextmanager
+from lxml import etree
 from zeep import Client
 from zeep.transports import Transport
 from zeep.helpers import serialize_object
 from zeep.exceptions import Fault
+from zeep.plugins import HistoryPlugin
 from requests import Session
 from requests.exceptions import HTTPError
 from passfort.cifas_check import CifasCredentials, CifasConfig
@@ -22,6 +24,10 @@ PASSFORT_CURRENT_USER = 'PassfortUser1105'
 PASSFORT_MEMBER_ID = 1106
 TRAINING_WSDL_FILENAME = 'cifas/schema/TrainingDirectServiceCIFAS.wsdl'
 CERTS_DIRECTORY = mkdtemp(prefix='cifas-certs-')
+
+
+logger = logging.getLogger('cifas')
+logger.setLevel(logging.INFO)
 
 
 class CifasConnectionError(Exception):
@@ -70,6 +76,7 @@ class CifasAPIClient:
     def __init__(self, config: CifasConfig, credentials: CifasCredentials):
         self.config = config
         self.cert_file = create_cert_file(credentials)
+        self.history = HistoryPlugin()
         self.soap_client = create_soap_client(self.cert_file, self.wsdl_path)
 
     @property
@@ -97,4 +104,21 @@ class CifasAPIClient:
                 Search=request.to_dict(),
             )
 
+        self.log_last_request()
         return FullSearchResponse.from_dict(serialize_object(response_object))
+
+    def log_last_request(self):
+        history = self.history
+        try:
+            logger.info({
+                'message': 'cifas_check_xml',
+            }, **{
+                f'cifas_check_{msg_type}': etree.tostring(msg['envelop'], encoding='unicode', pretty_print=True)
+                for msg_type, msg in (
+                    ('request', history.last_sent),
+                    ('response', history.last_received),
+                )
+            })
+        except (IndexError, TypeError):
+            logger.error({'message': 'cifas_logging_exception'})
+            pass
