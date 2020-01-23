@@ -165,7 +165,7 @@ jobs:
           make coverage
           docker cp e2e_<< parameters.package >>:/src/coverage.xml coverage.xml
       - store_artifacts:
-          path: /home/circleci/project/artifacts/coverage.xml
+          path: coverage.xml
           destination: coverage.xml
   
   unit_appengine:
