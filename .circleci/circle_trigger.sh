@@ -45,7 +45,9 @@ do
     BUILD_DATE=`date -d "$created_at" "+%Y-%m-%d %H:%M:%S"`
     echo -n "Checking revision [${revision:0:7}] (built ${BUILD_DATE})... "
     if git merge-base --is-ancestor $revision HEAD; then
-      if circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq -e '.items | group_by(.name) | map(max_by(.created_at)) | all(.status == "success")' > /dev/null; then
+      LATEST_WORKFLOWS=`circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq '.items | group_by(.name) | map(max_by(.created_at))'`
+      if echo "$LATEST_WORKFLOWS" | jq -e 'all(.status == "success")' > /dev/null; then
+        LAST_WORKFLOWS=`echo "$LATEST_WORKFLOWS" | jq -r 'map([.name, .id] | @tsv) | join("\n")'`
         LAST_COMPLETED_BUILD_SHA="$revision"
         echo -e "\e[92mOK!\e[0m"
         break
@@ -57,6 +59,49 @@ do
     fi
   done <<< "$RECENT_PIPELINES"
 done
+
+LAST_COMPLETED_BUILD_SHA=""
+
+############################################
+## 1.1. Find triggering workflow
+############################################
+
+if [[ -n "$LAST_COMPLETED_BUILD_SHA" ]]; then
+  QUERY_PARAM="branch=${PARENT_BRANCH}"
+  TRIGGERING_BUILD_NUM=""
+
+  # Loop through a page of results at a time
+  while [[ -z "$TRIGGERING_BUILD_NUM" && -n "$QUERY_PARAM" ]]
+  do
+    PIPELINE_JSON=`circle_ci "/v2/project/${PROJECT_SLUG}/pipeline?${QUERY_PARAM}"`
+    QUERY_PARAM=`echo "$PIPELINE_JSON" | jq -r '"page-token=\(.next_page_token | select(.))"'`
+
+    # Returns a line for each API-triggered pipeline, containing space-separated "id" "revision"
+    RECENT_PIPELINES=`echo "$PIPELINE_JSON" | jq -r '.items | map(select(.trigger.type != "api") | [.id, .vcs.revision] | @tsv) | join("\n")'`
+
+    # Find a pipeline where the commit hash is an ancestor, and where all the workflows succeeded.
+    while read pipeline_id revision
+    do
+      if [[ "$revision" == "$LAST_COMPLETED_BUILD_SHA" ]]; then
+        TRIGGER_WORKFLOW_ID=`circle_ci "/v2/pipeline/${pipeline_id}/workflow" | jq -r '.items | max_by(.created_at) | .id'`
+        TRIGGER_BUILD_NUM=`circle_ci "/v2/workflow/${TRIGGER_WORKFLOW_ID}/job" | jq -r '.items | max_by(.started_at) | .job_number'`
+        COVERAGE_ARTIFACTS=`circle_ci "/v2/project/${PROJECT_SLUG}/${TRIGGER_BUILD_NUM}/artifacts" | jq '.items | map(select(.path | startswith("coverage/")) | [.path, .url] | @tsv)'`
+        break
+      fi
+    done <<< "$RECENT_PIPELINES"
+  done
+
+  while read workflow_name workflow_id
+  do
+    LAST_BUILDS=`circle_ci "/v2/workflow/${workflow_id}/job" | jq -r '.items | map([.name, .job_number] | @tsv) | join("\n")'`
+    while read build_name build_num
+    do
+      ARTIFACT_URL=`circle_ci "/v2/project/${PROJECT_SLUG}/${TRIGGER_BUILD_NUM}/artifacts" | jq -r '.items | map(select(.path == "coverage.xml")) | first | .url | select(.)'`
+      ARTIFACT_PATH="coverage/${workflow_name}/${build_name}.xml"
+      COVERAGE_ARTIFACTS="$COVERAGE_ARTIFACTS"$'\n'"$ARTIFACT_PATH"$'\t'"$ARTIFACT_URL"
+    done <<< "$LAST_BUILDS"
+  done <<< "$LAST_WORKFLOWS"
+fi
 
 echo
 
@@ -90,9 +135,26 @@ do
       PARAMETERS+=", \"$PACKAGE\":true"
       COUNT=$((COUNT + 1))
       echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
+
+      # Remove coverage for packages we are going to rebuild
+      COVERAGE_ARTIFACTS=`echo "$COVERAGE_ARTIFACTS" | sed "/^coverage\/$PACKAGE\//d"`
     fi
   fi
 done
+
+if [[ -n "$LAST_COMPLETED_BUILD_SHA" ]]; then
+  mkdir coverage
+
+  while read artifact_path artifact_url
+  do
+    if [[ -n "$artifact_url" ]]; then
+      echo "Downloading previous coverage report: $artifact_url"
+      curl "$artifact_url?circle-token=$CIRCLE_TOKEN" --create-dirs -o "$artifact_path"
+    fi
+  done <<< "$COVERAGE_ARTIFACTS"
+
+  bash <(curl -s https://codecov.io/bash) -s coverage
+fi
 
 echo
 
