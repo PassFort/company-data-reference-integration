@@ -95,7 +95,10 @@ jobs:
       - run:
           name: Trigger workflows
           command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
-  
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+
   build:
     executor: python-builder
     parameters:
@@ -132,8 +135,13 @@ jobs:
           -e VCS_COMMIT_ID=$CIRCLE_SHA1 \
           -e VCS_BRANCH_NAME=$CIRCLE_BRANCH \
           -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
-          eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION make unit
-  
+          eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION \
+          make unit
+          docker cp unit_<< parameters.package >>:/src/coverage.xml coverage.xml || true
+      - store_artifacts:
+          path: coverage.xml
+          destination: coverage.xml
+
   e2e:
     executor: python-builder
     parameters:
@@ -155,6 +163,10 @@ jobs:
           -e CI_BUILD_ID=$CIRCLE_BUILD_NUM \
           eu.gcr.io/core-gearbox-112418/integrations-<< parameters.package >>:$VERSION \
           make coverage
+          docker cp e2e_<< parameters.package >>:/src/coverage.xml coverage.xml
+      - store_artifacts:
+          path: coverage.xml
+          destination: coverage.xml
   
   unit_appengine:
     executor: python
@@ -176,11 +188,15 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
+          destination: test-results
       - run:
           name: Upload coverage
           command: |
             coverage xml -i
             codecov -F << parameters.package >> -X search -f coverage.xml
+      - store_artifacts:
+          path: coverage.xml
+          destination: coverage.xml
 
   deploy_common:
     executor: python-builder
@@ -546,17 +562,11 @@ workflows:
           package: trulioo
           requires:
             - build_trulioo
-      - e2e:
-          name: e2e_trulioo
-          package: trulioo
-          requires:
-            - build_trulioo
       - deploy_common:
           name: deploy_trulioo_staging
           package: trulioo
           to: staging
           requires:
-            - e2e_trulioo
             - unit_trulioo
           filters:
               branches:
@@ -567,7 +577,6 @@ workflows:
           package: trulioo
           to: production
           requires:
-            - e2e_trulioo
             - unit_trulioo
           filters:
               branches:
