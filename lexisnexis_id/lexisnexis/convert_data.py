@@ -122,7 +122,8 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
     # base response
     response_body = {
         "output_data": {
-            "decision": 'FAIL'
+            "decision": 'FAIL',
+            "electronic_id_check": {},
         },
         "raw": lexisnexis_response_data.get('body'),
         "errors": []
@@ -200,7 +201,7 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
                     lexisnexis_data['InstantIDResponseEx']['response']['Result']['UniqueId']
 
     response_body['output_data']['entity_type'] = "INDIVIDUAL"
-    response_body['output_data']['electronic_id_check'] = {"matches": matches}
+    response_body['output_data']['electronic_id_check']['matches'] = matches
 
     # Check global errors
     # check_errors(lexisnexis_data, response_body)
