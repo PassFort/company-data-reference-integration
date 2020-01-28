@@ -12,8 +12,9 @@ def test_authentication(client):
     request_data = {
         'username': 'dummy_user',
         'password': 'dummy_pass',
-        'url': 'dummy_endpoint'}
-    assert echo_test_request(request_data) == ('Equifax Integration', 200,)
+        'is_cta': False
+    }
+    assert echo_test_request(request_data, 'https://dummy-endpoint') == ('Equifax Integration', 200,)
 
 
 @patch('api.views.echo_test_request')
@@ -27,9 +28,9 @@ def test_health_check(mock_authentication, client):
             'credentials': {
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
-                'url': 'dummy_endpoint'}
+                'is_cta': False
             }
-        ),
+        }),
         content_type='application/json'
     )
 
@@ -38,7 +39,34 @@ def test_health_check(mock_authentication, client):
     mock_authentication.assert_called_with({
             'username': 'dummy_user',
             'password': 'dummy_pass',
-            'url': 'dummy_endpoint'})
+            'is_cta': False
+    }, 'https://apiconnect.equifax.com.au/')
+    assert response.status_code == 200
+
+@patch('api.views.echo_test_request')
+def test_health_check_cta_environment(mock_authentication, client):
+
+    mock_authentication.return_value = ("Equifax Integration", 200,)
+
+    response = client.post(
+        '/health',
+        data=json.dumps({
+            'credentials': {
+                'username': 'dummy_user',
+                'password': 'dummy_pass',
+                'is_cta': True
+            }
+        }),
+        content_type='application/json'
+    )
+
+    assert response.status_code == 200
+
+    mock_authentication.assert_called_with({
+            'username': 'dummy_user',
+            'password': 'dummy_pass',
+            'is_cta': True
+    }, 'https://ctaau.apiconnect.equifax.com.au/cta/')
     assert response.status_code == 200
 
 def test_health_check_empty(client):

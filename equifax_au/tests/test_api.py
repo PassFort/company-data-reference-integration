@@ -14,7 +14,8 @@ def test_ekyc_check(client):
             'credentials' :{
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
-                'url': 'dummy_endpoint'}}),
+                'is_cta': False
+            }}),
         content_type='application/json'
     )
     assert response.status_code == 200
@@ -67,7 +68,8 @@ def test_ekyc_check_with_raw_data(client):
             'credentials' :{
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
-                'url': 'dummy_endpoint'}}),
+                'is_cta': False
+            }}),
         content_type='application/json'
     )
     assert response.status_code == 200
@@ -87,7 +89,7 @@ def test_ekyc_check_demo_fail_data(client):
             'credentials' :{
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
-                'url': 'dummy_url'
+                'is_cta': False
             },
             'input_data': {
                 'personal_details': {
@@ -116,7 +118,7 @@ def test_ekyc_check_demo_1_valid_data(client):
             'credentials' :{
                 'username': 'dummy_user',
                 'password': 'dummy_pass',
-                'url': 'dummy_url'
+                'is_cta': False
             },
             'input_data': {
                 'personal_details': {

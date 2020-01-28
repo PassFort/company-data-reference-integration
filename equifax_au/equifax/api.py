@@ -4,12 +4,12 @@ import logging
 
 from equifax.convert_data import xml_to_dict_response, passfort_to_equifax_ping
 
-def echo_test_request(request_data):
+def echo_test_request(request_data, url):
 
     request_body = passfort_to_equifax_ping(request_data)
 
     headers = {'Content-Type': 'text/xml; charset=utf-8'}
-    url = request_data['url'] + '/sys2/ping-v1'
+    url = url + '/sys2/ping-v1'
     response = requests.post(
         url,
         data=request_body,
