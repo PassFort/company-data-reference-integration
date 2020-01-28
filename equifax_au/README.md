@@ -55,7 +55,7 @@ curl --request POST \
   --url http://127.0.0.1:8001/health \
   --header ': ' \
   --header 'Content-Type: application/json' \
-  --data '{"credentials": {"username":"equifax_user","password":"equifax_pass","url": "https://apiconnect.equifax.com.au/"}}'
+  --data '{"credentials": {"username":"equifax_user","password":"equifax_pass","is_cta": true}}'
 
 "Equifax Integration" ( 200 )
   ```
