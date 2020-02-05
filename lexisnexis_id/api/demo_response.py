@@ -1,8 +1,4 @@
 def create_demo_response(passfort_data):
-    databases = [
-        {'name': 'Credit Agency', 'type': 'CREDIT'},
-        {'name': 'Electoral Roll', 'type': 'CIVIL'}]
-
     demo_response = {
         "entity_type": "INDIVIDUAL",
         "electronic_id_check": {
@@ -15,8 +11,8 @@ def create_demo_response(passfort_data):
     matched_fields = [
         "FORENAME",
         "SURNAME",
-        "ADDRESS",
         "DOB",
+        "IDENTITY_NUMBER"
     ]
 
     # Get complete name to check what kind of demo response will be returned
@@ -35,29 +31,29 @@ def create_demo_response(passfort_data):
                 "matches": []
             }
         }
+    else:
+        matched_fields = ["FORENAME", "SURNAME"]
+        if 'partial' in names:
+            # Partial match criteria changes based on check config.
+            if passfort_data['config']['use_dob']:
+                # Matching the unrequired one of SSN/DOB results in a partial
+                matched_fields.append("IDENTITY_NUMBER")
+            else:
+                matched_fields.append("DOB")
 
-    elif '1+1' in names:
-        # Mach with one database
+        else:
+            # Regardless of config, First + Last + DOB + SSN is always a match
+            matched_fields.append("DOB")
+            matched_fields.append("IDENTITY_NUMBER")
+
         demo_response['electronic_id_check']['matches'].append(
             {
-                "database_name": databases[0]['name'],
-                "database_type": databases[0]['type'],
+                "database_name": "LexisNexis DB",
+                "database_type": "CIVIL",
                 "matched_fields": matched_fields,
                 "count": 1
             }
         )
-
-    else:
-        # Mach all databases
-        for database in databases:
-            demo_response['electronic_id_check']['matches'].append(
-                {
-                    "database_name": database['name'],
-                    "database_type": database['type'],
-                    "matched_fields": matched_fields,
-                    "count": 1
-                }
-            )
 
     response = {
         "output_data": demo_response,
