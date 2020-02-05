@@ -144,8 +144,8 @@ def test_ekyc_check_demo_1_valid_data(client):
     matched_fields = [
         "FORENAME",
         "SURNAME",
-        "ADDRESS",
-        "DOB"
+        "DOB",
+        "IDENTITY_NUMBER"
     ]
     demo_response = {
         "output_data": {
@@ -153,8 +153,8 @@ def test_ekyc_check_demo_1_valid_data(client):
             "electronic_id_check": {
                 "matches": [
                     {
-                        "database_name": 'Credit Agency',
-                        "database_type": 'CREDIT',
+                        "database_name": 'LexisNexis DB',
+                        "database_type": 'CIVIL',
                         "matched_fields": matched_fields,
                         "count": 1
                     }
