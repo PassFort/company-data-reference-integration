@@ -227,6 +227,20 @@ jobs:
       - run: |
           cat << parameters.package >>/env_variables.yaml.envsubst | envsubst > << parameters.package >>/env_variables.yaml
           cd << parameters.package >> && gcloud app deploy
+  
+  build_docker_image:
+    executor: cloud-deploy
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - setup_gcp
+      - run: |
+          cd << parameters.package >> && gcloud builds submit --tag eu.gcr.io/$PROJECT_ID/integrations-<< parameters.package >>:$CIRCLE_SHA1 .
+          if [ "$CIRCLE_BRANCH" == "staging" ]; then
+            gcloud container images add-tag eu.gcr.io/$PROJECT_ID/integrations-<< parameters.package >>:$CIRCLE_SHA1 eu.gcr.io/$PROJECT_ID/integrations-<< parameters.package >>:latest
+          fi
 
 workflows:
   version: 2
@@ -733,6 +747,16 @@ workflows:
               branches:
                 only:
                   - staging
+      - build_docker_image:
+          context: org-global
+          name: build_reference_integration_image
+          package: reference_integration
+          requires:
+            - unit_reference_integration
+          filters:
+              branches:
+                ignore:
+                  - master
 
   lexisnexis_id:
     when: << pipeline.parameters.lexisnexis_id >>
