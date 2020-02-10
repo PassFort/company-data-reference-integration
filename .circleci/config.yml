@@ -235,11 +235,16 @@ jobs:
         type: string
     steps:
       - checkout
+      - setup_remote_docker
       - setup_gcp
       - run: |
-          cd << parameters.package >> && gcloud builds submit --tag eu.gcr.io/$PROJECT_ID/integrations-<< parameters.package >>:$CIRCLE_SHA1 .
+          cd << parameters.package >>
+          echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
+          docker build --tag passfort/integrations-<< parameters.package >>:$CIRCLE_SHA1 .
+          docker push passfort/integrations-<< parameters.package >>:$CIRCLE_SHA1
           if [ "$CIRCLE_BRANCH" == "staging" ]; then
-            gcloud container images add-tag eu.gcr.io/$PROJECT_ID/integrations-<< parameters.package >>:$CIRCLE_SHA1 eu.gcr.io/$PROJECT_ID/integrations-<< parameters.package >>:latest
+            docker tag passfort/integrations-<< parameters.package >>:$CIRCLE_SHA1 passfort/integrations-<< parameters.package >>:latest
+            docker push passfort/integrations-<< parameters.package >>:latest
           fi
 
 workflows:
