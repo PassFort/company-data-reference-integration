@@ -14,9 +14,10 @@ from passfort.error import Error
 @dataclass
 class CifasConfig:
     product_code: str
-    search_type: str
+    search_type: str = 'XX'
     use_uat: bool
-    requesting_institution: int = coerce_integer()
+    user_name: str
+    member_id: int = coerce_integer()
 
 
 @dataclass

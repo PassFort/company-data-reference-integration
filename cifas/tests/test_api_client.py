@@ -15,7 +15,7 @@ class TestAPIClient(TestCase):
             product_code='PXXX',
             search_type='XXX',
             use_uat=True,
-            requesting_institution=1105,
+            member_id=1105
         ), CifasCredentials(
             cert='XXXXXXXXX'
         ))

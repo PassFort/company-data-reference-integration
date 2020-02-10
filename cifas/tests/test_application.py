@@ -14,8 +14,8 @@ class TestApplication(TestCase):
             json={
                 'config': {
                     'product_code': 'PXX',
-                    'search_type': 'XX',
-                    'requesting_institution': 1232312312,
+                    'user_name': 'TestUser1234',
+                    'member_id': 1232312312,
                     'use_uat': False,
                 },
                 'credentials': {
