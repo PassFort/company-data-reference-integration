@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, Response, request, abort, jsonify
+from flask import Flask, Response, request, jsonify
 from raven.contrib.flask import Sentry
 from passfort.cifas_check import CifasCheck, CifasCheckResponse
 from passfort.error import Error
@@ -28,6 +28,8 @@ def health():
 def run_cifas_search():
     cifas_search = CifasCheck.from_dict(request.json)
     error = None
+    output_data = None
+
     if cifas_search.is_demo:
         output_data = get_demo_response(cifas_search)
     else:
@@ -47,4 +49,3 @@ def run_cifas_search():
         output_data=output_data,
         errors=[error] if error else [],
     ).to_json(), mimetype='application/json')
-

@@ -1,6 +1,6 @@
 import responses
 from unittest import TestCase
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError, SSLError
 
 from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest, IndividualParty, StructuredAddress
@@ -13,6 +13,7 @@ class TestAPIClient(TestCase):
     def create_client(self):
         return CifasAPIClient(CifasConfig(
             product_code='PXXX',
+            user_name='TestCustomer1',
             search_type='XXX',
             use_uat=True,
             member_id=1105
@@ -55,6 +56,32 @@ class TestAPIClient(TestCase):
             responses.POST,
             'https://training-services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
             body=ConnectionError(),
+        )
+
+        client = self.create_client()
+        with self.assertRaises(CifasConnectionError):
+            client.full_search(FullSearchRequest(
+                Product='PXXX',
+                SearchType='XX',
+                MemberSearchReference='a4w6wq4465',
+                Party=IndividualParty(
+                    FirstName='Malvi',
+                    Surname='Ritsa',
+                    BirthDate=date(year=1950, month=5, day=18),
+                    EmailAddress='malviritsa@mymail.com',
+                    Address=StructuredAddress(
+                        HouseNumber='6',
+                        Postcode='PE20 3LW',
+                    ),
+                ),
+            ))
+
+    @responses.activate
+    def test_search_ssl_error(self):
+        responses.add(
+            responses.POST,
+            'https://training-services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=SSLError(),
         )
 
         client = self.create_client()

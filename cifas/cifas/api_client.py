@@ -11,8 +11,9 @@ from zeep.helpers import serialize_object
 from zeep.exceptions import Fault
 from zeep.plugins import HistoryPlugin
 from requests import Session
-from requests.exceptions import HTTPError, SSLError
+from requests.exceptions import HTTPError, ConnectionError
 from passfort.cifas_check import CifasCredentials, CifasConfig
+from passfort.error import CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest, FullSearchResponse
 from cifas.soap_header import StandardHeader
 
@@ -20,9 +21,8 @@ from cifas.soap_header import StandardHeader
 WSDL_DIR = path.join(path.dirname(__file__), 'schema')
 WSDL_FILENAME = 'cifas/schema/DirectServiceCIFAS.wsdl'
 CIFAS_SCHEMA_VERSION = '3-00'
-PASSFORT_CURRENT_USER = 'PassfortUser1105'
 PASSFORT_MEMBER_ID = 1070
-PASSFORT_TRAINING_MEMBER_ID = 1106
+PASSFORT_TRAINING_MEMBER_ID = 1105
 TRAINING_WSDL_FILENAME = 'cifas/schema/TrainingDirectServiceCIFAS.wsdl'
 CERTS_DIRECTORY = mkdtemp(prefix='cifas-certs-')
 
@@ -31,20 +31,11 @@ logger = logging.getLogger('cifas')
 logger.setLevel(logging.INFO)
 
 
-class CifasConnectionError(Exception):
-    pass
-
-
-class CifasHTTPError(Exception):
-    def __init__(self, http_error: HTTPError):
-        self.http_error = http_error
-
-
 @contextmanager
 def request_ctx(client):
     try:
         yield
-    except (ConnectionError, SSLError) as e:
+    except ConnectionError as e:
         raise CifasConnectionError(e)
     except HTTPError as e:
         raise CifasHTTPError(e)
