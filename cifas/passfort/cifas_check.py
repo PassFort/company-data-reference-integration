@@ -14,9 +14,10 @@ from passfort.error import Error
 @dataclass
 class CifasConfig:
     product_code: str
-    search_type: str
     use_uat: bool
-    requesting_institution: int = coerce_integer()
+    user_name: str
+    search_type: str = 'XX'
+    member_id: int = coerce_integer()
 
 
 @dataclass
@@ -47,5 +48,5 @@ class OutputData:
 @dataclass_json
 @dataclass
 class CifasCheckResponse:
-    output_data: OutputData
+    output_data: Optional[OutputData]
     errors: List[Error] = field(default_factory=list)

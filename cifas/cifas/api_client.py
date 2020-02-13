@@ -11,8 +11,9 @@ from zeep.helpers import serialize_object
 from zeep.exceptions import Fault
 from zeep.plugins import HistoryPlugin
 from requests import Session
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError
 from passfort.cifas_check import CifasCredentials, CifasConfig
+from passfort.error import CifasConnectionError, CifasHTTPError
 from cifas.search import FullSearchRequest, FullSearchResponse
 from cifas.soap_header import StandardHeader
 
@@ -20,23 +21,14 @@ from cifas.soap_header import StandardHeader
 WSDL_DIR = path.join(path.dirname(__file__), 'schema')
 WSDL_FILENAME = 'cifas/schema/DirectServiceCIFAS.wsdl'
 CIFAS_SCHEMA_VERSION = '3-00'
-PASSFORT_CURRENT_USER = 'PassfortUser1105'
-PASSFORT_MEMBER_ID = 1106
+PASSFORT_MEMBER_ID = 1070
+PASSFORT_TRAINING_MEMBER_ID = 1105
 TRAINING_WSDL_FILENAME = 'cifas/schema/TrainingDirectServiceCIFAS.wsdl'
 CERTS_DIRECTORY = mkdtemp(prefix='cifas-certs-')
 
 
 logger = logging.getLogger('cifas')
 logger.setLevel(logging.INFO)
-
-
-class CifasConnectionError(Exception):
-    pass
-
-
-class CifasHTTPError(Exception):
-    def __init__(self, http_error: HTTPError):
-        self.http_error = http_error
 
 
 @contextmanager
@@ -88,19 +80,21 @@ class CifasAPIClient:
     def destroy(self):
         remove(self.cert_file)
 
-    def get_header(self, requesting_institution: int) -> StandardHeader:
+    def get_header(self, member_id: int) -> StandardHeader:
         return StandardHeader(
-            RequestingInstitution=requesting_institution,
-            OwningMemberNumber=PASSFORT_MEMBER_ID,
-            ManagingMemberNumber=PASSFORT_MEMBER_ID,
-            CurrentUser=PASSFORT_CURRENT_USER,
+            RequestingInstitution=(
+                PASSFORT_TRAINING_MEMBER_ID if self.config.use_uat else PASSFORT_MEMBER_ID
+            ),
+            OwningMemberNumber=member_id,
+            ManagingMemberNumber=member_id,
+            CurrentUser=self.config.user_name,
             SchemaVersion=CIFAS_SCHEMA_VERSION,
         )
 
     def full_search(self, request: FullSearchRequest) -> FullSearchResponse:
         with request_ctx(self.soap_client):
             response_object = self.soap_client.service.FullSearch(
-                _soapheaders=[self.get_header(self.config.requesting_institution)],
+                _soapheaders=[self.get_header(self.config.member_id)],
                 Search=request.to_dict(),
             )
 
