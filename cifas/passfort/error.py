@@ -1,5 +1,14 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from requests.exceptions import HTTPError
+
+
+class CifasConnectionError(Exception):
+    pass
+
+
+class CifasHTTPError(Exception):
+    def __init__(self, http_error: HTTPError):
+        self.http_error = http_error
 
 
 @dataclass
@@ -20,12 +29,11 @@ class Error:
         )
 
     @classmethod
-    def provider_error(self, error: HTTPError):
+    def provider_error(self, error: CifasHTTPError):
         return Error(
             code=303,
             message='Unknown provider error',
             info={
-                'original_error': error.response.text
+                'original_error': error.http_error.response.text
             },
         )
-

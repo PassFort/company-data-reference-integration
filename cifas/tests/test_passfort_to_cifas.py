@@ -12,7 +12,8 @@ class TestPassfortToCifas(TestCase):
         return CifasConfig(
             product_code='PXX',
             search_type='XX',
-            requesting_institution=98293892,
+            user_name='TestCustomer1',
+            member_id=98293892,
             use_uat=False,
         )
 
