@@ -1,7 +1,8 @@
 from unittest import TestCase
 
 from app.worldcheck_handler import CaseHandler, MatchHandler
-from app.api.types import WorldCheckCredentials, WorldCheckConfig
+from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData
+from swagger_client.models import Field
 
 TEST_API_KEY = 'a4364e62-e58b-4b64-9c71-faead5417557'
 TEST_API_SECRET = '/NoVqWHBRv23t5ae9OuQlODUX5yoAcJcFP8Z2nJldBkrsTCdqhRzGzrrTvD9EVqLgwTrXC4xKZ/Khfv6shMwAA=='
@@ -20,8 +21,18 @@ PERSONAL_DETAILS_TM = {
             "given_names": ["Theresa"],
             "family_name": "May"
         }
+    },
+    "dob": {
+        "v": "1956"
+    },
+    "gender": {
+        "v": "M",
+    },
+    "nationality": {
+        "v": "GBR",
     }
 }
+SCREENING_DATA = ScreeningRequestData({"entity_type": "INDIVIDUAL", "personal_details": PERSONAL_DETAILS_TM})
 
 
 class CaseHandlerTest(TestCase):
@@ -39,6 +50,16 @@ class CaseHandlerTest(TestCase):
         result = handler.get_results('lukoil_romania_srl_results')
         self.assertEqual(len(result['output_data']), 1)
         self.assertEqual(len(result['raw']), 3)
+
+    def test_parses_secondary_fields(self):
+        actual = CaseHandler.secondary_fields(SCREENING_DATA)
+        expected = [
+            Field(type_id="SFCT_1", value="MALE"),
+            Field(type_id="SFCT_2", date_time_value="1956"),
+            Field(type_id="SFCT_5", value="GBR"),
+        ]
+
+        self.assertListEqual(actual, expected)
 
 
 class CaseHandlerIntegrationTest(TestCase):
