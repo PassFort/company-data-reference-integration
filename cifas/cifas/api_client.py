@@ -46,11 +46,15 @@ def request_ctx(client):
         raise e
 
 
-def create_soap_client(cert_file: str, wsdl_path: str) -> Client:
+def create_soap_client(cert_file: str, wsdl_path: str,
+                       history: HistoryPlugin) -> Client:
     session = Session()
     session.cert = cert_file
 
-    soap_client = Client(wsdl_path, transport=Transport(session=session))
+    soap_client = Client(
+        wsdl_path,
+        transport=Transport(session=session), plugins=[history]
+    )
     soap_client.set_ns_prefix('fh', 'http://header.find-cifas.org.uk')
     soap_client.set_ns_prefix('doc', 'http://objects.find-cifas.org.uk/Direct')
 
@@ -73,7 +77,11 @@ class CifasAPIClient:
         self.config = config
         self.cert_file = create_cert_file(credentials)
         self.history = HistoryPlugin()
-        self.soap_client = create_soap_client(self.cert_file, self.wsdl_path)
+        self.soap_client = create_soap_client(
+            self.cert_file,
+            self.wsdl_path,
+            self.history,
+        )
 
     @property
     def wsdl_path(self):
@@ -107,16 +115,16 @@ class CifasAPIClient:
 
     def log_last_request(self):
         history = self.history
-        try:
-            logger.info({
-                'message': 'cifas_check_xml',
-            }, **{
-                f'cifas_check_{msg_type}': etree.tostring(msg['envelop'], encoding='unicode', pretty_print=True)
+        logger.info({
+            'message': 'cifas_check_xml',
+            **{
+                f'cifas_check_{msg_type}': etree.tostring(
+                    msg['envelope'],
+                    encoding='unicode', pretty_print=True
+                )
                 for msg_type, msg in (
                     ('request', history.last_sent),
                     ('response', history.last_received),
                 )
-            })
-        except (IndexError, TypeError):
-            logger.error({'message': 'cifas_logging_exception'})
-            pass
+            }
+        })
