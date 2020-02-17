@@ -1,8 +1,7 @@
 import logging
 
-from typing import Tuple, Union
 from tempfile import mkdtemp, mkstemp
-from os import path, remove, getcwd, chdir
+from os import path, remove, environ
 from contextlib import contextmanager
 from lxml import etree
 from zeep import Client
@@ -40,7 +39,7 @@ def request_ctx(client):
     except HTTPError as e:
         raise CifasHTTPError(e)
     except Fault as e:
-        logging.error({
+        logger.error({
             'message': 'soap_fault',
             'soap_fault_detail': client.wsdl.types.deserialize(e.detail[0])
         })
@@ -54,6 +53,11 @@ def create_soap_client(cert_file: str, wsdl_path: str) -> Client:
     soap_client = Client(wsdl_path, transport=Transport(session=session))
     soap_client.set_ns_prefix('fh', 'http://header.find-cifas.org.uk')
     soap_client.set_ns_prefix('doc', 'http://objects.find-cifas.org.uk/Direct')
+
+    if environ.get('CIFAS_HTTPS_PROXY'):
+        soap_client.transport.session.proxies = {
+            'https': environ.get('CIFAS_HTTPS_PROXY'),
+        }
     return soap_client
 
 
