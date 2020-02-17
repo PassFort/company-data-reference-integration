@@ -227,6 +227,25 @@ jobs:
       - run: |
           cat << parameters.package >>/env_variables.yaml.envsubst | envsubst > << parameters.package >>/env_variables.yaml
           cd << parameters.package >> && gcloud app deploy
+  
+  build_docker_image:
+    executor: cloud-deploy
+    parameters:
+      package:
+        type: string
+    steps:
+      - checkout
+      - setup_remote_docker
+      - setup_gcp
+      - run: |
+          cd << parameters.package >>
+          echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
+          docker build --tag passfort/integrations-<< parameters.package >>:$CIRCLE_SHA1 .
+          docker push passfort/integrations-<< parameters.package >>:$CIRCLE_SHA1
+          if [ "$CIRCLE_BRANCH" == "staging" ]; then
+            docker tag passfort/integrations-<< parameters.package >>:$CIRCLE_SHA1 passfort/integrations-<< parameters.package >>:latest
+            docker push passfort/integrations-<< parameters.package >>:latest
+          fi
 
 workflows:
   version: 2
@@ -733,6 +752,16 @@ workflows:
               branches:
                 only:
                   - staging
+      - build_docker_image:
+          context: org-global
+          name: build_reference_integration_image
+          package: reference_integration
+          requires:
+            - unit_reference_integration
+          filters:
+              branches:
+                ignore:
+                  - master
 
   lexisnexis_id:
     when: << pipeline.parameters.lexisnexis_id >>

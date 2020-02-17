@@ -1,7 +1,10 @@
 import responses
+from collections import namedtuple
+from requests.exceptions import HTTPError, ConnectionError
 from unittest import TestCase
 from app.application import app
-from tests import MATCH_RESPONSE, NOMATCH_RESPONSE, INDIVIDUAL_DATA_MINIMAL, COMPANY_DATA_MINIMAL
+from tests import MATCH_RESPONSE, NOMATCH_RESPONSE, INDIVIDUAL_DATA_MINIMAL, \
+    COMPANY_DATA_MINIMAL
 
 
 class TestApplication(TestCase):
@@ -14,8 +17,8 @@ class TestApplication(TestCase):
             json={
                 'config': {
                     'product_code': 'PXX',
-                    'search_type': 'XX',
-                    'requesting_institution': 1232312312,
+                    'user_name': 'TestUser1234',
+                    'member_id': 1232312312,
                     'use_uat': False,
                 },
                 'credentials': {
@@ -100,3 +103,43 @@ class TestApplication(TestCase):
         self.assertEqual(len(errors), 0)
         self.assertEqual(fraud_detection['match_count'], 0)
         self.assertEqual(type(fraud_detection['search_reference']), str)
+
+    @responses.activate
+    def test_cifas_http_error(self):
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=HTTPError(response=namedtuple('Response', ['text'])(
+                text='Some HTTP error'
+            )),
+            content_type='text/xml; charset=utf-8',
+        )
+
+        response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
+        output_data = response.json['output_data']
+        errors = response.json['errors']
+
+        print(errors)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertGreater(len(errors), 0)
+        self.assertIsNone(output_data)
+
+    @responses.activate
+    def test_cifas_connection_error(self):
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=ConnectionError(),
+            content_type='text/xml; charset=utf-8',
+        )
+
+        response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
+        output_data = response.json['output_data']
+        errors = response.json['errors']
+
+        print(errors)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertGreater(len(errors), 0)
+        self.assertIsNone(output_data)
