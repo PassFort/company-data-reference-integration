@@ -107,12 +107,16 @@ class CifasAPIClient:
 
     def log_last_request(self):
         history = self.history
-        logger.info({
-            'message': 'cifas_check_xml',
-        }, **{
-            f'cifas_check_{msg_type}': etree.tostring(msg['envelop'], encoding='unicode', pretty_print=True)
-            for msg_type, msg in (
-                ('request', history.last_sent),
-                ('response', history.last_received),
-            )
-        })
+        try:
+            logger.info({
+                'message': 'cifas_check_xml',
+            }, **{
+                f'cifas_check_{msg_type}': etree.tostring(msg['envelop'], encoding='unicode', pretty_print=True)
+                for msg_type, msg in (
+                    ('request', history.last_sent),
+                    ('response', history.last_received),
+                )
+            })
+        except (IndexError, TypeError):
+            logger.error({'message': 'cifas_logging_exception'})
+            pass
