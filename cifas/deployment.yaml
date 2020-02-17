@@ -32,7 +32,7 @@ spec:
           value: {cluster}
         - name: SENTRY_URL
           value: {sentry_url}
-        - name: HTTPS_PROXY
+        - name: CIFAS_HTTPS_PROXY
           valueFrom:
             secretKeyRef:
               name: webhooks
