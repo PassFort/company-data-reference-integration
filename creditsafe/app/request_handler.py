@@ -5,7 +5,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError, \
-    SearchInput, CreditSafePortfolioError
+    SearchInput, CreditSafeMonitoringError, CreditSafeMonitoringRequest
 from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, \
     CreditSafePortfolio
 
@@ -160,6 +160,28 @@ class CreditSafeHandler:
         )
 
         if response.status_code != 200:
-            raise CreditSafePortfolioError(response)
+            raise CreditSafeMonitoringError(response)
 
         return CreditSafePortfolio(response.json())
+
+    def monitor_company(self, monitor_company: CreditSafeMonitoringRequest):
+        # Valid for 1 hour. Multiple valid tokens can exist at the same time.
+        token = self.get_token(self.credentials.username, self.credentials.password)
+        url = f'{self.base_url}/monitoring/portfolios/{monitor_company.portfolio_id}/companies'
+
+        response = self.session.post(
+            url,
+            json={
+                'id': monitor_company.creditsafe_id,
+                'personalReference': '',
+                'freeText': '',
+                'personalLimit': '' # todo ask creditsafe what this should be
+            },
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+        )
+
+        if response.status_code != 201 and response.status_code != 200:
+            raise CreditSafeMonitoringError(response)
