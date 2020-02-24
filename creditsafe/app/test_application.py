@@ -34,6 +34,13 @@ TEST_REPORT_REQUEST = {
     }
 }
 
+TEST_PORTFOLIO_REQUEST = {
+    'credentials': {
+        'username': 'x',
+        'password': 'y'
+    },
+    'portfolio_name': 'Test portfolio name'
+}
 
 SEARCH_RESPONSE = {
     "totalSize": 1,
@@ -332,3 +339,110 @@ class TestDemoData(unittest.TestCase):
             }
         ).json
         self.assertEqual(len(search_response['output_data']), 0)
+
+
+class TestMonitoring(unittest.TestCase):
+
+    def setUp(self):
+        # creates a test client
+        self.app = app.test_client()
+        # propagate the exceptions to the test client
+        self.app.testing = True
+
+
+    @responses.activate
+    def test_create_portfolio(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/monitoring/portfolios',
+            json={
+                'portfolioId': 12345678,
+                'name': 'Test portfolio name',
+                'isDefault': False
+            },
+            status=200)
+
+        portfolio_response = self.app.post(
+            '/monitoring_portfolio',
+            json=TEST_PORTFOLIO_REQUEST
+        )
+        self.assertEqual(portfolio_response.status_code, 200)
+        self.assertEqual(portfolio_response.json['portfolio_id'], 12345678)
+
+    @responses.activate
+    def test_create_portfolio_bad_request(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/monitoring/portfolios',
+            json={
+                'message': 'Bad request'
+            },
+            status=400)
+
+        portfolio_response = self.app.post(
+            '/monitoring_portfolio',
+            json=TEST_PORTFOLIO_REQUEST
+        )
+
+        self.assertEqual(portfolio_response.status_code, 200)
+        self.assertIn('Portfolio Unavailable', portfolio_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_create_portfolio_access_forbidden(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/monitoring/portfolios',
+            json={
+                'message': 'Access forbidden'
+            },
+            status=403)
+
+        portfolio_response = self.app.post(
+            '/monitoring_portfolio',
+            json=TEST_PORTFOLIO_REQUEST
+        )
+
+        self.assertEqual(portfolio_response.status_code, 200)
+        self.assertIn('The request could not be authorised: Access forbidden', portfolio_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_create_portfolio_unhandled_error(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/monitoring/portfolios',
+            json={
+                'message': 'Unhandled error'
+            },
+            status=500)
+
+        portfolio_response = self.app.post(
+            '/monitoring_portfolio',
+            json=TEST_PORTFOLIO_REQUEST
+        )
+
+        self.assertEqual(portfolio_response.status_code, 500)
+        self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", portfolio_response.json['errors'][0]['message'])

@@ -66,7 +66,7 @@ PARTNER_POSITIONS = [
     'LLP Member'
 ]
 
-''' 
+'''
 Known position names
 
 Assistant Managing Director
@@ -1135,3 +1135,9 @@ def with_yoy(sorted_statements: List[Statement]):
 
         calculate_yoy(crt.entries, prev_year.entries)
         calculate_yoy(crt.groups, prev_year.groups)
+
+
+class CreditSafePortfolio(Model):
+    id = IntType(required=True, serialized_name="portfolioId")
+    name = StringType(required=True)
+    is_default = BooleanType(serialized_name="isDefault")

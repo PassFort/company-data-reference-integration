@@ -56,6 +56,9 @@ class CreditSafeSearchError(CreditSafeError):
 class CreditSafeReportError(CreditSafeError):
     pass
 
+class CreditSafePortfolioError(CreditSafeError):
+    pass
+
 
 @unique
 class ErrorCode(Enum):
@@ -122,7 +125,7 @@ class SearchInput(Model):
     def get_creditsafe_country(self):
         country = pycountry.countries.get(alpha_3=self.country)
         return country.alpha_2
-    
+
     @property
     def supports_state(self):
         return self.country in {
@@ -174,6 +177,11 @@ class CreditSafeCompanyReportRequest(Model):
     is_demo = BooleanType(default=False)
     credentials = ModelType(CreditSafeCredentials, default=None)
     input_data = ModelType(ReportInput, required=True)
+
+
+class CreditSafePortfolioRequest(Model):
+    credentials = ModelType(CreditSafeCredentials, default=None)
+    portfolio_name = StringType(required=True)
 
 
 class PassFortFreeformAddress(Model):
