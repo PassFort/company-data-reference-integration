@@ -39,7 +39,7 @@ class IovationHandler:
 
         response = self.session.post(
             f'{self.base_url}/subs/{self.credentials.subscriber_id}/checks',
-            json=input_data.device_metadata.as_iovation_device_data().to_primitive(),
+            json=input_data.as_iovation_device_data().to_primitive(),
             headers={
                 'Content-Type': 'application/json',
                 'Authorization': f'Basic {token}'

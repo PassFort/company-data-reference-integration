@@ -1,4 +1,13 @@
-from app.api.types import DeviceMetadata, IovationOutput, IovationCheckResponse
+from app.api.types import (
+    CheckInput,
+    DatedAddress,
+    Address,
+    AddressType,
+    StructuredAddress,
+    DeviceMetadata,
+    IovationOutput,
+    IovationCheckResponse,
+)
 from app.request_handler import IovationHandler
 from app.application import app
 import json
@@ -28,8 +37,7 @@ class TestInputData(unittest.TestCase):
 
         self.assertEqual(400, response.status_code)
 
-
-    def test_as_iovation_device_data(self):
+    def test_metadata_as_iovation_device_data(self):
         device_data = DeviceMetadata({
             'token': 'BLACKBOX',
             'stated_ip': '123.12.12.123',
@@ -44,6 +52,56 @@ class TestInputData(unittest.TestCase):
         self.assertEqual('new_account', iovation_device.type)
         self.assertEqual('REF_ID', iovation_device.account_code)
 
+    def test_check_input_as_iovation_device_data(self):
+        check_input = CheckInput({
+            'device_metadata': DeviceMetadata({
+                'token': 'BLACKBOX',
+                'stated_ip': '123.12.12.123',
+                'action': 'new_account',
+                'reference_id': 'REF_ID'
+            }),
+            'address_history': [
+                DatedAddress({
+                    'address': Address({
+                        'type': AddressType.STRUCTURED,
+                        'country': 'GBR',
+                        'county': 'Tower Hamlets',
+                        'locality': 'London',
+                        'postal_code': 'E1 6QH',
+                        'postal_town': '',
+                        'premise': 'Passfort Ltd',
+                        'route': 'Princelet Street',
+                        'street_number': '11',
+                        'subpremise': '',
+                        'original_structured_address': StructuredAddress({
+                            'country': 'GBR',
+                            'county': 'Tower Hamlets',
+                            'locality': 'London',
+                            'postal_code': 'E1 6QH',
+                            'postal_town': '',
+                            'premise': 'Passfort Ltd',
+                            'route': 'Princelet Street',
+                            'state_province': '',
+                            'street_number': '11',
+                            'subpremise': ''
+                        }),
+                    }),
+                })
+            ],
+        })
+
+        iovation_device = check_input.as_iovation_device_data()
+
+        self.assertEqual('BLACKBOX', iovation_device.blackbox)
+        self.assertEqual('123.12.12.123', iovation_device.statedip)
+        self.assertEqual('new_account', iovation_device.type)
+        self.assertEqual('REF_ID', iovation_device.account_code)
+
+        self.assertEqual('GBR', iovation_device.transaction_insight.billing_country)
+        self.assertEqual('London', iovation_device.transaction_insight.billing_city)
+        self.assertEqual(None, iovation_device.transaction_insight.billing_region)
+        self.assertEqual('Princelet Street', iovation_device.transaction_insight.billing_street)
+        self.assertEqual('E1 6QH', iovation_device.transaction_insight.billing_postal_code)
 
     def test_input_without_optional_fields(self):
         device_data = DeviceMetadata({
