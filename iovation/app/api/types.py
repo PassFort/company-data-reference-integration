@@ -102,10 +102,19 @@ class IovationCredentials(Model):
     use_test_environment = BooleanType(default=False)
 
 
+class TransctionInsight(Model):
+    billing_city = StringType(serialized_name="billingCity")
+    billing_country = StringType(serialized_name="billingCountry")
+    billing_postal_code = StringType(serialized_name="billingPostalCode")
+    billing_region = StringType(serialized_name="billingRegion")
+    billing_street = StringType(serialized_name="billingStreet")
+
+
 class DeviceData(Model):
     account_code = StringType(serialized_name="accountCode")
     blackbox = StringType()
     statedip = StringType()
+    transaction_insight = ModelType(TransctionInsight, serialized_name="transactionInsight")
     type = StringType(required=True)
 
 
@@ -122,12 +131,62 @@ class DeviceMetadata(Model):
             'account_code': self.reference_id,
             'blackbox': self.token,
             'statedip': self.stated_ip,
-            'type': self.action
+            'type': self.action,
+        })
+
+
+class StructuredAddress(Model):
+    country = StringType(required=True)
+    state_province = StringType(default=None)
+    county = StringType(default=None)
+    postal_code = StringType(default=None)
+    locality = StringType(default=None)
+    postal_town = StringType(default=None)
+    route = StringType(default=None)
+    street_number = StringType(default=None)
+    premise = StringType(default=None)
+    subpremise = StringType(default=None)
+    address_lines = ListType(StringType(), default=None)
+
+
+class AddressType(StringType):
+    STRUCTURED = 'STRUCTURED'
+
+
+class Address(StructuredAddress):
+    type = AddressType(required=True, default=AddressType.STRUCTURED)
+    original_freeform_address = StringType(default=None)
+    original_structured_address = ModelType(StructuredAddress, default=None)
+
+
+class ApproxDateType(DateType):
+    formats = ['%Y-%m']
+
+
+class DatedAddress(Model):
+    address = ModelType(Address, required=True)
+    start_date = ApproxDateType(default=None)
+    end_date = ApproxDateType(default=None)
+
+    def as_iovation_transaction_insight(self):
+        return TransctionInsight({
+            "billing_city": self.address.locality,
+            "billing_country": self.address.country,
+            "billing_postal_code": self.address.postal_code,
+            "billing_region": self.address.state_province,
+            "billing_street": self.address.route,
         })
 
 
 class CheckInput(Model):
+    address_history = ListType(ModelType(DatedAddress), default=None)
     device_metadata = ModelType(DeviceMetadata, required=True)
+
+    def as_iovation_device_data(self):
+        device_data = self.device_metadata.as_iovation_device_data()
+        if self.address_history:
+            device_data.transaction_insight = self.address_history[0].as_iovation_transaction_insight()
+        return device_data
 
 
 class IovationCheckRequest(Model):
