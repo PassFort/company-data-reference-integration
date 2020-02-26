@@ -7,7 +7,8 @@ from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
-    CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest
+    CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest, \
+    CreditSafePortfolioRequest, CreditSafePortfolioError
 from .request_handler import CreditSafeHandler
 from .demo_handler import DemoHandler
 
@@ -140,6 +141,19 @@ def company_report_41(request_data: 'CreditSafeCompanyReportRequest'):
     })
 
 
+@app.route('/monitoring_portfolio', methods=['POST'])
+@validate_model(CreditSafePortfolioRequest)
+def monitoring_portfolio(request_data: 'CreditSafePortfolioRequest'):
+    handler = CreditSafeHandler(request_data.credentials)
+
+    portfolio = handler.create_portfolio(request_data.portfolio_name)
+
+    return jsonify({
+        'portfolio_id': portfolio.id,
+        'errors': []
+    })
+
+
 @app.errorhandler(400)
 def api_400(error):
     logging.error(error.description)
@@ -221,6 +235,32 @@ def handle_report_error(report_error):
                 # Yes, messages come from different fields
                 # (messages, details, or error)
                 Error.provider_unhandled_error(response_content.get('error'))
+            ]
+        ), 500
+
+
+@app.errorhandler(CreditSafePortfolioError)
+def handle_portfolio_error(portfolio_error):
+    response = portfolio_error.response
+    response_content = response.json()
+
+    if response.status_code == 400:
+        return jsonify(
+            errors=[
+                Error.provider_unhandled_error('Portfolio Unavailable')
+            ]
+        ), 200
+    elif response.status_code == 403 and response_content.get('message') == 'Access forbidden':
+        return jsonify(
+            errors=[
+                Error.provider_misconfiguration_error(
+                    f"The request could not be authorised: Access forbidden")
+            ]
+        )
+    else:
+        return jsonify(
+            errors=[
+                Error.provider_unhandled_error(response_content.get('message'))
             ]
         ), 500
 
