@@ -8,7 +8,7 @@ from requests.exceptions import ConnectionError, Timeout
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
     CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest, \
-    CreditSafePortfolioRequest, CreditSafePortfolioError
+    CreditSafePortfolioRequest, CreditSafeMonitoringError, CreditSafeMonitoringRequest
 from .request_handler import CreditSafeHandler
 from .demo_handler import DemoHandler
 
@@ -154,6 +154,15 @@ def monitoring_portfolio(request_data: 'CreditSafePortfolioRequest'):
     })
 
 
+@app.route('/monitoring', methods=['POST'])
+@validate_model(CreditSafeMonitoringRequest)
+def monitor_company(request_data: 'CreditSafeMonitoringRequest'):
+    handler = CreditSafeHandler(request_data.credentials)
+
+    handler.monitor_company(request_data)
+    return jsonify({})
+
+
 @app.errorhandler(400)
 def api_400(error):
     logging.error(error.description)
@@ -239,19 +248,21 @@ def handle_report_error(report_error):
         ), 500
 
 
-@app.errorhandler(CreditSafePortfolioError)
-def handle_portfolio_error(portfolio_error):
-    response = portfolio_error.response
+@app.errorhandler(CreditSafeMonitoringError)
+def handle_monitoring_error(monitoring_error):
+    response = monitoring_error.response
     response_content = response.json()
 
-    if response.status_code == 400:
+    if response.status_code == 400 or response.status_code == 404:
         return jsonify(
+            raw=response_content,
             errors=[
-                Error.provider_unhandled_error('Portfolio Unavailable')
+                Error.provider_unhandled_error(response_content.get('message'))
             ]
         ), 200
     elif response.status_code == 403 and response_content.get('message') == 'Access forbidden':
         return jsonify(
+            raw=response_content,
             errors=[
                 Error.provider_misconfiguration_error(
                     f"The request could not be authorised: Access forbidden")
@@ -259,11 +270,11 @@ def handle_portfolio_error(portfolio_error):
         )
     else:
         return jsonify(
+            raw=response_content,
             errors=[
                 Error.provider_unhandled_error(response_content.get('message'))
             ]
         ), 500
-
 
 @app.errorhandler(ConnectionError)
 def connection_error(error):

@@ -56,7 +56,8 @@ class CreditSafeSearchError(CreditSafeError):
 class CreditSafeReportError(CreditSafeError):
     pass
 
-class CreditSafePortfolioError(CreditSafeError):
+
+class CreditSafeMonitoringError(CreditSafeError):
     pass
 
 
@@ -182,6 +183,12 @@ class CreditSafeCompanyReportRequest(Model):
 class CreditSafePortfolioRequest(Model):
     credentials = ModelType(CreditSafeCredentials, default=None)
     portfolio_name = StringType(required=True)
+
+
+class CreditSafeMonitoringRequest(Model):
+    credentials = ModelType(CreditSafeCredentials, default=None)
+    portfolio_id = IntType(required=True)
+    creditsafe_id = StringType(required=True)
 
 
 class PassFortFreeformAddress(Model):

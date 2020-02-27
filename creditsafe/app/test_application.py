@@ -34,6 +34,7 @@ TEST_REPORT_REQUEST = {
     }
 }
 
+
 TEST_PORTFOLIO_REQUEST = {
     'credentials': {
         'username': 'x',
@@ -41,6 +42,17 @@ TEST_PORTFOLIO_REQUEST = {
     },
     'portfolio_name': 'Test portfolio name'
 }
+
+
+TEST_MONITORING_REQUEST = {
+    'credentials': {
+        'username': 'x',
+        'password': 'y'
+    },
+    'portfolio_id': 111111111,
+    'creditsafe_id': 'testID'
+}
+
 
 SEARCH_RESPONSE = {
     "totalSize": 1,
@@ -349,24 +361,35 @@ class TestMonitoring(unittest.TestCase):
         # propagate the exceptions to the test client
         self.app.testing = True
 
-
-    @responses.activate
-    def test_create_portfolio(self):
+    def mock_authentication(self):
         responses.add(
             responses.POST,
             'https://connect.creditsafe.com/v1/authenticate',
             json={'token': 'test'},
             status=200)
 
+    def mock_creditsafe_portfolio_response(self, status, json):
         responses.add(
             responses.POST,
             'https://connect.creditsafe.com/v1/monitoring/portfolios',
-            json={
-                'portfolioId': 12345678,
-                'name': 'Test portfolio name',
-                'isDefault': False
-            },
-            status=200)
+            json=json,
+            status=status)
+
+    def mock_creditsafe_monitoring_response(self, status, json):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/monitoring/portfolios/111111111/companies',
+            json=json,
+            status=status)
+
+    @responses.activate
+    def test_create_portfolio(self):
+        self.mock_authentication()
+        self.mock_creditsafe_portfolio_response(200, {
+            'portfolioId': 12345678,
+            'name': 'Test portfolio name',
+            'isDefault': False
+        })
 
         portfolio_response = self.app.post(
             '/monitoring_portfolio',
@@ -377,19 +400,10 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_portfolio_bad_request(self):
-        responses.add(
-            responses.POST,
-            'https://connect.creditsafe.com/v1/authenticate',
-            json={'token': 'test'},
-            status=200)
-
-        responses.add(
-            responses.POST,
-            'https://connect.creditsafe.com/v1/monitoring/portfolios',
-            json={
-                'message': 'Bad request'
-            },
-            status=400)
+        self.mock_authentication()
+        self.mock_creditsafe_portfolio_response(400, {
+            'message': 'Bad request'
+        })
 
         portfolio_response = self.app.post(
             '/monitoring_portfolio',
@@ -397,23 +411,14 @@ class TestMonitoring(unittest.TestCase):
         )
 
         self.assertEqual(portfolio_response.status_code, 200)
-        self.assertIn('Portfolio Unavailable', portfolio_response.json['errors'][0]['message'])
+        self.assertIn('Bad request', portfolio_response.json['errors'][0]['message'])
 
     @responses.activate
     def test_create_portfolio_access_forbidden(self):
-        responses.add(
-            responses.POST,
-            'https://connect.creditsafe.com/v1/authenticate',
-            json={'token': 'test'},
-            status=200)
-
-        responses.add(
-            responses.POST,
-            'https://connect.creditsafe.com/v1/monitoring/portfolios',
-            json={
-                'message': 'Access forbidden'
-            },
-            status=403)
+        self.mock_authentication()
+        self.mock_creditsafe_portfolio_response(403, {
+            'message': 'Access forbidden'
+        })
 
         portfolio_response = self.app.post(
             '/monitoring_portfolio',
@@ -425,19 +430,10 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_portfolio_unhandled_error(self):
-        responses.add(
-            responses.POST,
-            'https://connect.creditsafe.com/v1/authenticate',
-            json={'token': 'test'},
-            status=200)
-
-        responses.add(
-            responses.POST,
-            'https://connect.creditsafe.com/v1/monitoring/portfolios',
-            json={
-                'message': 'Unhandled error'
-            },
-            status=500)
+        self.mock_authentication()
+        self.mock_creditsafe_portfolio_response(500, {
+            'message': 'Unhandled error'
+        })
 
         portfolio_response = self.app.post(
             '/monitoring_portfolio',
@@ -446,3 +442,75 @@ class TestMonitoring(unittest.TestCase):
 
         self.assertEqual(portfolio_response.status_code, 500)
         self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", portfolio_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_enable_monitoring(self):
+        self.mock_authentication()
+        self.mock_creditsafe_monitoring_response(201, {
+            'message': 'Company added'
+        })
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+
+        self.assertEqual(monitoring_response.status_code, 200)
+
+    @responses.activate
+    def test_enabled_monitoring_unhandled_error(self):
+        self.mock_authentication()
+        self.mock_creditsafe_monitoring_response(500, {
+            'message': 'Unhandled error'
+        })
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+
+        self.assertEqual(monitoring_response.status_code, 500)
+        self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", monitoring_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_create_monitoring_bad_request(self):
+        self.mock_authentication()
+        self.mock_creditsafe_monitoring_response(400, {
+            'message': 'Bad request'
+        })
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+
+        self.assertEqual(monitoring_response.status_code, 200)
+        self.assertIn('Bad request', monitoring_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_create_monitoring_access_forbidden(self):
+        self.mock_authentication()
+        self.mock_creditsafe_monitoring_response(403, {
+             'message': 'Access forbidden'
+        })
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+        self.assertEqual(monitoring_response.status_code, 200)
+        self.assertIn('The request could not be authorised: Access forbidden', monitoring_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_create_monitoring_not_found(self):
+        self.mock_authentication()
+        self.mock_creditsafe_monitoring_response(404, {
+             'message': 'Not found'
+        })
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+        self.assertEqual(monitoring_response.status_code, 200)
+        self.assertIn('Not found', monitoring_response.json['errors'][0]['message'])
