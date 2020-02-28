@@ -1,10 +1,15 @@
 import unittest
 
+from datetime import datetime, timedelta
+from random import randint
+
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
     build_resolver_id, PersonOfSignificantControl, CreditsafeSingleShareholder
-from .types import SearchInput, Financials, Statement
-from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload, with_yoy
+from .types import SearchInput, Financials, Statement, MonitoringEvent
+from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload, with_yoy, \
+    CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent
+from .rule_code_to_monitoring_config import MonitoringConfigType
 
 DEMO_PL = {
     'currency_code': 'GBP',
@@ -1423,3 +1428,129 @@ class TestYoy(unittest.TestCase):
         result = [s.serialize() for s in statements]
         self.assertNotIn('yoy', result[0]['entries'][0])
         self.assertNotIn('yoy', result[0]['entries'][1])
+
+
+class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
+
+    def test_from_json_no_data(self):
+        res = CreditSafeNotificationEventsResponse.from_json({
+            'total_count': 0,
+            'data': [],
+            'paging': {
+                'size': 10,
+                'prev': None,
+                'next': None,
+                'last': 0
+            }
+        })
+
+        self.assertIsInstance(res, CreditSafeNotificationEventsResponse)
+        self.assertEqual(res.total_count, 0)
+        self.assertEqual(len(res.data), 0)
+        self.assertEqual(res.paging.size, 10)
+        self.assertIsNone(res.paging.prev)
+        self.assertIsNone(res.paging.next)
+        self.assertEqual(res.paging.last, 0)
+
+    def test_from_json_with_data(self):
+        res = CreditSafeNotificationEventsResponse.from_json({
+            "totalCount": 36,
+            "data": [
+                {
+                    "company": {
+                        "id": "US-X-US22384484",
+                        "safeNumber": "US22384484",
+                        "name": "GOOGLE LLC",
+                        "countryCode": "US",
+                        "portfolioId": 589960,
+                        "portfolioName": "Default"
+                    },
+                    "eventId": randint(1, 9999999999),
+                    "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                    "newValue": "1600 AMPHITHEATRE PARKWAY, MOUNTAIN VIEW, CA, 94043-1351",
+                    "oldValue": "1604 AMPHITHEATRE PARKWAY, MOUNTAIN VIEW, CA, 94043-1351",
+                    "notificationEventId": randint(1, 9999999999),
+                    "ruleCode": 105,
+                    "ruleName": "Address"
+                }
+                for _ in range(10)
+            ],
+            "paging": {
+                "size": 10,
+                "prev": 0,
+                "next": 2,
+                "last": 3
+            }
+        })
+
+        self.assertIsInstance(res, CreditSafeNotificationEventsResponse)
+        self.assertEqual(res.total_count, 36)
+        self.assertEqual(len(res.data), 10)
+        self.assertEqual(res.paging.size, 10)
+        self.assertEqual(res.paging.prev, 0)
+        self.assertEqual(res.paging.next, 2)
+        self.assertEqual(res.paging.last, 3)
+
+    def test_to_passfort_format_no_events(self):
+        events = []
+
+        response = CreditSafeNotificationEventsResponse.to_passfort_format(events)
+
+        self.assertListEqual(response.events, [])
+        self.assertListEqual(response.raw_data, [])
+
+    def test_to_passfort_format_with_events(self):
+        events = [
+            CreditSafeNotificationEvent({
+                "company": {
+                    "id": "GB-0-03375464",
+                    "safeNumber": "UK03033453",
+                    "name": "THE DURHAM BREWERY LIMITED",
+                    "countryCode": "GB",
+                    "portfolioId": 1017586,
+                    "portfolioName": "Durham Brewery"
+                },
+                "eventId": 512812323,
+                "eventDate": "2020-02-28T05:33:02",
+                "newValue": "33",
+                "oldValue": "51",
+                "createdDate": "2020-02-29T00:16:47",
+                "notificationEventId": 81051991,
+                "ruleCode": 101,
+                "ruleName": "International Rating  |Reduce by {0} Band(s) OR Less than Band {1}"
+            }),
+            CreditSafeNotificationEvent({
+                "company": {
+                    "id": "GB-0-03375464",
+                    "safeNumber": "UK03033453",
+                    "name": "THE DURHAM BREWERY LIMITED",
+                    "countryCode": "GB",
+                    "portfolioId": 1017586,
+                    "portfolioName": "Durham Brewery"
+                },
+                "eventId": 512833061,
+                "eventDate": "2020-02-28T05:33:02",
+                "createdDate": "2020-02-29T00:44:58",
+                "notificationEventId": 81087316,
+                "ruleCode": 105,
+                "ruleName": "Address"
+            })
+        ]
+
+        response = CreditSafeNotificationEventsResponse.to_passfort_format(events)
+
+        self.assertListEqual(response.events, [
+            MonitoringEvent({
+                'creditsafe_id': 'GB-0-03375464',
+                'event_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA.value,
+                'event_date': '2020-02-28T05:33:02',
+                'rule_code': 101
+            }),
+            MonitoringEvent({
+                'creditsafe_id': 'GB-0-03375464',
+                'event_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS.value,
+                'event_date': '2020-02-28T05:33:02',
+                'rule_code': 105
+            })
+        ])
+        self.assertListEqual(response.raw_data, [e.to_primitive() for e in events])

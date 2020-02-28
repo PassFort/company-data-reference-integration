@@ -14,7 +14,7 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
-    Financials, Statement, StatementEntryBase, MonitoringConfig, MonitoringEvent, CreditSafeMonitoringEventsResponse
+    Financials, Statement, StatementEntryBase, MonitoringEvent, CreditSafeMonitoringEventsResponse
 
 from .fuzzy import CompanyNameMatcher
 from .rule_code_to_monitoring_config import rule_code_to_monitoring_config

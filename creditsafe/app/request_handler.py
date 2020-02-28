@@ -8,8 +8,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError, \
-    SearchInput, CreditSafeMonitoringError, CreditSafeMonitoringRequest, CreditSafeMonitoringEventsRequest, \
-    MonitoringConfig
+    SearchInput, CreditSafeMonitoringError, CreditSafeMonitoringRequest, CreditSafeMonitoringEventsRequest
 from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, \
     CreditSafePortfolio, CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent
 

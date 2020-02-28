@@ -6,10 +6,14 @@ Integration tests for the request handler. A mix of requests that:
 
 import responses
 import unittest
-
+import math
+from datetime import datetime, timedelta
+from itertools import chain
+from random import randint
 
 from .application import app
 from .api.types import ErrorCode
+from .api.rule_code_to_monitoring_config import MonitoringConfigType
 
 
 TEST_SEARCH_REQUEST = {
@@ -52,7 +56,6 @@ TEST_MONITORING_REQUEST = {
     'portfolio_id': 111111111,
     'creditsafe_id': 'testID'
 }
-
 
 SEARCH_RESPONSE = {
     "totalSize": 1,
@@ -360,6 +363,7 @@ class TestMonitoring(unittest.TestCase):
         self.app = app.test_client()
         # propagate the exceptions to the test client
         self.app.testing = True
+        self.mock_authentication()
 
     def mock_authentication(self):
         responses.add(
@@ -384,7 +388,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_portfolio(self):
-        self.mock_authentication()
         self.mock_creditsafe_portfolio_response(200, {
             'portfolioId': 12345678,
             'name': 'Test portfolio name',
@@ -400,7 +403,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_portfolio_bad_request(self):
-        self.mock_authentication()
         self.mock_creditsafe_portfolio_response(400, {
             'message': 'Bad request'
         })
@@ -415,7 +417,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_portfolio_access_forbidden(self):
-        self.mock_authentication()
         self.mock_creditsafe_portfolio_response(403, {
             'message': 'Access forbidden'
         })
@@ -430,7 +431,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_portfolio_unhandled_error(self):
-        self.mock_authentication()
         self.mock_creditsafe_portfolio_response(500, {
             'message': 'Unhandled error'
         })
@@ -445,7 +445,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_enable_monitoring(self):
-        self.mock_authentication()
         self.mock_creditsafe_monitoring_response(201, {
             'message': 'Company added'
         })
@@ -459,7 +458,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_enabled_monitoring_unhandled_error(self):
-        self.mock_authentication()
         self.mock_creditsafe_monitoring_response(500, {
             'message': 'Unhandled error'
         })
@@ -474,7 +472,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_monitoring_bad_request(self):
-        self.mock_authentication()
         self.mock_creditsafe_monitoring_response(400, {
             'message': 'Bad request'
         })
@@ -489,7 +486,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_monitoring_access_forbidden(self):
-        self.mock_authentication()
         self.mock_creditsafe_monitoring_response(403, {
              'message': 'Access forbidden'
         })
@@ -503,7 +499,6 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_monitoring_not_found(self):
-        self.mock_authentication()
         self.mock_creditsafe_monitoring_response(404, {
              'message': 'Not found'
         })
@@ -514,3 +509,311 @@ class TestMonitoring(unittest.TestCase):
         )
         self.assertEqual(monitoring_response.status_code, 200)
         self.assertIn('Not found', monitoring_response.json['errors'][0]['message'])
+
+
+class TestGetMonitoringEvents(unittest.TestCase):
+    def setUp(self):
+        # creates a test client
+        self.app = app.test_client()
+        # propagate the exceptions to the test client
+        self.app.testing = True
+
+        self.request_payload = {
+            'credentials': {
+                'username': 'x',
+                'password': 'y'
+            },
+            'search_params': [{
+                'portfolio_id': 111111111,
+                'last_run_date': datetime.now().isoformat()
+            }]
+        }
+
+        self.date_regex = r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*'
+
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+    def mock_creditsafe_monitoring_pagination_events_response(self, num_events):
+        num_of_pages = math.ceil(num_events / 1000)
+        rule_code_choices = [101, 105, 107]
+        for page_num in range(num_of_pages):
+            res = {
+                "totalCount": num_events,
+                "data": [
+                    {
+                        "company": {
+                            "id": "US-X-US22384484",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 589960,
+                            "portfolioName": "Default"
+                        },
+                        "eventId": randint(1, 9999999999),
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": rule_code_choices[idx % 3],
+                        "ruleName": "Address"
+                    }
+                    for idx in range(
+                        # Generate 1000 events except for the last page
+                        (1000 if page_num + 1 < num_of_pages else num_events % 1000)
+                    )
+                ],
+                "paging": {
+                    "size": 1000,
+                    "prev": page_num - 1 if page_num > 0 else None,
+                    "next": page_num + 1 if page_num + 1 < num_of_pages else None,
+                    "last": num_of_pages
+                }
+            }
+            responses.add(
+                responses.GET,
+                'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+                json=res,
+                status=200
+            )
+
+    def mock_creditsafe_monitoring_events_response(self, status, json):
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json=json,
+            status=status
+        )
+
+    @responses.activate
+    def test_no_data(self):
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json={
+                'totalCount': 0,
+                'data': [],
+                'paging': {
+                    'size': 1000,
+                    'prev': None,
+                    'next': None,
+                    'last': -1
+                }
+            },
+            status=200
+        )
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        resp_body = monitoring_events_response.json
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertListEqual(resp_body['events'], [])
+        self.assertListEqual(resp_body['raw_data'], [])
+
+    @responses.activate
+    def test_single_page_data(self):
+        self.mock_creditsafe_monitoring_pagination_events_response(10)
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        resp_body = monitoring_events_response.json
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+
+        self.assertEqual(len(resp_body['events']), 10)
+        # Number of processed events should be the same length as raw_data
+        self.assertEqual(len(resp_body['events']), len(resp_body['raw_data']))
+
+        # Raw event should have all properties as those coming directly from the Creditsafe API
+        for raw_event in resp_body['raw_data']:
+            for expected_property in ['company', 'eventId', 'eventDate', 'notificationEventId', 'ruleCode', 'ruleName']:
+                self.assertIn(expected_property, raw_event)
+
+        expected_config_types = [config.value for config in MonitoringConfigType]
+        expected_rule_codes = [101, 105, 107]
+        for event in resp_body['events']:
+            self.assertIn(event['event_type'], expected_config_types)
+            self.assertRegex(event['event_date'], self.date_regex)
+            self.assertIn(event['rule_code'], expected_rule_codes)
+
+    @responses.activate
+    def test_multi_page_data(self):
+        self.mock_creditsafe_monitoring_pagination_events_response(3001)
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        resp_body = monitoring_events_response.json
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+
+        self.assertEqual(len(resp_body['events']), 3001)
+        # Number of processed events should be the same length as raw_data
+        self.assertEqual(len(resp_body['events']), len(resp_body['raw_data']))
+
+        # Raw event should have all properties as those coming directly from the Creditsafe API
+        for raw_event in resp_body['raw_data']:
+            for expected_property in ['company', 'eventId', 'eventDate', 'notificationEventId', 'ruleCode', 'ruleName']:
+                self.assertIn(expected_property, raw_event)
+
+        expected_config_types = [config.value for config in MonitoringConfigType]
+        expected_rule_codes = [101, 105, 107]
+        for event in resp_body['events']:
+            self.assertIn(event['event_type'], expected_config_types)
+            self.assertRegex(event['event_date'], self.date_regex)
+            self.assertIn(event['rule_code'], expected_rule_codes)
+
+    @responses.activate
+    def test_multiple_events_search(self):
+        """Checks that one request is sent per MonitoringEventsSearch instance when their last_run_dates
+        are not the same."""
+
+        self.request_payload['search_params'] = []
+        for _ in range(5):
+            self.mock_creditsafe_monitoring_pagination_events_response(10)
+            self.request_payload['search_params'].append({
+                'portfolio_id': 111111111,
+                'last_run_date': datetime.now().isoformat()
+            })
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertEqual(len(responses.calls), 6)  # 1 get token call + 5 expected get events calls
+
+    @responses.activate
+    def test_multiple_events_search_same_last_run_date(self):
+        """Checks that only one request is sent even when the last_run_date is the same across all
+        MonitoringEventsSearch instances."""
+
+        self.mock_creditsafe_monitoring_pagination_events_response(10)
+        last_run_date = datetime.now().isoformat()
+        self.request_payload['search_params'] = [{
+            'portfolio_id': 111111111,
+            'creditsafe_id': 'US-X-US22384484',
+            'last_run_date': last_run_date
+        } for _ in range(5)]
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertEqual(len(responses.calls), 2)  # 1 get token call + 1 expected get events call
+
+    @responses.activate
+    def test_unknown_creditsafe_events(self):
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json={
+                "totalCount": 1,
+                "data": [
+                    {
+                        "company": {
+                            "id": "US-X-US22384484",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 589960,
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 12345678,
+                        "eventDate": datetime.now().isoformat(),
+                        "notificationEventId": 12345678,
+                        "ruleCode": 9001,  # Rule code doesn't exist in the mapping
+                        "ruleName": "Unknown rule"
+                    }
+                ],
+                "paging": {
+                    "size": 1000,
+                    "prev": None,
+                    "next": None,
+                    "last": 0
+                }
+            },
+            status=200
+        )
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+        resp_body = monitoring_events_response.json
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertListEqual(resp_body['events'], [])
+        self.assertListEqual(resp_body['raw_data'], [])
+
+    @responses.activate
+    def test_bad_request(self):
+        self.mock_creditsafe_monitoring_events_response(400, {
+            'message': 'Bad request'
+        })
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertIn('Bad request', monitoring_events_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_not_found(self):
+        self.mock_creditsafe_monitoring_events_response(404, {
+            'message': 'Not found'
+        })
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertIn('Not found', monitoring_events_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_access_forbidden(self):
+        self.mock_creditsafe_monitoring_events_response(403, {
+            'message': 'Access forbidden'
+        })
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+        self.assertIn('The request could not be authorised: Access forbidden', monitoring_events_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_unhandled_error(self):
+        self.mock_creditsafe_monitoring_events_response(500, {
+            'message': 'Unhandled error'
+        })
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.request_payload
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 500)
+        self.assertIn(
+            "Provider Error: 'Unhandled error' while running 'Creditsafe' service.",
+            monitoring_events_response.json['errors'][0]['message']
+        )
