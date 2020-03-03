@@ -2,7 +2,7 @@ from unittest import TestCase
 from passfort.individual_data import IndividualData
 from passfort.company_data import CompanyData
 from passfort.cifas_check import CifasConfig
-from cifas.search import FullSearchRequest 
+from cifas.search import FullSearchRequest, BankAccountDetails
 from tests import INDIVIDUAL_DATA_FULL, INDIVIDUAL_DATA_MINIMAL, COMPANY_DATA_FULL, COMPANY_DATA_MINIMAL
 
 
@@ -62,10 +62,15 @@ class TestPassfortToCifas(TestCase):
 
     def assert_bank_accounts(self, individual_data, request):
         bank_accounts = individual_data.banking_details.bank_accounts
+        def sanitize_sort_code(sort_code):
+            if sort_code:
+                return sort_code.replace('-', '')
+
         for bank_account in bank_accounts:
             self.assertIsNotNone(next((
                 finance_details for finance_details in (request.Party.Finance or [])
-                if finance_details.BankAccount.SortCode == bank_account.sort_code and
+                if finance_details.BankAccount.SortCode ==
+                sanitize_sort_code(bank_account.sort_code) and
                 finance_details.BankAccount.AccountNumber == bank_account.account_number
             ), None), f'Could not find bank account: {bank_account}')
 
@@ -124,3 +129,11 @@ class TestPassfortToCifas(TestCase):
         search_request = FullSearchRequest.from_passfort_data(company_data, self.cifas_config)
         self.assert_config_on_request(search_request)
         self.assert_company_required_metadata(company_data, search_request)
+
+    def test_remove_hyphens_in_sort_code(self):
+        details = BankAccountDetails(
+            SortCode='60-92-42',
+            AccountNumber='401276',
+        )
+
+        self.assertEqual(details.SortCode, '609242')
