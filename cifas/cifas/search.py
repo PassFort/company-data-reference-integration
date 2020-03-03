@@ -46,6 +46,11 @@ class StructuredAddress:
 class BankAccountDetails:
     SortCode: str
     AccountNumber: str
+    
+    def __post_init__(self):
+        sort_code = self.SortCode
+        if sort_code:
+            self.SortCode = sort_code.replace('-', '')
 
 
 @dataclass
