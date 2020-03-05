@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+
+[packages]
+flask = "*"
+flask-restful = "*"
+gunicorn = "*"
+requests = "*"
+schematics = "*"
+
+coverage = "*"
+codecov = "*"
+
+xmltojson = {git = "https://github.com/Diggsey/python-xmltojson.git",editable = true}
+schematics-xmlelem = {git = "https://github.com/Diggsey/python-schematics-xmlelem.git",editable = true}
+
+[requires]
+python_version = "3.8"

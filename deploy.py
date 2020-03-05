@@ -12,6 +12,7 @@ from passfort_deployment import deploy_file, \
 integrations = {
     'comply_advantage': './comply_advantage',
     'creditsafe': './creditsafe',
+    'dowjones_watchlist_api': './dowjones_watchlist_api',
     'duedil': './duedil',
     'equifax': './equifax',
     'onfido': './onfido',

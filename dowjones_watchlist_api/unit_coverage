@@ -1,0 +1,8 @@
+integration_name="dowjones_watchlist_api"
+
+pipenv run coverage run --source=app --omit=./**/test_** --branch -m unittest discover . && \
+pipenv run coverage xml -i && \
+
+sed -i "s/filename=\"/filename=\"${integration_name}\//g" coverage.xml && \
+
+pipenv run codecov -F ${integration_name},unittests -X search -f coverage.xml
