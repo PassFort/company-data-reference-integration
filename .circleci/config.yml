@@ -13,6 +13,9 @@ parameters:
   creditsafe:
     type: boolean
     default: false
+  dowjones_watchlist_api:
+    type: boolean
+    default: false
   duedil:
     type: boolean
     default: false
@@ -292,6 +295,45 @@ workflows:
           requires:
             - e2e_comply_advantage
             - unit_comply_advantage
+          filters:
+              branches:
+                  only:
+                    - master
+
+  dowjones_watchlist_api:
+    when: << pipeline.parameters.dowjones_watchlist_api >>
+    jobs:
+      - build:
+          name: build_dowjones_watchlist_api
+          package: dowjones_watchlist_api
+      - unit:
+          name: unit_dowjones_watchlist_api
+          package: dowjones_watchlist_api
+          requires:
+            - build_dowjones_watchlist_api
+      - e2e:
+          name: e2e_dowjones_watchlist_api
+          package: dowjones_watchlist_api
+          requires:
+            - build_dowjones_watchlist_api
+      - deploy_common:
+          name: deploy_dowjones_watchlist_api_staging
+          package: dowjones_watchlist_api
+          to: staging
+          requires:
+            - e2e_dowjones_watchlist_api
+            - unit_dowjones_watchlist_api
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_dowjones_watchlist_api_production
+          package: dowjones_watchlist_api
+          to: production
+          requires:
+            - e2e_dowjones_watchlist_api
+            - unit_dowjones_watchlist_api
           filters:
               branches:
                   only:

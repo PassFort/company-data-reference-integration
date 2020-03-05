@@ -19,3 +19,6 @@ codecov:
     worldcheck:
       paths:
         - worldcheck/
+    dowjones_watchlist_api
+      paths:
+        - dowjones_watchlist_api/
