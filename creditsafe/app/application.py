@@ -8,7 +8,9 @@ from requests.exceptions import ConnectionError, Timeout
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
     CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest, \
-    CreditSafePortfolioRequest, CreditSafeMonitoringError, CreditSafeMonitoringRequest
+    CreditSafePortfolioRequest, CreditSafeMonitoringError, CreditSafeMonitoringRequest, \
+    CreditSafeMonitoringEventsRequest, CreditSafeMonitoringEventsResponse
+from .api.internal_types import CreditSafeNotificationEventsResponse
 from .request_handler import CreditSafeHandler
 from .demo_handler import DemoHandler
 
@@ -163,6 +165,17 @@ def monitor_company(request_data: 'CreditSafeMonitoringRequest'):
     return jsonify({})
 
 
+@app.route('/monitoring_events', methods=['POST'])
+@validate_model(CreditSafeMonitoringEventsRequest)
+def get_monitoring_events(request_data: CreditSafeMonitoringEventsRequest):
+    handler = CreditSafeHandler(request_data.credentials)
+
+    all_events = handler.get_events(request_data)
+    response = CreditSafeNotificationEventsResponse.to_passfort_format(all_events)
+
+    return jsonify(response.to_primitive())
+
+
 @app.errorhandler(400)
 def api_400(error):
     logging.error(error.description)
@@ -275,6 +288,7 @@ def handle_monitoring_error(monitoring_error):
                 Error.provider_unhandled_error(response_content.get('message'))
             ]
         ), 500
+
 
 @app.errorhandler(ConnectionError)
 def connection_error(error):
