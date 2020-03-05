@@ -17,7 +17,7 @@ from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     Financials, Statement, StatementEntryBase, MonitoringEvent, CreditSafeMonitoringEventsResponse
 
 from .fuzzy import CompanyNameMatcher
-from .rule_code_to_monitoring_config import rule_code_to_monitoring_config
+from .event_mappings import get_rule_code_to_monitoring_config
 
 SUPPORTED_CURRENCIES = [c.alpha_3 for c in pycountry.currencies]
 DIRECTOR_POSITIONS = [
@@ -1195,6 +1195,7 @@ class CreditSafeNotificationEventsResponse(Model):
     @staticmethod
     def to_passfort_format(all_events: List[CreditSafeNotificationEvent]) -> CreditSafeMonitoringEventsResponse:
         response = {'events': [], 'raw_data': []}
+        rule_code_to_monitoring_config = get_rule_code_to_monitoring_config()
 
         for event in all_events:
             event_type = rule_code_to_monitoring_config.get(event.rule_code)
