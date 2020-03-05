@@ -14,9 +14,10 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
-    Financials, Statement, StatementEntryBase
+    Financials, Statement, StatementEntryBase, MonitoringEvent, CreditSafeMonitoringEventsResponse
 
 from .fuzzy import CompanyNameMatcher
+from .rule_code_to_monitoring_config import rule_code_to_monitoring_config
 
 SUPPORTED_CURRENCIES = [c.alpha_3 for c in pycountry.currencies]
 DIRECTOR_POSITIONS = [
@@ -135,6 +136,7 @@ Works Director
 
 INDIVIDUAL_ENTITY = 'INDIVIDUAL'
 COMPANY_ENTITY = 'COMPANY'
+
 
 def to_snake_case(input):
     return re.sub('(?!^)([A-Z]+)', r'_\1', input).lower()
@@ -915,6 +917,7 @@ class CreditSafeCompanyReport(Model):
     credit_score = ModelType(CreditScore, serialized_name="creditScore", default=None)
     local_financial_statements = ListType(ModelType(CreditsafeFinancialStatement),
                                           serialized_name="localFinancialStatements", default=[])
+
     @property
     def credit_limit_history(self):
         if self.additional_information:
@@ -954,7 +957,7 @@ class CreditSafeCompanyReport(Model):
                 credit_history_dict[limit.date]['credit_limit'] = limit.to_json()
 
         credit_history = sorted(
-            [{'date': k, **v} for k,v in credit_history_dict.items()],
+            [{'date': k, **v} for k, v in credit_history_dict.items()],
             key=lambda elem: elem['date'],
             reverse=True
         )
@@ -1100,7 +1103,8 @@ def merge_associates(
     processing_queue = duplicate_resolver.associates()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        jobs = [executor.submit(process_associate_data, obj, country_of_incorporation, request_handler) for obj in processing_queue]
+        jobs = [executor.submit(process_associate_data, obj, country_of_incorporation, request_handler)
+                for obj in processing_queue]
         concurrent.futures.wait(jobs, return_when=concurrent.futures.FIRST_EXCEPTION)
         failed_jobs = filter(lambda e: e is not None, map(lambda j: j.exception(), jobs))
         try:
@@ -1141,3 +1145,68 @@ class CreditSafePortfolio(Model):
     id = IntType(required=True, serialized_name="portfolioId")
     name = StringType(required=True)
     is_default = BooleanType(serialized_name="isDefault")
+
+
+class CreditSafeNotificationPaging(Model):
+    size = IntType(required=True)
+
+    # These could be null if there is only one page
+    prev = IntType()
+    next = IntType()
+
+    last = IntType(required=True)
+
+
+class CreditSafeCompanyData(Model):
+    id = StringType(required=True)
+    safe_number = StringType(serialized_name='safeNumber')
+    name = StringType()
+    country_code = StringType(serialized_name='countryCode')
+    portfolio_id = IntType(required=True, serialized_name='portfolioId')
+    portfolio_name = StringType(serialized_name='portfolioName')
+
+
+class CreditSafeNotificationEvent(Model):
+    company = ModelType(CreditSafeCompanyData, required=True)
+    event_id = IntType(serialized_name='eventId')
+    event_date = StringType(serialized_name='eventDate')
+
+    # This was found in their API response but not documented in the Creditsafe API docs...
+    created_date = StringType(serialized_name='createdDate')
+
+    new_value = StringType(serialized_name='newValue')
+    old_value = StringType(serialized_name='oldValue')
+    notification_event_id = IntType(serialized_name='notificationEventId')
+    rule_code = IntType(serialized_name='ruleCode', required=True)
+    rule_name = StringType(serialized_name='ruleName')
+
+
+class CreditSafeNotificationEventsResponse(Model):
+    total_count = IntType(serialized_name='totalCount')
+    data = ListType(ModelType(CreditSafeNotificationEvent), default=[])
+    paging = ModelType(CreditSafeNotificationPaging)
+
+    @classmethod
+    def from_json(cls, data: dict) -> 'CreditSafeNotificationEventsResponse':
+        model = cls().import_data(data, apply_defaults=True)
+        model.validate()
+        return model
+
+    @staticmethod
+    def to_passfort_format(all_events: List[CreditSafeNotificationEvent]) -> CreditSafeMonitoringEventsResponse:
+        response = {'events': [], 'raw_data': []}
+
+        for event in all_events:
+            event_type = rule_code_to_monitoring_config.get(event.rule_code)
+            if event_type is not None:
+                response['events'].append(MonitoringEvent({
+                    'creditsafe_id': event.company.id,
+                    'event_type': event_type.value,
+                    'event_date': event.event_date,
+                    'rule_code': event.rule_code
+                }))
+                response['raw_data'].append(event.to_primitive())
+
+        model = CreditSafeMonitoringEventsResponse(response)
+        model.validate()
+        return model
