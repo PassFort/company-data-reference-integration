@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="11847281" date="2019-05-22 08:05:34.487">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>David</first-name>
+          <middle-name>Allen</middle-name>
+          <surname>Cameron</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="11" month="3" year="1974" date-type="Date of Birth">
+      </date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Maclean</place-name>
+        <region>New South Wales</region>
+        <country djii-region-code="AUSTR" iso2-country-code="AU" iso3-country-code="AUS" is-territory="false" country-profile="australia.doc">Australia</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="AUSTR" iso2-country-code="AU" iso3-country-code="AUS" is-territory="false" country-profile="australia.doc">Australia</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="AUSTR" iso2-country-code="AU" iso3-country-code="AUS" is-territory="false" country-profile="australia.doc">Australia</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="AUSTR" iso2-country-code="AU" iso3-country-code="AUS" is-territory="false" country-profile="australia.doc">Australia</country>
+      </country-value>
+    </country-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)">
+        </description>
+      </descriptions>
+    </watchlist-content>
+    <associates>
+      <associate peid="11847252" relationship="Wife" description1="Politically Exposed Person (PEP)" ex="true">
+      </associate>
+    </associates>
+  </person>
+</records>

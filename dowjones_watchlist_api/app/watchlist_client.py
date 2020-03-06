@@ -1,3 +1,4 @@
+import re
 from base64 import b64encode
 from json import JSONDecodeError
 
@@ -12,8 +13,10 @@ from app.api.types import (
     WatchlistAPICredentials,
 )
 from app.api.dowjones_types import (
+    DataResults,
     SearchResults,
 )
+
 
 def requests_retry_session(
     retries=3,
@@ -45,14 +48,14 @@ class APIClient():
             .encode('utf-8')
         ).decode('utf-8')
 
-    def get(self, route, params):
+    def _get(self, route, params={}):
         return self.session.get(
             f"{self.credentials.url}{route}",
             headers={
                 'Authorization': f'Basic {self.auth_token}'
             },
             params=params,
-        )
+        ).raise_for_status().text
 
     def run_search(self, input_data: InputData):
         params = {
@@ -61,12 +64,33 @@ class APIClient():
         }
 
         if len(input_data.personal_details.name.given_names) > 1:
-            params['middle-name'] = input_data.personal_details.name.given_names[1:].join(' ')
+            params['middle-name'] = ' '.join(input_data.personal_details.name.given_names[1:])
 
-        resp = self.get(
+        resp = self._get(
             '/search/person-name',
             params=params
         )
 
         results = SearchResults()
-        return results.import_data(xmltojson.parse(resp.text))
+        return results.import_data(xmltojson.parse(resp))
+
+    def fetch_data_record(self, peid):
+        results = DataResults()
+        return results.import_data(xmltojson.parse(self._get(f'/data/records/{peid}')))
+
+
+DATA_RECORD_URL_PATTERN = re.compile('\/data\/records\/(.*)')
+
+class DemoClient(APIClient):
+    def _get(self, route, params={}):
+        if route.startswith('/search/person-name'):
+            file_path = f'mock_data/search_results/david_cameron.xml'
+        else:
+            matches = DATA_RECORD_URL_PATTERN.match(route)
+            if matches and matches.group(1):
+                file_path = f'mock_data/data_results/david_cameron_{matches.group(1)}.xml'
+            else:
+                raise Exception(f'Mock file not found for route: "{route}"')
+
+        with open(file_path, 'rb') as mock_data:
+            return mock_data.read()

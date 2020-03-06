@@ -8,10 +8,14 @@ from flask import (
 )
 from schematics import Model
 from schematics.types import (
+    BaseType,
     BooleanType,
+    DictType,
+    IntType,
     ListType,
     StringType,
     ModelType,
+    FloatType,
 )
 from schematics.exceptions import (
     DataError,
@@ -35,8 +39,7 @@ def validate_model(validation_model):
                 model = validation_model().import_data(request.json, apply_defaults=True)
                 model.validate()
             except DataError as e:
-                abort(400, Error.bad_api_request(e))
-
+                abort(400, e.to_primitive())
             return fn(model, *args, **kwargs)
 
         return wrapped_fn
@@ -89,12 +92,69 @@ class ErrorCode(Enum):
     UNKNOWN_INTERNAL_ERROR = 401
 
 
-class Error:
+@unique
+class ErrorSource(Enum):
+    API = 'API'
+
+
+class Error(Model):
+    code = IntType(required=True, choices=[code.value for code in ErrorCode])
+    source = StringType(required=True, choices=[source.value for source in ErrorSource])
+    message = StringType(required=True)
+    info = BaseType()
+
+    def from_exception(e):
+        return {
+            'code': ErrorCode.UNKNOWN_INTERNAL_ERROR.value,
+            'source': 'ENGINE',
+            'message': '{}'.format(e)
+        }
+
     @staticmethod
     def bad_api_request(e):
-        return {
+        return Error({
             'code': ErrorCode.INVALID_INPUT_DATA.value,
             'source': 'API',
             'message': 'Bad API request',
-            'info': e.to_primitive()
-        }
+            'info': e
+        })
+
+
+@unique
+class MatchEventType(Enum):
+    PEP_FLAG = 'PEP_FLAG'
+    SANCTION_FLAG = 'SANCTION_FLAG'
+    ADVERSE_MEDIA_FLAG = "ADVERSE_MEDIA_FLAG"
+    REFER_FLAG = 'REFER_FLAG'
+
+    def from_risk_icon(icon):
+        import logging
+
+        if icon == 'AM':
+            return MatchEventType.ADVERSE_MEDIA_FLAG
+        elif icon == 'PEP':
+            return MatchEventType.PEP_FLAG
+        elif icon == 'SAN':
+            return MatchEventType.SANCTION_FLAG
+        elif icon.startswith('SI'):
+            return MatchEventType.ADVERSE_MEDIA_FLAG
+        else:
+            return MatchEventType.REFER_FLAG
+
+
+class MatchEvent(Model):
+    event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
+    match_id = StringType(required=True)
+    provider_name = StringType(required=True)
+
+    match_name = StringType()
+    score = FloatType()
+
+
+class ScreeningResponse(Model):
+    errors = ListType(ModelType(Error), default=[])
+    events = ListType(ModelType(MatchEvent), default=[])
+
+
+class TestError(Model):
+    name = IntType()
