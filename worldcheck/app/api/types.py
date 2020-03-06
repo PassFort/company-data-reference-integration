@@ -197,7 +197,7 @@ class Gender(Model):
     v = StringType(choices=["M", "F"], default=None)
 
     @property
-    def wordlcheck_gender(self):
+    def worldcheck_gender(self):
         if self.v is None:
             return None
         if self.v == "M":

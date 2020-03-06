@@ -117,19 +117,20 @@ class CaseHandler:
                 name=input_data.name,
                 provider_types=[ProviderType.WATCHLIST],
                 entity_type=input_data.worldcheck_entity_type,
-                group_id=self.config.group_id)
+                group_id=self.config.group_id,
+                secondary_fields=self.secondary_fields(input_data))
         )
 
         return result
 
     @staticmethod
-    def __secondary_fields(input_data: ScreeningRequestData):
+    def secondary_fields(input_data: ScreeningRequestData):
         fields = []
         if input_data.worldcheck_entity_type == CaseEntityType.INDIVIDUAL:
             if input_data.personal_details.gender and input_data.personal_details.gender.v:
                 fields.append(
                     Field(type_id="SFCT_1",
-                          value=input_data.personal_details.gender.wordlcheck_gender))
+                          value=input_data.personal_details.gender.worldcheck_gender))
             if input_data.personal_details.dob and input_data.personal_details.dob.v:
                 fields.append(
                     Field(type_id="SFCT_2",
