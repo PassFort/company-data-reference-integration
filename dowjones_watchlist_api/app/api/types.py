@@ -1,3 +1,4 @@
+import logging
 from enum import unique, Enum
 from functools import wraps
 
@@ -7,11 +8,16 @@ from flask import (
     request,
 )
 from schematics import Model
+from schematics.common import NOT_NONE
 from schematics.types import (
+    BaseType,
     BooleanType,
+    DictType,
+    IntType,
     ListType,
     StringType,
     ModelType,
+    FloatType,
 )
 from schematics.exceptions import (
     DataError,
@@ -35,8 +41,7 @@ def validate_model(validation_model):
                 model = validation_model().import_data(request.json, apply_defaults=True)
                 model.validate()
             except DataError as e:
-                abort(400, Error.bad_api_request(e))
-
+                abort(400, e.to_primitive())
             return fn(model, *args, **kwargs)
 
         return wrapped_fn
@@ -89,12 +94,155 @@ class ErrorCode(Enum):
     UNKNOWN_INTERNAL_ERROR = 401
 
 
-class Error:
+@unique
+class ErrorSource(Enum):
+    API = 'API'
+
+
+class Error(Model):
+    code = IntType(required=True, choices=[code.value for code in ErrorCode])
+    source = StringType(required=True, choices=[source.value for source in ErrorSource])
+    message = StringType(required=True)
+    info = BaseType()
+
+    def from_exception(e):
+        return {
+            'code': ErrorCode.UNKNOWN_INTERNAL_ERROR.value,
+            'source': 'ENGINE',
+            'message': '{}'.format(e)
+        }
+
     @staticmethod
     def bad_api_request(e):
-        return {
+        return Error({
             'code': ErrorCode.INVALID_INPUT_DATA.value,
             'source': 'API',
             'message': 'Bad API request',
-            'info': e.to_primitive()
-        }
+            'info': e
+        })
+
+
+@unique
+class MatchEventType(Enum):
+    PEP_FLAG = 'PEP_FLAG'
+    SANCTION_FLAG = 'SANCTION_FLAG'
+    ADVERSE_MEDIA_FLAG = "ADVERSE_MEDIA_FLAG"
+    REFER_FLAG = 'REFER_FLAG'
+
+    def from_risk_icon(icon):
+        import logging
+
+        if icon == 'AM':
+            return MatchEventType.ADVERSE_MEDIA_FLAG
+        elif icon == 'PEP':
+            return MatchEventType.PEP_FLAG
+        elif icon == 'SAN':
+            return MatchEventType.SANCTION_FLAG
+        elif icon.startswith('SI'):
+            return MatchEventType.ADVERSE_MEDIA_FLAG
+        else:
+            return MatchEventType.REFER_FLAG
+
+
+@unique
+class Gender(Enum):
+    M = 'M'
+    F = 'F'
+
+    def from_dowjones(string):
+        if string.lower() == 'male':
+            return Gender.M
+        elif string.lower() == 'female':
+            return Gender.F
+        else:
+            return None
+
+
+@unique
+class CountryMatchType(Enum):
+    AFFILIATION = 'AFFILIATION'
+    CITIZENSHIP = 'CITIZENSHIP'
+    CURRENT_OWNERSHIP = 'CURRENT_OWNERSHIP'
+    OWNERSHIP = 'OWNERSHIP'
+    JURISDICTION = 'JURISDICTION'
+    REGISTRATION = 'REGISTRATION'
+    ALLEGATION = 'ALLEGATION'
+    RESIDENCE = 'RESIDENCE'
+    RISK = 'RISK'
+    FORMERLY_SANCTIONED = 'FORMERLY_SANCTIONED'
+    SANCTIONED = 'SANCTIONED'
+    UNKNOWN = 'UNKNOWN'
+
+    def from_dowjones(label):
+        '''Map from DJ's country match type onto ours
+
+        DJ's docs provide a list of the possible match types but they
+        appear to differ in format from what's actually returned from
+        the API.
+
+        E.g. The docs say `Country of Jurisdiction` but the
+        `country-type` attribute actually returned is just
+        `Jurisdiction`.
+
+        As a result, we try and be as accepting as possible.
+        '''
+        if label is None:
+            return CountryMatchType.UKNOWN
+        
+        lowered_label = label.lower()
+        if 'affiliation' in lowered_label:
+            return CountryMatchType.AFFILIATION
+        elif 'citizenship' in lowered_label:
+            return CountryMatchType.CITIZENSHIP
+        elif 'ownership' in lowered_label:
+            if 'current' in lowered_label:
+                return CountryMatchType.CURRENT_OWNERSHIP
+            else:
+                return CountryMatchType.OWNERSHIP
+        elif 'jurisdiction' in lowered_label:
+            return CountryMatchType.JURISDICTION
+        elif 'registration' in lowered_label:
+            return CountryMatchType.REGISTRATION
+        elif 'allegation' in lowered_label:
+            return CountryMatchType.ALLEGATION
+        elif 'residence' in lowered_label or 'resident' in lowered_label:
+            return CountryMatchType.RESIDENCE
+        elif 'risk' in lowered_label:
+            return CountryMatchType.RISK
+        elif 'sanction' in lowered_label:
+            if 'former' in lowered_label:
+                return CountryMatchType.FORMERLY_SANCTIONED
+            else:
+                return CountryMatchType.SANCTIONED
+        else:
+            logging.error(f'Unmatched country match type {label}')
+            return CountryMatchType.UNKNOWN
+
+
+class MatchEvent(Model):
+    event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
+    match_id = StringType(required=True)
+    provider_name = StringType(required=True)
+
+    # Match information
+    match_name = StringType()
+    score = FloatType()
+    match_custom_label = StringType()
+    match_countries = ListType(StringType())
+    country_match_types = ListType(StringType(choices=[ty.value for ty in CountryMatchType]))
+
+    # Additional information
+    gender = StringType(choices=[gender.value for gender in Gender])
+    deceased = BooleanType()
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class ScreeningResponse(Model):
+    errors = ListType(ModelType(Error), default=[])
+    events = ListType(ModelType(MatchEvent), default=[])
+
+
+class TestError(Model):
+    name = IntType()
