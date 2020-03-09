@@ -26,18 +26,18 @@ class TestPassfortToCifas(TestCase):
         personal_details = individual_data.personal_details
 
         self.assertEqual(
-            personal_details.name.family_name, 
+            personal_details.name.family_name,
             request.Party.Surname,
         )
 
         self.assertEqual(
-            personal_details.name.given_names[0], 
+            personal_details.name.given_names[0],
             request.Party.FirstName,
         )
 
         if personal_details.dob:
             self.assertEqual(
-                personal_details.dob.value, 
+                personal_details.dob.value,
                 request.Party.BirthDate,
             )
 
@@ -47,12 +47,12 @@ class TestPassfortToCifas(TestCase):
         contact_details = individual_data.contact_details
 
         self.assertEqual(
-            contact_details.email, 
+            contact_details.email,
             request.Party.EmailAddress,
         )
 
         self.assertEqual(
-            contact_details.phone_number, 
+            contact_details.phone_number,
             request.Party.HomeTelephone,
         )
 
@@ -93,12 +93,12 @@ class TestPassfortToCifas(TestCase):
         contact_details = company_data.metadata.contact_details
 
         self.assertEqual(
-            contact_details.email, 
+            contact_details.email,
             request.Party.EmailAddress,
         )
 
         self.assertEqual(
-            contact_details.phone_number, 
+            contact_details.phone_number,
             request.Party.CompanyTelephone,
         )
 
@@ -117,6 +117,13 @@ class TestPassfortToCifas(TestCase):
         self.assert_config_on_request(search_request)
         self.assert_personal_details(individual_data, search_request)
 
+    def test_no_address_individual_party(self):
+        individual_data = IndividualData.from_dict(INDIVIDUAL_DATA_MINIMAL)
+        individual_data.address_history = None
+        search_request = FullSearchRequest.from_passfort_data(individual_data, self.cifas_config)
+        self.assert_config_on_request(search_request)
+        self.assert_personal_details(individual_data, search_request)
+
     def test_full_company_party(self):
         company_data = CompanyData.from_dict(COMPANY_DATA_FULL)
         search_request = FullSearchRequest.from_passfort_data(company_data, self.cifas_config)
@@ -126,6 +133,13 @@ class TestPassfortToCifas(TestCase):
 
     def test_minimal_company_party(self):
         company_data = CompanyData.from_dict(COMPANY_DATA_MINIMAL)
+        search_request = FullSearchRequest.from_passfort_data(company_data, self.cifas_config)
+        self.assert_config_on_request(search_request)
+        self.assert_company_required_metadata(company_data, search_request)
+
+    def test_no_address_company_party(self):
+        company_data = CompanyData.from_dict(COMPANY_DATA_MINIMAL)
+        company_data.metadata.addresses = None
         search_request = FullSearchRequest.from_passfort_data(company_data, self.cifas_config)
         self.assert_config_on_request(search_request)
         self.assert_company_required_metadata(company_data, search_request)
