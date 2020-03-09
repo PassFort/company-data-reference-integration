@@ -205,7 +205,7 @@ class CountryMatchType(Enum):
             return CountryMatchType.REGISTRATION
         elif 'allegation' in lowered_label:
             return CountryMatchType.ALLEGATION
-        elif 'residence' in lowered_label:
+        elif 'residence' in lowered_label or 'resident' in lowered_label:
             return CountryMatchType.RESIDENCE
         elif 'risk' in lowered_label:
             return CountryMatchType.RISK
