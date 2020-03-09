@@ -81,6 +81,21 @@ SEARCH_RESPONSE = {
     ]
 }
 
+MOCK_COMPANY = {
+    "portfolioId": 1111111,
+    "safeNumber": "FR123456789",
+    "countryCode": "FR",
+    "name": "A Company",
+    "address": "24 Leftside, Paris, 23456",
+    "personalReference": "Some text",
+    "companyStatus": "Active",
+    "creditLimit": 10000,
+    "ratingLocal": 76,
+    "ratingCommon": "B",
+    "dateLastEvent": "2017-04-18T15:00:00.050Z",
+    "id": "FR01-000-584758989"
+}
+
 
 class TestHandleSearchRequestErrors(unittest.TestCase):
 
@@ -379,6 +394,13 @@ class TestMonitoring(unittest.TestCase):
             json=json,
             status=status)
 
+    def mock_creditsafe_get_company_response(self, status, json):
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/portfolios/111111111/companies/testID',
+            json=json,
+            status=status)
+
     def mock_creditsafe_monitoring_response(self, status, json):
         responses.add(
             responses.POST,
@@ -444,7 +466,19 @@ class TestMonitoring(unittest.TestCase):
         self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", portfolio_response.json['errors'][0]['message'])
 
     @responses.activate
+    def test_enable_monitoring_existing_company(self):
+        self.mock_creditsafe_get_company_response(200, MOCK_COMPANY)
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+
+        self.assertEqual(monitoring_response.status_code, 200)
+
+    @responses.activate
     def test_enable_monitoring(self):
+        self.mock_creditsafe_get_company_response(400, {'message': 'PortfolioCompany not found'})
         self.mock_creditsafe_monitoring_response(201, {
             'message': 'Company added'
         })
@@ -457,7 +491,21 @@ class TestMonitoring(unittest.TestCase):
         self.assertEqual(monitoring_response.status_code, 200)
 
     @responses.activate
+    def test_get_company_unhandled_error(self):
+        self.mock_creditsafe_get_company_response(500, {'message': 'Unhandled error'})
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+
+        self.assertEqual(monitoring_response.status_code, 500)
+        self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", monitoring_response.json['errors'][0]['message'])
+
+
+    @responses.activate
     def test_enabled_monitoring_unhandled_error(self):
+        self.mock_creditsafe_get_company_response(404, {'message': 'Company resource not found'})
         self.mock_creditsafe_monitoring_response(500, {
             'message': 'Unhandled error'
         })
@@ -471,7 +519,20 @@ class TestMonitoring(unittest.TestCase):
         self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", monitoring_response.json['errors'][0]['message'])
 
     @responses.activate
+    def test_get_company_bad_request(self):
+        self.mock_creditsafe_get_company_response(400, {'message': 'Bad request'})
+
+        monitoring_response = self.app.post(
+            '/monitoring',
+            json=TEST_MONITORING_REQUEST
+        )
+
+        self.assertEqual(monitoring_response.status_code, 200)
+        self.assertIn('Bad request', monitoring_response.json['errors'][0]['message'])
+
+    @responses.activate
     def test_create_monitoring_bad_request(self):
+        self.mock_creditsafe_get_company_response(404, {'message': 'Company resource not found'})
         self.mock_creditsafe_monitoring_response(400, {
             'message': 'Bad request'
         })
@@ -486,7 +547,7 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_monitoring_access_forbidden(self):
-        self.mock_creditsafe_monitoring_response(403, {
+        self.mock_creditsafe_get_company_response(403, {
              'message': 'Access forbidden'
         })
 
@@ -499,6 +560,7 @@ class TestMonitoring(unittest.TestCase):
 
     @responses.activate
     def test_create_monitoring_not_found(self):
+        self.mock_creditsafe_get_company_response(404, {'message': 'Company resource not found'})
         self.mock_creditsafe_monitoring_response(404, {
              'message': 'Not found'
         })
