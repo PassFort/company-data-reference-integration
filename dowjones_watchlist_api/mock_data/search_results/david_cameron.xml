@@ -1,4 +1,4 @@
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <search-results>
   <head>
     <api-version>1.6.0</api-version>
@@ -10,9 +10,9 @@
     <cached-results-id>4f839e3a-7908-4ef0-af51-877b184e9b86</cached-results-id>
   </head>
   <body>
-    <match peid=\"873466\" revision=\"2012-07-03 02:27:24.000\" record-type=\"PERSON\">
+    <match peid="873466" revision="2012-07-03 02:27:24.000" record-type="PERSON">
       <score>1.0</score>
-      <match-type linguistic-variation=\"false\" non-linguistic-variation=\"false\" structural-variation=\"false\">PRECISE</match-type>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
       <payload>
         <risk-icons>
           <risk-icon>PEP</risk-icon>
@@ -21,7 +21,7 @@
         <country-code>NZ</country-code>
         <title>See Previous Roles</title>
         <subsidiary>false</subsidiary>
-        <matched-name name-type=\"Primary Name\">David Cameron</matched-name>
+        <matched-name name-type="Primary Name">David Cameron</matched-name>
         <dates-of-birth />
         <countries>
           <country>
@@ -40,9 +40,9 @@
         <gender>MALE</gender>
       </payload>
     </match>
-    <match peid=\"2912358\" revision=\"2013-08-30 08:44:50.177\" record-type=\"PERSON\">
+    <match peid="2912358" revision="2013-08-30 08:44:50.177" record-type="PERSON">
       <score>1.0</score>
-      <match-type linguistic-variation=\"false\" non-linguistic-variation=\"false\" structural-variation=\"false\">PRECISE</match-type>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
       <payload>
         <risk-icons>
           <risk-icon>SI</risk-icon>
@@ -51,7 +51,7 @@
         <country-code>USA</country-code>
         <title />
         <subsidiary>false</subsidiary>
-        <matched-name name-type=\"Primary Name\">David Cameron</matched-name>
+        <matched-name name-type="Primary Name">David Cameron</matched-name>
         <dates-of-birth />
         <countries>
           <country>
@@ -70,9 +70,9 @@
         <gender>MALE</gender>
       </payload>
     </match>
-    <match peid=\"11847281\" revision=\"2019-05-22 08:05:34.487\" record-type=\"PERSON\">
+    <match peid="11847281" revision="2019-05-22 08:05:34.487" record-type="PERSON">
       <score>1.0</score>
-      <match-type linguistic-variation=\"false\" non-linguistic-variation=\"false\" structural-variation=\"false\">PRECISE</match-type>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
       <payload>
         <risk-icons>
           <risk-icon>RCA</risk-icon>
@@ -81,7 +81,7 @@
         <country-code>AUSTR</country-code>
         <title />
         <subsidiary>false</subsidiary>
-        <matched-name name-type=\"Primary Name\">David Allen Cameron</matched-name>
+        <matched-name name-type="Primary Name">David Allen Cameron</matched-name>
         <dates-of-birth>
           <date-of-birth>
             <year>1974</year>
@@ -106,9 +106,9 @@
         <gender>MALE</gender>
       </payload>
     </match>
-    <match peid=\"4506663\" revision=\"2016-03-14 11:04:54.550\" record-type=\"PERSON\">
+    <match peid="4506663" revision="2016-03-14 11:04:54.550" record-type="PERSON">
       <score>1.0</score>
-      <match-type linguistic-variation=\"false\" non-linguistic-variation=\"false\" structural-variation=\"false\">PRECISE</match-type>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
       <payload>
         <risk-icons>
           <risk-icon>SI</risk-icon>
@@ -117,7 +117,7 @@
         <country-code>UK</country-code>
         <title />
         <subsidiary>false</subsidiary>
-        <matched-name name-type=\"Primary Name\">David Hugh Cameron</matched-name>
+        <matched-name name-type="Primary Name">David Hugh Cameron</matched-name>
         <dates-of-birth>
           <date-of-birth>
             <year>1955</year>
@@ -143,9 +143,9 @@
         <gender>MALE</gender>
       </payload>
     </match>
-    <match peid=\"358285\" revision=\"2019-02-13 17:35:16.387\" record-type=\"PERSON\">
+    <match peid="358285" revision="2019-02-13 17:35:16.387" record-type="PERSON">
       <score>1.0</score>
-      <match-type linguistic-variation=\"false\" non-linguistic-variation=\"false\" structural-variation=\"false\">PRECISE</match-type>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
       <payload>
         <risk-icons>
           <risk-icon>PEP</risk-icon>
@@ -154,7 +154,7 @@
         <country-code>UK</country-code>
         <title>See Previous Roles</title>
         <subsidiary>false</subsidiary>
-        <matched-name name-type=\"Primary Name\">David William Donald Cameron</matched-name>
+        <matched-name name-type="Primary Name">David William Donald Cameron</matched-name>
         <dates-of-birth>
           <date-of-birth>
             <year>1966</year>
@@ -179,9 +179,9 @@
         <gender>MALE</gender>
       </payload>
     </match>
-    <match peid=\"2984134\" revision=\"2017-07-01 07:23:37.423\" record-type=\"PERSON\">
+    <match peid="2984134" revision="2017-07-01 07:23:37.423" record-type="PERSON">
       <score>0.95714283</score>
-      <match-type linguistic-variation=\"true\" non-linguistic-variation=\"false\" structural-variation=\"false\">NEAR</match-type>
+      <match-type linguistic-variation="true" non-linguistic-variation="false" structural-variation="false">NEAR</match-type>
       <payload>
         <risk-icons>
           <risk-icon>PEP</risk-icon>
@@ -190,7 +190,7 @@
         <country-code>JAMA</country-code>
         <title>See Previous Roles</title>
         <subsidiary>false</subsidiary>
-        <matched-name name-type=\"Also Known As\">Dave Cameron</matched-name>
+        <matched-name name-type="Also Known As">Dave Cameron</matched-name>
         <dates-of-birth>
           <date-of-birth>
             <year>1971</year>

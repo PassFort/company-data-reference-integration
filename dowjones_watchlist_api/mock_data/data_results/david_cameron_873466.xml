@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="873466" date="2012-07-03 02:27:24.000">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>David</first-name>
+          <surname>Cameron</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="2011" date-type="Inactive as of (PEP)">
+      </date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="NZ" iso2-country-code="NZ" iso3-country-code="NZL" is-territory="false" country-profile="new zealand.doc">New Zealand</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="SOLIL" iso2-country-code="SB" iso3-country-code="SLB" is-territory="false" country-profile="solomon islands.doc">Solomon Islands</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="NZ" iso2-country-code="NZ" iso3-country-code="NZL" is-territory="false" country-profile="new zealand.doc">New Zealand</country>
+      </country-value>
+    </country-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)">
+        </description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Members of the Judiciary" since-day="5" since-month="2" since-year="2007" to-year="2011">Judge, High Court of Solomon Islands</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Senior Members of the Judiciary">See Previous Roles</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+  </person>
+</records>
