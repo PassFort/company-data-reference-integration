@@ -3,6 +3,7 @@ import logging
 from flask import Flask, jsonify
 
 from app.api.types import (
+    CountryMatchData,
     CountryMatchType,
     Error,
     Gender,
@@ -46,14 +47,11 @@ def run_check(request_data: ScreeningRequest):
 
         gender = Gender.from_dowjones(record.person.gender)
 
-        country_match_types = [
-            CountryMatchType.from_dowjones(value.country_type)
-            for value in record.person.country_details.country_values
-        ]
-
         country_matches = [
-            value.country.iso3_country_code
-            for value in record.person.country_details.country_values
+            CountryMatchData({
+                'type': CountryMatchType.from_dowjones(value.country_type).value,
+                'country_code': value.country.iso3_country_code,
+            }) for value in record.person.country_details.country_values
         ]
 
         return MatchEvent({
@@ -63,9 +61,8 @@ def run_check(request_data: ScreeningRequest):
             'match_custom_label': risk_icon,
             'match_name': match.payload.matched_name,
             'score': match.score,
-            'match_countries': country_matches,
-            'country_match_types': [ty.value for ty in country_match_types],
-
+            'match_countries': [match.country_code for match in country_matches],
+            'match_countries_data': country_matches,
             'gender': gender.value if gender else None,
             'deceased': record.person.deceased,
         })

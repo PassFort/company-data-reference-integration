@@ -61,7 +61,7 @@ class WatchlistAPIConfig(Model):
 
 
 class FullName(Model):
-    given_names = ListType(StringType, required=True)
+    given_names = ListType(StringType(), required=True)
     family_name = StringType(required=True, min_length=1)
 
 
@@ -188,7 +188,7 @@ class CountryMatchType(Enum):
         '''
         if label is None:
             return CountryMatchType.UKNOWN
-        
+
         lowered_label = label.lower()
         if 'affiliation' in lowered_label:
             return CountryMatchType.AFFILIATION
@@ -219,6 +219,11 @@ class CountryMatchType(Enum):
             return CountryMatchType.UNKNOWN
 
 
+class CountryMatchData(Model):
+    type_ = StringType(required=True, serialized_name='type', choices=[ty.value for ty in CountryMatchType])
+    country_code = StringType(min_length=3, max_length=3)
+
+
 class MatchEvent(Model):
     event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
     match_id = StringType(required=True)
@@ -229,7 +234,7 @@ class MatchEvent(Model):
     score = FloatType()
     match_custom_label = StringType()
     match_countries = ListType(StringType())
-    country_match_types = ListType(StringType(choices=[ty.value for ty in CountryMatchType]))
+    match_countries_data = ListType(ModelType(CountryMatchData))
 
     # Additional information
     gender = StringType(choices=[gender.value for gender in Gender])
