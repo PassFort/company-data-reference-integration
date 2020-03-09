@@ -199,13 +199,13 @@ def get_sources(entity: 'Entity'):
 
 def format_date(event: 'Event'):
     format_str = '%Y'
-    date_str = str(event.year)
+    date_str = f'{event.year:04}'
     if event.month:
         format_str += '-%m'
-        date_str += f'-{event.month}'
+        date_str += f'-{event.month:02}'
         if event.day:
             format_str += '-%d'
-            date_str += f'-{event.day}'
+            date_str += f'-{event.day:02}'
     return {
         'date': date_str,
         'format': format_str,
