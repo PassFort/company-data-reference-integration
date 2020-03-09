@@ -41,6 +41,8 @@ def run_check(request_data: ScreeningRequest):
 
     def event_from_match(match):
         record = client.fetch_data_record(match.peid)
+        risk_icon = match.payload.risk_icons.icons[0]
+        event_type = MatchEventType.from_risk_icon(risk_icon)
 
         gender = Gender.from_dowjones(record.person.gender)
 
@@ -55,14 +57,15 @@ def run_check(request_data: ScreeningRequest):
         ]
 
         return MatchEvent({
+            'event_type': event_type.value,
             'match_id': record.person.peid,
             'provider_name': PROVIDER_NAME,
-
-            'event_type': MatchEventType.from_risk_icon(match.payload.risk_icons.icons[0]).value,
+            'match_custom_label': risk_icon,
             'match_name': match.payload.matched_name,
             'score': match.score,
             'match_countries': country_matches,
             'country_match_types': [ty.value for ty in country_match_types],
+
             'gender': gender.value if gender else None,
             'deceased': record.person.deceased,
         })
