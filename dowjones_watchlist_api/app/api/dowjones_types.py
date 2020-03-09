@@ -69,14 +69,34 @@ class PersonNameDetails(XmlElementModel):
     values = XmlChildren(PersonNames)
 
 
+class Country(XmlElementModel):
+    tag_name = 'country'
+    djii_region_code = XmlAttribute(XmlStringType(), serialized_name='djii-region-code')
+    iso2_country_code = XmlAttribute(XmlStringType(), serialized_name='iso2-country-code')
+    iso3_country_code = XmlAttribute(XmlStringType(), default=None, serialized_name='iso3-country-code')
+
+
+class CountryValue(XmlElementModel):
+    tag_name = 'country-value'
+    country_type = XmlAttribute(XmlStringType(), serialized_name='country-type')
+
+    country = XmlChild(Country)
+
+
+class CountryDetails(XmlElementModel):
+    tag_name = 'country-details'
+    country_values = XmlChildren(CountryValue)
+
+
 class PersonRecord(XmlElementModel):
     tag_name = 'person'
     peid = XmlAttribute(XmlStringType())
     date = XmlAttribute(XmlStringType())
 
-    gender = XmlChildContent(XmlStringType())
+    gender = XmlChildContent(XmlStringType(), default=None)
     deceased = XmlChildContent(XmlBoolType(bool_values=['true', 'false']))
     name_details = XmlChild(PersonNameDetails)
+    country_details = XmlChild(CountryDetails)
 
 
 class DataResults(XmlElementModel):

@@ -3,7 +3,9 @@ import logging
 from flask import Flask, jsonify
 
 from app.api.types import (
+    CountryMatchType,
     Error,
+    Gender,
     ScreeningRequest,
     ScreeningResponse,
     MatchEvent,
@@ -37,25 +39,41 @@ def run_check(request_data: ScreeningRequest):
 
     search_results = client.run_search(request_data.input_data)
 
-    data_results = [
-        {
-            'icon': match.payload.risk_icons.icons[0],
-            'name': match.payload.matched_name,
+    def event_from_match(match):
+        record = client.fetch_data_record(match.peid)
+
+        gender = Gender.from_dowjones(record.person.gender)
+
+        country_match_types = [
+            CountryMatchType.from_dowjones(value.country_type)
+            for value in record.person.country_details.country_values
+        ]
+
+        country_matches = [
+            value.country.iso3_country_code
+            for value in record.person.country_details.country_values
+        ]
+
+        return MatchEvent({
+            'match_id': record.person.peid,
+            'provider_name': PROVIDER_NAME,
+
+            'event_type': MatchEventType.from_risk_icon(match.payload.risk_icons.icons[0]).value,
+            'match_name': match.payload.matched_name,
             'score': match.score,
-            'record': client.fetch_data_record(match.peid)
-        }
-        for match in search_results.body.matches
+            'match_countries': country_matches,
+            'country_match_types': [ty.value for ty in country_match_types],
+            'gender': gender.value if gender else None,
+            'deceased': record.person.deceased,
+        })
+
+    events = [
+        event_from_match(match) for match in search_results.body.matches
     ]
 
     return jsonify(ScreeningResponse({
         'errors': [],
-        'events': [MatchEvent({
-            'event_type': MatchEventType.from_risk_icon(results['icon']).value,
-            'match_id': results['record'].person.peid,
-            'provider_name': PROVIDER_NAME,
-            'match_name': results['name'],
-            'score': results['score'],
-        }) for results in data_results],
+        'events': events,
     }).to_primitive())
 
 
