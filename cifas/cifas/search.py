@@ -46,7 +46,7 @@ class StructuredAddress:
 class BankAccountDetails:
     SortCode: str
     AccountNumber: str
-    
+
     def __post_init__(self):
         sort_code = self.SortCode
         if sort_code:
@@ -149,7 +149,7 @@ class FullSearchResponse:
 
 def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyData]) -> Union[IndividualParty, CompanyParty]:
     if isinstance(entity_data, IndividualData):
-        address_history = entity_data.address_history
+        address_history = entity_data.address_history or []
         personal_details = entity_data.personal_details
         contact_details = entity_data.contact_details
         full_name = personal_details.name
@@ -178,7 +178,7 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
             FirstName=first_name,
 
             # Cifas does not accept partial dates
-            BirthDate=personal_details.dob.value if personal_details.dob and 
+            BirthDate=personal_details.dob.value if personal_details.dob and
             personal_details.dob.precision == DatePrecision.YEAR_MONTH_DAY else None,
 
             Address=[
@@ -191,7 +191,6 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
             NationalInsuranceNumber=national_identity_number.get('GBR') if national_identity_number else None,
             Finance=finance_items,
         )
-
     return CompanyParty(
         CompanyName=entity_data.metadata.name,
         CompanyNumber=entity_data.metadata.number,
@@ -202,6 +201,6 @@ def create_party_from_passfort_data(entity_data: Union[IndividualData, CompanyDa
         Address=[
             StructuredAddress.from_passfort_address(item.address)
             # Cifas API accepts 10 addresses max
-            for item in entity_data.metadata.addresses[:10] 
+            for item in (entity_data.metadata.addresses or [])[:10]
         ],
     )
