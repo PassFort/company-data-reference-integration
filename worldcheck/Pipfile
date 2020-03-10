@@ -11,7 +11,7 @@ datadog = "*"
 freezegun = "*"
 mock = "*"
 gunicorn = "==19.5.0"
-Flask = "==0.12.1"
+Flask = "==1.1.1"
 schematics = "*"
 requests = "*"
 raven = {extras = ["flask"]}
@@ -20,3 +20,4 @@ python-json-logger = "*"
 swagger-client = {git = "git@github.com:PassFort/python-worldcheck-client.git@997ffa71befba2e176be87f13dac33189be57090", editable=true}
 coverage = "*"
 codecov = "*"
+markupsafe = "==1.1.1"

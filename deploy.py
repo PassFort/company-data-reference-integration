@@ -48,8 +48,7 @@ def build_container(container_tag, service, private_key, push=False):
             "--build-arg", 'git_key=' + private_key,
             "--tag", container_uri,
             build_dir
-        ],
-        stdout=True
+        ]
     )
 
     if push:
