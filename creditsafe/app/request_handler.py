@@ -172,24 +172,37 @@ class CreditSafeHandler:
     def monitor_company(self, monitor_company: CreditSafeMonitoringRequest):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
-        url = f'{self.base_url}/monitoring/portfolios/{monitor_company.portfolio_id}/companies'
+        portfolio_company_url = f'{self.base_url}/monitoring/portfolios/{monitor_company.portfolio_id}/companies'
 
-        response = self.session.post(
-            url,
-            json={
-                'id': monitor_company.creditsafe_id,
-                'personalReference': '',
-                'freeText': '',
-                'personalLimit': '' # todo ask creditsafe what this should be
-            },
+        company_response = self.session.get(
+            f'{portfolio_company_url}/{monitor_company.creditsafe_id}',
             headers={
                 'Content-Type': 'application/json',
                 'Authorization': f'Bearer {token}'
             }
         )
 
-        if response.status_code != 201 and response.status_code != 200:
-            raise CreditSafeMonitoringError(response)
+        # if company doesn't already exist in the portfolio, add it
+        if company_response.status_code == 404 or (company_response.status_code == 400 \
+                and company_response.json()['message'] == 'PortfolioCompany not found'):
+            response = self.session.post(
+                portfolio_company_url,
+                json={
+                    'id': monitor_company.creditsafe_id,
+                    'personalReference': '',
+                    'freeText': '',
+                    'personalLimit': '' # todo ask creditsafe what this should be
+                },
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': f'Bearer {token}'
+                }
+            )
+
+            if response.status_code != 201 and response.status_code != 200:
+                raise CreditSafeMonitoringError(response)
+        elif company_response.status_code != 200:
+            raise CreditSafeMonitoringError(company_response)
 
     def get_events(self, request_data: CreditSafeMonitoringEventsRequest) -> List[CreditSafeNotificationEvent]:
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
