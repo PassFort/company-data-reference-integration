@@ -22,7 +22,7 @@ RUN mkdir /srv/logs/ && \
     apk add --no-cache make openssh-client git
 
 RUN pipenv run pip install --upgrade wheel
-RUN ["pipenv", "install"]
+RUN ["pipenv", "install", "--verbose"]
 
 RUN apk del --no-cache git openssh-client
 

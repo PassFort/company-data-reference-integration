@@ -206,6 +206,11 @@ def format_date(event: 'Event'):
         if event.day:
             format_str += '-%d'
             date_str += f'-{event.day:02}'
+        else:
+            date_str += '-01'
+    else:
+        date_str += '-01-01'
+
     return {
         'date': date_str,
         'format': format_str,
