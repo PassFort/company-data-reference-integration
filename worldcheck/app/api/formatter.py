@@ -221,7 +221,7 @@ def get_dobs(entity: 'Entity'):
     return [
         format_date(event)
         for event in (entity.events or [])
-        if event.type == EventType.BIRTH
+        if event.type == EventType.BIRTH and event.year is not None
     ]
 
 
