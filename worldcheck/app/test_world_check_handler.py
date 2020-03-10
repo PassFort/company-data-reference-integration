@@ -105,6 +105,16 @@ class MatchHandlerTest(TestCase):
                 self.assertGreater(len(sanction_event['sanctions']), 0)
                 self.assertTrue('pep' not in sanction_event)
 
+            with self.subTest('the event data contains DOBs'):
+                self.assertEqual(pep_event['match_dates'], [{
+                    'date': '1965-09-11',
+                    'format': '%Y-%m-%d',
+                }])
+                self.assertEqual(sanction_event['match_dates'], [{
+                    'date': '1965-09-11',
+                    'format': '%Y-%m-%d',
+                }])
+
             with self.subTest('returns associate relationships'):
                 self.assertEqual(len(match_response['associate_relationships']), 2)
                 self.assertEqual(match_response['associate_relationships'][0], {
