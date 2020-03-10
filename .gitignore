@@ -1,5 +1,6 @@
 .venv
 .coverage
+coverage.xml
 *.pyc
 htmlcov/
 node_modules/

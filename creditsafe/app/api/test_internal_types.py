@@ -9,7 +9,7 @@ from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyRe
 from .types import SearchInput, Financials, Statement, MonitoringEvent
 from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload, with_yoy, \
     CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent
-from .rule_code_to_monitoring_config import MonitoringConfigType
+from .event_mappings import MonitoringConfigType
 
 DEMO_PL = {
     'currency_code': 'GBP',
