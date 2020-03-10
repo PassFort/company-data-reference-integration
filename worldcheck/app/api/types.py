@@ -283,6 +283,11 @@ class SanctionData(Model):
     is_current = BooleanType()
 
 
+class FormattedDate(Model):
+    date = StringType(required=True)
+    format = StringType(required=True)
+
+
 class MatchEvent(Model):
     event_type = StringType(required=True, choices=['PEP_FLAG', 'SANCTION_FLAG', 'REFER_FLAG'])
     match_id = StringType(required=True)
@@ -291,7 +296,7 @@ class MatchEvent(Model):
 
     # Match information
     match_name = StringType()
-    match_dates = ListType(DateType)
+    match_dates = ListType(ModelType(FormattedDate))
 
     # Nationality or country of incorporation.
     match_countries = ListType(StringType)

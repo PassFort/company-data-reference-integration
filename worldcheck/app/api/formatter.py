@@ -3,10 +3,10 @@ import pycountry
 from typing import List, TYPE_CHECKING
 from .types import MatchEvent, PEPMatchEvent, SanctionsMatchEvent, ReferMatchEvent
 
-from swagger_client.models import NameType, DetailType, ProfileEntityType, CountryLinkType
+from swagger_client.models import NameType, DetailType, ProfileEntityType, CountryLinkType, EventType
 
 if TYPE_CHECKING:
-    from swagger_client.models import Address, Associate, Entity, IndividualEntity, Name, Result
+    from swagger_client.models import Address, Associate, Entity, IndividualEntity, Name, Result, Event
 
 
 def get_some_name(n: 'Name'):
@@ -79,6 +79,7 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
     base_event_data = {
         "match_id": entity.entity_id,
         "match_name": primary_name,
+        "match_dates": get_dobs(entity),
         "aliases": aliases,
         "sources": get_sources(entity),
         "details": get_details(entity)
@@ -194,6 +195,29 @@ def get_sources(entity: 'Entity'):
     ] if entity.sources is not None else []
 
     return from_weblinks + from_sources
+
+
+def format_date(event: 'Event'):
+    format_str = '%Y'
+    date_str = f'{event.year:04}'
+    if event.month:
+        format_str += '-%m'
+        date_str += f'-{event.month:02}'
+        if event.day:
+            format_str += '-%d'
+            date_str += f'-{event.day:02}'
+    return {
+        'date': date_str,
+        'format': format_str,
+    }
+
+
+def get_dobs(entity: 'Entity'):
+    return [
+        format_date(event)
+        for event in (entity.events or [])
+        if event.type == EventType.BIRTH
+    ]
 
 
 def get_details(entity: 'Entity'):
