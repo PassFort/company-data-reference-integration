@@ -11,8 +11,7 @@ from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, Cre
     SearchInput, CreditSafeMonitoringError, CreditSafeMonitoringRequest, CreditSafeMonitoringEventsRequest
 from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, \
     CreditSafePortfolio, CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent
-
-from .api.rule_code_to_monitoring_config import rule_code_to_monitoring_config, MonitoringConfigType
+from .api.event_mappings import get_configure_event_payload
 
 
 def requests_retry_session(
@@ -167,7 +166,9 @@ class CreditSafeHandler:
         if response.status_code != 200:
             raise CreditSafeMonitoringError(response)
 
-        return CreditSafePortfolio(response.json())
+        portfolio = CreditSafePortfolio(response.json())
+        self._configure_events(token, portfolio.id)
+        return portfolio
 
     def monitor_company(self, monitor_company: CreditSafeMonitoringRequest):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
@@ -245,3 +246,18 @@ class CreditSafeHandler:
             current_page += 1
 
         return events
+
+    def _configure_events(self, token: str, portfolio_id: int):
+        for country_code, event_configs in get_configure_event_payload().items():
+            url = f'{self.base_url}/monitoring/portfolios/{portfolio_id}/eventRules/{country_code}'
+            response = self.session.put(
+                url,
+                json=event_configs,
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': f'Bearer {token}'
+                }
+            )
+
+            if response.status_code != 204:
+                raise CreditSafeMonitoringError(response)

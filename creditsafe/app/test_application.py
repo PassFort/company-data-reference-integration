@@ -13,7 +13,7 @@ from random import randint
 
 from .application import app
 from .api.types import ErrorCode
-from .api.rule_code_to_monitoring_config import MonitoringConfigType
+from .api.event_mappings import get_configure_event_payload, MonitoringConfigType
 
 
 TEST_SEARCH_REQUEST = {
@@ -378,6 +378,7 @@ class TestMonitoring(unittest.TestCase):
         self.app = app.test_client()
         # propagate the exceptions to the test client
         self.app.testing = True
+        self.configure_event_payload = get_configure_event_payload()
         self.mock_authentication()
 
     def mock_authentication(self):
@@ -408,6 +409,15 @@ class TestMonitoring(unittest.TestCase):
             json=json,
             status=status)
 
+    def mock_creditsafe_configure_events_response(self, status, json):
+        for country_code in self.configure_event_payload:
+            responses.add(
+                responses.PUT,
+                f'https://connect.creditsafe.com/v1/monitoring/portfolios/12345678/eventRules/{country_code}',
+                json=json,
+                status=status
+            )
+
     @responses.activate
     def test_create_portfolio(self):
         self.mock_creditsafe_portfolio_response(200, {
@@ -415,6 +425,7 @@ class TestMonitoring(unittest.TestCase):
             'name': 'Test portfolio name',
             'isDefault': False
         })
+        self.mock_creditsafe_configure_events_response(204, {})
 
         portfolio_response = self.app.post(
             '/monitoring_portfolio',
@@ -422,6 +433,9 @@ class TestMonitoring(unittest.TestCase):
         )
         self.assertEqual(portfolio_response.status_code, 200)
         self.assertEqual(portfolio_response.json['portfolio_id'], 12345678)
+
+        # 1 get token call + 1 create portfolio call + 1 call to configure events per supported country
+        self.assertEqual(len(responses.calls), 2 + len(self.configure_event_payload))
 
     @responses.activate
     def test_create_portfolio_bad_request(self):
@@ -450,6 +464,19 @@ class TestMonitoring(unittest.TestCase):
 
         self.assertEqual(portfolio_response.status_code, 200)
         self.assertIn('The request could not be authorised: Access forbidden', portfolio_response.json['errors'][0]['message'])
+
+    @responses.activate
+    def test_create_portfolio_not_found(self):
+        self.mock_creditsafe_portfolio_response(404, {
+            'message': 'Not found'
+        })
+
+        portfolio_response = self.app.post(
+            '/monitoring_portfolio',
+            json=TEST_PORTFOLIO_REQUEST
+        )
+        self.assertEqual(portfolio_response.status_code, 200)
+        self.assertIn('Not found', portfolio_response.json['errors'][0]['message'])
 
     @responses.activate
     def test_create_portfolio_unhandled_error(self):
@@ -548,7 +575,7 @@ class TestMonitoring(unittest.TestCase):
     @responses.activate
     def test_create_monitoring_access_forbidden(self):
         self.mock_creditsafe_get_company_response(403, {
-             'message': 'Access forbidden'
+            'message': 'Access forbidden'
         })
 
         monitoring_response = self.app.post(
@@ -562,7 +589,7 @@ class TestMonitoring(unittest.TestCase):
     def test_create_monitoring_not_found(self):
         self.mock_creditsafe_get_company_response(404, {'message': 'Company resource not found'})
         self.mock_creditsafe_monitoring_response(404, {
-             'message': 'Not found'
+            'message': 'Not found'
         })
 
         monitoring_response = self.app.post(

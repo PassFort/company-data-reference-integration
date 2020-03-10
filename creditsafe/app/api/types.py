@@ -13,7 +13,7 @@ from schematics.types.serializable import serializable
 from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType, \
     UTCDateTimeType, BaseType
 
-from .rule_code_to_monitoring_config import MonitoringConfigType, rule_code_to_monitoring_config
+from .event_mappings import MonitoringConfigType
 
 
 # TODO JSONDECODE
