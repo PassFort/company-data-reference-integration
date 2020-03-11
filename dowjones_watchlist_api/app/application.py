@@ -3,8 +3,11 @@ import logging
 from flask import Flask, jsonify
 
 from app.api.types import (
+    Associate,
     CountryMatchData,
     CountryMatchType,
+    DateMatchData,
+    DateMatchType,
     Error,
     Gender,
     ScreeningRequest,
@@ -40,6 +43,52 @@ def run_check(request_data: ScreeningRequest):
 
     search_results = client.run_search(request_data.input_data)
 
+    def fetch_associate_data(associate_match_data):
+        record = client.fetch_data_record(associate_match_data.peid)
+        if record.person is None:
+            # Associate might not be a person and we don't support
+            # other entity types in this integration
+            return None
+
+        name = next((
+            value.name.join()
+            for value in record.person.name_details.values
+            if value.name.type_.lower() == 'primary name'
+        ), None)
+
+        watchlist_content = record.person.watchlist_content
+        been_pep = any(
+            description.text.lower() == 'politically exposed person (pep)'
+            for description in watchlist_content.descriptions
+        )
+        been_sanctioned = any(
+            description.text.lower() == ''
+            for description in watchlist_content.descriptions
+        )
+
+        date_matches = [
+            DateMatchData({
+                'type': DateMatchType.from_dowjones(date.type_).value if date.type_ else None,
+                'date': date.to_partial_date_string(),
+            }) for date in record.person.date_details.dates
+        ] if record.person.date_details else []
+
+        return Associate({
+            'name': name,
+            'association': associate_match_data.relationship,
+            'is_pep': been_pep and watchlist_content.active_status.is_active,
+            'was_pep': been_pep and not watchlist_content.active_status.is_active,
+            'is_sanction': been_sanctioned and watchlist_content.active_status.is_active,
+            'was_sanction': been_sanctioned and not watchlist_content.active_status.is_active,
+            'dobs': [match.date for match in date_matches if match.type_ == DateMatchType.DOB.value],
+            'inactive_as_pep_dates': [
+                match.date
+                for match in date_matches
+                if match.type_ == DateMatchType.END_OF_PEP.value
+            ],
+            'deceased_dates': [match.date for match in date_matches if match.type_ == DateMatchType.DECEASED.value],
+        })
+
     def event_from_match(match):
         record = client.fetch_data_record(match.peid)
         risk_icon = match.payload.risk_icons.icons[0]
@@ -54,13 +103,33 @@ def run_check(request_data: ScreeningRequest):
             }) for value in record.person.country_details.country_values
         ]
 
+        date_matches = [
+            DateMatchData({
+                'type': DateMatchType.from_dowjones(date.type_).value if date.type_ else None,
+                'date': date.to_partial_date_string(),
+            }) for date in record.person.date_details.dates
+        ] if record.person.date_details else None
+
+        associates = [
+            associate for associate in
+            (fetch_associate_data(associate) for associate in record.person.associates)
+            if associate is not None
+        ]
+
         return MatchEvent({
             'event_type': event_type.value,
             'match_id': record.person.peid,
             'provider_name': PROVIDER_NAME,
             'match_custom_label': risk_icon,
             'match_name': match.payload.matched_name,
+            'match_dates': [match.date for match in date_matches] if date_matches else None,
+            'match_dates_data': date_matches,
             'score': match.score,
+            'aliases': [
+                value.name.join() for value in record.person.name_details.values
+                if value.name.type_.lower() == 'also known as'
+            ],
+            'associates': associates,
             'match_countries': [match.country_code for match in country_matches],
             'match_countries_data': country_matches,
             'gender': gender.value if gender else None,

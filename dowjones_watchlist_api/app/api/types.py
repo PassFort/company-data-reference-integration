@@ -12,6 +12,7 @@ from schematics.common import NOT_NONE
 from schematics.types import (
     BaseType,
     BooleanType,
+    DateType,
     DictType,
     IntType,
     ListType,
@@ -23,6 +24,11 @@ from schematics.exceptions import (
     DataError,
     ValidationError,
 )
+
+
+class PartialDateType(DateType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(formats=["%Y", "%Y-%m", "%Y-%m-%d"], *args, **kwargs)
 
 
 def validate_model(validation_model):
@@ -219,9 +225,52 @@ class CountryMatchType(Enum):
             return CountryMatchType.UNKNOWN
 
 
+@unique
+class DateMatchType(Enum):
+    DOB = 'DOB'
+    DECEASED = 'DECEASED'
+    END_OF_PEP = 'END_OF_PEP'
+    END_OF_RCA_TO_PEP = 'END_OF_RCA_TO_PEP'
+
+    def from_dowjones(date_type):
+        lowered = date_type.lower()
+        if lowered == 'date of birth':
+            return DateMatchType.DOB
+        elif lowered == 'deceased date':
+            return DateMatchType.DECEASED
+        elif lowered == 'inactive as of (pep)':
+            return DateMatchType.END_OF_PEP
+        elif lowered == 'inactive as of (rca related to pep)':
+            return DateMatchType.END_OF_RCA_TO_PEP
+        else:
+            logging.error(f'Unrecognised date type: {lowered}')
+            return None
+
+
 class CountryMatchData(Model):
     type_ = StringType(required=True, serialized_name='type', choices=[ty.value for ty in CountryMatchType])
     country_code = StringType(min_length=3, max_length=3)
+
+
+class DateMatchData(Model):
+    type_ = StringType(required=True, serialized_name='type', choices=[ty.value for ty in DateMatchType])
+    date = PartialDateType()
+
+
+class Associate(Model):
+    name = StringType()
+    association = StringType()
+    is_pep = BooleanType()
+    was_pep = BooleanType()
+    is_sanction = BooleanType()
+    was_sanction = BooleanType()
+    dobs = ListType(PartialDateType())
+    inactive_as_pep_dates = ListType(PartialDateType())
+    inactive_as_rca_related_to_pep_dates = ListType(PartialDateType())
+    deceased_dates = ListType(PartialDateType())
+
+    class Options:
+        export_level = NOT_NONE
 
 
 class MatchEvent(Model):
@@ -231,12 +280,17 @@ class MatchEvent(Model):
 
     # Match information
     match_name = StringType()
+    match_dates = ListType(PartialDateType())
+    match_dates_data = ListType(ModelType(DateMatchData))
+
     score = FloatType()
     match_custom_label = StringType()
     match_countries = ListType(StringType())
     match_countries_data = ListType(ModelType(CountryMatchData))
 
     # Additional information
+    aliases = ListType(StringType(), required=True, default=[])
+    associates = ListType(ModelType(Associate), default=[])
     gender = StringType(choices=[gender.value for gender in Gender])
     deceased = BooleanType()
 
