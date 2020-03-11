@@ -81,7 +81,10 @@ class APIClient():
     def fetch_data_record(self, peid):
         logging.info(f'Fetching data record with PEID \'{peid}\'')
         results = DataResults()
-        return results.import_data(xmltojson.parse(self._get(f'/data/records/{peid}')))
+        return results.import_data(xmltojson.parse(self._get(
+            f'/data/records/{peid}',
+            {'ame_article_type': 'all'},
+        )))
 
 
 DATA_RECORD_URL_PATTERN = re.compile('\/data\/records\/(.*)')

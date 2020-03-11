@@ -157,11 +157,44 @@ class Role(XmlElementModel):
     title = XmlChild(OccupationTitle)
 
 
+class XmlElementWithTimePeriodAttributes(XmlElementModel):
+    since_day = XmlAttribute(XmlIntType(), serialized_name='since-day', default=None)
+    since_month = XmlAttribute(XmlIntType(), serialized_name='since-month', default=None)
+    since_year = XmlAttribute(XmlIntType(), serialized_name='since-year', default=None)
+
+    to_day = XmlAttribute(XmlIntType(), serialized_name='to-day', default=None)
+    to_month = XmlAttribute(XmlIntType(), serialized_name='to-month', default=None)
+    to_year = XmlAttribute(XmlIntType(), serialized_name='to-year', default=None)
+
+    @property
+    def since_partial_date(self):
+        if self.since_year is None:
+            return None
+        return partial_date_string(self.since_year, self.since_month, self.since_day)
+
+    @property
+    def to_partial_date(self):
+        if self.to_year is None:
+            return None
+        return partial_date_string(self.to_year, self.to_month, self.to_day)
+
+
+class Sanction(XmlElementWithTimePeriodAttributes):
+    tag_name = 'sanctions-reference'
+    list_provider_name = XmlAttribute(XmlStringType(), serialized_name='list-provider-name')
+    list_provider_code = XmlAttribute(XmlStringType(), serialized_name='list-provider-code')
+    status = XmlAttribute(XmlStringType())
+
+    list_ = XmlContent(XmlStringType())
+
+
 class WatchlistContent(XmlElementModel):
     tag_name = 'watchlist-content'
     active_status = XmlChild(ActiveStatus)
     descriptions = XmlNestedChildList(Description)
     roles = XmlNestedChildList(Role, serialized_name='role-details')
+    sanctions = XmlNestedChildList(Sanction, serialized_name='sanctions-reference-details')
+    profile_notes = XmlChildContent(XmlStringType(), default=None, serialized_name='profile-notes')
 
 
 class Associate(XmlElementModel):

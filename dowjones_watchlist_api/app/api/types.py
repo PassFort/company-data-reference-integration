@@ -31,6 +31,14 @@ class PartialDateType(DateType):
         super().__init__(formats=["%Y", "%Y-%m", "%Y-%m-%d"], *args, **kwargs)
 
 
+class TimePeriod(Model):
+    from_date = PartialDateType(default=None)
+    to_date = PartialDateType(default=None)
+
+    class Options:
+        export_level = NOT_NONE
+
+
 def validate_model(validation_model):
     """
     Creates a Schematics Model from the request data and validates it.
@@ -293,12 +301,30 @@ class PepData(Model):
         export_level = NOT_NONE
 
 
+class SanctionsData(Model):
+    type_ = StringType(required=True, serialized_name='type')
+    list_ = StringType(serialized_name='list')
+    name = StringType()
+    issuer = StringType()
+    is_current = BooleanType()
+    time_periods = ListType(ModelType(TimePeriod))
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class AdverseMediaData(Model):
+    pass
+
+
 class MatchEvent(Model):
     event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
     match_id = StringType(required=True)
     provider_name = StringType(required=True)
 
     pep = ModelType(PepData)
+    sanctions = ListType(ModelType(SanctionsData))
+    media = ModelType(AdverseMediaData)
 
     # Match information
     match_name = StringType()
@@ -313,6 +339,7 @@ class MatchEvent(Model):
     # Additional information
     aliases = ListType(StringType(), required=True, default=[])
     associates = ListType(ModelType(Associate), default=[])
+    profile_notes = StringType()
     gender = StringType(choices=[gender.value for gender in Gender])
     deceased = BooleanType()
 

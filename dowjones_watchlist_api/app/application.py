@@ -12,8 +12,10 @@ from app.api.types import (
     Gender,
     PepData,
     PepRole,
+    SanctionsData,
     ScreeningRequest,
     ScreeningResponse,
+    TimePeriod,
     MatchEvent,
     MatchEventType,
     validate_model,
@@ -120,6 +122,29 @@ def run_check(request_data: ScreeningRequest):
             }) for date in record.person.date_details.dates
         ] if record.person.date_details else None
 
+        pep_data = PepData({
+            'roles': [
+                PepRole({
+                    'name': role.title.text,
+                    'is_current': role.type_ == 'Primary Occupation',
+                    'from_date': role.title.since_partial_date,
+                }) for role in record.person.watchlist_content.roles
+            ]
+        }) if event_type == MatchEventType.PEP_FLAG else None
+
+        sanctions_data = [
+            SanctionsData({
+                'type': 'sanction',
+                'issuer': sanction.list_provider_name,
+                'list': sanction.list_,
+                'is_current': sanction.status.lower() == 'current',
+                'time_periods': [TimePeriod({
+                    'from_date': sanction.since_partial_date,
+                    'to_date': sanction.to_partial_date,
+                })]
+            }) for sanction in record.person.watchlist_content.sanctions
+        ] if event_type == MatchEventType.SANCTION_FLAG else None
+
         associates = [
             associate for associate in
             (fetch_associate_data(associate) for associate in record.person.associates)
@@ -139,15 +164,9 @@ def run_check(request_data: ScreeningRequest):
                 value.name.join() for value in record.person.name_details.values
                 if value.name.type_.lower() == 'also known as'
             ],
-            'pep': PepData({
-                'roles': [
-                    PepRole({
-                        'name': role.title.text,
-                        'is_current': role.type_ == 'Primary Occupation',
-                        'from_date': role.title.since_partial_date,
-                    }) for role in record.person.watchlist_content.roles
-                ]
-            }) if event_type == MatchEventType.PEP_FLAG else None,
+            'pep': pep_data,
+            'sanctions': sanctions_data,
+            'profile_notes': record.person.watchlist_content.profile_notes,
             'associates': associates,
             'match_countries': [match.country_code for match in country_matches],
             'match_countries_data': country_matches,
