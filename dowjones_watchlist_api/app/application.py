@@ -10,6 +10,8 @@ from app.api.types import (
     DateMatchType,
     Error,
     Gender,
+    PepData,
+    PepRole,
     ScreeningRequest,
     ScreeningResponse,
     MatchEvent,
@@ -80,13 +82,21 @@ def run_check(request_data: ScreeningRequest):
             'was_pep': been_pep and not watchlist_content.active_status.is_active,
             'is_sanction': been_sanctioned and watchlist_content.active_status.is_active,
             'was_sanction': been_sanctioned and not watchlist_content.active_status.is_active,
-            'dobs': [match.date for match in date_matches if match.type_ == DateMatchType.DOB.value],
+            'dobs': [
+                match.date
+                for match in date_matches
+                if match.type_ == DateMatchType.DOB.value
+            ],
             'inactive_as_pep_dates': [
                 match.date
                 for match in date_matches
                 if match.type_ == DateMatchType.END_OF_PEP.value
             ],
-            'deceased_dates': [match.date for match in date_matches if match.type_ == DateMatchType.DECEASED.value],
+            'deceased_dates': [
+                match.date
+                for match in date_matches
+                if match.type_ == DateMatchType.DECEASED.value
+            ],
         })
 
     def event_from_match(match):
@@ -129,6 +139,15 @@ def run_check(request_data: ScreeningRequest):
                 value.name.join() for value in record.person.name_details.values
                 if value.name.type_.lower() == 'also known as'
             ],
+            'pep': PepData({
+                'roles': [
+                    PepRole({
+                        'name': role.title.text,
+                        'is_current': role.type_ == 'Primary Occupation',
+                        'from_date': role.title.since_partial_date,
+                    }) for role in record.person.watchlist_content.roles
+                ]
+            }) if event_type == MatchEventType.PEP_FLAG else None,
             'associates': associates,
             'match_countries': [match.country_code for match in country_matches],
             'match_countries_data': country_matches,

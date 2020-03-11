@@ -20,6 +20,18 @@ from schematics_xmlelem.types import (
 )
 
 
+def partial_date_string(maybe_year, maybe_month, maybe_day):
+    from datetime import date
+    if maybe_year is not None and maybe_month is not None and maybe_day is not None:
+        return date(maybe_year, maybe_month, maybe_day).strftime('%Y-%m-%d')
+    elif maybe_year is not None and maybe_month is not None:
+        return date(maybe_year, maybe_month, 1).strftime('%Y-%m')
+    elif maybe_year is not None:
+        return date(maybe_year, 1, 1).strftime('%Y')
+    else:
+        return None
+
+
 class RiskIcon(XmlElementModel):
     tag_name = 'risk-icon'
     kind = XmlChildContent(XmlStringType())
@@ -106,15 +118,7 @@ class Date(XmlElementModel):
     type_ = XmlAttribute(XmlStringType(), default=None, serialized_name='date-type')
 
     def to_partial_date_string(self):
-        from datetime import date
-        if self.year is not None and self.month is not None and self.day is not None:
-            return date(self.year, self.month, self.day).strftime('%Y-%m-%d')
-        elif self.year is not None and self.month is not None:
-            return date(self.year, self.month, 1).strftime('%Y-%m')
-        elif self.year is not None:
-            return date(self.year, 1, 1).strftime('%Y')
-        else:
-            return None
+        return partial_date_string(self.year, self.month, self.day)
 
 
 class DateDetails(XmlElementModel):
@@ -132,10 +136,32 @@ class Description(XmlElementModel):
     text = XmlAttribute(XmlStringType(), serialized_name='description1')
 
 
+class OccupationTitle(XmlElementModel):
+    tag_name = 'occupation-title'
+    category = XmlAttribute(XmlStringType(), serialized_name='occupation-category')
+    since_day = XmlAttribute(XmlIntType(), serialized_name='since-day', default=None)
+    since_month = XmlAttribute(XmlIntType(), serialized_name='since-month', default=None)
+    since_year = XmlAttribute(XmlIntType(), serialized_name='since-year', default=None)
+    text = XmlContent(XmlStringType())
+
+    @property
+    def since_partial_date(self):
+        if self.since_year is None:
+            return None
+        return partial_date_string(self.since_year, self.since_month, self.since_day)
+
+
+class Role(XmlElementModel):
+    tag_name = 'role'
+    type_ = XmlAttribute(XmlStringType(), serialized_name='role-type')
+    title = XmlChild(OccupationTitle)
+
+
 class WatchlistContent(XmlElementModel):
     tag_name = 'watchlist-content'
     active_status = XmlChild(ActiveStatus)
     descriptions = XmlNestedChildList(Description)
+    roles = XmlNestedChildList(Role, serialized_name='role-details')
 
 
 class Associate(XmlElementModel):
@@ -157,7 +183,8 @@ class PersonRecord(XmlElementModel):
     country_details = XmlChild(CountryDetails)
     date_details = XmlChild(DateDetails, default=None)
     watchlist_content = XmlChild(WatchlistContent)
-    associates = XmlNestedChildList(Associate)
+
+    associates = XmlNestedChildList(Associate, serialized_name='associates')
 
 
 class DataResults(XmlElementModel):

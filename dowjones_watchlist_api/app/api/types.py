@@ -273,10 +273,32 @@ class Associate(Model):
         export_level = NOT_NONE
 
 
+class PepRole(Model):
+    name = StringType()
+    tier = IntType()
+    from_date = PartialDateType()
+    to_date = PartialDateType()
+    is_current = BooleanType()
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class PepData(Model):
+    match = BooleanType()
+    tier = IntType()
+    roles = ListType(ModelType(PepRole))
+
+    class Options:
+        export_level = NOT_NONE
+
+
 class MatchEvent(Model):
     event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
     match_id = StringType(required=True)
     provider_name = StringType(required=True)
+
+    pep = ModelType(PepData)
 
     # Match information
     match_name = StringType()
