@@ -66,7 +66,7 @@ def run_check(request_data: ScreeningRequest):
             for description in watchlist_content.descriptions
         )
         been_sanctioned = any(
-            description.text.lower() == ''
+            description.text.lower() == 'sanctions lists'
             for description in watchlist_content.descriptions
         )
 
