@@ -1,16 +1,19 @@
 from datetime import datetime
-from itertools import chain
+from itertools import chain, groupby
 from typing import List
-import requests
 
+import os
+import json
+import requests
 import pycountry
+
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 from .api.types import CreditSafeAuthenticationError, CreditSafeSearchError, CreditSafeReportError, \
     SearchInput, CreditSafeMonitoringError, CreditSafeMonitoringRequest, CreditSafeMonitoringEventsRequest
 from .api.internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, \
-    CreditSafePortfolio, CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent
+    CreditSafePortfolio, CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent, EventsConfigGroup
 from .api.event_mappings import get_configure_event_payload
 
 
@@ -205,17 +208,57 @@ class CreditSafeHandler:
         elif company_response.status_code != 200:
             raise CreditSafeMonitoringError(company_response)
 
-    def get_events(self, request_data: CreditSafeMonitoringEventsRequest) -> List[CreditSafeNotificationEvent]:
+    def handle_events(self, request_data: CreditSafeMonitoringEventsRequest):
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
         url = f'{self.base_url}/monitoring/notificationEvents'
 
-        last_run_dates = {search_params.last_run_date for search_params in request_data.search_params}
+        last_run_dates = {config.last_run_date for config in request_data.monitoring_configs}
+        end_date = datetime.now()
+        event_groups = []
 
-        monitored_events_lists = [self.get_events_by_last_run_date(token, url, date) for date in last_run_dates]
-        return list(chain(*monitored_events_lists))  # Flattens the lists into a single list of events
+        # For each unique last_run_date in the config list, call the creditsafe endpoint to get
+        # the all the events in that time period, and group the events by portfolio ID.
+        for start_date in last_run_dates:
+            raw_events = self._get_events_by_last_run_date(token, url, start_date, end_date)
 
-    def get_events_by_last_run_date(self, token: str, url: str, last_run_date: datetime):
+            sorted_events = sorted(raw_events, key=lambda e: e.company.portfolio_id)
+            for portfolio_id, events_iter in groupby(sorted_events, key=lambda e: e.company.portfolio_id):
+                raw_events = []
+                for event in events_iter:
+                    raw_events.append(event)
+
+                event_groups.append(EventsConfigGroup(start_date, portfolio_id, raw_events))
+
+        for config in request_data.monitoring_configs:
+            # Get the group of events with the same portfolio ID and last_run_date as the config
+            group = next(
+                (g for g in event_groups if g.last_run_date == config.last_run_date and g.portfolio_id == config.portfolio_id),
+                None
+            )
+
+            passfort_events = self._get_passfort_events(group.raw_events) if group else []
+            raw_events = [e.to_primitive() for e in group.raw_events] if group else []
+
+            self._send_monitoring_callback(request_data.callback_url, config, passfort_events, raw_events, end_date)
+
+    def _get_passfort_events(self, raw_events):
+        events = [e.to_passfort_format() for e in raw_events]
+        return [e.to_primitive() for e in events if e]
+
+    def _send_monitoring_callback(self, callback_url, config, passfort_events, raw_events, end_date):
+        response = requests.post(
+            callback_url,
+            json={
+                'institution_config_id': str(config.institution_config_id),
+                'portfolio_id': config.portfolio_id,
+                'last_run_date': end_date.isoformat(),
+                'events': passfort_events,
+                'raw_data': raw_events
+            })
+        response.raise_for_status()
+
+    def _get_events_by_last_run_date(self, token: str, url: str, last_run_date: datetime, end_date: datetime):
         events = []
         has_more_events = True
         current_page = 0
@@ -229,6 +272,7 @@ class CreditSafeHandler:
                 },
                 params={
                     'startDate': last_run_date,
+                    'endDate': end_date,
                     'page': current_page,
                     'pageSize': 1000
                 }

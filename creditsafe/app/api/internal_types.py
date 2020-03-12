@@ -1,3 +1,4 @@
+from datetime import datetime
 import pycountry
 import re
 import uuid
@@ -14,7 +15,7 @@ from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDa
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
-    Financials, Statement, StatementEntryBase, MonitoringEvent, CreditSafeMonitoringEventsResponse
+    Financials, Statement, StatementEntryBase, MonitoringEvent
 
 from .fuzzy import CompanyNameMatcher
 from .event_mappings import get_rule_code_to_monitoring_config
@@ -1183,6 +1184,35 @@ class CreditSafeNotificationEvent(Model):
     rule_code = IntType(serialized_name='ruleCode', required=True)
     rule_name = StringType(serialized_name='ruleName')
 
+    def to_passfort_format(self):
+        rule_code_to_monitoring_config = get_rule_code_to_monitoring_config()
+
+        event_type = rule_code_to_monitoring_config.get(self.rule_code)
+        if event_type is not None:
+            event = MonitoringEvent({
+                'creditsafe_id': self.company.id,
+                'event_type': event_type.value,
+                'event_date': self.event_date,
+                'rule_code': self.rule_code
+            })
+
+            event.validate()
+            return event
+
+        return None
+
+class EventsConfigGroup:
+    last_run_date: datetime
+    portfolio_id: int
+    raw_events: List[CreditSafeNotificationEvent]
+
+    def __init__(self, last_run_date, portfolio_id, raw_events):
+        super().__init__()
+
+        self.last_run_date = last_run_date
+        self.portfolio_id = portfolio_id
+        self.raw_events = raw_events
+
 
 class CreditSafeNotificationEventsResponse(Model):
     total_count = IntType(serialized_name='totalCount')
@@ -1192,25 +1222,5 @@ class CreditSafeNotificationEventsResponse(Model):
     @classmethod
     def from_json(cls, data: dict) -> 'CreditSafeNotificationEventsResponse':
         model = cls().import_data(data, apply_defaults=True)
-        model.validate()
-        return model
-
-    @staticmethod
-    def to_passfort_format(all_events: List[CreditSafeNotificationEvent]) -> CreditSafeMonitoringEventsResponse:
-        response = {'events': [], 'raw_data': []}
-        rule_code_to_monitoring_config = get_rule_code_to_monitoring_config()
-
-        for event in all_events:
-            event_type = rule_code_to_monitoring_config.get(event.rule_code)
-            if event_type is not None:
-                response['events'].append(MonitoringEvent({
-                    'creditsafe_id': event.company.id,
-                    'event_type': event_type.value,
-                    'event_date': event.event_date,
-                    'rule_code': event.rule_code
-                }))
-                response['raw_data'].append(event.to_primitive())
-
-        model = CreditSafeMonitoringEventsResponse(response)
         model.validate()
         return model

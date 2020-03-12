@@ -194,14 +194,16 @@ class CreditSafeMonitoringRequest(Model):
     creditsafe_id = StringType(required=True)
 
 
-class MonitoringEventsSearch(Model):
+class MonitoringConfig(Model):
     last_run_date = UTCDateTimeType()
+    institution_config_id = UUIDType(required=True)
     portfolio_id = IntType(required=True)
 
 
 class CreditSafeMonitoringEventsRequest(Model):
     credentials = ModelType(CreditSafeCredentials, default=None)
-    search_params = ListType(ModelType(MonitoringEventsSearch))
+    monitoring_configs = ListType(ModelType(MonitoringConfig))
+    callback_url = StringType(required=True, default=None)
 
 
 class MonitoringEvent(Model):
@@ -209,11 +211,6 @@ class MonitoringEvent(Model):
     event_type = StringType(required=True, choices=[event_type.value for event_type in MonitoringConfigType])
     event_date = StringType()
     rule_code = IntType()
-
-
-class CreditSafeMonitoringEventsResponse(Model):
-    events = ListType(ModelType(MonitoringEvent), default=[])
-    raw_data = BaseType()
 
 
 class PassFortFreeformAddress(Model):
