@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="2912361" date="2013-08-30 08:44:50.177">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Carson</first-name>
+          <surname>Cameron</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <country-details>
+      <country-value country-type="Country of Reported Allegation">
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <city>Vevay</city>
+        <region>Indiana</region>
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </address>
+    </address-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Financial Crime"></description>
+      </descriptions>
+      <source-details>
+        <source>The Madison Courier, 24-Aug-2013, on Factiva.com (AN=MADISN0020130825e98o0000r)</source>
+        <source>Associated Press Newswires, 23-Aug-2013, on Factiva.com (AN=APRS000020130823e98n001tm)</source>
+      </source-details>
+      <profile-notes>Keywords: fraud
+      People mentioned: Carson Cameron, David Cameron
+      Companies mentioned: Home Depot
+      Profile:
+      Carson Cameron and his brother David Cameron were charged with mail fraud and wire fraud in August 2013.
+      According to prosecutors, the brothers switched bar codes on goods at branches of the Home Depot in at least 20 states in the United States. They allegedly bought items at cheaper prices than they were originally labeled and then sold them for a profit over the Internet. From November 2007 to August 2011, the brothers reportedly caused losses of over USD 1.3m to the Home Depot.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="2912358" relationship="Brother" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+    </associates>
+  </person>
+</records>

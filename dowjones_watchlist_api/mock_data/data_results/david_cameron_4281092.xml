@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="4281092" date="2019-01-15 16:50:49.127">
+    <gender>Female</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Cecilia</first-name>
+          <middle-name>Mary</middle-name>
+          <surname>Dugdale</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Maiden Name">
+          <maiden-name>Mount</maiden-name>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Cylla</first-name>
+          <surname>Dugdale</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="12" month="9" year="2016" date-type="Inactive as of (RCA related to PEP)"></date>
+      <date day="15" month="1" year="1931" date-type="Date of Birth"></date>
+      <date day="4" month="12" year="2018" date-type="Deceased Date"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>https://www.telegraph.co.uk/content/dam/obituaries/2019/01/03/TELEMMGLPICT000183874095_trans_NvBQzQNjv4Bqejct6gFShbOYZYlg8AmtnZokzWWdnjsLJTZps3e7glo.jpeg?imwidth=1400</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title>Deceased</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Nephew" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="358221" date="2019-03-06 17:26:07.140">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Gregory</first-name>
+          <middle-name>Leonard George</middle-name>
+          <surname>Barker</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Greg</first-name>
+          <surname>Barker</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Low Quality AKA">
+          <first-name>Lord Barker of Battle</first-name>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="8" month="3" year="1966" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Shoreham-by-Sea</place-name>
+        <region>England</region>
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://1ur6751k3lsj3droh41tcsra.wpengine.netdna-cdn.com/wp-content/uploads/2015/12/GregBarker_Headshot.jpg</image-url>
+      <image-url>https://www.businessgreen.com/w-images/6fde4807-2a38-4d08-abe4-b544d960f621/0/gregbarker-580x358.jpg</image-url>
+      <image-url>https://assets3.parliament.uk/ext/mnis-bio-person/www.dodspeople.com/photos/25710.jpg.jpg</image-url>
+      <image-url>https://static.utilityweek.co.uk/artimg/1479412_Barker_-Greg.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="7" since-month="6" since-year="2001" to-day="18" to-month="5" to-year="2015">Member of Parliament, Conservative, Bexhill and Battle</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="12" since-month="10" since-year="2015">Member, House of Lords, Conservative</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="14" since-month="5" since-year="2010" to-day="14" to-month="7" to-year="2014">Minister of State, Department for Energy and Climate Change</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>http://www.telegraph.co.uk/news/uknews/1532378/Tory-MP-leaves-his-wife-and-three-children-for-a-man.html</source>
+        <source>Daily Mail, 20-Nov-2006, on Factiva.com (AN=DAIM000020061120e2bk0000z)</source>
+      </source-details>
+      <profile-notes>Person was granted a leave of absence from the House of Lords with effect from 27-Feb-2019.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="370296" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="942148" relationship="Unmarried Partner" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="2897077" relationship="Associate" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="3032049" relationship="Associate" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11372756" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11761623" relationship="Mother-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+    </associates>
+  </person>
+</records>

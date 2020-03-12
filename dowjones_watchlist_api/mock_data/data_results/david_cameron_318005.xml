@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="318005" date="2019-12-24 13:26:40.800">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Frank</first-name>
+          <middle-name>Zacharias Robin</middle-name>
+          <surname>Goldsmith</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Zacharias</first-name>
+          <surname>Goldsmith</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Zac</first-name>
+          <surname>Goldsmith</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="20" month="1" year="1975" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>London</place-name>
+        <region>England</region>
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://ichef-1.bbci.co.uk/news/660/cpsprodpb/16C85/production/_88371339_gettyimages-507317660.jpg</image-url>
+      <image-url>http://news.bbcimg.co.uk/media/images/71790000/jpg/_71790701_71790700.jpg</image-url>
+      <image-url>http://static.independent.co.uk/s3fs-public/styles/article_large/public/thumbnails/image/2016/03/17/14/zac-goldsmith.jpg</image-url>
+      <image-url>https://www.conservativehome.com/wp-content/uploads/2013/12/Zac-Goldsmith.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="6" since-month="5" since-year="2010" to-day="25" to-month="10" to-year="2016">Member of Parliament, Conservative, Richmond Park</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="8" since-month="6" since-year="2017" to-day="16" to-month="12" to-year="2019">Member of Parliament, Conservative, Richmond Park</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="27" since-month="7" since-year="2019" to-day="10" to-month="9" to-year="2019">Parliamentary Under Secretary of State, Department for International Development</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="27" since-month="7" since-year="2019" to-day="10" to-month="9" to-year="2019">Parliamentary Under Secretary of State, Department for Environment, Food and Rural Affairs</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="National Government Ministers" since-day="10" since-month="9" since-year="2019">Minister of State, Department for Environment, Food and Rural Affairs</occupation-title>
+        </role>
+        <role role-type="Other Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="10" since-month="9" since-year="2019">Minister of State, Department for International Development</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>Daily Mail, 10-Dec-2005, on Factiva.com (AN=DAIM000020051209e1ca0003l)</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="317675" relationship="Brother-in-law" description1="Special Interest Person (SIP)" description2="Terror" ex="true"></associate>
+      <associate peid="317697" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="317699" relationship="Father" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="317706" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="317716" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="317966" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="317983" relationship="Brother" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="321083" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="358285" relationship="Employer" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="401894" relationship="Aunt" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="401899" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="401903" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="401907" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="401913" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="693648" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="693651" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="693652" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1182995" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="1363447" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363454" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363456" relationship="Mother-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="1363537" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="1363598" relationship="Father-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="1363628" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="1363631" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363647" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363648" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363654" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363656" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363658" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363659" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363660" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363661" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1363662" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1364316" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1364317" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4361809" relationship="Grandfather" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4361814" relationship="Grandfather" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4363006" relationship="Grandmother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4363017" relationship="Grandmother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11508677" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11508702" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11508707" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11768649" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="11953919" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11953930" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11954000" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11954027" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11954101" relationship="Uncle" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955326" relationship="Uncle" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955339" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="11955386" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="11955427" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955488" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955495" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955623" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955663" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955704" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955753" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955779" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955800" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955887" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11955925" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11956794" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11956797" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>
