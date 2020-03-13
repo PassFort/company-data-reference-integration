@@ -2,9 +2,9 @@ from collections import defaultdict
 
 from schematics import Model
 from schematics.types.compound import ModelType, ListType, DictType
-from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType, DecimalType
+from schematics.types import StringType, BaseType, IntType, UTCDateTimeType, UnionType, BooleanType, FloatType
 
-from simplejson import JSONDecodeError
+from json import JSONDecodeError
 import pycountry
 
 from typing import List, TYPE_CHECKING
@@ -249,7 +249,7 @@ class ComplyAdvantageMatch(Model):
 
 class ComplyAdvantageFilters(Model):
     types = ListType(StringType, required=True)
-    fuzziness = DecimalType(required=True)
+    fuzziness = FloatType(required=True)
     birth_year = IntType(default=None)
     country_codes = ListType(StringType, default=[])
 

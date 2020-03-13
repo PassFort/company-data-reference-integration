@@ -4,7 +4,7 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
-from schematics.types import BooleanType, StringType, ModelType, ListType, DecimalType, DateType, IntType
+from schematics.types import BooleanType, StringType, ModelType, ListType, FloatType, DateType, IntType
 from schematics.exceptions import DataError, ValidationError
 
 
@@ -118,7 +118,7 @@ class ComplyAdvantageCredentials(Model):
 
 
 class ComplyAdvantageConfig(Model):
-    fuzziness = DecimalType(min_value=0.0, max_value=1.0, default=0.5)
+    fuzziness = FloatType(min_value=0.0, max_value=1.0, default=0.5)
     enable_ongoing_monitoring = BooleanType(default=False)
     include_adverse_media = BooleanType(default=False)
 
