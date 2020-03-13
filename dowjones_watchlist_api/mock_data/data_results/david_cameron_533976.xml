@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="533976" date="2019-06-04 07:24:11.163">
+    <gender>Female</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Rebekah</first-name>
+          <middle-name>Mary</middle-name>
+          <surname>Brooks</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Maiden Name">
+          <maiden-name>Wade</maiden-name>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="27" month="5" year="1968" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Daresbury, Cheshire</place-name>
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://i.dailymail.co.uk/i/pix/2012/01/26/article-2091986-0D13321000000578-708_634x519.jpg</image-url>
+      <image-url>http://www.thetimes.co.uk/tto/multimedia/archive/00363/117947784_Rebekah_B_363363c.jpg</image-url>
+      <image-url>http://www.thedrum.com/uploads/drum_basic_article/110714/main_images/RebekahBrooks.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Other Official Lists"></description>
+      </descriptions>
+      <sanctions-reference-details>
+        <sanctions-reference since-day="15" to-month="12" description2="Other Official Lists" list-provider-code="GB-CPS" since-year="2012" status="Current" list-provider-name="Crown Prosecution Service" since-month="5" to-year="2015" to-day="11">Crown Prosecution Service (UK) Press Statements List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>http://www.cps.gov.uk/news/latest_news/</source>
+        <source>http://www.cps.gov.uk/news/latest_news/no_further_action_to_be_taken_in_operations_weeting_or_golding/</source>
+        <source>http://www.cps.gov.uk/news/press_statements/charging_announcement_in_relation_to_operation_elveden/</source>
+        <source>http://www.cps.gov.uk/news/press_statements/operation_weeting_-_cps_charging_decisions/</source>
+        <source>http://www.cps.gov.uk/news/press_statements/cps_decision_from_operation_elveden/</source>
+        <source>http://www.cps.gov.uk/news/press_statements/</source>
+      </source-details>
+      <profile-notes>CROWN PROSECUTION SERVICE NOTES:
+
+      Date of Statement: 11/12/2015
+
+      Alison Saunders, Director of Public Prosecutions said: "The CPS has looked in great detail at the comprehensive files submitted to us by the police, both in relation to corporate liability at News Group Newspapers and against 10 individuals at Mirror Group Newspapers for alleged phone hacking.
+
+      "After a thorough analysis, we have decided there is insufficient evidence to provide a realistic prospect of a conviction and therefore no further action will be taken in any of these cases.
+
+      "There has been considerable public concern about phone hacking and invasion of privacy. Over the past three years, we have brought 12 prosecutions and secured nine convictions for these serious offences. These decisions bring the CPS's involvement in current investigations into phone hacking to a close."
+
+      Operation Weeting
+
+      Corporate liability of News Group Newspapers (NGN)
+
+      A file was passed to the Crown Prosecution Service by the Metropolitan Police Service in July 2015, following an investigation into corporate liability as part of Operation Weeting. Potential charges for phone hacking and perverting the course of justice were considered.
+
+      After thorough analysis of the evidence, it has been decided that no further action will be taken for either charge. This decision has been made following the Full Code Test of the Code for Crown Prosecutors; there is insufficient evidence to provide a realistic prospect of conviction, therefore a prosecution cannot take place. Any decision by the CPS does not imply any finding concerning guilt or criminal conduct.
+
+      The offences considered were:
+      The interception of communications in the course of transmission without lawful authority contrary to section 1(1) of the Regulation of Investigatory Powers Act 2000 (RIPA)
+      Perverting the course of justice contrary to Common Law
+
+      The law on corporate liability in the United Kingdom makes it difficult to prove that a company is criminally liable if it benefits from the criminal activity of an employee, conducted during their employment. The company will only be liable if it can be proved that the individual involved is sufficiently senior, usually close to or at board level, to be the 'controlling mind and will' of the company. Unlike other countries, the principles of vicarious liability or poor corporate governance, which are matters that are easier to prove, play no part in establishing corporate criminal liability.
+
+      The present state of the law means it is especially difficult to establish criminal liability against companies with complex or diffuse management structures. In this case, as in any corporate liability case, we have looked closely at the overall structure of the company involved, and the level of management and decision-making powers of those involved, in order to come to a decision.
+
+      Interception of communications
+
+      Andy Coulson has already been convicted of phone hacking offences. However, Mr Coulson cannot be said to have been a "controlling mind" at News Group Newspapers (NGN); he was not a director or senior officer. He was editor of the News of the World newspaper which was under the overall direction and control of NGN. Responsibility for what went into the newspaper rested with him as its editor but while he had control of the newspaper, within restrictions, he was not a controlling mind of the company. Accordingly, we are satisfied that corporate criminal liability cannot be attributed to the company through the actions of Andy Coulson as he cannot be considered to have been the 'controlling mind and will' of NGN.
+
+      Secondly, there is no evidence to suggest that any member of the Board of NGN had knowledge of phone hacking when it was taking place. Knowledge gleaned after the fact is not sufficient. An individual was paid significant sums of money over many years by NGN for phone hacking, but there is no evidence that anyone on the Board knew that the money paid was because phone hacking was taking place. Therefore, there is no senior officer of the company through whom corporate criminal liability could be established.
+
+      Perverting the course of justice
+
+      We considered allegations of perverting the course of justice relating to the company's actions, from April 2006 when the first arrests for phone hacking took place, until April 2011, when the company admitted liability in civil proceedings for phone hacking.
+
+      In order to charge NGN with this offence, it would need to be proved that a person or persons who were the 'controlling mind and will of the company' acted or embarked on a course of conduct which was intended to pervert the course of justice.
+
+      In order to examine these allegations we have looked at evidence in three areas: the original police investigation into phone hacking in 2006, the civil settlements, and the email deletion policy of the company.
+
+      We have reviewed the evidence in relation to the News of the World employees' conduct during the original police phone hacking investigation and concluded that there is nothing that these employees could have done which would have altered or affected the resulting prosecution. Therefore the company cannot be said to have perverted the course of justice.
+
+      The civil settlements were also considered. However, the fact that NGN decided to settle rather than resist civil proceedings cannot be considered to be actions which could pervert the course of justice.
+      We have examined the email deletion policy of NGN, which formed the basis of part of the evidence in the recent phone hacking trial. There are legitimate reasons for companies to have an email deletion policy. In this case, there is no evidence to suggest that email deletion was undertaken in order to pervert the course of justice.
+
+      Accordingly, there is insufficient evidence to provide a realistic prospect of a conviction, so we have determined that News Group Newspapers cannot be charged with perverting the course of justice.
+
+      Date of Statement: 20/11/2012
+
+      Alison Levitt, QC, Principal Legal Advisor to the Director of Public Prosecutions, oversees CPS decision making and all potential prosecutions in relation to the ongoing phone hacking investigations and other related matters. 
+
+      Miss Levitt said: "This statement is made in the interests of transparency and accountability to explain the decisions reached in respect of allegations arising from Operation Elveden into allegations of unlawful payment by News International staff to public officials.
+
+      "This announcement relates to two files of evidence received from the Metropolitan Police Service. The two files were received on 30 August 2012 and are: 
+
+      A file for charging advice involving two journalists in relation to allegations of misconduct in public office. 
+      A file for charging advice involving two journalists and two public officials in relation to allegations of misconduct in public office. 
+      "The first of these two files relates to:
+
+      Clive Goodman, who was the Royal Correspondent for News of the World before 2007; and 
+      Andy Coulson, who was the News of the World's Deputy Editor between 2000 and 2003 and Editor between 2003 and 2007.
+      "We have concluded, following a careful review of the evidence, that Clive Goodman and Andy Coulson should be charged with two conspiracies. The allegations relate to the request and authorisation of payments to public officials in exchange for information, including a Palace phone directory known as the "Green Book" containing contact details for the Royal Family and Members of the Household.
+
+      "The second of these two files relates to: 
+
+      Rebekah Brooks, who was Editor of The Sun between 14 January 2003 and 1 September 2009; 
+      John Kay, who was Chief Reporter at The Sun between 1990 and 2011; 
+      Bettina Jordan-Barber, employed by the Ministry of Defence; and 
+      one further suspect in relation to whom the investigation is still ongoing 
+      "We have concluded, following a careful review of the evidence, that Bettina Jordan-Barber, John Kay and Rebekah Brooks should be charged with a conspiracy to commit misconduct in public office between 1 January 2004 and 31 January 2012. This conspiracy relates to information allegedly provided by Bettina Jordan-Barber for payment, which formed the basis of a series of news stories published by The Sun. It is alleged that approximately £100,000 was paid to Bettina Jordan-Barber between 2004 and 2011.
+
+      "All of these matters were considered carefully in accordance with the DPP's guidelines on the public interest in cases affecting the media. This guidance asks prosecutors to consider whether the public interest served by the conduct in question outweighs the overall criminality before bringing criminal proceedings.
+
+      "Following charge, these individuals will appear before Westminster Magistrates' Court on a date to be determined. 
+
+      "May I remind all concerned that these five individuals now will be charged with criminal offences and that each has a right to a fair trial. It is very important that nothing is said, or reported, which could prejudice that trial. For these reasons it would be inappropriate for me to comment further."
+
+      The full charges are as follows: 
+
+      Andy Coulson and Clive Goodman:
+
+      Charge 1
+
+      Clive Goodman and Andrew Coulson, between 31 August 2002 and 31 January 2003, conspired together and with a person or persons unknown to commit misconduct in public office.
+
+      Contrary to s.1(1) of the Criminal Law Act 1977
+
+      Charge 2
+
+      Clive Goodman and Andrew Coulson, between 31 January 2005 and 3 June 2005, conspired together and with a person or persons unknown to commit misconduct in public office.
+
+      Contrary to s.1(1) of the Criminal Law Act 1977
+
+      Bettina Jordan-Barber, John Kay and Rebekah Brooks:
+
+      Charge 1
+
+      Bettina Jordan-Barber, John Kay and Rebekah Brooks, between 1 January 2004 and 31 January 2012, conspired together, and with others, to commit misconduct in public office.
+
+      Contrary to s.1(1) of the Criminal Law Act 1977
+
+      Date of Press Statement: 24/07/2012
+
+      Statement from Alison Levitt QC, Principal Legal Advisor to the Director of Public Prosecutions (DPP):
+
+      This statement is made in the interests of transparency and accountability to explain the decisions reached in relation to Operation Weeting.
+
+      During June and July 2012, the Crown Prosecution Service received files of evidence from the Metropolitan Police Service, relating to thirteen suspects. This has followed a period of consultation and cooperation between police and prosecutors which has taken place over many months.
+
+      All the evidence has now carefully been considered. Applying the two-stage test in the Code for Crown Prosecutors I have concluded that in relation to eight of these thirteen suspects there is sufficient evidence for there to be a realistic prospect of conviction in relation to one or more offences.
+
+      I then considered the second stage of the test, applying the DPP's interim guidelines on assessing the public interest in cases involving the media, and I have concluded that a prosecution is required in the public interest in relation to each of these eight suspects.
+
+      The eight who will be charged are: Rebekah Brooks, Andrew Coulson, Stuart Kuttner, Glenn Mulcaire, Greg Miskiw, Ian Edmondson, Neville Thurlbeck and James Weatherup.
+
+      They will face a total of nineteen charges in all. The full wording of all the charges will be made available, which will include the names of others whom the prosecution say are victims, but for now I shall summarise them as follows.
+
+      All, with the exception of Glenn Mulcaire, will be charged with conspiring to intercept communications without lawful authority, from 3rd October 2000 to 9th August 2006. The communications in question are the voicemail messages of well-known people and/or those associated with them. There is a schedule containing the names of over 600 people whom the prosecution will say are the victims of this offence.
+
+      In addition, each will face a number of further charges of conspiracy unlawfully to intercept communications, as follows:
+
+      Rebekah Brooks will face two additional charges:
+
+      the first relates to the voicemails of the late Milly Dowler
+      the second to the voicemails of Andrew Gilchrist 
+      Andrew Coulson will face four additional charges, relating to the following victims: 
+
+      Milly Dowler
+      the Rt Hon David Blunkett MP
+      the Rt Hon Charles Clarke, and
+      Calum Best 
+      Stuart Kuttner will face two additional charges, relating to:
+
+      Milly Dowler and
+      the Rt Hon David Blunkett MP 
+      Greg Miskiw will face nine further charges, relating to the following victims or groups of victims: 
+
+      Milly Dowler
+      Sven-Goran Eriksson
+      Abigail Titmuss and John Leslie
+      Andrew Gilchrist
+      the Rt Hon David Blunkett MP
+      Delia Smith
+      the Rt Hon Charles Clarke
+      Jude Law, Sadie Frost and Sienna Miller, and
+      Wayne Rooney 
+      Ian Edmondson will face a further eleven charges, relating to the following victims or groups of victims:
+
+      the Rt Hon David Blunkett MP
+      the Rt Hon Charles Clarke
+      Jude Law, Sadie Frost and Sienna Miller
+      Mark Oaten
+      Wayne Rooney
+      Calum Best
+      the Rt Hon Dame Tessa Jowell MP and David Mills
+      the Rt Hon Lord Prescott
+      Professor John Tulloch
+      Lord Frederick Windsor
+      Sir Paul McCartney and Heather Mills 
+      Neville Thurlbeck will face a further seven charges in relation to the following victims or groups of victims:
+
+      Milly Dowler
+      Sven-Goran Eriksson
+      the Rt Hon David Blunkett MP
+      the Rt Hon Charles Clarke
+      Angelina Jolie and Brad Pitt
+      Mark Oaten
+      the Rt Hon Dame Tessa Jowell MP and David Mills
+      James Weatherup will face a further seven charges in relation to the following victims or groups of victims:
+
+      the Rt Hon David Blunkett MP
+      the Rt Hon Charles Clarke
+      Jude Law, Sadie Frost and Sienna Miller
+      Angelina Jolie and Brad Pitt
+      Wayne Rooney
+      the Rt Hon Lord Prescott
+      Sir Paul McCartney and Heather Mills 
+      For legal reasons, Glenn Mulcaire does not face the first of these charges. However, he will face four charges, relating to:
+
+      Milly Dowler
+      Andrew Gilchrist
+      Delia Smith, and
+      the Rt Hon Charles Clarke 
+      In relation to three of the remaining suspects, I have concluded that there is insufficient evidence for there to be a realistic prospect of conviction. It follows that no further action will be taken in relation to them. Because others are now about to be charged, it would not be appropriate for me to give reasons for these decisions at this stage. 
+
+      There are two suspects in relation to whom the police have asked me to defer making a decision whilst further enquiries are made. For this reason I do not intend to give their names or say anything further about them at this stage. 
+
+      The eleven suspects have this morning been informed of my decision. They are all due to answer their bail at police stations. When they do so, the eight whom I have already named will be charged. Following charge, these individuals will appear before Westminster Magistrates' Court on a date to be determined. 
+
+      The police intend to contact all the victims who will then be told that their names appear on the indictment. Once all have been informed the full list of those whom the prosecution says were victims will be made available. 
+
+      May I remind all concerned that these eight individuals now will be charged with criminal offences and that each has a right to a fair trial. It is very important that nothing is said, or reported, which could prejudice that trial. For these reasons it would be inappropriate for me to comment further.
+
+      Ends
+
+      Charges in full:
+
+      1.CHARGE 1: Rebekah Brooks, Andrew Coulson, Stuart Kuttner, Greg Miskiw, Ian Edmondson, Neville Thurlbeck and James Weatherup, between the 3rd day of October 2000 and the 9th day of August 2006 conspired together, and with Glenn Mulcaire and Clive Goodman and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of well-known people and those associated with them, including but not limited to those whose names appear on schedule 1.
+
+      2.CHARGE 2: Rebekah Brooks, Andrew Coulson, Stuart Kuttner, Glenn Mulcaire, Greg Miskiw and Neville Thurlbeck, between the 9th day of April 2002 and the 21st day of April 2002, conspired together and with persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Amanda Dowler, also known as Milly Dowler.
+
+      3.CHARGE 3: Greg Miskiw and Neville Thurlbeck, between 13th day of May 2002 and the 29th day of June 2006, conspired together and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Sven-Goran Eriksson and persons associated with Sven-Goran Eriksson, including Faria Alam.
+
+      4.CHARGE 4: Greg Miskiw between the 22nd day of October 2002 and the 21st day of July 2006, conspired with Glenn Mulcaire and with persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Abigail Titmuss and John Leslie and those associated with Abigail Titmuss and John Leslie, including Matthew McGuiness.
+
+      5.CHARGE 5: Rebekah Brooks, Glenn Mulcaire and Greg Miskiw, between the 3rd day of December 2002 and the 22nd day of January 2003, conspired together and with persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Andrew Gilchrist.
+
+      6.CHARGE 6: Andrew Coulson, Stuart Kuttner, Greg Miskiw, Ian Edmondson, Neville Thurlbeck and James Weatherup, between the 1st day of January 2004 and the 29th day of July 2006, conspired together and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of persons associated with The Right Honourable David Blunkett MP, including some or all of the following: Kimberley Quinn, Sally King (nee Anderson), Andrew King, John Anderson and Jason Carey.
+
+      7.CHARGE 7: Glenn Mulcaire and Greg Miskiw, between the 28th day of February 2005 and the 12th day of March 2005 conspired together and with persons unknown to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Delia Smith and of persons associated with Delia Smith, including Michael Wynn-Jones and Ian Christmas.
+
+      8.CHARGE 8: Andrew Coulson, Glenn Mulcaire, Greg Miskiw, Ian Edmondson, Neville Thurlbeck and James Weatherup, between the 6h day of April 2005 and the 22nd day of June 2005, conspired together and with persons unknown to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of persons associated with The Right Honourable Charles Clarke, who included either or both of the following: Hannah Pawlby and Lucy Pawlby.
+
+      9.CHARGE 9: Greg Miskiw, Ian Edmondson and James Weatherup between the 1st day of July 2005 and the 1st day of June 2006, conspired together, and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Jude Law and persons associated with Jude Law, Sadie Frost and Sienna Miller, who included some or all of the following: Jade Schmidt, Archie Keswick and Ben Jackson.
+
+      10.CHARGE 10: Neville Thurlbeck and James Weatherup, between the 5th day of July 2005 and the 4th day of May 2006, conspired together, and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of persons associated with Angelina Jolie and Brad Pitt, who included Eunice Huthart.
+
+      11.CHARGE 11: Ian Edmondson and Neville Thurlbeck, between the 9th day of January 2006 and the 6th day of May 2006, conspired together and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Mark Oaten.
+
+      12.CHARGE 12: Ian Edmondson and James Weatherup, between the 17th day of January 2006 and the 1st day of August 2006, conspired together, and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Wayne Rooney and persons associated with Wayne Rooney, who included either or both of the following: Laura Jane Rooney and Patricia Tierney. 
+
+      13.CHARGE 13: Greg Miskiw, between the 17th day of January 2006 and 1st day of August 2006 conspired with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Wayne Rooney and persons associated with Wayne Rooney, who included either or both of the following: Laura Jane Rooney and Patricia Tierney.
+
+      14.CHARGE 14: Andrew Coulson and Ian Edmondson, between the 23 March 2006 and the 21st day of May 2006, conspired together and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Calum Best.
+
+      15.CHARGE 15: Ian Edmondson and Neville Thurlbeck between the 2nd day of March 2006 and the 26th day of July 2006, conspired with Glenn Mulcaire and with persons unknown to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of The Right Honourable Dame Tessa Jowell MP and David Mills.
+
+      16.CHARGE 16: Ian Edmondson and James Weatherup, between the 24th day of April 2006 and the 22nd day of June 2006, conspired together and with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of persons associated with The Right Honourable Lord Prescott, who included some or all of the following: Tracey Temple, Joan Hammell and Alan Schofield.
+
+      17.CHARGE 17: Ian Edmondson, between the 25th day of April 2006 and the 15th day of May 2006, conspired with Glenn Mulcaire and with persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Professor John Tulloch and persons associated with Professor John Tulloch, who included some or all of the following: John Davies, Maire Messenger Davies and Janet Andrew.
+
+      18.CHARGE 18: Ian Edmondson, between the 25th day of April 2006 and the 1st day of June 2006, conspired with Glenn Mulcaire and persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Lord Frederick Windsor.
+
+      19.CHARGE 19: Ian Edmondson and James Weatherup, between the 15th day of May 2006 and the 29th day of June 2006, conspired together and with Glenn Mulcaire and with persons unknown, to intercept communications in the course of their transmission, without lawful authority, namely the voicemail messages of Sir Paul McCartney and Heather Mills, and of persons associated with Sir Paul McCartney and Heather Mills, including some or all of the following: Fiona Mills, Stuart Bell, Alan Edwards and Chris Terrill.
+
+      Date of Statement: 15/05/2012
+
+      Charging announcement in relation to offences of perverting the course of justice against Rebekah Brooks and others
+
+      Alison Levitt, QC, Principal Legal Advisor to the Director of Public Prosecutions, oversees CPS decision making, and all potential prosecutions, in relation to the ongoing phone hacking investigations and other related matters.
+
+      Miss Levitt said: "This statement is made in the interests of transparency and accountability to explain the decisions reached in respect of allegations that Rebekah Brooks conspired with her husband, Charles Brooks, and others to pervert the course of justice.
+
+      "The Crown Prosecution Service received a file of evidence from the Metropolitan Police Service on 27th March 2012 in relation to seven suspects:
+
+      Rebekah Brooks;
+      Charles Brooks;
+      Cheryl Carter - Mrs Brooks' personal assistant;
+      Mark Hanna - Head of Security at News International;
+      Paul Edwards - Mrs Brooks' chauffeur who was employed by News International; 
+      Daryl Jorsling and a seventh suspect - both of whom provided security for Mrs Brooks supplied by News International.
+
+      "All the evidence has now carefully been considered.
+
+      "Applying the two-stage test in the Code for Crown Prosecutors I have concluded that in relation to all suspects except the seventh, there is sufficient evidence for there to be a realistic prospect of conviction.
+
+      "I then considered the second stage of the test, and I have concluded that a prosecution is required in the public interest in relation to each of the other six.
+
+      "All seven suspects have this morning been informed of my decisions.
+
+      "They are all due to answer their bail at police stations later today. When they do so, they will be charged as follows:
+
+      CHARGE 1 - CONSPIRACY TO PERVERT THE COURSE OF JUSTICERebekah Brooks between 6th July and 19th July 2011 conspired with Charles Brooks, Cheryl Carter, Mark Hanna, Paul Edwards, Daryl Jorsling and persons unknown to conceal material from officers of the Metropolitan Police Service.
+
+      CHARGE 2 - CONSPIRACY TO PERVERT THE COURSE OF JUSTICERebekah Brooks and Cheryl Carter between 6th July and 9th July 2011 conspired together permanently to remove seven boxes of material from the archive of News International.
+
+      CHARGE 3 - CONSPIRACY TO PERVERT THE COURSE OF JUSTICERebekah Brooks, Charles Brooks, Mark Hanna, Paul Edwards and Daryl Jorsling conspired together and with persons unknown, between 15th July and 19th July 2011, to conceal documents, computers and other electronic equipment from officers of the Metropolitan Police Service.
+
+      "All these matters relate to the ongoing police investigation into allegations of phone hacking and corruption of public officials in relation to the News of the World and The Sun newspapers.
+
+      "Following charge, these individuals will appear before Westminster Magistrates' Court on a date to be determined.
+
+      "No further action will be taken against the seventh suspect.
+
+      "May I remind all concerned that these six individuals now will be charged with criminal offences and that each has a right to a fair trial. It is very important that nothing is said, or reported, which could prejudice that trial. For these reasons it would be inappropriate for me to comment further."</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="539925" relationship="Husband" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="888848" relationship="Associate" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="1520914" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1527280" relationship="Associate" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="1527281" relationship="Associate" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="1527283" relationship="Associate" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="1527700" relationship="Husband" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1536594" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1669550" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1685626" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1685631" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1685634" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1685637" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1700720" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1736556" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1736561" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1736567" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1736573" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1748748" relationship="Associate" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="1784153" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="1793787" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2282579" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2285225" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2357518" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2854213" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2869375" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2869376" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="2869378" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="3381253" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

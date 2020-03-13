@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="358582" date="2017-08-08 16:39:24.943">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Andrew</first-name>
+          <middle-name>James</middle-name>
+          <surname>MacKay</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="27" month="8" year="1949" date-type="Date of Birth"></date>
+      <date day="6" month="5" year="2010" date-type="Inactive as of (PEP)"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Birmingham</place-name>
+        <region>England</region>
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://i.telegraph.co.uk/multimedia/archive/01402/andrewMackay_1402895a.jpg</image-url>
+      <image-url>http://newsimg.bbc.co.uk/media/images/45773000/jpg/_45773431_000348147-1.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="1" since-month="5" since-year="1997" to-day="6" to-month="5" to-year="2010">Member of Parliament, Conservative, Bracknell</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Members of the National Legislature">See Previous Roles</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-year="1977" to-year="1979">Member of Parliament, Conservative, Birmingham Stechford</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-year="1983" to-year="1997">Member of Parliament, Conservative, Berkshire East</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>http://news.bbc.co.uk/2/hi/uk_news/politics/8049614.stm</source>
+        <source>The Herald, 15-Dec-1997, on Factiva.com (AN=gh00000020011003dtcf007x8)</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Employer" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="358437" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="358531" relationship="Wife" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="394714" relationship="Father-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="394716" relationship="Mother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="394721" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="417306" relationship="Father" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="417308" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="417311" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="951985" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1123612" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

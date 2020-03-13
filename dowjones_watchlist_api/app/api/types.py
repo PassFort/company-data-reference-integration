@@ -12,6 +12,7 @@ from schematics.common import NOT_NONE
 from schematics.types import (
     BaseType,
     BooleanType,
+    DateType,
     DictType,
     IntType,
     ListType,
@@ -23,6 +24,19 @@ from schematics.exceptions import (
     DataError,
     ValidationError,
 )
+
+
+class PartialDateType(DateType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(formats=["%Y", "%Y-%m", "%Y-%m-%d"], *args, **kwargs)
+
+
+class TimePeriod(Model):
+    from_date = PartialDateType(default=None)
+    to_date = PartialDateType(default=None)
+
+    class Options:
+        export_level = NOT_NONE
 
 
 def validate_model(validation_model):
@@ -61,7 +75,7 @@ class WatchlistAPIConfig(Model):
 
 
 class FullName(Model):
-    given_names = ListType(StringType, required=True)
+    given_names = ListType(StringType(), required=True)
     family_name = StringType(required=True, min_length=1)
 
 
@@ -188,7 +202,7 @@ class CountryMatchType(Enum):
         '''
         if label is None:
             return CountryMatchType.UKNOWN
-        
+
         lowered_label = label.lower()
         if 'affiliation' in lowered_label:
             return CountryMatchType.AFFILIATION
@@ -219,19 +233,113 @@ class CountryMatchType(Enum):
             return CountryMatchType.UNKNOWN
 
 
+@unique
+class DateMatchType(Enum):
+    DOB = 'DOB'
+    DECEASED = 'DECEASED'
+    END_OF_PEP = 'END_OF_PEP'
+    END_OF_RCA_TO_PEP = 'END_OF_RCA_TO_PEP'
+
+    def from_dowjones(date_type):
+        lowered = date_type.lower()
+        if lowered == 'date of birth':
+            return DateMatchType.DOB
+        elif lowered == 'deceased date':
+            return DateMatchType.DECEASED
+        elif lowered == 'inactive as of (pep)':
+            return DateMatchType.END_OF_PEP
+        elif lowered == 'inactive as of (rca related to pep)':
+            return DateMatchType.END_OF_RCA_TO_PEP
+        else:
+            logging.error(f'Unrecognised date type: {lowered}')
+            return None
+
+
+class CountryMatchData(Model):
+    type_ = StringType(required=True, serialized_name='type', choices=[ty.value for ty in CountryMatchType])
+    country_code = StringType(min_length=3, max_length=3)
+
+
+class DateMatchData(Model):
+    type_ = StringType(required=True, serialized_name='type', choices=[ty.value for ty in DateMatchType])
+    date = PartialDateType()
+
+
+class Associate(Model):
+    name = StringType()
+    association = StringType()
+    is_pep = BooleanType()
+    was_pep = BooleanType()
+    is_sanction = BooleanType()
+    was_sanction = BooleanType()
+    dobs = ListType(PartialDateType())
+    inactive_as_pep_dates = ListType(PartialDateType())
+    inactive_as_rca_related_to_pep_dates = ListType(PartialDateType())
+    deceased_dates = ListType(PartialDateType())
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class PepRole(Model):
+    name = StringType()
+    tier = IntType()
+    from_date = PartialDateType()
+    to_date = PartialDateType()
+    is_current = BooleanType()
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class PepData(Model):
+    match = BooleanType()
+    tier = IntType()
+    roles = ListType(ModelType(PepRole))
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class SanctionsData(Model):
+    type_ = StringType(required=True, serialized_name='type')
+    list_ = StringType(serialized_name='list')
+    name = StringType()
+    issuer = StringType()
+    is_current = BooleanType()
+    time_periods = ListType(ModelType(TimePeriod))
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class AdverseMediaData(Model):
+    pass
+
+
 class MatchEvent(Model):
     event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
     match_id = StringType(required=True)
     provider_name = StringType(required=True)
 
+    pep = ModelType(PepData)
+    sanctions = ListType(ModelType(SanctionsData))
+    media = ModelType(AdverseMediaData)
+
     # Match information
     match_name = StringType()
+    match_dates = ListType(PartialDateType())
+    match_dates_data = ListType(ModelType(DateMatchData))
+
     score = FloatType()
     match_custom_label = StringType()
     match_countries = ListType(StringType())
-    country_match_types = ListType(StringType(choices=[ty.value for ty in CountryMatchType]))
+    match_countries_data = ListType(ModelType(CountryMatchData))
 
     # Additional information
+    aliases = ListType(StringType(), required=True, default=[])
+    associates = ListType(ModelType(Associate), default=[])
+    profile_notes = StringType()
     gender = StringType(choices=[gender.value for gender in Gender])
     deceased = BooleanType()
 

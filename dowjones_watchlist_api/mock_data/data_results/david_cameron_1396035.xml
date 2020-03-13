@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="1396035" date="2018-02-12 16:46:22.390">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Christopher</first-name>
+          <middle-name>George Wayne</middle-name>
+          <surname>Codrington</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="20" month="2" year="1960" date-type="Date of Birth"></date>
+      <date day="12" month="9" year="2016" date-type="Inactive as of (RCA related to PEP)"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://www.projectstmichael.org/Images/Team/Picture1.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+      <source-details>
+        <source>Daily Mail, 04-Aug-2010 on Factiva.com (AN=DAIM000020100803e6840001u)</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+    </associates>
+  </person>
+</records>
