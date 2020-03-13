@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="373449" date="2018-02-12 16:46:22.390">
+    <gender>Female</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Samantha</first-name>
+          <middle-name>Gwendoline</middle-name>
+          <surname>Cameron</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sam</first-name>
+          <middle-name>Gwendoline</middle-name>
+          <surname>Cameron</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Maiden Name">
+          <maiden-name>Sheffield</maiden-name>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="18" month="4" year="1971" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Paddington</place-name>
+        <region>England</region>
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://us.hellomagazine.com/imagenes/profiles/samanthacameron/5488-samantha-cameron-profile.jpg</image-url>
+      <image-url>http://cdn.images.express.co.uk/img/dynamic/1/285x214/162838_1.jpg</image-url>
+      <image-url>http://www.radiotimes.com/uploads/images/Original/98471.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Husband" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="359080" relationship="Stepfather" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

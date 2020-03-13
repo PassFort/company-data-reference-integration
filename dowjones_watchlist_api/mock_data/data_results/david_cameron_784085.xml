@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="784085" date="2018-02-12 16:46:22.390">
+    <gender>Female</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Clare</first-name>
+          <surname>Cameron</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Clare</first-name>
+          <surname>Fawcus</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="1970" date-type="Date of Birth"></date>
+      <date year="1971" date-type="Date of Birth"></date>
+      <date day="12" month="9" year="2016" date-type="Inactive as of (RCA related to PEP)"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://i.dailymail.co.uk/i/pix/2016/04/08/22/32F06B1200000578-3530785-image-m-109_1460151639286.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+    </watchlist-content>
+    <associates>
+      <associate peid="358285" relationship="Brother" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

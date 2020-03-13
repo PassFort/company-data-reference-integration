@@ -1,3 +1,4 @@
+import logging
 import re
 from base64 import b64encode
 from json import JSONDecodeError
@@ -49,15 +50,18 @@ class APIClient():
         ).decode('utf-8')
 
     def _get(self, route, params={}):
-        return self.session.get(
+        resp = self.session.get(
             f"{self.credentials.url}{route}",
             headers={
                 'Authorization': f'Basic {self.auth_token}'
             },
             params=params,
-        ).raise_for_status().text
+        )
+        resp.raise_for_status()
+        return resp.text
 
     def run_search(self, input_data: InputData):
+        logging.info(f'Running search: {input_data.to_primitive()}')
         params = {
             'first-name': input_data.personal_details.name.given_names[0],
             'surname': input_data.personal_details.name.family_name
@@ -75,11 +79,16 @@ class APIClient():
         return results.import_data(xmltojson.parse(resp))
 
     def fetch_data_record(self, peid):
+        logging.info(f'Fetching data record with PEID \'{peid}\'')
         results = DataResults()
-        return results.import_data(xmltojson.parse(self._get(f'/data/records/{peid}')))
+        return results.import_data(xmltojson.parse(self._get(
+            f'/data/records/{peid}',
+            {'ame_article_type': 'all'},
+        )))
 
 
 DATA_RECORD_URL_PATTERN = re.compile('\/data\/records\/(.*)')
+
 
 class DemoClient(APIClient):
     def _get(self, route, params={}):
