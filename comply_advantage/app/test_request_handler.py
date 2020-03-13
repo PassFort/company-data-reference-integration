@@ -7,9 +7,7 @@ Integration tests for the request handler. A mix of requests that:
 import json
 import responses
 import unittest
-from unittest.mock import Mock
-from mock import patch
-from decimal import Decimal
+from unittest.mock import Mock, patch
 
 from . import request_handler
 from .request_handler import comply_advantage_search_request, get_result_by_search_ids
@@ -66,7 +64,7 @@ class TestHandleCallsPostCorrectly(unittest.TestCase):
 
         fake_retry().post.assert_called_with(
             'https://api.complyadvantage.com/searches?api_key=TEST',
-            json={'search_term': 'Hugo Hussein', 'fuzziness': Decimal('0.5'), 'filters': {
+            json={'search_term': 'Hugo Hussein', 'fuzziness': 0.5, 'filters': {
                 'types': ['pep', 'sanction'], 'country_codes': ['ZW']
                 }, 'share_url': True, 'offset': 0, 'limit': 100}
         )
@@ -83,7 +81,7 @@ class TestHandleCallsPostCorrectly(unittest.TestCase):
 
         fake_retry().post.assert_called_with(
             'https://api.complyadvantage.com/searches?api_key=TEST',
-            json={'search_term': 'Hugo Hussein', 'fuzziness': Decimal('0.5'), 'filters': {
+            json={'search_term': 'Hugo Hussein', 'fuzziness': 0.5, 'filters': {
                 'types': ['pep', 'sanction'],
                 }, 'share_url': True, 'offset': 0, 'limit': 100}
         )
