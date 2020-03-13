@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-python3
+FROM python:3.7-alpine
 
 ARG git_key
 
