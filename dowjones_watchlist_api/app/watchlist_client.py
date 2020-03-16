@@ -74,8 +74,13 @@ class APIClient():
         return resp.text
 
     def search_params(self, input_data: InputData):
-        # Params decided by integration config values
         params = {
+            # Base params present for all searches
+            'filter-sl-exclude-suspended': WATCHLIST_TRUE,
+            'filter-ool-exclude-suspended': WATCHLIST_TRUE,
+            'filter-oel-exclude-suspended': WATCHLIST_TRUE,
+
+            # Params decided by integration config values
             'exclude-deceased': WATCHLIST_TRUE if self.config.ignore_deceased else WATCHLIST_FALSE,
             'filter-sic': WATCHLIST_ANY_FILTER if self.config.include_adverse_media else WATCHLIST_NONE_FILTER,
             'filter-pep-exclude-adsr': WATCHLIST_FALSE if self.config.include_adsr else WATCHLIST_TRUE,
