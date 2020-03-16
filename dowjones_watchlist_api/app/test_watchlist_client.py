@@ -217,7 +217,7 @@ class TestInputDataParams(unittest.TestCase):
                 'entity_type': 'INDIVIDUAL',
                 'personal_details': {
                     'name': {
-                        'given_names': ['David', 'Allen', 'John'],
+                        'given_names': ['David'],
                         'family_name': 'Cameron'
                     },
                     'dob': '1974-03-11'
@@ -226,7 +226,7 @@ class TestInputDataParams(unittest.TestCase):
             self.assertEqual(params['date-of-birth'], '1974-03-11')
 
     def test_nationality(self):
-        with self.subTest("Does not set `filter-region` if none provided"):
+        with self.subTest("Does not set `filter-region` if no nationality provided"):
             client = DemoClient(
                 WatchlistAPIConfig(DEFAULT_CONFIG),
                 WatchlistAPICredentials()
@@ -234,7 +234,7 @@ class TestInputDataParams(unittest.TestCase):
             params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
             self.assertNotIn('filter-region', params)
 
-        with self.subTest("Sets `filter-region` to nationality as DJII region code"):
+        with self.subTest("Can add nationality as DJII region code to `filter-region`"):
             client = DemoClient(
                 WatchlistAPIConfig(DEFAULT_CONFIG),
                 WatchlistAPICredentials()
@@ -243,10 +243,10 @@ class TestInputDataParams(unittest.TestCase):
                 'entity_type': 'INDIVIDUAL',
                 'personal_details': {
                     'name': {
-                        'given_names': ['David', 'Allen', 'John'],
+                        'given_names': ['David'],
                         'family_name': 'Cameron'
                     },
                     'nationality': 'JAM'
                 }
             }))
-            self.assertEqual(params['filter-region'], 'JAMA')
+            self.assertEqual(params['filter-region'], 'NOTK,JAMA')

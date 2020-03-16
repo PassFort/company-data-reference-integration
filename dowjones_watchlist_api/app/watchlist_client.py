@@ -21,6 +21,7 @@ from app.api.dowjones_types import (
     SearchResults,
 )
 
+WATCHLIST_NOT_KNOWN_FILTER = 'NOTK'
 WATCHLIST_ANY_FILTER = 'ANY'
 WATCHLIST_NONE_FILTER = '-ANY'
 WATCHLIST_NO_RCA_FILTER = '-23'
@@ -50,8 +51,8 @@ class APIClient():
         self.config = config
         self.credentials = credentials
         self.session = requests_retry_session()
-#        logging.basicConfig(level=logging.DEBUG)
- #       logging.info(f"Created new API client with config {self.config.to_primitive()}")
+        logging.basicConfig(level=logging.DEBUG)
+        logging.info(f"Created new API client with config {self.config.to_primitive()}")
 
     @property
     def auth_token(self):
@@ -72,6 +73,7 @@ class APIClient():
         return resp.text
 
     def search_params(self, input_data: InputData):
+        # Params decided by integration config values
         params = {
             'exclude-deceased': WATCHLIST_TRUE if self.config.ignore_deceased else WATCHLIST_FALSE,
             'filter-sic': WATCHLIST_ANY_FILTER if self.config.include_adverse_media else WATCHLIST_NONE_FILTER,
@@ -86,17 +88,18 @@ class APIClient():
             'search-type': self.config.search_type.lower(),
         }
 
+        # Params decided by check input data
         params['first-name'] = input_data.personal_details.name.given_names[0]
         params['surname'] = input_data.personal_details.name.family_name
-
         if len(input_data.personal_details.name.given_names) > 1:
             params['middle-name'] = ' '.join(input_data.personal_details.name.given_names[1:])
-
         if input_data.personal_details.dob is not None:
             params['date-of-birth'] = input_data.personal_details.dob
-
         if input_data.personal_details.nationality is not None:
-            params['filter-region'] = DJII_REGION_CODES[input_data.personal_details.nationality]
+            params['filter-region'] = ','.join([
+                WATCHLIST_NOT_KNOWN_FILTER,
+                DJII_REGION_CODES[input_data.personal_details.nationality]
+            ])
 
         return params
 
