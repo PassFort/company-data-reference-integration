@@ -354,8 +354,8 @@ class SanctionsData(Model):
         export_level = NOT_NONE
 
 
-class AdverseMediaData(Model):
-    pass
+class Source(Model):
+    name = StringType(required=True)
 
 
 class MatchEvent(Model):
@@ -365,7 +365,6 @@ class MatchEvent(Model):
 
     pep = ModelType(PepData)
     sanctions = ListType(ModelType(SanctionsData))
-    media = ModelType(AdverseMediaData)
 
     # Match information
     match_name = StringType()
@@ -381,6 +380,7 @@ class MatchEvent(Model):
     aliases = ListType(StringType(), required=True, default=[])
     associates = ListType(ModelType(Associate), default=[])
     profile_notes = StringType()
+    sources = ListType(ModelType(Source), default=[])
     gender = StringType(choices=[gender.value for gender in Gender])
     deceased = BooleanType()
 
