@@ -48,9 +48,8 @@ class APIClient():
         self.config = config
         self.credentials = credentials
         self.session = requests_retry_session()
-        logging.basicConfig(level=logging.DEBUG)
-
-        logging.info(f"Created new API client with config {self.config.to_primitive()}")
+#        logging.basicConfig(level=logging.DEBUG)
+ #       logging.info(f"Created new API client with config {self.config.to_primitive()}")
 
     @property
     def auth_token(self):
