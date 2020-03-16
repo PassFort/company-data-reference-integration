@@ -82,8 +82,21 @@ class TestConfigParams(unittest.TestCase):
             self.assertEqual(params['filter-pep-exclude-adsr'], 'true')
 
     def test_include_associates(self):
-        # TODO: Optionally include associates (not a param?)
-        pass
+        with self.subTest("Defaults `filter-pep` to 'ANY'"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['filter-pep'], 'ANY')
+
+        with self.subTest("Can set `filter-pep` to '-23'"):
+            client = DemoClient(
+                WatchlistAPIConfig(dict(DEFAULT_CONFIG, **{'include_associates': False})),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['filter-pep'], '-23')
 
     def test_include_oel(self):
         with self.subTest("Defaults `filter-oel` to 'ANY'"):

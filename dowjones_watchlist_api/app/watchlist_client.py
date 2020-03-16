@@ -23,7 +23,9 @@ from app.api.dowjones_types import (
 
 WATCHLIST_ANY_FILTER = 'ANY'
 WATCHLIST_NONE_FILTER = '-ANY'
-
+WATCHLIST_NO_RCA_FILTER = '-23'
+WATCHLIST_TRUE = 'true'
+WATCHLIST_FALSE = 'false'
 
 def requests_retry_session(
     retries=3,
@@ -71,10 +73,10 @@ class APIClient():
 
     def search_params(self, input_data: InputData):
         params = {
-
-            'exclude-deceased': 'true' if self.config.ignore_deceased else 'false',
+            'exclude-deceased': WATCHLIST_TRUE if self.config.ignore_deceased else WATCHLIST_FALSE,
             'filter-sic': WATCHLIST_ANY_FILTER if self.config.include_adverse_media else WATCHLIST_NONE_FILTER,
-            'filter-pep-exclude-adsr': 'false' if self.config.include_adsr else 'true',
+            'filter-pep-exclude-adsr': WATCHLIST_FALSE if self.config.include_adsr else WATCHLIST_TRUE,
+            'filter-pep': WATCHLIST_ANY_FILTER if self.config.include_associates else WATCHLIST_NO_RCA_FILTER,
             'filter-ool': WATCHLIST_ANY_FILTER if self.config.include_ool else WATCHLIST_NONE_FILTER,
             'filter-oel': WATCHLIST_ANY_FILTER if self.config.include_oel else WATCHLIST_NONE_FILTER,
             'filter-region-keys': WATCHLIST_ANY_FILTER if not self.config.country_match_types else ','.join([
