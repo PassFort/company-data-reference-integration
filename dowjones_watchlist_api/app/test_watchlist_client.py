@@ -16,6 +16,7 @@ DEFAULT_CONFIG = {
     'include_oel': True,
     'include_ool': True,
     'search_type': 'BROAD',
+    'strict_dob_search': True,
 }
 
 EXAMPLE_INPUT_DATA = {
@@ -156,6 +157,23 @@ class TestConfigParams(unittest.TestCase):
             )
             params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
             self.assertEqual(params['search-type'], 'precise')
+
+    def test_strict_dob_search(self):
+        with self.subTest("Defaults `date-of-birth-strict` to 'true'"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['date-of-birth-strict'], 'true')
+
+        with self.subTest("Can set `date-of-birth-strict` to 'false'"):
+            client = DemoClient(
+                WatchlistAPIConfig(dict(DEFAULT_CONFIG, **{'strict_dob_search': False})),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['date-of-birth-strict'], 'false')
 
     def test_sanctions_list_whitelist(self):
         with self.subTest("Defaults `filter-sl` to 'ANY'"):

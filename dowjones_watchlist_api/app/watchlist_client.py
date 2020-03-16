@@ -95,6 +95,7 @@ class APIClient():
                 self.config.sanctions_list_whitelist
             ),
             'search-type': self.config.search_type.lower(),
+            'date-of-birth-strict': WATCHLIST_TRUE if self.config.strict_dob_search else WATCHLIST_FALSE,
         }
 
         # Params decided by check input data

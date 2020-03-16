@@ -171,6 +171,7 @@ class WatchlistAPIConfig(Model):
     include_associates = BooleanType(required=True)
     ignore_deceased = BooleanType(required=True)
     search_type = StringType(required=True, choices=[ty.value for ty in NameSearchType])
+    strict_dob_search = BooleanType(required=True)
 
     # Optional
     sanctions_list_whitelist = ListType(StringType(), default=None)
