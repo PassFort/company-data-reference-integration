@@ -63,6 +63,98 @@ def validate_model(validation_model):
     return validates_model
 
 
+@unique
+class CountryMatchType(Enum):
+    AFFILIATION = 'AFFILIATION'
+    CITIZENSHIP = 'CITIZENSHIP'
+    CURRENT_OWNERSHIP = 'CURRENT_OWNERSHIP'
+    OWNERSHIP = 'OWNERSHIP'
+    JURISDICTION = 'JURISDICTION'
+    REGISTRATION = 'REGISTRATION'
+    ALLEGATION = 'ALLEGATION'
+    RESIDENCE = 'RESIDENCE'
+    RISK = 'RISK'
+    FORMERLY_SANCTIONED = 'FORMERLY_SANCTIONED'
+    SANCTIONED = 'SANCTIONED'
+    UNKNOWN = 'UNKNOWN'
+
+    def to_dowjones_region_key(self):
+        if self == CountryMatchType.AFFILIATION:
+            return 1
+        elif self == CountryMatchType.CITIZENSHIP:
+            return 2
+        if self == CountryMatchType.CURRENT_OWNERSHIP:
+            return 3
+        if self == CountryMatchType.JURISDICTION:
+            return 4
+        if self == CountryMatchType.OWNERSHIP:
+            return 6
+        if self == CountryMatchType.REGISTRATION:
+            return 7
+        if self == CountryMatchType.ALLEGATION:
+            return 8
+        if self == CountryMatchType.RESIDENCE:
+            return 9
+        if self == CountryMatchType.RISK:
+            return 10
+        if self == CountryMatchType.SANCTIONED:
+            return 11
+        if self == CountryMatchType.FORMERLY_SANCTIONED:
+            return 12
+
+    def from_dowjones(label):
+        '''Map from DJ's country match type onto ours
+
+        DJ's docs provide a list of the possible match types but they
+        appear to differ in format from what's actually returned from
+        the API.
+
+        E.g. The docs say `Country of Jurisdiction` but the
+        `country-type` attribute actually returned is just
+        `Jurisdiction`.
+
+        As a result, we try and be as accepting as possible.
+        '''
+        if label is None:
+            return CountryMatchType.UKNOWN
+
+        lowered_label = label.lower()
+        if 'affiliation' in lowered_label:
+            return CountryMatchType.AFFILIATION
+        elif 'citizenship' in lowered_label:
+            return CountryMatchType.CITIZENSHIP
+        elif 'ownership' in lowered_label:
+            if 'current' in lowered_label:
+                return CountryMatchType.CURRENT_OWNERSHIP
+            else:
+                return CountryMatchType.OWNERSHIP
+        elif 'jurisdiction' in lowered_label:
+            return CountryMatchType.JURISDICTION
+        elif 'registration' in lowered_label:
+            return CountryMatchType.REGISTRATION
+        elif 'allegation' in lowered_label:
+            return CountryMatchType.ALLEGATION
+        elif 'residence' in lowered_label or 'resident' in lowered_label:
+            return CountryMatchType.RESIDENCE
+        elif 'risk' in lowered_label:
+            return CountryMatchType.RISK
+        elif 'sanction' in lowered_label:
+            if 'former' in lowered_label:
+                return CountryMatchType.FORMERLY_SANCTIONED
+            else:
+                return CountryMatchType.SANCTIONED
+        else:
+            logging.error(f'Unmatched country match type {label}')
+            return CountryMatchType.UNKNOWN
+
+
+@unique
+class NameSearchType(Enum):
+    BROAD = "BROAD"
+    NEAR = "NEAR"
+    PRECISE = "PRECISE"
+
+
 class WatchlistAPICredentials(Model):
     namespace = StringType(required=True)
     username = StringType(required=True)
@@ -71,7 +163,18 @@ class WatchlistAPICredentials(Model):
 
 
 class WatchlistAPIConfig(Model):
-    pass
+    # Required
+    include_adverse_media = BooleanType(required=True)
+    include_adsr = BooleanType(required=True)
+    include_ool = BooleanType(required=True)
+    include_oel = BooleanType(required=True)
+    include_associates = BooleanType(required=True)
+    ignore_deceased = BooleanType(required=True)
+    search_type = StringType(required=True, choices=[ty.value for ty in NameSearchType])
+
+    # Optional
+    sanctions_list_whitelist = ListType(StringType(), default=None)
+    country_match_types = ListType(StringType(choices=[ty.value for ty in CountryMatchType]), default=None)
 
 
 class FullName(Model):
@@ -144,8 +247,6 @@ class MatchEventType(Enum):
     REFER_FLAG = 'REFER_FLAG'
 
     def from_risk_icon(icon):
-        import logging
-
         if icon == 'AM':
             return MatchEventType.ADVERSE_MEDIA_FLAG
         elif icon == 'PEP':
@@ -171,66 +272,6 @@ class Gender(Enum):
         else:
             return None
 
-
-@unique
-class CountryMatchType(Enum):
-    AFFILIATION = 'AFFILIATION'
-    CITIZENSHIP = 'CITIZENSHIP'
-    CURRENT_OWNERSHIP = 'CURRENT_OWNERSHIP'
-    OWNERSHIP = 'OWNERSHIP'
-    JURISDICTION = 'JURISDICTION'
-    REGISTRATION = 'REGISTRATION'
-    ALLEGATION = 'ALLEGATION'
-    RESIDENCE = 'RESIDENCE'
-    RISK = 'RISK'
-    FORMERLY_SANCTIONED = 'FORMERLY_SANCTIONED'
-    SANCTIONED = 'SANCTIONED'
-    UNKNOWN = 'UNKNOWN'
-
-    def from_dowjones(label):
-        '''Map from DJ's country match type onto ours
-
-        DJ's docs provide a list of the possible match types but they
-        appear to differ in format from what's actually returned from
-        the API.
-
-        E.g. The docs say `Country of Jurisdiction` but the
-        `country-type` attribute actually returned is just
-        `Jurisdiction`.
-
-        As a result, we try and be as accepting as possible.
-        '''
-        if label is None:
-            return CountryMatchType.UKNOWN
-
-        lowered_label = label.lower()
-        if 'affiliation' in lowered_label:
-            return CountryMatchType.AFFILIATION
-        elif 'citizenship' in lowered_label:
-            return CountryMatchType.CITIZENSHIP
-        elif 'ownership' in lowered_label:
-            if 'current' in lowered_label:
-                return CountryMatchType.CURRENT_OWNERSHIP
-            else:
-                return CountryMatchType.OWNERSHIP
-        elif 'jurisdiction' in lowered_label:
-            return CountryMatchType.JURISDICTION
-        elif 'registration' in lowered_label:
-            return CountryMatchType.REGISTRATION
-        elif 'allegation' in lowered_label:
-            return CountryMatchType.ALLEGATION
-        elif 'residence' in lowered_label or 'resident' in lowered_label:
-            return CountryMatchType.RESIDENCE
-        elif 'risk' in lowered_label:
-            return CountryMatchType.RISK
-        elif 'sanction' in lowered_label:
-            if 'former' in lowered_label:
-                return CountryMatchType.FORMERLY_SANCTIONED
-            else:
-                return CountryMatchType.SANCTIONED
-        else:
-            logging.error(f'Unmatched country match type {label}')
-            return CountryMatchType.UNKNOWN
 
 
 @unique

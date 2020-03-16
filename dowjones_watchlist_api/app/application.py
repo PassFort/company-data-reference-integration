@@ -41,9 +41,9 @@ def health():
 @validate_model(ScreeningRequest)
 def run_check(request_data: ScreeningRequest):
     if request_data.is_demo:
-        client = DemoClient(request_data.credentials)
+        client = DemoClient(request_data.config, request_data.credentials)
     else:
-        client = APIClient(request_data.credentials)
+        client = APIClient(request_data.config, request_data.credentials)
 
     search_results = client.run_search(request_data.input_data)
 
