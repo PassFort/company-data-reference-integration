@@ -28,6 +28,7 @@ WATCHLIST_NO_RCA_FILTER = '-23'
 WATCHLIST_TRUE = 'true'
 WATCHLIST_FALSE = 'false'
 
+
 def requests_retry_session(
     retries=3,
     backoff_factor=0.3,
@@ -51,8 +52,8 @@ class APIClient():
         self.config = config
         self.credentials = credentials
         self.session = requests_retry_session()
-        logging.basicConfig(level=logging.DEBUG)
-        logging.info(f"Created new API client with config {self.config.to_primitive()}")
+#        logging.basicConfig(level=logging.DEBUG)
+#        logging.info(f"Created new API client with config {self.config.to_primitive()}")
 
     @property
     def auth_token(self):
@@ -85,6 +86,9 @@ class APIClient():
                 str(CountryMatchType(match_type).to_dowjones_region_key())
                 for match_type in self.config.country_match_types
             ]),
+            'filter-sl': WATCHLIST_ANY_FILTER if not self.config.sanctions_list_whitelist else ','.join(
+                self.config.sanctions_list_whitelist
+            ),
             'search-type': self.config.search_type.lower(),
         }
 

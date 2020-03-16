@@ -157,6 +157,23 @@ class TestConfigParams(unittest.TestCase):
             params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
             self.assertEqual(params['search-type'], 'precise')
 
+    def test_sanctions_list_whitelist(self):
+        with self.subTest("Defaults `filter-sl` to 'ANY'"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['filter-sl'], 'ANY')
+
+        with self.subTest("Can set `search-type` to 'precise'"):
+            client = DemoClient(
+                WatchlistAPIConfig(dict(DEFAULT_CONFIG, **{'sanctions_list_whitelist': [1, 2, 3]})),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['filter-sl'], '1,2,3')
+
 
 class TestInputDataParams(unittest.TestCase):
     def test_names(self):
