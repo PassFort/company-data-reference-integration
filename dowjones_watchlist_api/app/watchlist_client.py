@@ -84,16 +84,16 @@ class APIClient():
             'search-type': self.config.search_type.lower(),
         }
 
-        params['first-name'] = input_data.personal_details.name.given_names[0],
-        params['surname'] = input_data.personal_details.name.family_name,
+        params['first-name'] = input_data.personal_details.name.given_names[0]
+        params['surname'] = input_data.personal_details.name.family_name
 
         if len(input_data.personal_details.name.given_names) > 1:
             params['middle-name'] = ' '.join(input_data.personal_details.name.given_names[1:])
 
-        if input_data.personal_details.dob:
+        if input_data.personal_details.dob is not None:
             params['date-of-birth'] = input_data.personal_details.dob
 
-        if input_data.personal_details.nationality:
+        if input_data.personal_details.nationality is not None:
             params['filter-region'] = DJII_REGION_CODES[input_data.personal_details.nationality]
 
         return params

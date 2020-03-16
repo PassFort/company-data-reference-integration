@@ -9,21 +9,21 @@ from app.watchlist_client import DemoClient
 
 
 DEFAULT_CONFIG = {
-    "ignore_deceased": False,
-    "include_adverse_media": True,
-    "include_adsr": True,
-    "include_associates": True,
-    "include_oel": True,
-    "include_ool": True,
-    "search_type": "BROAD",
+    'ignore_deceased': False,
+    'include_adverse_media': True,
+    'include_adsr': True,
+    'include_associates': True,
+    'include_oel': True,
+    'include_ool': True,
+    'search_type': 'BROAD',
 }
 
 EXAMPLE_INPUT_DATA = {
-    "entity_type": "INDIVIDUAL",
-    "personal_details": {
-        "name": {
-            "given_names": ["David"],
-            "family_name": "Cameron"
+    'entity_type': 'INDIVIDUAL',
+    'personal_details': {
+        'name': {
+            'given_names': ['David'],
+            'family_name': 'Cameron'
         },
     }
 }
@@ -143,3 +143,97 @@ class TestConfigParams(unittest.TestCase):
             )
             params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
             self.assertEqual(params['search-type'], 'precise')
+
+
+class TestInputDataParams(unittest.TestCase):
+    def test_names(self):
+        with self.subTest("Sets `first-name` to first given name"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['first-name'], 'David')
+
+        with self.subTest("Sets `surname` to family name"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertEqual(params['surname'], 'Cameron')
+
+        with self.subTest("Does not set `middle-name` if none provided"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertNotIn('middle-name', params)
+
+        with self.subTest("Sets `middle-name` to sum of all but the first of the given names"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(dict(EXAMPLE_INPUT_DATA, **{
+                'personal_details': {
+                    "name": {
+                        "given_names": ["David", "Allen", "John"],
+                        "family_name": "Cameron"
+                    },
+                }
+            })))
+            self.assertEqual(params['middle-name'], 'Allen John')
+
+    def test_date_of_birth(self):
+        with self.subTest("Does not set `date-of-birth` if none provided"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertNotIn('date-of-birth', params)
+
+        with self.subTest("Sets `date-of-birth` if present"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData({
+                'entity_type': 'INDIVIDUAL',
+                'personal_details': {
+                    'name': {
+                        'given_names': ['David', 'Allen', 'John'],
+                        'family_name': 'Cameron'
+                    },
+                    'dob': '1974-03-11'
+                }
+            }))
+            self.assertEqual(params['date-of-birth'], '1974-03-11')
+
+    def test_nationality(self):
+        with self.subTest("Does not set `filter-region` if none provided"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
+            self.assertNotIn('filter-region', params)
+
+        with self.subTest("Sets `filter-region` to nationality as DJII region code"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData({
+                'entity_type': 'INDIVIDUAL',
+                'personal_details': {
+                    'name': {
+                        'given_names': ['David', 'Allen', 'John'],
+                        'family_name': 'Cameron'
+                    },
+                    'nationality': 'JAM'
+                }
+            }))
+            self.assertEqual(params['filter-region'], 'JAMA')
