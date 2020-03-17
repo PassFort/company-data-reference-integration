@@ -9,14 +9,24 @@ from requests.packages.urllib3.util.retry import Retry
 
 import xmltojson
 
+from app.api.dowjones_region_codes import DJII_REGION_CODES
 from app.api.types import (
+    CountryMatchType,
     InputData,
     WatchlistAPICredentials,
+    WatchlistAPIConfig,
 )
 from app.api.dowjones_types import (
     DataResults,
     SearchResults,
 )
+
+WATCHLIST_NOT_KNOWN_FILTER = 'NOTK'
+WATCHLIST_ANY_FILTER = 'ANY'
+WATCHLIST_NONE_FILTER = '-ANY'
+WATCHLIST_NO_RCA_FILTER = '-23'
+WATCHLIST_TRUE = 'true'
+WATCHLIST_FALSE = 'false'
 
 
 def requests_retry_session(
@@ -38,7 +48,8 @@ def requests_retry_session(
 
 
 class APIClient():
-    def __init__(self, credentials: WatchlistAPICredentials):
+    def __init__(self, config: WatchlistAPIConfig, credentials: WatchlistAPICredentials):
+        self.config = config
         self.credentials = credentials
         self.session = requests_retry_session()
 
@@ -60,15 +71,48 @@ class APIClient():
         resp.raise_for_status()
         return resp.text
 
-    def run_search(self, input_data: InputData):
-        logging.info(f'Running search: {input_data.to_primitive()}')
+    def search_params(self, input_data: InputData):
         params = {
-            'first-name': input_data.personal_details.name.given_names[0],
-            'surname': input_data.personal_details.name.family_name
+            # Base params present for all searches
+            'filter-sl-exclude-suspended': WATCHLIST_TRUE,
+            'filter-ool-exclude-suspended': WATCHLIST_TRUE,
+            'filter-oel-exclude-suspended': WATCHLIST_TRUE,
+
+            # Params decided by integration config values
+            'exclude-deceased': WATCHLIST_TRUE if self.config.ignore_deceased else WATCHLIST_FALSE,
+            'filter-sic': WATCHLIST_ANY_FILTER if self.config.include_adverse_media else WATCHLIST_NONE_FILTER,
+            'filter-pep-exclude-adsr': WATCHLIST_FALSE if self.config.include_adsr else WATCHLIST_TRUE,
+            'filter-pep': WATCHLIST_ANY_FILTER if self.config.include_associates else WATCHLIST_NO_RCA_FILTER,
+            'filter-ool': WATCHLIST_ANY_FILTER if self.config.include_ool else WATCHLIST_NONE_FILTER,
+            'filter-oel': WATCHLIST_ANY_FILTER if self.config.include_oel else WATCHLIST_NONE_FILTER,
+            'filter-region-keys': WATCHLIST_ANY_FILTER if not self.config.country_match_types else ','.join([
+                str(CountryMatchType(match_type).to_dowjones_region_key())
+                for match_type in self.config.country_match_types
+            ]),
+            'filter-sl': WATCHLIST_ANY_FILTER if not self.config.sanctions_list_whitelist else ','.join(
+                self.config.sanctions_list_whitelist
+            ),
+            'search-type': self.config.search_type.lower(),
+            'date-of-birth-strict': WATCHLIST_TRUE if self.config.strict_dob_search else WATCHLIST_FALSE,
         }
 
+        # Params decided by check input data
+        params['first-name'] = input_data.personal_details.name.given_names[0]
+        params['surname'] = input_data.personal_details.name.family_name
         if len(input_data.personal_details.name.given_names) > 1:
             params['middle-name'] = ' '.join(input_data.personal_details.name.given_names[1:])
+        if input_data.personal_details.dob is not None:
+            params['date-of-birth'] = input_data.personal_details.dob
+        if input_data.personal_details.nationality is not None:
+            params['filter-region'] = ','.join([
+                WATCHLIST_NOT_KNOWN_FILTER,
+                DJII_REGION_CODES[input_data.personal_details.nationality]
+            ])
+
+        return params
+
+    def run_search(self, input_data: InputData):
+        params = self.search_params(input_data)
 
         resp = self._get(
             '/search/person-name',
@@ -79,7 +123,6 @@ class APIClient():
         return results.import_data(xmltojson.parse(resp))
 
     def fetch_data_record(self, peid):
-        logging.info(f'Fetching data record with PEID \'{peid}\'')
         results = DataResults()
         return results.import_data(xmltojson.parse(self._get(
             f'/data/records/{peid}',

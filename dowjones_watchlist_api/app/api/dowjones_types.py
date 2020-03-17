@@ -188,12 +188,18 @@ class Sanction(XmlElementWithTimePeriodAttributes):
     list_ = XmlContent(XmlStringType())
 
 
+class Source(XmlElementModel):
+    tag_name = 'source'
+    reference = XmlContent(XmlStringType())
+
+
 class WatchlistContent(XmlElementModel):
     tag_name = 'watchlist-content'
     active_status = XmlChild(ActiveStatus)
     descriptions = XmlNestedChildList(Description)
     roles = XmlNestedChildList(Role, serialized_name='role-details')
     sanctions = XmlNestedChildList(Sanction, serialized_name='sanctions-reference-details')
+    sources = XmlNestedChildList(Source, serialized_name='source-details')
     profile_notes = XmlChildContent(XmlStringType(), default=None, serialized_name='profile-notes')
 
 
