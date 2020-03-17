@@ -116,7 +116,7 @@ class CountryMatchType(Enum):
         As a result, we try and be as accepting as possible.
         '''
         if label is None:
-            return CountryMatchType.UKNOWN
+            return CountryMatchType.UNKNOWN
 
         lowered_label = label.lower()
         if 'affiliation' in lowered_label:
