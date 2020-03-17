@@ -18,7 +18,16 @@ class TestApiValidation(unittest.TestCase):
         response = requests.post(
             f'{API_URL}/screening_request',
             json={
-                'config': {},
+                'config': {
+                    'ignore_deceased': False,
+                    'include_adverse_media': True,
+                    'include_adsr': True,
+                    'include_associates': True,
+                    'include_oel': True,
+                    'include_ool': True,
+                    'search_type': 'BROAD',
+                    'strict_dob_search': True,
+                },
                 'credentials': {
                     'namespace': 'A_NAMESPACE',
                     'username': 'A_USERNAME',

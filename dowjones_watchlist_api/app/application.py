@@ -15,6 +15,7 @@ from app.api.types import (
     SanctionsData,
     ScreeningRequest,
     ScreeningResponse,
+    Source,
     TimePeriod,
     MatchEvent,
     MatchEventType,
@@ -41,9 +42,9 @@ def health():
 @validate_model(ScreeningRequest)
 def run_check(request_data: ScreeningRequest):
     if request_data.is_demo:
-        client = DemoClient(request_data.credentials)
+        client = DemoClient(request_data.config, request_data.credentials)
     else:
-        client = APIClient(request_data.credentials)
+        client = APIClient(request_data.config, request_data.credentials)
 
     search_results = client.run_search(request_data.input_data)
 
@@ -167,6 +168,7 @@ def run_check(request_data: ScreeningRequest):
             'pep': pep_data,
             'sanctions': sanctions_data,
             'profile_notes': record.person.watchlist_content.profile_notes,
+            'sources': [Source({'name': source.reference}) for source in record.person.watchlist_content.sources],
             'associates': associates,
             'match_countries': [match.country_code for match in country_matches],
             'match_countries_data': country_matches,
