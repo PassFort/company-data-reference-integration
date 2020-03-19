@@ -1,4 +1,4 @@
-FROM python:3.7.4-alpine3.10
+FROM python:3.7-alpine3.10
 
 ARG git_key
 
@@ -11,6 +11,8 @@ ENV LANG=en_US.UTF-8 \
 WORKDIR /src
 
 COPY Pipfile Pipfile.lock Makefile /src/
+
+RUN apk --no-cache upgrade
 
 RUN mkdir /srv/logs/ && \
     pip install pipenv && \

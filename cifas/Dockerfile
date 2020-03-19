@@ -1,4 +1,4 @@
-FROM python:3.7.5-alpine3.10
+FROM python:3.7-alpine3.10
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
@@ -7,6 +7,8 @@ ENV LANG=en_US.UTF-8 \
 EXPOSE 8001
 
 WORKDIR /app
+
+RUN apk --no-cache upgrade
 
 RUN apk add --no-cache make openssh-client git build-base python3-dev libxml2-dev libxslt-dev
 COPY Pipfile Pipfile.lock Makefile /app/
