@@ -1,4 +1,4 @@
-FROM python:3.6.8-alpine3.10
+FROM python:3.6-alpine3.10
 
 ARG git_key
 
@@ -13,6 +13,8 @@ WORKDIR /src
 COPY Pipfile Pipfile.lock Makefile /src/
 
 RUN env
+
+RUN apk --no-cache upgrade
 
 RUN mkdir /srv/logs/ && \
     pip install pipenv==2018.5.18 && \

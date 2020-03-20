@@ -1,9 +1,10 @@
-FROM python:3.7.4-alpine3.10
+FROM python:3.7-alpine3.10
 
 EXPOSE 8001
 
 WORKDIR /app
 
+RUN apk --no-cache upgrade
 RUN apk add --no-cache make gcc musl-dev openssh-client git
 COPY Pipfile Pipfile.lock /app/
 
