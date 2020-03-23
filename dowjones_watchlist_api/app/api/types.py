@@ -178,6 +178,98 @@ class WatchlistAPIConfig(Model):
     country_match_types = ListType(StringType(choices=[ty.value for ty in CountryMatchType]), default=None)
 
 
+@unique
+class OccupationCategory(Enum):
+    OTHER = "Other"
+    RELATIVES_AND_CLOSE_ASSOCIATES = "Relatives and Close Associates"
+    INTERNATIONAL_SPORTING_ORGANISATION_OFFICIALS = "International Sporting Organisation Officials"
+    LOCAL_PUBLIC_OFFICIALS = "Local Public Officials"
+    POLITICAL_PRESSURE_AND_LABOUR_GROUP_OFFICIALS = "Political Pressure and Labour Group Officials"
+    CITY_MAYORS = "City Mayors"
+    INTERNATIONAL_ORGANISATION_OFFICIALS = "International Organisation Officials"
+    POLITICAL_PARTY_OFFICIALS = "Political Party Officials"
+    RELIGIOUS_LEADERS = "Religious Leaders"
+    REGIONAL_GOVERNMENT_MINISTERS = "Regional Government Ministers"
+    HEADS_AND_DEPUTY_HEADS_OF_REGIONAL_GOVERNMENT = "Heads & Deputy Heads of Regional Government"
+    STATE_AGENCY_OFFICIALS = "State Agency Officials"
+    STATE_CORPORATION_EXECUTIVES = "State Corporation Executives"
+    SENIOR_MEMBERS_OF_THE_JUDICIARY = "Senior Members of the Judiciary"
+    SENIOR_MEMBERS_OF_THE_SECRET_SERVICES = "Senior Members of the Secret Services"
+    SENIOR_MEMBERS_OF_THE_POLICE_SERVICES = "Senior Members of the Police Services"
+    SENIOR_MEMBERS_OF_THE_ARMED_FORCES = "Senior Members of the Armed Forces"
+    EMBASSY_AND_CONSULAR_STAFF = "Embassy & Consular Staff"
+    SENIOR_CIVIL_SERVANTS_REGIONAL_GOVERNMENT = "Senior Civil Servants-Regional Government"
+    SENIOR_CIVIL_SERVANTS_NATIONAL_GOVERNMENT = "Senior Civil Servants-National Government"
+    MEMBERS_OF_THE_NATIONAL_LEGISLATURE = "Members of the National Legislature"
+    NATIONAL_GOVERNMENT_MINISTERS = "National Government Ministers"
+    HEADS_AND_DEPUTIES_STATE_SLASH_NATIONAL_GOVERNMENT = "Heads & Deputies State/National Government"
+
+    @property
+    def pep_tier(self):
+        # Dow Jones has tiers from 1 - 26, which we map onto a smaller range of 1 - 4 for display
+        PEP_TIER_MAP = {
+            # Tier 1
+            1: 1, 2: 1, 3: 1,
+            # Tier 2
+            4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2,
+            # Tier 3
+            11: 3, 12: 3,
+            # Tier 4
+            13: 4, 14: 4, 15: 4, 16: 4, 17: 4, 18: 4, 19: 4, 20: 4, 21: 4, 22: 4, 26: 4
+        }
+
+        return PEP_TIER_MAP[self.dowjones_pep_tier]
+
+    @property
+    def dowjones_pep_tier(self):
+        if self == OccupationCategory.OTHER:
+            return 24
+        elif self == OccupationCategory.RELATIVES_AND_CLOSE_ASSOCIATES:
+            return 23
+        elif self == OccupationCategory.INTERNATIONAL_SPORTING_ORGANISATION_OFFICIALS:
+            return 22
+        elif self == OccupationCategory.LOCAL_PUBLIC_OFFICIALS:
+            return 21
+        elif self == OccupationCategory.POLITICAL_PRESSURE_AND_LABOUR_GROUP_OFFICIALS:
+            return 19
+        elif self == OccupationCategory.CITY_MAYORS:
+            return 18
+        elif self == OccupationCategory.INTERNATIONAL_ORGANISATION_OFFICIALS:
+            return 17
+        elif self == OccupationCategory.POLITICAL_PARTY_OFFICIALS:
+            return 16
+        elif self == OccupationCategory.RELIGIOUS_LEADERS:
+            return 15
+        elif self == OccupationCategory.REGIONAL_GOVERNMENT_MINISTERS:
+            return 14
+        elif self == OccupationCategory.HEADS_AND_DEPUTY_HEADS_OF_REGIONAL_GOVERNMENT:
+            return 13
+        elif self == OccupationCategory.STATE_AGENCY_OFFICIALS:
+            return 12
+        elif self == OccupationCategory.STATE_CORPORATION_EXECUTIVES:
+            return 11
+        elif self == OccupationCategory.SENIOR_MEMBERS_OF_THE_JUDICIARY:
+            return 10
+        elif self == OccupationCategory.SENIOR_MEMBERS_OF_THE_SECRET_SERVICES:
+            return 9
+        elif self == OccupationCategory.SENIOR_MEMBERS_OF_THE_POLICE_SERVICES:
+            return 8
+        elif self == OccupationCategory.SENIOR_MEMBERS_OF_THE_ARMED_FORCES:
+            return 7
+        elif self == OccupationCategory.EMBASSY_AND_CONSULAR_STAFF:
+            return 6
+        elif self == OccupationCategory.SENIOR_CIVIL_SERVANTS_REGIONAL_GOVERNMENT:
+            return 5
+        elif self == OccupationCategory.SENIOR_CIVIL_SERVANTS_NATIONAL_GOVERNMENT:
+            return 4
+        elif self == OccupationCategory.MEMBERS_OF_THE_NATIONAL_LEGISLATURE:
+            return 3
+        elif self == OccupationCategory.NATIONAL_GOVERNMENT_MINISTERS:
+            return 2
+        elif self == OccupationCategory.HEADS_AND_DEPUTIES_STATE_SLASH_NATIONAL_GOVERNMENT:
+            return 1
+
+
 class FullName(Model):
     given_names = ListType(StringType(), required=True)
     family_name = StringType(required=True, min_length=1)

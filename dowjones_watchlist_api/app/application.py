@@ -10,6 +10,9 @@ from app.api.types import (
     DateMatchType,
     Error,
     Gender,
+    MatchEvent,
+    MatchEventType,
+    OccupationCategory,
     PepData,
     PepRole,
     SanctionsData,
@@ -17,8 +20,6 @@ from app.api.types import (
     ScreeningResponse,
     Source,
     TimePeriod,
-    MatchEvent,
-    MatchEventType,
     validate_model,
 )
 from app.watchlist_client import (
@@ -127,8 +128,10 @@ def run_check(request_data: ScreeningRequest):
             'roles': [
                 PepRole({
                     'name': role.title.text,
+                    'tier': OccupationCategory(role.title.category).pep_tier,
                     'is_current': role.type_ == 'Primary Occupation',
                     'from_date': role.title.since_partial_date,
+                    'to_date': role.title.to_partial_date,
                 }) for role in record.person.watchlist_content.roles
             ]
         }) if event_type == MatchEventType.PEP_FLAG else None

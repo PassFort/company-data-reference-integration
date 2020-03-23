@@ -1,6 +1,5 @@
 from typing import List, Union
 
-
 from schematics_xmlelem.attributes import XmlAttribute
 from schematics_xmlelem.children import (
     XmlChildContent,
@@ -136,27 +135,6 @@ class Description(XmlElementModel):
     text = XmlAttribute(XmlStringType(), serialized_name='description1')
 
 
-class OccupationTitle(XmlElementModel):
-    tag_name = 'occupation-title'
-    category = XmlAttribute(XmlStringType(), serialized_name='occupation-category')
-    since_day = XmlAttribute(XmlIntType(), serialized_name='since-day', default=None)
-    since_month = XmlAttribute(XmlIntType(), serialized_name='since-month', default=None)
-    since_year = XmlAttribute(XmlIntType(), serialized_name='since-year', default=None)
-    text = XmlContent(XmlStringType())
-
-    @property
-    def since_partial_date(self):
-        if self.since_year is None:
-            return None
-        return partial_date_string(self.since_year, self.since_month, self.since_day)
-
-
-class Role(XmlElementModel):
-    tag_name = 'role'
-    type_ = XmlAttribute(XmlStringType(), serialized_name='role-type')
-    title = XmlChild(OccupationTitle)
-
-
 class XmlElementWithTimePeriodAttributes(XmlElementModel):
     since_day = XmlAttribute(XmlIntType(), serialized_name='since-day', default=None)
     since_month = XmlAttribute(XmlIntType(), serialized_name='since-month', default=None)
@@ -177,6 +155,18 @@ class XmlElementWithTimePeriodAttributes(XmlElementModel):
         if self.to_year is None:
             return None
         return partial_date_string(self.to_year, self.to_month, self.to_day)
+
+
+class OccupationTitle(XmlElementWithTimePeriodAttributes):
+    tag_name = 'occupation-title'
+    category = XmlAttribute(XmlStringType(), serialized_name='occupation-category')
+    text = XmlContent(XmlStringType())
+
+
+class Role(XmlElementModel):
+    tag_name = 'role'
+    type_ = XmlAttribute(XmlStringType(), serialized_name='role-type')
+    title = XmlChild(OccupationTitle)
 
 
 class Sanction(XmlElementWithTimePeriodAttributes):
