@@ -170,6 +170,11 @@ class WorldCheckCredentials(Model):
             return 'rms-world-check-one-api.thomsonreuters.com'
 
 
+class WorldCheckProviderType(Enum):
+    WATCHLIST = 'WATCHLIST'
+    CLIENT_WATCHLIST = 'CLIENT_WATCHLIST'
+
+
 class WorldCheckConfig(Model):
     group_id = StringType(required=True)
     minimum_match_strength = StringType(
@@ -179,6 +184,7 @@ class WorldCheckConfig(Model):
         default=MatchStrength.WEAK
     )
     enable_ongoing_monitoring = BooleanType(default=False)
+    use_client_watchlist = BooleanType(default=False)
 
 
 class FullName(Model):
