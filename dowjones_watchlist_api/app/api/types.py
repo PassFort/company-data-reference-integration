@@ -218,7 +218,7 @@ class OccupationCategory(Enum):
             13: 4, 14: 4, 15: 4, 16: 4, 17: 4, 18: 4, 19: 4, 20: 4, 21: 4, 22: 4, 26: 4
         }
 
-        return PEP_TIER_MAP[self.dowjones_pep_tier]
+        return PEP_TIER_MAP.get(self.dowjones_pep_tier)
 
     @property
     def dowjones_pep_tier(self):
