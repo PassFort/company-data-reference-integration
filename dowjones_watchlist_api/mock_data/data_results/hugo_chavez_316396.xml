@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="316396" date="2017-03-10 13:44:16.737">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <title-honorific>General</title-honorific>
+          <first-name>Raúl</first-name>
+          <middle-name>Isaías</middle-name>
+          <surname>Baduel</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Raul</first-name>
+              <middle-name>Isaias</middle-name>
+              <surname>Baduel</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Raúl</first-name>
+          <middle-name>Isaías</middle-name>
+          <surname>Baduel</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Raúl Isaías</first-name>
+          <surname>Baduel</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Raul Isaias</first-name>
+              <surname>Baduel</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="6" month="7" year="2007" date-type="Inactive as of (PEP)"></date>
+      <date day="6" month="7" year="1955" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Las Mercedes del Llano</place-name>
+        <region>Guárico</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Country of Reported Allegation">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="National ID">V-4.309.405</identification>
+    </identification-details>
+    <image-details>
+      <image-url>https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Ra%C3%BAl_Isa%C3%ADas_Baduel.jpg/245px-Ra%C3%BAl_Isa%C3%ADas_Baduel.jpg</image-url>
+      <image-url>http://www.elpais.com/recorte/20080430elpepiint_4/LCO340/Ies/general_Raul_Isaias_Baduel.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Corruption"></description>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="National Government Ministers">See Previous Roles</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Members of the Armed Forces" since-month="1" since-year="2004" to-day="14" to-month="7" to-year="2006">Commander General, Land Force</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="14" since-month="7" since-year="2006" to-day="6" to-month="7" to-year="2007">Minister of Defence</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>International Herald Tribune, 06-Oct-2008, on Factiva.com (AN=INHT000020081005e4a60003e)</source>
+        <source>BBC Monitoring, 23-Jul-2003, on Factiva.com (AN=bbcmap0020030723dz7n000b5)</source>
+        <source>The Wall Street Journal (Online and Print), 09-May-2010, on Factiva.com (AN=WSJO000020100510e65a00107)</source>
+        <source>AP Spanish Worldstream, 03-Oct-2008, on Factiva.com (AN=APSPW00020081004e4a4000md)</source>
+        <source>Associated Press Newswires, 24-Sep-2009, on Factiva.com (AN=APRS000020090925e59p0002g)</source>
+        <source>Agence France Presse, 02-Apr-2009, on Factiva.com (AN=AFPES00020090402e542005bq)</source>
+        <source>People’s Daily Online, 14-Aug-2015, on Factiva.com (AN=PEODSP0020150814eb8e0001i)</source>
+        <source>Sputnik News Service, 13-Jan-2017, on Factiva.com (AN=RVESEN0020170113ed1c0002t)</source>
+        <source>Europa Press - Servicio Internacional, 12-Jan-2017, on Factiva.com (AN=EPSI000020170112ed1c005bq)</source>
+        <source>ABC.es, 04-Mar-2017, on Factiva.com (AN=ABCES00020170304ed3400036)</source>
+      </source-details>
+      <profile-notes>PROFILE CREATED: 06-Oct-2008
+      UPDATE ADDED: 03-Apr-2009
+      UPDATE ADDED: 05-Oct-2009
+      UPDATE ADDED: 10-May-2010
+      UPDATE ADDED: 13-Jan-2017
+      UPDATE ADDED: 07-Mar-2017
+      Keywords: embezzlement, abuse of office, corruption
+      People mentioned: Raul Baduel, Hugo Chavez
+      Profile:
+      Raul Baduel, a former Venezuelan defence minister, was arrested by military intelligence agents in Maracay, Aragua, on October 3, 2008, on suspicion of involvement in the alleged disappearance of USD 14m from army funds during his tenure. Baduel, who had become a harsh critic of the country’s president, Hugo Chavez, since his retirement in July 2007, strongly denied the allegations though was prohibited from talking about the details of the case. Following questioning, Baduel was released but ordered to remain in Venezuela and appear before military authorities every 15 days.
+
+      PROFILE UPDATED: 03-Apr-2009
+      Baduel was re-arrested on corruption-related charges on April 2, 2009, after a military prosecutor found sufficient evidence to justify placing him in preventative custody. 
+
+      PROFILE UPDATED: 05-Oct-2009
+      Baduel was formally charged with embezzlement by military prosecutors on September 24, 2009. 
+
+      PROFILE UPDATED: 10-May-2010
+      Baduel was sentenced to seven years and 11 months in prison by a Venezuelan military tribunal on May 7, 2010. He was found guilty of embezzling military funds, abuse of authority and crimes against military honour.
+
+      PROFILE UPDATED: 13-Jan-2017
+      On August 12, 2015, Baduel was released from prison on probation after serving over half of his seven years and 11 months sentence. He was allowed to serve the remaining time under house arrest on the condition that he presented himself to the court every 30 days and that he did not speak the media. 
+      On January 12, 2017, Baduel was arrested and returned to prison for allegedly failing to comply with the terms of his house arrest. Information was reportedly seized from his residence that suggested he was conspiring to commit criminal activity.
+
+      PROFILE UPDATED: 07-Mar-2017
+      As reported on March 4, 2017, Baduel was further remanded in custody due to pending charges against him including corruption and treason.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="4346306" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11023140" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11023141" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11023145" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11023148" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

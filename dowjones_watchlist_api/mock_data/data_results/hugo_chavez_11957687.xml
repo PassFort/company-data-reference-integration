@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="11957687" date="2019-09-16 21:01:39.290">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>José</first-name>
+          <middle-name>Fausto</middle-name>
+          <surname>Rivera-Coreas</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>José</first-name>
+              <middle-name>Fausto</middle-name>
+              <surname>Rivera Coreas</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Jose</first-name>
+              <middle-name>Fausto</middle-name>
+              <surname>Rivera-Coreas</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Jose</first-name>
+              <middle-name>Fausto</middle-name>
+              <surname>Rivera Coreas</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>José</first-name>
+          <middle-name>Fausto</middle-name>
+          <surname>Rivera</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>José</first-name>
+          <middle-name>Fausto</middle-name>
+          <surname>Coreas</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>José Fausto</first-name>
+          <surname>Rivera-Coreas</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>José Fausto</first-name>
+              <surname>Rivera Coreas</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Jose Fausto</first-name>
+              <surname>Rivera-Coreas</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Jose Fausto</first-name>
+              <surname>Rivera Coreas</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="1999" date-type="Date of Birth"></date>
+      <date year="2000" date-type="Date of Birth"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="NOTK" is-territory="false">Not Known</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </country-value>
+      <country-value country-type="Country of Reported Allegation">
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <address-line>1000 Misty Lynn Circle, Cockeysville</address-line>
+        <region>Maryland</region>
+        <zip-code>21030</zip-code>
+        <country djii-region-code="USA" iso2-country-code="US" iso3-country-code="USA" is-territory="false" country-profile="united states.doc">United States</country>
+      </address>
+    </address-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Organised Crime" description3="Lower Threshold"></description>
+      </descriptions>
+      <source-details>
+        <source>Agence Marocaine De Presse (MAP), 11-Sep-2019, on Factiva.com (AN=AGEMAP0020190911ef9b000e1)</source>
+        <source>Mail Online, 09-Sep-2019, on Factiva.com (AN=DAMONL0020190909ef99000jq)</source>
+        <source>New York Post, 09-Sep-2019, on Factiva.com (AN=NYPO000020190909ef990006d)</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="11957685" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11957686" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11957688" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11957689" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11957690" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11957692" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11958135" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11958136" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+      <associate peid="11958137" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Organised Crime" ex="false"></associate>
+    </associates>
+  </person>
+</records>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="1755796" date="2018-12-27 13:55:35.950">
+    <gender>Female</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Bexhi</first-name>
+          <middle-name>Lissette</middle-name>
+          <surname>Segura Pérez</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Bexhi</first-name>
+              <middle-name>Lissette</middle-name>
+              <surname>Segura Perez</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Bexhi</first-name>
+          <middle-name>Lissette</middle-name>
+          <surname>Segura</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Bexhi</first-name>
+          <middle-name>Lissette</middle-name>
+          <surname>Pérez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Bexhi Lissette</first-name>
+          <surname>Segura Pérez</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Bexhi Lissette</first-name>
+              <surname>Segura Perez</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="23" month="10" year="1971" date-type="Date of Birth"></date>
+      <date day="26" month="12" year="2018" date-type="Inactive as of (PEP)"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="National ID">V-11.712.547</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://guayaquil.consulado.gob.ve/images/stories/Consulado/bexhi.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="13" since-month="1" since-year="2014" to-day="26" to-month="12" to-year="2018">Consul General, Venezuelan Consulate General, Guayaquil, Ecuador</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff">See Previous Roles</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Unmarried Partner" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="1755788" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="263483" date="2017-02-09 10:35:45.170">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <title-honorific>Lieutenant Colonel</title-honorific>
+          <first-name>Hugo</first-name>
+          <middle-name>Rafael</middle-name>
+          <surname>Chávez Frías</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Hugo</first-name>
+              <middle-name>Rafael</middle-name>
+              <surname>Chavez Frias</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Hugo</first-name>
+          <middle-name>Rafael</middle-name>
+          <surname>Chávez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Hugo</first-name>
+          <middle-name>Rafael</middle-name>
+          <surname>Frías</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Hugo Rafael</first-name>
+          <surname>Chávez Frías</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Hugo Rafael</first-name>
+              <surname>Chavez Frias</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="5" month="3" year="2013" date-type="Deceased Date"></date>
+      <date day="5" month="3" year="2013" date-type="Inactive as of (PEP)"></date>
+      <date day="28" month="7" year="1954" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Sabeneta</place-name>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="National ID">V-4.258.228</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://www.biografiasyvidas.com/biografia/c/fotos/chavez.jpg</image-url>
+      <image-url>http://www.lapatilla.com/site/wp-content/uploads/2011/02/presidente_Venezuela_Hugo_Chavez.jpg</image-url>
+      <image-url>http://www.noticiassin.com/wp-content/uploads/2012/12/Hugo-Ch%C3%A1vez-23.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Political Party Officials" since-year="1994" to-year="2008">President, Fifth Republic Movement (MVR)</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Political Party Officials" since-day="24" since-month="2" since-year="2008" to-day="5" to-month="3" to-year="2013">President, Venezuelan United Socialist Party (PSUV)</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Political Party Officials">Deceased</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Heads &amp; Deputies State/National Government" since-day="2" since-month="2" since-year="1999" to-day="5" to-month="3" to-year="2013">President of Venezuela</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>http://www.cronica.com.mx/nota.php?idc=137269</source>
+        <source>Agencia Mexicana de Noticias (NOTIMEX), 04-Mar-2008, on Factiva.com (AN=NOTMXS0020080304e434001jm)</source>
+        <source>Dow Jones International News, 09-Jul-2002, on Factiva.com (AN=dji0000020020709dy7900147)</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="264181" relationship="Father" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="264183" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="264589" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="293631" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="298667" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="304635" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="304636" relationship="Daughter" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="304639" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="304640" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="316396" relationship="Friend" description1="Special Interest Person (SIP)" description2="Corruption" ex="true"></associate>
+      <associate peid="522419" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="522425" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="604028" relationship="Cousin" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="837505" relationship="Employee" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="910765" relationship="Brother" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="1043115" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1043117" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1043119" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1479522" relationship="Son-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1755788" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1755796" relationship="Unmarried Partner" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+    </associates>
+  </person>
+</records>

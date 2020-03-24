@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="837505" date="2019-08-27 13:53:05.553">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Edmundo</first-name>
+          <surname>Chirinos</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="5" month="3" year="2013" date-type="Inactive as of (RCA related to PEP)"></date>
+      <date day="12" month="8" year="1935" date-type="Date of Birth"></date>
+      <date day="24" month="8" year="2013" date-type="Deceased Date"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Churuguara</place-name>
+        <region>Falcón</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>https://ichef.bbci.co.uk/news/ws/304/amz/worldservice/live/assets/images/2013/08/25/130825015707_chirinos_304x171_diarioelnacional.jpg</image-url>
+      <image-url>http://www.controlciudadano.org/noticias/getbindata.php?notid=2788&amp;fieldname=foto</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title>Deceased</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>The Sunday Telegraph, 14-May-2006, on Factiva.com (AN=STEL000020060514e25e00071)</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Employer" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+    </associates>
+  </person>
+</records>
