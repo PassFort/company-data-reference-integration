@@ -1,6 +1,6 @@
 from swagger_client.models import NewCase, ProviderType, Case, CaseEntityType, Result, Filter, Field, MatchStrength
 from app.auth import CustomAuthApiClient
-from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData, Error
+from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData, WorldCheckProviderType, Error
 from app.api.responses import make_screening_started_response, make_results_response, make_match_response, \
     make_associate_response, make_associates_response
 from swagger_client.api import CaseApi, ReferenceApi
@@ -112,10 +112,13 @@ class CaseHandler:
             current_page += 1
 
     def __new_case(self, input_data: ScreeningRequestData) -> Case:
+        provider_types = [WorldCheckProviderType.WATCHLIST.value]
+        if self.config.use_client_watchlist:
+            provider_types.append(WorldCheckProviderType.CLIENT_WATCHLIST.value)
         result = self.case_api.cases_post(
             NewCase(
                 name=input_data.name,
-                provider_types=[ProviderType.WATCHLIST],
+                provider_types=provider_types,
                 entity_type=input_data.worldcheck_entity_type,
                 group_id=self.config.group_id,
                 secondary_fields=self.secondary_fields(input_data))
