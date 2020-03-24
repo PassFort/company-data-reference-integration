@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="312142" date="2019-03-15 15:13:05.153">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <title-honorific>Brigadier General</title-honorific>
+          <first-name>Manaf</first-name>
+          <middle-name>Mustafa</middle-name>
+          <surname>Tlass</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">مناف مصطفى طلاس</original-script-name>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Manaf</first-name>
+              <middle-name>Mustafa</middle-name>
+              <surname>Talas</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Mounaf</first-name>
+              <middle-name>Mustafa</middle-name>
+              <surname>Tlass</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Munaf</first-name>
+              <middle-name>Mustafa</middle-name>
+              <surname>Tlass</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Manaf</first-name>
+              <middle-name>Mustafa</middle-name>
+              <surname>Tlas</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Manaf</first-name>
+              <middle-name>Mustafa</middle-name>
+              <surname>El-Tlass</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Manaf</first-name>
+              <middle-name>Mustafa</middle-name>
+              <surname>El Tlass</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date month="6" year="2012" date-type="Inactive as of (PEP)"></date>
+      <date year="1964" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Al-Rastan</place-name>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="FRA" iso2-country-code="FR" iso3-country-code="FRA" is-territory="false" country-profile="france.doc">France</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://archive.arabic.cnn.com/2012/syria.2011/9/12/Manaf.Tlass.Bio/Gal.Manaf.tlass.jpg_-1_-1.jpg</image-url>
+      <image-url>http://archive.aawsat.com/2012/07/10/images/news1.685764.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Senior Members of the Armed Forces">See Previous Roles</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Members of the Armed Forces" to-month="6" to-year="2012">Commander, Syrian Republican Guard</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>The Washington Post, 18-Nov-2005, on Factiva.com (AN=WP00000020051118e1bi0003x)</source>
+        <source>http://www.meforum.org/meib/articles/0007_sd2.htm</source>
+        <source>http://archive.aawsat.com/details.asp?section=4&amp;article=685764&amp;issueno=12278#.XIuroyJKgkI</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Friend" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="true"></associate>
+      <associate peid="307441" relationship="Father" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="307850" relationship="Friend" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="312136" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="312141" relationship="Brother" description1="Special Interest Person (SIP)" description2="Terror" ex="false"></associate>
+      <associate peid="312143" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="312144" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="323699" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="323700" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="323701" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="323703" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="323705" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="323706" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1829649" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1829654" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1829663" relationship="Father-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="3191255" relationship="Aunt" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

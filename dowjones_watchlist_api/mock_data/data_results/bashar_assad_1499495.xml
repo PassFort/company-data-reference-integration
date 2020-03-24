@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="1499495" date="2017-11-06 12:58:12.350">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Feras</first-name>
+          <surname>Al Akhras</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">فراس الأخرس</original-script-name>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Feras</first-name>
+              <surname>Al-Akhras</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Feras</first-name>
+              <surname>Alakhras</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Feras</first-name>
+              <surname>Akhras</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Firas</first-name>
+              <surname>Al Akhras</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Firas</first-name>
+              <surname>Alakhras</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <country-details>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Brother-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>

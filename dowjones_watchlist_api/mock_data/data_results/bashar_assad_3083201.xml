@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="3083201" date="2018-05-24 14:21:51.913">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Hilal</first-name>
+          <middle-name>Anouar</middle-name>
+          <surname>Al-Assad</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">هلال أنور الأسد</original-script-name>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Hilal</first-name>
+              <middle-name>Anouar</middle-name>
+              <surname>Al Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Hilal</first-name>
+              <middle-name>Anwar</middle-name>
+              <surname>Al Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Hilal</first-name>
+              <middle-name>Anouar</middle-name>
+              <surname>Alassad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Hilal</first-name>
+              <middle-name>Anouar</middle-name>
+              <surname>Assad</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="23" month="3" year="2014" date-type="Deceased Date"></date>
+      <date year="1967" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Qardaha</place-name>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://alhayat.com/getattachment/7f3779e2-6f0e-49af-8a2b-2728ef60307f/</image-url>
+      <image-url>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQJeg6a85B8I52JxMx0geo3q0am6IxoSyVtC4Wku6NaVACqBLVztw</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title>Deceased</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307846" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307853" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>

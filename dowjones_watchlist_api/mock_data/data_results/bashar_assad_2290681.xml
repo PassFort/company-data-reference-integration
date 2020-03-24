@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="2290681" date="2017-11-06 10:52:33.687">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Karim</first-name>
+          <surname>Al-Assad</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Karim</first-name>
+              <surname>Al Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Karim</first-name>
+              <surname>Alassad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Karim</first-name>
+              <surname>Assad</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="2004" date-type="Date of Birth"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Father" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307807" relationship="Grandfather" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="307838" relationship="Grandmother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307846" relationship="Aunt" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307853" relationship="Uncle" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307912" relationship="Mother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="310668" relationship="Uncle" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1709695" relationship="Aunt" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>

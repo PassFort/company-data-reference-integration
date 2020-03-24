@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="1823097" date="2019-11-25 21:58:53.123">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Sulieman</first-name>
+          <surname>Maarouf</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">سليمان معروف</original-script-name>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sulayman</first-name>
+          <middle-name>Mahmud</middle-name>
+          <surname>Ma'ruf</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">سليمان محمود معروف</original-script-name>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Mahmoud</first-name>
+          <middle-name>Soleiman</middle-name>
+          <surname>Maarouf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Suleiman</first-name>
+          <surname>Maarouf</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Sleiman</first-name>
+              <surname>Maarouf</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sulaiman</first-name>
+          <surname>Maarouf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sulayman</first-name>
+          <surname>Ma'ruf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Soulieman</first-name>
+          <surname>Marouf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sulayman</first-name>
+          <surname>Maarouf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sulieman</first-name>
+          <surname>Ma’ruf</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="HM Treasury Group ID">12790</identification>
+      <identification identification-type="EU Consolidated Electronic List ID">7152</identification>
+      <identification identification-type="EU Sanctions Programme Indicator">SYR</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://www.metransparent.com/local/cache-vignettes/L282xH387/arton14229-fd79c.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+      </descriptions>
+      <sanctions-reference-details>
+        <sanctions-reference since-day="16" to-month="5" description2="Sanctions Lists" list-provider-code="GB-HMT" since-year="2012" status="Current" list-provider-name="HM Treasury" since-month="10" to-year="2014" to-day="30">HM Treasury Consolidated List</sanctions-reference>
+        <sanctions-reference list-provider-name="Commission de Surveillance du Secteur Financier" list-provider-code="LU-CSSF" description2="Sanctions Lists" status="Current" to-day="28" to-month="5" to-year="2014">CSSF (Luxembourg) Sanctions List</sanctions-reference>
+        <sanctions-reference since-day="2" to-month="6" description2="Sanctions Lists" list-provider-code="MC-SICCFIN" since-year="2012" status="Current" list-provider-name="Service d'Information et de Contrôle sur les Circuits Financiers (SICCFIN)" since-month="11" to-year="2014" to-day="12">Finance and Economy Ministry (Monaco) Economic Sanctions</sanctions-reference>
+        <sanctions-reference since-day="27" to-month="6" description2="Sanctions Lists" list-provider-code="CH-SECO" since-year="2012" status="Current" list-provider-name="Secrétariat d'Etat à l'économie (State Secretariat for Economic Affairs)" since-month="10" to-year="2014" to-day="23">SECO (Switzerland) Syria List</sanctions-reference>
+        <sanctions-reference since-day="28" to-month="4" description2="Sanctions Lists" list-provider-code="CA-DFATD" since-year="2012" status="Current" list-provider-name="Department of Foreign Affairs, Trade and Development Canada" since-month="11" to-year="2017" to-day="13">DFATD (Canada) Special Economic Measures (Syria) Regulations</sanctions-reference>
+        <sanctions-reference since-day="15" to-month="11" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="10" to-year="2012" to-day="29">EC 944/2012 Syria List</sanctions-reference>
+        <sanctions-reference since-day="15" to-month="11" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="10" to-year="2012" to-day="29">EC 2012/634/CFSP Syria List</sanctions-reference>
+        <sanctions-reference since-day="29" to-month="4" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="11" to-year="2013" to-day="22">EC 1117/2012 Syria List</sanctions-reference>
+        <sanctions-reference since-day="29" to-month="4" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="11" to-year="2013" to-day="22">EC 2012/739/CFSP Syria List</sanctions-reference>
+        <sanctions-reference since-day="22" to-month="5" description2="Sanctions Lists" list-provider-code="EU" since-year="2013" status="Current" list-provider-name="European Union" since-month="4" to-year="2014" to-day="28">EC 363/2013 Syria List</sanctions-reference>
+        <sanctions-reference since-day="22" to-month="5" description2="Sanctions Lists" list-provider-code="EU" since-year="2013" status="Suspended" list-provider-name="European Union" since-month="4" to-year="2014" to-day="28">EC 2013/185/CFSP Syria List</sanctions-reference>
+        <sanctions-reference since-day="31" to-month="5" description2="Sanctions Lists" list-provider-code="EU" since-year="2013" status="Current" list-provider-name="European Union" since-month="5" to-year="2014" to-day="28">EC 2013/255/CFSP Syria List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>Council Decision 2013/255/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:111:0077:0100:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:111:0001:0024:EN:PDF</source>
+        <source>Council Implementing Regulation (EU) No 1117/2012</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:282:0050:0057:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:127:0044:0060:EN:PDF</source>
+        <source>Arrêté Ministériel (Monaco) no. 2013-250 - Syria</source>
+        <source>https://ofsistorage.blob.core.windows.net/publishlive/ConList.html</source>
+        <source>http://www.cssf.lu/en/supervision/financial-crime/aml-ctf/circulars/</source>
+        <source>http://www.international.gc.ca/world-monde/international_relations-relations_internationales/sanctions/syria-syrie.aspx?lang=eng</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:127:0027:0043:EN:PDF</source>
+        <source>https://tinyurl.com/yyxt89mx</source>
+        <source>Council Decision 2012/634/CFSP</source>
+        <source>Swiss Federal Council Ordinance 08-Jun-2012 (RS 946.231.172.7)</source>
+        <source>Arrêté Ministériel (Monaco) no. 2012-640 - Syria</source>
+        <source>https://www.seco.admin.ch/seco/fr/home/Aussenwirtschaftspolitik_Wirtschaftliche_Zusammenarbeit/Wirtschaftsbeziehungen/exportkontrollen-und-sanktionen/sanktionen-embargos/sanktionsmassnahmen/massnahmen-gegenueber-syrien.html</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L:2014:160:FULL&amp;from=EN</source>
+        <source>Council Decision 2013/185/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:282:0009:0015:EN:PDF</source>
+        <source>http://laws-lois.justice.gc.ca/eng/regulations/SOR-2011-114/FullText.html</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:330:0021:0051:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:147:0014:0045:EN:PDF</source>
+        <source>Council Decision 2012/739/CFSP</source>
+        <source>Council Implementing Regulation (EU) No 363/2013</source>
+        <source>Council Regulation (EU) No 944/2012</source>
+        <source>https://tinyurl.com/y5vz4wbw</source>
+        <source>https://tinyurl.com/yxjd39cd</source>
+        <source>Arrêté Ministériel (Monaco) no. 2012-732 - Syria</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:330:0009:0011:EN:PDF</source>
+        <source>http://journaldemonaco.gouv.mc/content/search?SearchText=%22gel+de+fonds%22+%22sanctions+%C3%A9conomiques%22&amp;SearchButton=&amp;start=1514761200&amp;sort=published_desc&amp;page_limit=60</source>
+        <source>https://www.gov.uk/government/publications/financial-sanctions-syria</source>
+        <source>http://gazette.gc.ca/rp-pr/p2/2017/2017-05-03/html/sor-dors62-eng.html</source>
+      </source-details>
+      <profile-notes>EU NOTES:
+
+      Identifying information: Passport: in possession of a UK passport
+      Reasons: Businessman close to President Al-Assad's family. Owns shares in the listed TV station Addounia TV. Close to Muhammad Nasif Khayrbik, who has been designated. Supports the Syrian regime.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Business Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="777143" relationship="Business Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>
