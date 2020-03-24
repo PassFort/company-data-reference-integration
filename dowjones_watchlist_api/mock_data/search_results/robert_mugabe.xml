@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<search-results>
+  <head>
+    <api-version>1.6.0</api-version>
+    <backend-version>djrc-1.8.6</backend-version>
+    <total-hits>3</total-hits>
+    <hits-from>0</hits-from>
+    <hits-to>3</hits-to>
+    <truncated>false</truncated>
+    <cached-results-id>e2c1707d-898c-4b53-ae37-ab68d8b872b2</cached-results-id>
+  </head>
+  <body>
+    <match peid="4521104" revision="2018-07-16 09:06:15.810" record-type="PERSON">
+      <score>1.0</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>PEP</risk-icon>
+        </risk-icons>
+        <primary-name>Kakyebezi, Robert Mugabe</primary-name>
+        <country-code>UGANDA</country-code>
+        <title>Mayor of Mbarara</title>
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Also Known As">Robert Mugabe</matched-name>
+        <dates-of-birth />
+        <countries>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>UGANDA</country-code>
+          </country>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>UGANDA</country-code>
+          </country>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>UGANDA</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="207763" revision="2019-12-12 16:37:46.617" record-type="PERSON">
+      <score>1.0</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>SAN</risk-icon>
+        </risk-icons>
+        <primary-name>Mugabe, Robert Gabriel</primary-name>
+        <country-code>ZIMBAB</country-code>
+        <title>OFAC - Specially Designated National List</title>
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Primary Name">Robert Gabriel Mugabe</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1924</year>
+            <month>2</month>
+            <day>21</day>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>ZIMBAB</country-code>
+          </country>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>ZIMBAB</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>ZIMBAB</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="524859" revision="2019-12-18 05:22:22.600" record-type="PERSON">
+      <score>1.0</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>RCA</risk-icon>
+        </risk-icons>
+        <primary-name>Mugabe, Robert Tinotenda</primary-name>
+        <country-code>ZIMBAB</country-code>
+        <title />
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Primary Name">Robert Tinotenda Mugabe</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1992</year>
+            <month>2</month>
+            <day>4</day>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>ZIMBAB</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>ZIMBAB</country-code>
+          </country>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>ZIMBAB</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+  </body>
+</search-results>

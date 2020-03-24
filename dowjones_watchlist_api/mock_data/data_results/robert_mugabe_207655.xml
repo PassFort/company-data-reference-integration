@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="207655" date="2013-10-16 10:22:53.700">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Anthony</first-name>
+          <middle-name>Oriah</middle-name>
+          <surname>Gara</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Tony</first-name>
+          <surname>Gara</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="2000" date-type="Inactive as of (PEP)"></date>
+      <date day="14" month="11" year="2006" date-type="Deceased Date"></date>
+      <date day="17" month="4" year="1939" date-type="Date of Birth"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-year="1990" to-year="2000">Member, House of Assembly, Mbare East, ZANU-PF</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-year="1995" to-year="2000">Deputy Minister of Local Government and Public Works</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="City Mayors" since-year="1984" to-year="1985">Mayor of Harare</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="National Government Ministers">Deceased</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="207712" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="207763" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="678596" relationship="Cousin" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="1541672" relationship="Cousin" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="2963724" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

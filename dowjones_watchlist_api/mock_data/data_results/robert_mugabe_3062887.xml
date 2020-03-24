@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="3062887" date="2019-09-09 06:14:31.757">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Simbarashe</first-name>
+          <surname>Chikore</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Simbarashe</first-name>
+              <surname>Chikoore</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Simba</first-name>
+          <surname>Chikore</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Simba</first-name>
+              <surname>Chikoore</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Sam</first-name>
+          <surname>Chikore</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Sam</first-name>
+              <surname>Chikoore</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="1977" date-type="Date of Birth"></date>
+      <date month="11" year="2017" date-type="Inactive as of (PEP)"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://3-mob.com/wp-content/uploads/2013/10/Bonas-husband.jpg</image-url>
+      <image-url>https://www.thestandard.co.zw/wp-content/uploads/2016/10/simba-chikore.gif</image-url>
+      <image-url>https://www.zimbabwesituation.com/wp-content/uploads/2017/12/www.herald.co_.zwSimba-Chikore-630x414-d4caa026abc507491c01b73c04eaa4509ac1de34.jpg</image-url>
+      <image-url>http://www.zbc.co.zw/wp-content/uploads/2018/10/Simba-Chikore-245x300.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Corporation Executives" since-month="9" since-year="2016" to-month="11" to-year="2017">Chief Operations Officer, Air Zimbabwe</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="State Corporation Executives">See Previous Roles</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <state-owned-companies-content>
+      <content-notice>This Profile also contains information pertaining to the Dow Jones State Owned Companies data set.
+      However, your current subscription does not allow you to have access to
+      this data.
+      Please contact your Account Manager should you wish to have access to this
+      data set.</content-notice>
+    </state-owned-companies-content>
+    <associates>
+      <associate peid="207763" relationship="Father-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="503570" relationship="Mother-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="524859" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="524861" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="524866" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1710606" relationship="Employer" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="true"></associate>
+      <associate peid="4687945" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836696" relationship="Father" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836698" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836700" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836701" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836702" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836703" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4836710" relationship="Uncle" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>
