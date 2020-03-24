@@ -89,9 +89,9 @@ class APIClient():
                 str(CountryMatchType(match_type).to_dowjones_region_key())
                 for match_type in self.config.country_match_types
             ]),
-            'filter-sl': WATCHLIST_ANY_FILTER if not self.config.sanctions_list_whitelist else ','.join(
-                self.config.sanctions_list_whitelist
-            ),
+            'filter-sl': WATCHLIST_ANY_FILTER if self.config.sanctions_list_whitelist is None else
+            WATCHLIST_NONE_FILTER if not self.config.sanctions_list_whitelist else
+            ','.join(self.config.sanctions_list_whitelist),
             'search-type': self.config.search_type.lower(),
             'date-of-birth-strict': WATCHLIST_TRUE if self.config.strict_dob_search else WATCHLIST_FALSE,
         }
