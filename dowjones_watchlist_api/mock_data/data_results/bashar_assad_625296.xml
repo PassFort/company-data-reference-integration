@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <entity peid="625296" date="2019-08-21 12:39:56.107">
+    <subsidiary>true</subsidiary>
+    <entity-name-details>
+      <entity-names>
+        <entity-name-value name-type="Primary Name">
+          <entity-name>Sudanese Savings Bank</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Savings and Social Development Bank</entity-name>
+        </entity-name-value>
+        <entity-names-group>
+          <entity-names>
+            <entity-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">مصرف الادخار والتنمية الاجتماعية</original-script-name>
+            </entity-name-value>
+          </entity-names>
+          <entity-names>
+            <entity-name-value name-type="Spelling Variation">
+              <entity-name>Savings &amp; Social Development Bank</entity-name>
+            </entity-name-value>
+          </entity-names>
+        </entity-names-group>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>SSDB</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Formerly Known As">
+          <entity-name>Sudanese Savings Bank</entity-name>
+        </entity-name-value>
+      </entity-names>
+    </entity-name-details>
+    <date-details>
+      <date day="19" month="11" year="1995" date-notes="Establishment of Savings &amp; Social Development Bank, extension for Sudanese Savings Bank." date-type="Date of Registration"></date>
+      <date day="31" month="10" year="1974" date-type="Date of Registration"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Country of Registration">
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </country-value>
+      <country-value country-type="Country of Affiliation">
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </country-value>
+      <country-value country-type="Country of Current Ownership">
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </country-value>
+      <country-value country-type="Country of Past Ownership">
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </country-value>
+      <country-value country-type="Country of Past Ownership">
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </country-value>
+      <country-value country-type="Formerly Sanctioned Region">
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <address-line>P.O. Box 159</address-line>
+        <city>Wad Medani</city>
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+      </address>
+      <address>
+        <address-line>Umam Motahida Square, PO Box 11775</address-line>
+        <city>Khartoum</city>
+        <region>Khartoum</region>
+        <country djii-region-code="SUDAN" iso2-country-code="SD" iso3-country-code="SDN" is-territory="false" country-profile="sudan.doc">Sudan</country>
+        <address-url>http://www.ssdbank.com</address-url>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="Related OFAC Program ID">SUDAN</identification>
+      <identification identification-type="OFAC Program ID">SUDAN</identification>
+      <identification identification-type="OFAC Unique ID">4776</identification>
+      <identification identification-type="NACE (European Union Economic Activity Classification System)">65.1</identification>
+      <identification identification-type="Bank Identifier Code (BIC)" identification-notes="Savings &amp; Social Development Bank, Khartoum">SSODSDKH</identification>
+      <identification identification-type="North American Industry Classification System (NAICS)">522298</identification>
+      <identification identification-type="Related OFAC Unique ID">4728</identification>
+      <identification identification-type="Standard Industrial Classification (SIC)">60</identification>
+      <identification identification-type="Bank Identifier Code (BIC)">SSODSDKHXXX</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="Bank"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Lists" description3="State Owned Company"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Lists" description3="Bank"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="Formerly OFAC Regional Sanctions Related"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="Formerly OFAC Related"></description>
+      </descriptions>
+      <sanctions-reference-details>
+        <sanctions-reference list-provider-name="Office of Foreign Assets Control, Department of the Treasury" list-provider-code="US-OFAC" description2="Sanctions Lists" status="Current" to-day="12" to-month="10" to-year="2017">OFAC - Specially Designated National List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>http://www.treas.gov/offices/enforcement/ofac/sdn/t11sdn.pdf</source>
+        <source>http://www.treas.gov/offices/enforcement/ofac/sdn/sdnlist.txt</source>
+        <source>http://www.arabbankingnetwork.org/ManageBanKInfo.aspx?Id=867</source>
+        <source>http://ssdbank.com/documents/3/9_ar.pdf</source>
+        <source>http://www.ssdbank.com/documents/3/9_en.pdf</source>
+        <source>https://www.treasury.gov/resource-center/sanctions/Programs/Documents/sudan_fact_sheet.pdf</source>
+        <source>http://www.ssdbank.com/documents/3/24_en.pdf</source>
+        <source>http://www.ssdbank.com/documents/3/24_ar.pdf</source>
+        <source>https://www.treasury.gov/resource-center/sanctions/OFAC-Enforcement/Pages/20171012.aspx</source>
+      </source-details>
+      <profile-notes>DOW JONES NOTES:
+      PROFILE CREATED: 05-Nov-2015
+      UPDATE ADDED: 14-Feb-2017
+      UPDATE ADDED: 19-Oct-2017
+      UPDATE ADDED: 18-Nov-2017
+
+      This company is 59% owned by OFAC SDN Entity Bank of Sudan.
+
+      PROFILE UPDATED: 14-Feb-2017
+      This company is 55% owned by OFAC SDN Entity Bank of Sudan.
+
+      PROFILE UPDATED: 19-Oct-2017
+      This company is 55% owned by formerly OFAC SDN Entity Bank of Sudan, whose sanction was lifted on 12-Oct-2017.
+
+      PROFILE UPDATED: 18-Nov-2017
+      This company is 55% owned by formerly OFAC SDN Entity Bank of Sudan, whose sanction was lifted on 12-Oct-2017. This company is 100% owned by the formerly OFAC comprehensively sanctioned government of Sudan.
+
+      OFFICE OF FOREIGN ASSETS CONTROL (OFAC) NOTES:
+
+      1/13/2017
+
+      The 2017 Sudan Rule amends the Sudanese Sanctions Regulations, 31 C.F.R. part 538 (SSR), effective January 17 2017, to add a new general license authorizing all transactions prohibited by the SSR and by Executive Orders 13067 and 13412. The new general license does not eliminate the need to comply with other provisions of 31 C.F.R. chapter V or other applicable provisions of law, including any requirements of agencies other than OFAC. Such requirements include, for example, the Export Administration Regulations (15 C.F.R. parts 730 through 774) administered by the Bureau of Industry and Security of the Department of Commerce. [01-13-2017]</profile-notes>
+    </watchlist-content>
+    <state-owned-companies-content>
+      <content-notice>This Profile also contains information pertaining to the Dow Jones State Owned Companies data set.
+      However, your current subscription does not allow you to have access to
+      this data.
+      Please contact your Account Manager should you wish to have access to this
+      data set.</content-notice>
+    </state-owned-companies-content>
+    <associates>
+      <associate peid="625249" relationship="Parent Company" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="1426190" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="2882477" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="2882498" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="2882504" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="2882508" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="2882518" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="2882525" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="2882533" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3237212" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450343" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450359" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450372" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450379" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450389" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450392" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450398" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450399" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450408" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450410" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450418" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450427" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450430" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="3450436" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="3450445" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="4393801" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="4395471" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="4402645" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11009797" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11019977" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11020146" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11024910" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11884268" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="11884296" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11884353" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11886218" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11894025" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11894033" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11894042" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11894045" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11894057" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11894077" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895603" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895625" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895649" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895701" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895875" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895908" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895921" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895981" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="11895985" relationship="Employee" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+    </associates>
+  </entity>
+</records>

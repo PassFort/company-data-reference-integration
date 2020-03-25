@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <entity peid="4380675" date="2019-09-10 07:12:55.043">
+    <subsidiary>false</subsidiary>
+    <entity-name-details>
+      <entity-names>
+        <entity-name-value name-type="Primary Name">
+          <entity-name>Gushungo Holdings</entity-name>
+          <suffix>(Private) Limited</suffix>
+        </entity-name-value>
+        <entity-names-group>
+          <entity-names>
+            <entity-name-value name-type="Spelling Variation">
+              <entity-name>Gushungo Holdings</entity-name>
+              <suffix>Private Limited</suffix>
+            </entity-name-value>
+          </entity-names>
+        </entity-names-group>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Gushungo Holdings Farm</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Mwenewazvo Estates</entity-name>
+        </entity-name-value>
+      </entity-names>
+    </entity-name-details>
+    <country-details>
+      <country-value country-type="Country of Registration">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <address-line>Mazowe</address-line>
+        <region>Mashonaland Central</region>
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="Related OFAC Program ID">ZIMBABWE</identification>
+      <identification identification-type="Related OFAC Unique ID">7480</identification>
+      <identification identification-type="Related OFAC Unique ID">7524</identification>
+      <identification identification-type="Related EU Sanctions Programme Indicator">ZWE</identification>
+      <identification identification-type="Related EU Consolidated Electronic List ID">1</identification>
+      <identification identification-type="Related EU Consolidated Electronic List ID">70</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="OFAC Related - Ownership Unknown"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="EU Related - Ownership Unknown"></description>
+      </descriptions>
+      <source-details>
+        <source>http://www.pindula.co.zw/Grace_Mugabe</source>
+        <source>The Africa Report.com, 03-Aug-2015, on Factiva.com (AN=AFREP00020150803eb8300002)</source>
+        <source>http://www.chronicle.co.zw/production-set-to-increase-at-alpha-omega-dairy/</source>
+        <source>http://newzimbabwevision.com/tag/gushungo-holdings/</source>
+        <source>http://www.weekendpost.co.zw/articles/2016/01/26/employees-love-stealing-from-mugabe</source>
+        <source>http://newzimbabwevision.com/police-foil-plot-to-bomb-alpha-omega-dairys-processing-plant/</source>
+        <source>https://city-press.news24.com/News/Mugabes-plan-a-sweet-hit-on-chocolate-market-20150523</source>
+        <source>The Standard, 07-Oct-2018, on Factiva.com (AN=TSTARZ0020181007eea70008d)</source>
+        <source>https://www.chronicle.co.zw/mugabe-loses-property-gushungo-holdings-loses-cash/</source>
+        <source>https://www.wsj.com/articles/robert-mugabe-former-zimbabwean-strongman-dies-at-95-11567748031</source>
+        <source>https://zimmorningpost.com/grace-mugabe-empire-crumbles/</source>
+      </source-details>
+      <profile-notes>DOW JONES NOTES:
+      PROFILE CREATED: 15-Oct-2015
+      UPDATE ADDED: 10-Sep-2019
+
+      15-Oct-2015
+      This company is reported to be owned by OFAC SDN Individual and EU sanctioned Robert Gabriel Mugabe and his wife OFAC SDN Individual and EU sanctioned Grace Mugabe.
+
+      PROFILE UPDATED: 10-Sep-2019
+      Robert Gabriel Mugabe has died on September 5, 2019. This company continues to be owned by OFAC SDN and EU sanctioned Grace Mugabe.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="207763" relationship="Shareholder/Owner" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="true">
+      </associate>
+      <associate peid="503570" relationship="Shareholder/Owner" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false">
+      </associate>
+      <associate peid="4381968" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="4381999" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="4383480" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+    </associates>
+  </entity>
+</records>

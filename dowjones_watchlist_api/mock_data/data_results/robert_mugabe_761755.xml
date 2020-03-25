@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="761755" date="2015-09-11 16:31:24.653">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Nicholas</first-name>
+          <surname>Van Hoogstraten</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Nicholas</first-name>
+          <middle-name>Marcel</middle-name>
+          <surname>Hoogstraten</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="27" month="2" year="1945" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Shoreham-by-Sea, West Sussex, England</place-name>
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Country of Reported Allegation">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UK" iso2-country-code="GB" iso3-country-code="GBR" is-territory="false" country-profile="united kingdom.doc">United Kingdom</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://newsimg.bbc.co.uk/media/images/38946000/jpg/_38946913_hoog203.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Financial Crime"></description>
+      </descriptions>
+      <source-details>
+        <source>Sunday Telegraph, 25-Jul-2004, on Factiva.com (AN=STEL000020040725e07p0002u)</source>
+        <source>Agence France Presse, 26-Jan-2008, on Factiva.com (AN=AFPR000020080126e41q0063m)</source>
+        <source>Associated Press Newswires, 26-Jan-2008, on Factiva.com (AN=APRS000020080126e41q00160)</source>
+        <source>All Africa, 13-Jul-2005, on Factiva.com (AN=AFNWS00020050713e17d000bb)</source>
+        <source>Agence France Presse, 29-Jan-2008, on Factiva.com (AN=AFPR000020080129e41t004ja)</source>
+        <source>Sunday Mail, 29-Feb-2004, on Factiva.com (AN=SMAIL00020040229e02t00064)</source>
+        <source>Press Association National Newswire, 26-Jan-2008, on Factiva.com (AN=PRESSA0020080126e41q002s1)</source>
+        <source>Press Association National Newswire, 26-Jan-2008, on Factiva.com (AN=PRESSA0020080126e41q002p9)</source>
+        <source>The Times, 24-Aug-2004, on Factiva.com (AN=T000000020040824e08o0004t)</source>
+      </source-details>
+      <profile-notes>Keywords: financial crime
+      People mentioned: Nicholas van Hoogstraten, Robert Mugabe, Mohammed Raja
+      Profile:
+      Nicholas van Hoogstraten, a British property magnate, was arrested by Zimbabwean police in Harare on January 24, 2008, for suspected violations of foreign exchange regulations. At the time of his arrest, he was found to be in possession of ZWD 20bn, as well as USD 37,586, ZAR 92,880 and GBP 190.
+      Police sources indicated that van Hoogstraten was suspected of levying rentals on his portfolio of residential and commercial properties in Harare and Bulawayo in foreign currencies rather than Zimbabwean dollars, which was illegal under Zimbabwean law. He was additionally charged with possession of pornographic materials in violation of the Censorship Act.
+      Van Hoogstraten strenuously denied the charges. The Zimbabwean High Court ordered his release on January 29, 2008, on the grounds that his detention in police custody had exceeded the normal time limit.
+      Van Hoogstraten, a vociferous supporter of Zimbabwe’s President Robert Mugabe, was previously jailed for 10 years for manslaughter at London’s Central Criminal Court (the Old Bailey) in 2002. The sentence, which related to the 1999 murder of rival property developer Mohammed Raja, was overturned by the Court of Appeal in London in 2006. At the time of Raja’s death, the two men were engaged in a legal dispute over a business deal. In 2005, Raja’s family launched a civil suit and was subsequently awarded damages of GBP 6m against van Hoogstraten after the High Court ruled it was highly likely that he had been involved in Raja’s murder.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="207763" relationship="Friend" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1744681" relationship="Friend" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+    </associates>
+  </person>
+</records>

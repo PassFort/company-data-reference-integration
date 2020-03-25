@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <entity peid="4381968" date="2019-09-10 07:28:22.110">
+    <subsidiary>false</subsidiary>
+    <entity-name-details>
+      <entity-names>
+        <entity-name-value name-type="Primary Name">
+          <entity-name>Alpha Omega Dairy</entity-name>
+          <suffix>(Private) Limited</suffix>
+        </entity-name-value>
+        <entity-names-group>
+          <entity-names>
+            <entity-name-value name-type="Spelling Variation">
+              <entity-name>Alpha Omega Dairy</entity-name>
+              <suffix>Private Limited</suffix>
+            </entity-name-value>
+          </entity-names>
+        </entity-names-group>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Alpha and Omega Dairy</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>AODPL</entity-name>
+        </entity-name-value>
+      </entity-names>
+    </entity-name-details>
+    <date-details>
+      <date month="2" year="2011" date-type="Date of Registration"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Country of Registration">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <address-line>30B Simon Mazorodze Road</address-line>
+        <city>Harare</city>
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </address>
+      <address>
+        <address-line>110 Jumbo Road, Mazowe</address-line>
+        <city>Harare</city>
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="Related EU Consolidated Electronic List ID">70</identification>
+      <identification identification-type="Related EU Consolidated Electronic List ID">1</identification>
+      <identification identification-type="Related OFAC Unique ID">7480</identification>
+      <identification identification-type="Related OFAC Unique ID">7524</identification>
+      <identification identification-type="Related OFAC Program ID">ZIMBABWE</identification>
+      <identification identification-type="Related EU Sanctions Programme Indicator">ZWE</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="OFAC Related - Ownership Unknown"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="EU Related - Ownership Unknown"></description>
+      </descriptions>
+      <source-details>
+        <source>The Zimbabwean, 14-Oct-2015, on Factiva.com (AN=ZIMBAN0020151014ebae00001)</source>
+        <source>http://thedirectory.co.zw/company.cfm?companyid=4103</source>
+        <source>http://www.zimyellowpage.com/listings/food-beverage/alpha-omega-dairy#related_listing</source>
+        <source>http://www.fin24.com/Companies/Agribusiness/Foreign-investor-buys-stake-in-Mugabe-dairy-rival-20150527</source>
+        <source>http://www.chronicle.co.zw/mugabe-tells-of-joy-in-heart/</source>
+        <source>http://allafrica.com/stories/201604150721.html</source>
+        <source>http://zimnews.net/soldier-bowman-ngwenya-acquitted-over-mugabe-dairy-bombing</source>
+        <source>http://newzimbabwevision.com/tag/alpha-omega-dairy/</source>
+        <source>http://newzimbabwevision.com/tag/gushungo-holdings/</source>
+        <source>http://www.chronicle.co.zw/production-set-to-increase-at-alpha-omega-dairy/</source>
+        <source>https://www.zimbabwesituation.com/news/mugabe-sued-again/</source>
+        <source>https://www.zimbabwesituation.com/news/zanu-pf-rallies-earn-mugabes-dairy-big-money/</source>
+        <source>https://yellow.place/en/alpha-omega-dairy-harare-zimbabwe</source>
+        <source>https://www.zimplaza.co.zw/listing/alpha-omega-dairy-pvt-ltd</source>
+        <source>https://www.wsj.com/articles/robert-mugabe-former-zimbabwean-strongman-dies-at-95-11567748031</source>
+        <source>https://zimmorningpost.com/grace-mugabe-empire-crumbles/</source>
+      </source-details>
+      <profile-notes>DOW JONES NOTES:
+      PROFILE CREATED: 16-Oct-2015
+      UPDATE ADDED: 01-Jul-2016
+      UPDATE ADDED: 10-Sep-2019
+
+      16-Oct-2015
+      This company is reported to be owned by Gushungo Holdings, which is owned by OFAC SDN Individual and EU sanctioned Robert Gabriel Mugabe and his wife OFAC SDN Individual and EU sanctioned Grace Mugabe.
+
+      PROFILE UPDATED: 01-Jul-2016
+      As of April, 2016 (irrespective of ownership controversies in March, 2016) this company is reported to be subsidiary of Gushungo Holdings (Private) Limited and owned by OFAC SDN and EU sanctioned Robert Garbriel Mugabe as well as his wife OFAC SDN and EU sanctioned Grace Mugabe, however direct or indirect ownership could not be confirmed.
+
+      PROFILE UPDATED: 10-Sep-2019
+      Robert Gabriel Mugabe has died on September 5, 2019. This company continues to be owned by OFAC SDN and EU sanctioned Grace Mugabe via Gushungo Holdings (Private) Limited.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="207763" relationship="Shareholder/Owner" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="true">
+      </associate>
+      <associate peid="503570" relationship="Shareholder/Owner" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false">
+      </associate>
+      <associate peid="4380675" relationship="Shareholder/Owner" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false">
+      </associate>
+    </associates>
+  </entity>
+</records>

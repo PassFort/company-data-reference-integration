@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="530303" date="2019-08-31 14:19:02.323">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Ihab</first-name>
+          <surname>Makhluf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Ehab</first-name>
+          <surname>Makhlouf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Iehab</first-name>
+          <surname>Makhlouf</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Ehab</first-name>
+          <surname>Iehab</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Ihab</first-name>
+          <surname>Makhlouf</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">إيهاب مخلوف</original-script-name>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="21" month="1" year="1973" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Damas</place-name>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </birth-place>
+      <birth-place>
+        <place-name>Damascus</place-name>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <city>Damascus</city>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="EU Sanctions Programme Indicator">SYR</identification>
+      <identification identification-type="Passport No.">02848852</identification>
+      <identification identification-type="HM Treasury Group ID">11937</identification>
+      <identification identification-type="Passport No.">N002848852</identification>
+      <identification identification-type="EU Consolidated Electronic List ID">6459</identification>
+      <identification identification-type="DFAT Reference Number">2248</identification>
+      <identification identification-type="SECO SSID">11761</identification>
+      <identification identification-type="OFAC Program ID">SYRIA</identification>
+      <identification identification-type="OFAC Unique ID">22260</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+      </descriptions>
+      <sanctions-reference-details>
+        <sanctions-reference list-provider-name="Office of Foreign Assets Control, Department of the Treasury" list-provider-code="US-OFAC" description2="Sanctions Lists" status="Current" since-day="16" since-month="5" since-year="2017">OFAC - Specially Designated National List</sanctions-reference>
+        <sanctions-reference list-provider-name="HM Treasury" list-provider-code="GB-HMT" description2="Sanctions Lists" status="Current" since-day="24" since-month="5" since-year="2011">HM Treasury Consolidated List</sanctions-reference>
+        <sanctions-reference list-provider-name="Department of Foreign Relations &amp; Trade" list-provider-code="AU-DFAT" description2="Sanctions Lists" status="Current" since-day="7" since-month="3" since-year="2012">DFAT (Australia) Consolidated List</sanctions-reference>
+        <sanctions-reference list-provider-name="Commission de Surveillance du Secteur Financier" list-provider-code="LU-CSSF" description2="Sanctions Lists" status="Current">CSSF (Luxembourg) Sanctions List</sanctions-reference>
+        <sanctions-reference list-provider-name="Service d'Information et de Contrôle sur les Circuits Financiers (SICCFIN)" list-provider-code="MC-SICCFIN" description2="Sanctions Lists" status="Current" since-day="10" since-month="6" since-year="2011">SICCFIN (Monaco) Economic Sanctions</sanctions-reference>
+        <sanctions-reference list-provider-name="Secrétariat d'Etat à l'économie (State Secretariat for Economic Affairs)" list-provider-code="CH-SECO" description2="Sanctions Lists" status="Current" since-day="25" since-month="5" since-year="2011">SECO (Switzerland) Syria List</sanctions-reference>
+        <sanctions-reference since-day="23" to-month="1" description2="Sanctions Lists" list-provider-code="EU" since-year="2011" status="Suspended" list-provider-name="European Union" since-month="5" to-year="2012" to-day="18">EC 504/2011 Syria List</sanctions-reference>
+        <sanctions-reference since-day="23" to-month="12" description2="Sanctions Lists" list-provider-code="EU" since-year="2011" status="Suspended" list-provider-name="European Union" since-month="5" to-year="2011" to-day="1">EC 2011/302/CFSP Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="Department of Foreign Affairs, Trade and Development Canada" list-provider-code="CA-DFATD" description2="Sanctions Lists" status="Current" since-day="24" since-month="5" since-year="2011">DFATD (Canada) Special Economic Measures (Syria) Regulations</sanctions-reference>
+        <sanctions-reference since-day="3" to-month="3" description2="Sanctions Lists" list-provider-code="AU-RBA" since-year="2011" status="Suspended" list-provider-name="Reserve Bank of Australia (RBA)" since-month="8" to-year="2012" to-day="7">Reserve Bank of Australia Syria List</sanctions-reference>
+        <sanctions-reference since-day="1" to-month="11" description2="Sanctions Lists" list-provider-code="EU" since-year="2011" status="Suspended" list-provider-name="European Union" since-month="12" to-year="2012" to-day="29">EC 2011/782/CFSP Syria List</sanctions-reference>
+        <sanctions-reference since-day="18" to-month="4" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Current" list-provider-name="European Union" since-month="1" to-year="2013" to-day="22">EC 36/2012 Syria List</sanctions-reference>
+        <sanctions-reference since-day="23" to-month="4" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="3" to-year="2013" to-day="22">EC 266/2012 Syria List</sanctions-reference>
+        <sanctions-reference since-day="23" to-month="11" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="3" to-year="2012" to-day="29">EC 2012/172/CFSP Syria List</sanctions-reference>
+        <sanctions-reference since-day="29" to-month="4" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="11" to-year="2013" to-day="22">EC 2012/739/CFSP Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="22" since-month="4" since-year="2013">EC 363/2013 Syria List</sanctions-reference>
+        <sanctions-reference since-day="22" to-month="5" description2="Sanctions Lists" list-provider-code="EU" since-year="2013" status="Suspended" list-provider-name="European Union" since-month="4" to-year="2013" to-day="31">EC 2013/185/CFSP Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="31" since-month="5" since-year="2013">EC 2013/255/CFSP Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="27" since-month="5" since-year="2016">EC 2016/840 Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="27" since-month="5" since-year="2016">EC (CFSP) 2016/850 Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="Ministère de l'Économie, des Finances et de l'Industrie" list-provider-code="FR-MINEFI" description2="Sanctions Lists" status="Current" since-day="15" since-month="12" since-year="2016">French Economy Ministry - EU and UN Asset Freezing Measures</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>http://cloud.gouv.mc/Dataweb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/654b740d414c6203c12579a600583020!OpenDocument</source>
+        <source>Council Implementing Regulation (EU) No 363/2013</source>
+        <source>Council Decision 2013/185/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:087:0103:0106:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:111:0001:0024:EN:PDF</source>
+        <source>http://www.rba.gov.au/mkt-operations/fin-sanctions/xls/consolidated-list.xls</source>
+        <source>http://www.gouv.mc/DataWeb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/445dbe14f59af6b1c12578b10051e564!OpenDocument</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCFe4J2gGym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>Council Implementing Decision 2011/302/CFSP</source>
+        <source>http://cloud.gouv.mc/DataWeb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/f5b676e361117ee4c12579df003096d6!OpenDocument</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:164:0020:0021:EN:PDF</source>
+        <source>http://www.siccfin.gouv.mc/364/wwwnew.nsf/c3241c4782f528bdc1256d52004f970b/6ed4d528e334ff7ac12574a90040c6d7!OpenDocument</source>
+        <source>Arrêté Ministériel (Monaco) no. 2013-250 - Syria</source>
+        <source>Council Implementing Regulation (EU) No 504/2011</source>
+        <source>Swiss Federal Council Ordinance 18-May-2011 (RS 946.231.172.7)</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:164:0017:0018:EN:PDF</source>
+        <source>Council Regulation (EU) No 36/2012</source>
+        <source>Arrêté Ministériel (Monaco) no. 2012-69 - Syrie</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:319:0056:0070:EN:PDF</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCFfIB2fWym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCFfHx7fGym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>Arrêté Ministériel (Monaco) no. 2012-203 - Syria</source>
+        <source>http://www.hm-treasury.gov.uk/d/fin_sanc_notice_reg266_260312.pdf</source>
+        <source>http://www.international.gc.ca/sanctions/syria-syrie_regs.aspx?lang=eng</source>
+        <source>Arrêté Ministériel (Monaco) no. 2011-338 - Syrie</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:330:0021:0051:EN:PDF</source>
+        <source>Council Decision 2012/739/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:016:0001:0032:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:147:0014:0045:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:127:0044:0060:EN:PDF</source>
+        <source>Council Decision 2013/255/CFSP</source>
+        <source>http://www.hm-treasury.gov.uk/d/fin_sanc_notice_syria_040613.pdf</source>
+        <source>http://www.dfat.gov.au/international-relations/security/sanctions/Documents/regulation8_consolidated.xls</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:136:0045:0047:EN:PDF</source>
+        <source>http://laws-lois.justice.gc.ca/eng/regulations/SOR-2011-114/FullText.html</source>
+        <source>http://www.cssf.lu/en/amlctf-financial-sanctions/international-financial-sanctions/</source>
+        <source>Council Decision 2011/782/CFSP</source>
+        <source>http://www.admin.ch/dokumentation/gesetz/00516/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCDeH15e2ym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>http://www.hm-treasury.gov.uk/d/fin_sanc_public_notice_reg504_240511.pdf</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:127:0027:0043:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2013:111:0077:0100:EN:PDF</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCFe4F6hGym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>http://www.hm-treasury.gov.uk/d/sanctionsconlist.htm</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr</source>
+        <source>http://www.rba.gov.au/media-releases/2011/mr-11-17-syria-annex.html</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:136:0091:0094:EN:PDF</source>
+        <source>Swiss Federal Council Ordinance 08-Jun-2012 (RS 946.231.172.7)</source>
+        <source>https://dl.dropboxusercontent.com/u/184770842/Consolidated%20lists/sanctionsconlist.htm</source>
+        <source>Council Decision 2012/185/CFSP</source>
+        <source>http://cloud.gouv.mc/DataWeb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/3f25560c60a7ed52c1257b65004e3fd8!OpenDocument</source>
+        <source>Council implementing Decision 2012/172/CFSP</source>
+        <source>Council implementing Regulation (EU) No 266/2012</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:087:0045:0048:EN:PDF</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCFfIJ5f2ym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>http://www.seco.admin.ch/themen/00513/00620/00622/04669/index.html?lang=fr&amp;download=NHzLpZeg7t,lnp6I0NTU042l2Z6ln1ae2IZn4Z2qZpnO2Yuq2Z6gpJCFfX97fWym162epYbg2c_JjKbNoKSn6A--</source>
+        <source>http://www.international.gc.ca/sanctions/syria-syrie.aspx?lang=eng</source>
+        <source>Council implementing Regulation (EU) 2016/840</source>
+        <source>Council Decision (CFSP) 2016/850</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.L_.2016.141.01.0125.01.ENG&amp;amp;toc=OJ:L:2016:141:TOC</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.L_.2016.141.01.0030.01.ENG&amp;amp;toc=OJ:L:2016:141:TOC</source>
+        <source>https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/527324/NOTICE_2016_840_syria.pdf</source>
+        <source>Arrêté Ministériel (Monaco) no. 2016-376 - Syria</source>
+        <source>http://cloud.gouv.mc/Dataweb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/90b9c267740afc19c1257fd40053b5c7!OpenDocument</source>
+        <source>https://www.treasury.gov/press-center/press-releases/Pages/sm0087.aspx</source>
+        <source>https://www.treasury.gov/resource-center/sanctions/OFAC-Enforcement/Pages/20170516.aspx</source>
+        <source>https://www.treasury.gov/ofac/downloads/sdnlist.pdf</source>
+        <source>https://www.legifrance.gouv.fr/initRechJO.do</source>
+        <source>https://www.legifrance.gouv.fr/jo_pdf.do?id=JORFTEXT000033607108</source>
+        <source>https://www.legifrance.gouv.fr/jo_pdf.do?id=JORFTEXT000038632072</source>
+        <source>https://www.tresor.economie.gouv.fr/Ressources/11448_liste-unique-de-gels</source>
+        <source>https://ofsistorage.blob.core.windows.net/publishlive/ConList.html</source>
+      </source-details>
+      <profile-notes>OFFICE OF FOREIGN ASSETS CONTROL (OFAC) NOTES:
+
+      Treasury Sanctions Additional Individuals and Entities In Response to Continuing Violent Attacks on Syrian Citizens by the Syrian Government
+
+      5/16/2017
+      
+      Action Targets Financial Facilitation for the Syrian Regime and Syria’s Scientific Studies and Research Center
+      
+      Washington – Today, the U.S. Department of the Treasury’s Office of Foreign Assets Control (OFAC) designated five individuals and five entities in response to continued acts of violence committed by the Government of Syria, led by Bashar al-Assad, against its own citizens. The designated individuals and entities have provided support or services to the Government of Syria, or are owned or controlled by or are acting for or on behalf of designated individuals or entities. 
+      
+      “The Syrian government’s relentless attacks on civilians have continued unabated,” said OFAC Director John E. Smith. “As long as the Syrian government continues its campaign of brutal violence against its own people, Treasury will continue targeting the finances of anyone enabling Assad, and will continue intensifying pressure on Assad’s regime in support of diplomatic efforts to end the conflict in Syria.”
+      
+      Today’s action was taken pursuant to three Executive Orders (E.O.s): E.O. 13572, which targets persons responsible for human rights abuses in Syria, their supporters, and supporters of senior officials or certain activities related to public corruption; E.O. 13582, which targets the Government of Syria and its supporters; and E.O. 13382, which targets proliferators of weapons of mass destruction and their supporters.
+      
+      As a result of today’s action, any property or interest in property of the identified persons in the possession or control of U.S. persons or within the United States must be blocked. Additionally, transactions by U.S. persons involving these persons are generally prohibited.
+      
+      Support to Government of Syria Regime Insider Rami Makhluf 
+      
+      OFAC designated Muhammad Abbas, the maternal cousin of Rami Makhluf who carries out the financial interests of Makhluf, pursuant to E.O. for 13572 for acting or purporting to act for or on behalf of, directly or indirectly, Rami Makhluf, and materially assisting, sponsoring, or providing financial, material, or technological support for, or goods or services in support of, Rami Makhluf. OFAC also designated al-Ajnihah, a private Damascus-based company used to move Rami Makhluf’s financial earnings out of Syria, for being owned or controlled by, or acting or purporting to act for or on behalf of, directly or indirectly, Muhammad Abbas, and Barly Off-Shore, a Lebanon-based front company used to move Rami Makhluf’s financial earnings out of Syria, for being owned or controlled by, or acting or purporting to act for or on behalf of, directly or indirectly, Muhammad Abbas. Rami Makhluf is a powerful Syrian businessman and regime insider who benefits from and aids corrupt Syrian regime officials. Maklhuf uses intimidation and his close ties to the Assad regime to obtain improper financial advantages at the expense of ordinary Syrians.
+      
+      OFAC also designated Al-Bustan Charity pursuant to E.O. 13572 for being owned or controlled by Rami Makhluf, and Al-Bustan’s director, Samir Darwish, for acting for or on behalf of, directly or indirectly, Al-Bustan Charity. Makhluf created a vast private network of militias and security-linked institutions through Al-Bustan, a prominent organization recruiting and mobilizing individuals to support and augment Syrian military forces. 
+      
+      Additionally, OFAC designated Ihab Makhluf, the brother of Rami Makhluf and a cousin of Syrian President Bashar al-Assad, pursuant to E.O. 13572 for materially assisting, sponsoring, or providing financial, material, or technological support for, or goods or services in support of, and acting or purporting to act for or on behalf of, directly or indirectly, Rami Makhluf. Ihab Makhluf was also designated for materially assisting, sponsoring, or providing financial, material, or technological support for, or goods or services in support of, and acting or purporting to act for or on behalf of, directly or indirectly, Syriatel. Ihab Makhluf, the Vice Chairman of Syrian mobile phone provider Syriatel, which is owned by Rami Makhluf and was previously designated by OFAC, has helped Rami Makhluf evade sanctions by moving his assets overseas.
+      
+      Support to Government of Syria
+      
+      OFAC today also designated Iyad Makhluf, another brother of Rami Makhluf and cousin of Syrian President Bashar al-Assad, pursuant to E.O. 13582 for acting or purporting to act for or on behalf of, directly or indirectly, and materially assisting, sponsoring, or providing financial, material, or technological support for, or goods or services in support of the Government of Syria. Iyad Makhluf has helped the Government of Syria evade international sanctions. OFAC also designated Damascus-based Cham Islamic Bank for acting or purporting to act for or on behalf of, directly or indirectly, and materially assisting, sponsoring, or providing financial, material, or technological support for, or goods or services in support of the Government of Syria. 
+      
+      Persons Affiliated with the Scientific Studies and Research Center (SSRC) and Organization for Technological Industries
+      
+      Finally, pursuant to E.O. 13382, OFAC today designated Muhammed Bin-Muhammed Faris Quwaydir, SSRC Contracts Director, for acting for or on behalf of SSRC, the Syrian government agency responsible for developing and producing non-conventional weapons and the means to deliver them. OFAC also designated Syrian Company for Information Technology (SCIT), for being owned or controlled by previously-designated Organization for Technological Industries (OTI), a subsidiary of the Syrian Ministry of Defense. 
+
+      EU NOTES:
+
+      Reasons: Leading businessman operating in Syria. Ihab Makhlouf is Vice President of, and shareholder in Syriatel, the leading mobile telephone operator in Syria. He also has business interests in several other Syrian companies and entities, including Ramak Construction Co and Syrian International Private University for Science and Technology (SIUST). As Vice President of Syriatel, which transfers a significant part of its profits to the Syrian government by way of its licensing contract, Ihab Makhlouf is also directly supporting the Syrian regime. He is an influential member of the Makhlouf family and closely connected to the Assad family; cousin of President Bashar al-Assad.
+
+      DEPARTMENT OF FOREIGN RELATIONS &amp; TRADE (DFAT) NOTES:
+
+      Additional Information: Passport no. N002848852. Vice-President of SyriaTel; provides support to the Syrian regime through the provision of funding to the regime.
+      Listing Information: Designated under the Autonomous Sanctions Regulations 2011 on 2 March 2012. Formerly listed on the RBA Consolidated List as 2011SYR0030
+
+      FRENCH ECONOMY MINISTRY NOTES:
+
+      Arrêté du 13 juin 2019 portant application des articles L. 562-3, L. 745-13, L. 755-13 et L. 765-13 du code monétaire et financier 
+
+      NOR: ECOT1916421A
+
+      Arrêté du 13 décembre 2016 portant application des articles L. 562-2 et suivants et L. 714-1 et suivants du code monétaire et financier 
+
+      NOR: ECFT1627209A
+
+      Renseignements complémentaires : a) en tant que vice-président et actionnaire de Syriatel, par l'intermédiaire de son contrat de licence, il transfère une partie importante de ses bénéfice au gouvernement syrien ; b) principal opérateur de téléphonie mobile en Syrie ; c) possède des intérêts dans l'entreprise Ramak Construction Co et l'Université privée internationale syrienne pour la science et la technologie (Syrian International Private University for Science and Technology ou SIUST) ; d) entretient des liens étroits avec la famille Assad ; il est cousin du président Bashar Al Assad
+
+      Désigné par le règlement (UE) 504/2011 du 23.05.2011
+      ---------------------------------------
+      Metadata: Panama Papers</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307807" relationship="Uncle" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="307838" relationship="Aunt" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307846" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307850" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="307853" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307854" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="530300" relationship="Brother" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="741284" relationship="Father" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="912173" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="967117" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Corruption" ex="false"></associate>
+      <associate peid="1503893" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1709707" relationship="Business Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1823114" relationship="Sister-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="2862392" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="3203996" relationship="Associate" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="3204018" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="4466367" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="4854929" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11364045" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11559050" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+    </associates>
+  </person>
+</records>

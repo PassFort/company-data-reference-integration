@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="307854" date="2019-04-18 07:52:10.673">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Majd</first-name>
+          <middle-name>Hafid</middle-name>
+          <surname>Al-Assad</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">مجد حافظ الأسد</original-script-name>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Majd</first-name>
+              <middle-name>Hafiz</middle-name>
+              <surname>Al Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Majd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>Alassad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Majd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Majd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>Al-Asad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Majd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>Al Asad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Mejd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>El-Asad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Mejd</first-name>
+              <middle-name>Hafiz</middle-name>
+              <surname>El Asad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Mejd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>El Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Mejd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>El-Assad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Mejd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>Al-Asad</surname>
+            </person-name-value>
+          </person-names>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Majd</first-name>
+              <middle-name>Hafid</middle-name>
+              <surname>Al Assad</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="12" month="12" year="2009" date-type="Deceased Date"></date>
+      <date year="1966" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Latakia</place-name>
+        <region>Latakia</region>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://www.aleqt.com/sites/default/files/a/315961_72488.jpg</image-url>
+      <image-url>https://www.zamanalwsl.net/CustomImage/get/770/438/c39fa9087bf9dbf08f875812fdcc96cb.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title>Deceased</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307807" relationship="Father" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="307838" relationship="Mother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307846" relationship="Sister" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307853" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307912" relationship="Sister-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="310660" relationship="Uncle" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="310668" relationship="Brother-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="530300" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Corruption" ex="false"></associate>
+      <associate peid="530303" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="912173" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1495802" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1503893" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1709695" relationship="Sister-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>
