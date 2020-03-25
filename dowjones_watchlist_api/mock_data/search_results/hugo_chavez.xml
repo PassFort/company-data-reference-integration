@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<search-results>
+  <head>
+    <api-version>1.6.0</api-version>
+    <backend-version>djrc-1.8.6</backend-version>
+    <total-hits>7</total-hits>
+    <hits-from>0</hits-from>
+    <hits-to>7</hits-to>
+    <truncated>false</truncated>
+    <cached-results-id>3633feef-78e7-4709-a14c-0f7d0578c873</cached-results-id>
+  </head>
+  <body>
+    <match peid="304639" revision="2019-12-05 12:24:55.917" record-type="PERSON">
+      <score>0.98857147</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>RCA</risk-icon>
+        </risk-icons>
+        <primary-name>Chávez Colmenares, Hugo Rafael</primary-name>
+        <country-code>VEN</country-code>
+        <title />
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Also Known As">Hugo Rafael Chávez</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1983</year>
+            <month>10</month>
+            <day>14</day>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>VEN</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>VEN</country-code>
+          </country>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>VEN</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="263483" revision="2017-02-09 10:35:45.170" record-type="PERSON">
+      <score>0.98857147</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>PEP</risk-icon>
+        </risk-icons>
+        <primary-name>Chávez Frías, Hugo Rafael</primary-name>
+        <country-code>VEN</country-code>
+        <title>Deceased</title>
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Also Known As">Hugo Rafael Chávez</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1954</year>
+            <month>7</month>
+            <day>28</day>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>VEN</country-code>
+          </country>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>VEN</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>VEN</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="3275121" revision="2014-11-12 18:43:31.450" record-type="PERSON">
+      <score>0.98857147</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>SI</risk-icon>
+        </risk-icons>
+        <primary-name>González Chávez, Hugo Ramón</primary-name>
+        <country-code>PARA</country-code>
+        <title />
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Also Known As">Hugo Ramón Chávez</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1965</year>
+          </date-of-birth>
+          <date-of-birth>
+            <year>1964</year>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>PARA</country-code>
+          </country>
+          <country>
+            <country-type>Country of Reported Allegation</country-type>
+            <country-code>PARA</country-code>
+          </country>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>PARA</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="11957689" revision="2019-09-16 21:01:39.290" record-type="PERSON">
+      <score>0.98857147</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="false">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>SI-LT</risk-icon>
+        </risk-icons>
+        <primary-name>Portillo-Chávez, Hugo</primary-name>
+        <country-code>NOTK</country-code>
+        <title />
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Also Known As">Hugo Chávez</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1987</year>
+          </date-of-birth>
+          <date-of-birth>
+            <year>1988</year>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Country of Reported Allegation</country-type>
+            <country-code>USA</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>NOTK</country-code>
+          </country>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>USA</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="1077701" revision="2010-03-21 02:45:59.693" record-type="PERSON">
+      <score>0.97</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="true">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>SI</risk-icon>
+        </risk-icons>
+        <primary-name>Chavez-Cadenas, Hugo</primary-name>
+        <country-code>NOTK</country-code>
+        <title />
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Primary Name">Hugo Chavez-Cadenas</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1969</year>
+          </date-of-birth>
+          <date-of-birth>
+            <year>1970</year>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>USA</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>NOTK</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="264181" revision="2013-05-09 12:18:02.410" record-type="PERSON">
+      <score>0.97</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="true">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>PEP</risk-icon>
+        </risk-icons>
+        <primary-name>Chávez, Hugo de los Reyes</primary-name>
+        <country-code>VEN</country-code>
+        <title>See Previous Roles</title>
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Spelling Variation">Hugo de los Reyes Chavez</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1933</year>
+            <month>1</month>
+            <day>6</day>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>VEN</country-code>
+          </country>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>VEN</country-code>
+          </country>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>VEN</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+    <match peid="3445932" revision="2015-04-16 14:00:11.943" record-type="PERSON">
+      <score>0.9409</score>
+      <match-type linguistic-variation="false" non-linguistic-variation="false" structural-variation="true">PRECISE</match-type>
+      <payload>
+        <risk-icons>
+          <risk-icon>PEP</risk-icon>
+        </risk-icons>
+        <primary-name>Ruiz de Chávez Guerrero, Manuel Hugo</primary-name>
+        <country-code>MEX</country-code>
+        <title>Director General, National Commission of Bioethics (CONBIOÉTICA)</title>
+        <subsidiary>false</subsidiary>
+        <matched-name name-type="Spelling Variation">Manuel Hugo Ruiz de Chavez Guerrero</matched-name>
+        <dates-of-birth>
+          <date-of-birth>
+            <year>1947</year>
+            <month>1</month>
+            <day>17</day>
+          </date-of-birth>
+        </dates-of-birth>
+        <countries>
+          <country>
+            <country-type>Resident of</country-type>
+            <country-code>MEX</country-code>
+          </country>
+          <country>
+            <country-type>Jurisdiction</country-type>
+            <country-code>MEX</country-code>
+          </country>
+          <country>
+            <country-type>Citizenship</country-type>
+            <country-code>MEX</country-code>
+          </country>
+        </countries>
+        <gender>MALE</gender>
+      </payload>
+    </match>
+  </body>
+</search-results>

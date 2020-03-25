@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <entity peid="4383503" date="2019-09-10 07:36:33.453">
+    <subsidiary>false</subsidiary>
+    <entity-name-details>
+      <entity-names>
+        <entity-name-value name-type="Primary Name">
+          <entity-name>Highfield Farm</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Highfield Estate</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Highfield</entity-name>
+        </entity-name-value>
+      </entity-names>
+      <entity-names>
+        <entity-name-value name-type="Also Known As">
+          <entity-name>Banket Highfield Farm</entity-name>
+        </entity-name-value>
+      </entity-names>
+    </entity-name-details>
+    <country-details>
+      <country-value country-type="Country of Registration">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <address-line>Banket</address-line>
+        <region>Mashonaland West</region>
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="Related EU Consolidated Electronic List ID">70</identification>
+      <identification identification-type="Related OFAC Program ID">ZIMBABWE</identification>
+      <identification identification-type="Related OFAC Unique ID">7480</identification>
+      <identification identification-type="Related EU Sanctions Programme Indicator">ZWE</identification>
+      <identification identification-type="Related EU Consolidated Electronic List ID">1</identification>
+      <identification identification-type="Related OFAC Unique ID">7524</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="EU Related - Ownership Unknown"></description>
+        <description description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" description3="OFAC Related - Ownership Unknown"></description>
+      </descriptions>
+      <source-details>
+        <source>http://news.bbc.co.uk/2/hi/africa/8492320.stm</source>
+        <source>All Africa, 30-Nov-2010, on Factiva.com (AN=AFNWS00020101130e6bu001gv)</source>
+        <source>http://the-apple.club/data53/2015/09/18/land-reform-robert-mugabe/</source>
+        <source>All Africa, 02-Feb-2014, on Factiva.com (AN=AFNWS00020140201ea210005u)</source>
+        <source>http://nehandaradio.com/2014/02/01/grace-mugabe-grabs-more-land/</source>
+        <source>https://zimbabwe-today.com/mugabes-13-farms-full-list-zanu-pf-leaders-farms-took/</source>
+        <source>https://www.thestandard.co.zw/2017/04/16/terror-grace-mugabes-farm/</source>
+        <source>http://nehandaradio.com/2014/08/14/a-heroes-day-with-no-heroes/</source>
+        <source>http://bulawayo24.com/index-id-news-sc-national-byo-108409.html</source>
+        <source>https://www.newsday.co.zw/2018/01/shiri-targets-mugabe-farms/</source>
+        <source>The Zimbabwean, 05-Jan-2018, on Factiva.com (AN=ZIMBAN0020180105ee150005o)</source>
+        <source>https://www.wsj.com/articles/robert-mugabe-former-zimbabwean-strongman-dies-at-95-11567748031</source>
+      </source-details>
+      <profile-notes>DOW JONES NOTES:
+      PROFILE CREATED: 19-Oct-2015
+      UPDATE ADDED: 10-Sep-2019
+
+      19-Oct-2015
+      This entity is reported to be owned by OFAC SDN individual &amp; EU sanctioned Robert Gabriel Mugabe and his wife OFAC SDN individual &amp; EU sanctioned Grace Mugabe.
+
+      PROFILE UPDATED: 10-Sep-2019
+      OFAC SDN and EU sanctioned Robert Gabriel Mugabe has died on September 5, 2019.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="207763" relationship="Shareholder/Owner" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="true">
+      </associate>
+      <associate peid="503570" relationship="Shareholder/Owner" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false">
+      </associate>
+    </associates>
+  </entity>
+</records>

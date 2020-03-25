@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="3445932" date="2015-04-16 14:00:11.943">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Manuel</first-name>
+          <middle-name>Hugo</middle-name>
+          <surname>Ruiz de Chávez Guerrero</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Manuel</first-name>
+              <middle-name>Hugo</middle-name>
+              <surname>Ruiz de Chavez Guerrero</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Manuel</first-name>
+          <middle-name>Hugo</middle-name>
+          <surname>Ruiz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Manuel</first-name>
+          <middle-name>Hugo</middle-name>
+          <surname>Chávez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Manuel</first-name>
+          <middle-name>Hugo</middle-name>
+          <surname>de Chávez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Manuel</first-name>
+          <middle-name>Hugo</middle-name>
+          <surname>Guerrero</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Manuel Hugo</first-name>
+          <surname>Ruiz de Chávez Guerrero</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Manuel Hugo</first-name>
+              <surname>Ruiz de Chavez Guerrero</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="17" month="1" year="1947" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Mexico City</place-name>
+        <region>Mexico City</region>
+        <country djii-region-code="MEX" iso2-country-code="MX" iso3-country-code="MEX" is-territory="false" country-profile="mexico.doc">Mexico</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="MEX" iso2-country-code="MX" iso3-country-code="MEX" is-territory="false" country-profile="mexico.doc">Mexico</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="MEX" iso2-country-code="MX" iso3-country-code="MEX" is-territory="false" country-profile="mexico.doc">Mexico</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="MEX" iso2-country-code="MX" iso3-country-code="MEX" is-territory="false" country-profile="mexico.doc">Mexico</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="Others" identification-notes="Professional ID Number">3223525</identification>
+      <identification identification-type="Others" identification-notes="Professional ID Number">319357</identification>
+      <identification identification-type="Others" identification-notes="Professional ID Number">3247544</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://www.ranm.es/images/stories/academicos/corresp/ruiz-chavez.jpg</image-url>
+      <image-url>http://www.redpolitica.mx/sites/default/files/2290.jpg?1386179170</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)" description2="Additional Domestic Screening Requirement"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Local Public Officials" since-day="1" since-month="10" since-year="2009">Director General, National Commission of Bioethics (CONBIOÉTICA)</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+  </person>
+</records>

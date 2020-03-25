@@ -124,23 +124,64 @@ class APIClient():
 
     def fetch_data_record(self, peid):
         results = DataResults()
-        return results.import_data(xmltojson.parse(self._get(
+        results.import_data(xmltojson.parse(self._get(
             f'/data/records/{peid}',
             {'ame_article_type': 'all'},
         )))
+        return results
 
 
 DATA_RECORD_URL_PATTERN = re.compile('\/data\/records\/(.*)')
 
 
 class DemoClient(APIClient):
+    demo_name = None
+
+    def extract_names(self, params):
+        names = []
+        if 'first-name' in params:
+            names.append(params['first-name'])
+        if 'middle-name' in params:
+            names.append(params['middle-name'])
+        if 'surname' in params:
+            names.append(params['surname'])
+        return ' '.join(names).lower()
+
+    def set_demo_name(self, params):
+        fullname = self.extract_names(params)
+        if 'sanction' in fullname:
+            self.demo_name = 'robert_mugabe'
+        elif 'pep' in fullname:
+            self.demo_name = 'david_cameron'
+        elif 'media' in fullname:
+            self.demo_name = 'hugo_chavez'
+        elif fullname == 'bashar assad':
+            self.demo_name = 'bashar_assad'
+        elif fullname == 'hugo chavez':
+            self.demo_name = 'hugo_chavez'
+        elif fullname == 'robert mugabe':
+            self.demo_name = 'robert_mugabe'
+        elif fullname == 'david cameron':
+            self.demo_name = 'david_cameron'
+
     def _get(self, route, params={}):
-        if route.startswith('/search/person-name'):
-            file_path = f'mock_data/search_results/david_cameron.xml'
+        is_search_req = route.startswith('/search/person-name')
+
+        # Set demo for client when making initial search request
+        if is_search_req:
+            self.set_demo_name(params)
+
+        # If not running a demo fallback to standard API client
+        if self.demo_name is None:
+            return APIClient._get(self, route, params)
+
+        # Fetch data from file based on current demo and route hit
+        if is_search_req:
+            file_path = f'mock_data/search_results/{self.demo_name}.xml'
         else:
             matches = DATA_RECORD_URL_PATTERN.match(route)
             if matches and matches.group(1):
-                file_path = f'mock_data/data_results/david_cameron_{matches.group(1)}.xml'
+                file_path = f'mock_data/data_results/{self.demo_name}_{matches.group(1)}.xml'
             else:
                 raise Exception(f'Mock file not found for route: "{route}"')
 

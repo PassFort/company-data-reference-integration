@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="207763" date="2019-12-12 16:37:46.617">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Robert</first-name>
+          <middle-name>Gabriel</middle-name>
+          <surname>Mugabe</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="21" month="2" year="1924" date-type="Date of Birth"></date>
+      <date day="21" month="11" year="2017" date-type="Inactive as of (PEP)"></date>
+      <date day="5" month="9" year="2019" date-type="Deceased Date"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Kutama Mission, Zvimba</place-name>
+        <region>Mashonaland West</region>
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="Passport No.">AD001095</identification>
+      <identification identification-type="Passport No." identification-notes="Country of Issue: Zimbabwe  ">AD002119</identification>
+      <identification identification-type="OFAC Program ID">ZIMBABWE</identification>
+      <identification identification-type="OFAC Unique ID">7480</identification>
+      <identification identification-type="EU Sanctions Programme Indicator">ZWE</identification>
+      <identification identification-type="EU Consolidated Electronic List ID">1</identification>
+      <identification identification-type="HM Treasury Group ID">7321</identification>
+      <identification identification-type="SECO SSID">6095</identification>
+      <identification identification-type="DFAT Reference Number">2486</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://www.bbc.co.uk/cult/ilove/years/1988/gallery/340/mugabe.jpg</image-url>
+      <image-url>http://img.dailymail.co.uk/i/pix/2007/05_01/Mugabe_468x667.jpg</image-url>
+      <image-url>http://img.dailymail.co.uk/i/pix/2008/03_04/mugabeD2803_468x649.jpg</image-url>
+      <image-url>http://www.aljazeera.com/mritems/imagecache/mbdxxlarge/mritems/images/2014/3/15//20143151715311734_20.jpg</image-url>
+      <image-url>https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2018/07/New-Mugabe-pic.gif?fit=600%2C400&amp;ssl=1</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Members of the Armed Forces" since-day="31" since-month="12" since-year="1987" to-day="21" to-month="11" to-year="2017">Commander in Chief, Zimbabwe Defence Forces (ZDF)</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Heads &amp; Deputies State/National Government" since-day="31" since-month="12" since-year="1987" to-day="21" to-month="11" to-year="2017">President of Zimbabwe</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Heads &amp; Deputies State/National Government" since-day="18" since-month="4" since-year="1980" to-day="31" to-month="12" to-year="1987">Prime Minister of Zimbabwe</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Political Party Officials" since-year="1987" to-day="19" to-month="11" to-year="2017">President, Zimbabwe African National Union-Patriotic Front (ZANU-PF)</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Heads &amp; Deputies State/National Government">Deceased</occupation-title>
+        </role>
+      </role-details>
+      <sanctions-reference-details>
+        <sanctions-reference list-provider-name="Office of Foreign Assets Control, Department of the Treasury" list-provider-code="US-OFAC" description2="Sanctions Lists" status="Current">OFAC - Specially Designated National List</sanctions-reference>
+        <sanctions-reference since-day="18" to-month="9" description2="Sanctions Lists" list-provider-code="EU" since-year="2002" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2002" to-day="13">EC 310/2002 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="13" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2002" status="Suspended" list-provider-name="European Union" since-month="9" to-year="2004" to-day="19">EC 1643/2002 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="19" to-month="6" description2="Sanctions Lists" list-provider-code="EU" since-year="2004" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2005" to-day="15">EC 314/2004 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="15" to-month="7" description2="Sanctions Lists" list-provider-code="EU" since-year="2005" status="Suspended" list-provider-name="European Union" since-month="6" to-year="2007" to-day="2">EC 898/2005 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="HM Treasury" list-provider-code="GB-HMT" description2="Sanctions Lists" status="Current" since-day="21" since-month="2" since-year="2002">HM Treasury Consolidated List</sanctions-reference>
+        <sanctions-reference list-provider-name="Department of Foreign Relations &amp; Trade" list-provider-code="AU-DFAT" description2="Sanctions Lists" status="Current" since-day="7" since-month="3" since-year="2012">DFAT (Australia) Consolidated List</sanctions-reference>
+        <sanctions-reference list-provider-name="Reserve Bank of Australia (RBA)" list-provider-code="AU-RBA" description2="Sanctions Lists" status="Suspended" to-day="7" to-month="3" to-year="2012">Reserve Bank of Australia Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="Secrétariat d'Etat à l'économie (State Secretariat for Economic Affairs)" list-provider-code="CH-SECO" description2="Sanctions Lists" status="Current" since-day="19" since-month="3" since-year="2002">SECO (Switzerland) Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="24" to-month="9" description2="Sanctions Lists" list-provider-code="EU" since-year="2002" status="Suspended" list-provider-name="European Union" since-month="7" to-year="2002" to-day="13">EC 1345/2002 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="Commission de Surveillance du Secteur Financier" list-provider-code="LU-CSSF" description2="Sanctions Lists" status="Current" since-day="1" since-month="3" since-year="2004">CSSF (Luxembourg) Sanctions List</sanctions-reference>
+        <sanctions-reference since-day="19" to-month="4" description2="Sanctions Lists" list-provider-code="EU" since-year="2007" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2007" to-day="16">EC 2007/120/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="29" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2005" status="Suspended" list-provider-name="European Union" since-month="7" to-year="2007" to-day="19">EC 2005/592/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="13" to-month="7" description2="Sanctions Lists" list-provider-code="EU" since-year="2005" status="Suspended" list-provider-name="European Union" since-month="6" to-year="2005" to-day="29">EC 2005/444/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="19" to-month="6" description2="Sanctions Lists" list-provider-code="EU" since-year="2004" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2005" to-day="13">EC 2004/161/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="13" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2002" status="Suspended" list-provider-name="European Union" since-month="9" to-year="2004" to-day="19">EC 2002/754/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="22" to-month="9" description2="Sanctions Lists" list-provider-code="EU" since-year="2002" status="Suspended" list-provider-name="European Union" since-month="7" to-year="2002" to-day="13">EC 2002/600/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="18" to-month="7" description2="Sanctions Lists" list-provider-code="EU" since-year="2002" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2002" to-day="22">EC 2002/145/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="16" to-month="6" description2="Sanctions Lists" list-provider-code="EU" since-year="2007" status="Suspended" list-provider-name="European Union" since-month="4" to-year="2007" to-day="25">EC 2007/235/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="25" to-month="1" description2="Sanctions Lists" list-provider-code="EU" since-year="2007" status="Suspended" list-provider-name="European Union" since-month="6" to-year="2009" to-day="26">EC 2007/455/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="2" to-month="1" description2="Sanctions Lists" list-provider-code="EU" since-year="2007" status="Suspended" list-provider-name="European Union" since-month="7" to-year="2009" to-day="26">EC 777/2007 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="Department of Foreign Affairs, Trade and Development Canada" list-provider-code="CA-DFATD" description2="Sanctions Lists" status="Current" since-day="4" since-month="9" since-year="2008">DFATD (Canada) Special Economic Measures (Zimbabwe) Regulations</sanctions-reference>
+        <sanctions-reference since-day="26" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2009" status="Suspended" list-provider-name="European Union" since-month="1" to-year="2012" to-day="21">EC 77/2009 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="26" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2009" status="Suspended" list-provider-name="European Union" since-month="1" to-year="2011" to-day="15">EC 2009/68/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="Service d'Information et de Contrôle sur les Circuits Financiers (SICCFIN)" list-provider-code="MC-SICCFIN" description2="Sanctions Lists" status="Current" since-day="30" since-month="7" since-year="2008">Finance and Economy Ministry (Monaco) Economic Sanctions</sanctions-reference>
+        <sanctions-reference since-day="15" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2011" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2012" to-day="17">EC 2011/101/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="23" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2011" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2012" to-day="21">EC 174/2011 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="17" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2016" to-day="15">EC 2012/97/CFSP Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="21" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2012" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2016" to-day="16">EC 151/2012 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="16" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2016" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2019" to-day="20">EC 2016/218 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="15" since-month="2" since-year="2016">EC (CFSP) 2016/220 Zimbabwe List</sanctions-reference>
+        <sanctions-reference since-day="16" to-month="2" description2="Sanctions Lists" list-provider-code="EU" since-year="2018" status="Suspended" list-provider-name="European Union" since-month="2" to-year="2019" to-day="20">EC 2018/223 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="16" since-month="2" since-year="2018">EC (CFSP) 2018/227 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="20" since-month="2" since-year="2019">EC 2019/283 Zimbabwe List</sanctions-reference>
+        <sanctions-reference list-provider-name="Ministère de l'Économie, des Finances et de l'Industrie" list-provider-code="FR-MINEFI" description2="Sanctions Lists" status="Current" since-day="9" since-month="3" since-year="2018">French Economy Ministry - EU and UN Asset Freezing Measures</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>Circular CSSF 05/192</source>
+        <source>Arrêté Ministériel (Monaco) no. 2009-427 - Zimbabwe</source>
+        <source>Council Regulation (EC) No 310/2002</source>
+        <source>Circular CSSF 04/128</source>
+        <source>Commission Regulation (EC) No 777/2007</source>
+        <source>http://www.rba.gov.au/MediaReleases/2007/mr_07_10_annex.html</source>
+        <source>http://www.treas.gov/offices/enforcement/ofac/sdn/sdnlist.txt</source>
+        <source>http://www.gouv.mc/DataWeb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/4991d612d219cdb4c125761900331125!OpenDocument</source>
+        <source>Commission Regulation (EC) No 1643/2002, 898/2005</source>
+        <source>http://www.cssf.lu/uploads/media/cssf04_128eng.pdf</source>
+        <source>http://www.admin.ch/ch/f/rs/9/946.209.2.fr.pdf</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2002/l_050/l_05020020221en00040012.pdf</source>
+        <source>Circular CSSF 07/299</source>
+        <source>http://www.admin.ch/ch/f/as/2009/1523.pdf</source>
+        <source>Council Regulation (EC) No. 314/2004</source>
+        <source>Commission Regulation (EC) No. 1345/2002</source>
+        <source>http://cloud.gouv.mc/DataWeb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/0eff8b7f0fde1b6cc125784f0054d68b!OpenDocument</source>
+        <source>http://europa.eu.int/eur-lex/pri/en/oj/dat/2002/l_247/l_24720020914en00220024.pdf</source>
+        <source>Arrêté Ministériel (Monaco) no. 2012-116 - Zimbabwe</source>
+        <source>Council Regulation (EC) No. 310/2002</source>
+        <source>Commission Regulation (EC) No. 1643/2002</source>
+        <source>Swiss Federal Council Ordinance 19-Mar-2002 (946.209.2)</source>
+        <source>http://www.cssf.lu/uploads/media/cssf09_390eng.pdf</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2002:050:0004:0012:EN:PDF</source>
+        <source>Arrêté Ministériel (Monaco) no. 2008-400 - Zimbabwe</source>
+        <source>Arrêté Ministériel (Monaco) no. 2009-118 - Zimbabwe</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2005:153:0009:0014:EN:PDF</source>
+        <source>The Guardian, 09-Jun-2006, on Factiva.com</source>
+        <source>http://europa.eu.int/eur-lex/lex/LexUriServ/site/en/oj/2005/l_153/l_15320050616en00370042.pdf</source>
+        <source>http://europa.eu.int/eur-lex/pri/en/oj/dat/2002/l_050/l_05020020221en00040012.pdf</source>
+        <source>http://europa.eu.int/eur-lex/lex/LexUriServ/site/en/oj/2005/l_153/l_15320050616en00090014.pdf</source>
+        <source>Arrêté Ministériel (Monaco) no. 2011-117 - Zimbabwe</source>
+        <source>Circular CSSF 09/390</source>
+        <source>http://www.rba.gov.au/MediaReleases/2002/mr_02_20_annex.html</source>
+        <source>The Sunday Times, 15-Feb-2009, on Factiva.com (AN=ST00000020090215e52f000bt)</source>
+        <source>http://www.rba.gov.au/media-releases/2008/mr-08-30.html</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2004:055:0001:0013:EN:PDF</source>
+        <source>National Post, 11-Oct-2008, on Factiva.com (AN=FINP000020081011e4ab0004n)</source>
+        <source>http://www.gouv.mc/Dataweb/jourmon.nsf/966e69337756d51ac12568c40037f872/6906957143efb2e7c125749f0029994b/$FILE/JO7872%20AM%202008-400.pdf</source>
+        <source>Commission Regulation (EC) No. 898/2005</source>
+        <source>http://europa.eu.int/eur-lex/pri/en/oj/dat/2004/l_055/l_05520040224en00010013.pdf</source>
+        <source>http://europa.eu.int/eur-lex/pri/en/oj/dat/2002/l_196/l_19620020725en00280030.pdf</source>
+        <source>http://cloud.gouv.mc/DataWeb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/726442ad2211f93fc12579bb0059d69e!OpenDocument</source>
+        <source>http://www.rba.gov.au/mkt-operations/fin-sanctions/xls/consolidated-list.xls</source>
+        <source>Swiss Federal Council Ordinance 19-Mar-2002 (RS 946.209.2)</source>
+        <source>http://www.gouv.mc/Dataweb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/f69d71bac5939146c125757f00446973!OpenDocument</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2002:247:0022:0024:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2007/l_051/l_05120070220en00250030.pdf</source>
+        <source>Common Position (EC) No. 2007/120/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2005:153:0037:0042:EN:PDF</source>
+        <source>Council Decision 2005/592/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2005/l_200/l_20020050730en00980104.pdf</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2002/l_050/l_05020020221en00010003.pdf</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:042:0006:0023:EN:PDF</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2004/l_050/l_05020040220en00660072.pdf</source>
+        <source>Council Decision 2011/101/CFSP</source>
+        <source>Council Common Position 2002/600/CFSP</source>
+        <source>Commission Regulation (EU) No 174/2011</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2007/l_101/l_10120070418en00140019.pdf</source>
+        <source>Council Common Position 2002/145/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2002/l_247/l_24720020914en00560059.pdf</source>
+        <source>Council Common Position 2009/68/CFSP</source>
+        <source>Commission Regulation (EC) No 77/2009</source>
+        <source>Council Decision 2007/235/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2007/l_173/l_17320070703en00030015.pdf</source>
+        <source>Commission Regulation (EC) 777/2007</source>
+        <source>http://www.international.gc.ca/trade/zimbabwe-en.asp</source>
+        <source>http://www.siccfin.gouv.mc/364/wwwnew.nsf/c3241c4782f528bdc1256d52004f970b/6ed4d528e334ff7ac12574a90040c6d7!OpenDocument</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2007/l_172/l_17220070630en00890100.pdf</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2009:023:0043:0059:EN:PDF</source>
+        <source>Council Common Position 2004/161/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/site/en/oj/2002/l_195/l_19520020724en00010003.pdf</source>
+        <source>http://www.international.gc.ca/trade/zimbabwe_list-en.asp</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2009:023:0005:0024:EN:PDF</source>
+        <source>Council Decision 2007/455/CFSP</source>
+        <source>Council Decision 2002/754/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2011:049:0023:0030:EN:PDF</source>
+        <source>Council Decision 2012/97/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:049:0002:0016:EN:PDF</source>
+        <source>Commission Implementing Regulation (EU) No 151/2012</source>
+        <source>Commission Implementing Regulation (EC) No. 2016/218</source>
+        <source>Council Decision (EC) No. 2016/220/CFSP</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016D0220&amp;from=EN</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0218&amp;from=EN</source>
+        <source>http://www.telegraph.co.uk/news/worldnews/africaandindianocean/zimbabwe/9080328/Zimbabwean-diamond-field-run-by-Robert-Mugabes-police-chiefs.html</source>
+        <source>http://www.dodonline.co.uk</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2002:196:0028:0030:EN:PDF</source>
+        <source>Council Decision 2005/444/CFSP</source>
+        <source>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2012:047:0050:0063:EN:PDF</source>
+        <source>http://cloud.gouv.mc/Dataweb/jourmon.nsf/9bf97b0da6308cfdc12568c40037f873/f56d8ce2e64c4ed2c1257f6b004b790d!OpenDocument</source>
+        <source>Arrêté Ministériel (Monaco) no. 2016-130 - Zimbabwe</source>
+        <source>Commission Implementing Regulation (EU) 2018/223</source>
+        <source>Council Implementing Decision (CFSP) 2018/227</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L:2018:043:FULL&amp;from=EN</source>
+        <source>http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L:2018:043:FULL&amp;from=EN</source>
+        <source>Arrêté Ministériel n° 2018-155 - Zimbabwe</source>
+        <source>http://journaldemonaco.gouv.mc/var/jdm/storage/original/application/cd3f5990b2170128918b847cde15efe7.pdf</source>
+        <source>Commission Implementing Regulation (EU) 2019/283</source>
+        <source>https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32019R0283&amp;from=EN</source>
+        <source>Arrêté Ministériel (Monaco) n° 2019-199 - Zimbabwe</source>
+        <source>https://goo.gl/VDgB2M</source>
+        <source>https://ofsistorage.blob.core.windows.net/publishlive/ConList.html</source>
+        <source>https://www.legifrance.gouv.fr/initRechJO.do</source>
+        <source>https://www.legifrance.gouv.fr/jo_pdf.do?id=JORFTEXT000036684158</source>
+        <source>https://www.legifrance.gouv.fr/jo_pdf.do?id=JORFTEXT000038226782</source>
+        <source>https://www.seco.admin.ch/seco/fr/home/Aussenwirtschaftspolitik_Wirtschaftliche_Zusammenarbeit/Wirtschaftsbeziehungen/exportkontrollen-und-sanktionen/sanktionen-embargos/sanktionsmassnahmen/massnahmen-gegenueber-simbabwe.html</source>
+        <source>https://www.treasury.gov/ofac/downloads/sdnlist.pdf</source>
+        <source>https://www.tresor.economie.gouv.fr/Ressources/11448_liste-unique-de-gels</source>
+        <source>http://journaldemonaco.gouv.mc/content/search?SearchText=%22gel+de+fonds%22+%22sanctions+%C3%A9conomiques%22&amp;SearchButton=&amp;start=1514761200&amp;sort=published_desc&amp;page_limit=60</source>
+        <source>http://www.dfat.gov.au/international-relations/security/sanctions/Documents/regulation8_consolidated.xls</source>
+        <source>http://www.international.gc.ca/world-monde/international_relations-relations_internationales/sanctions/zimbabwe.aspx?lang=eng</source>
+        <source>https://www.gov.uk/government/publications/financial-sanctions-zimbabwe</source>
+      </source-details>
+      <profile-notes>OFFICE OF FOREIGN ASSETS CONTROL (OFAC) NOTES:
+
+      President of the Republic of Zimbabwe
+
+      EU NOTES:
+
+      Grounds for designation: Former President and responsible for activities that seriously undermine democracy, respect for human rights and the rule of law.
+
+      FRENCH ECONOMY MINISTRY NOTES:
+
+      Arrêté du 12 mars 2019 portant application des articles L. 562-3, L. 745-13, L. 755-13 et L. 765-13 du code monétaire et financier
+
+      NOR: ECOT1904128A
+
+      Arrêté du 6 mars 2018 portant application des articles L. 562-3 et suivants, et L. 714-1 et suivants du code monétaire et financier
+
+      NOR: ECOT1806290A
+
+      Renseignements complémentaires : Ancien président ; responsable d'activités qui portent gravement atteinte à la démocratie, au respect des droits de l'homme et à l'État de droit
+      Désigné par l'Union européenne le 21.02.2002, par les règlements (UE) 2016/218 du 16.02.2016, (UE) 2018/223 du 15.02.2018, (UE) 2019/283 du 18.02.2019</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="170904" relationship="Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="207655" relationship="Cousin" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="207712" relationship="Sister" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="207765" relationship="Brother-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="207769" relationship="Father" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="207770" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="207771" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="207773" relationship="Brother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="208342" relationship="Nephew" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="208702" relationship="Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="213106" relationship="Employee" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="222729" relationship="Nephew" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="503570" relationship="Wife" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="503632" relationship="Nephew" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="503654" relationship="Nephew" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="524859" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="524861" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="524866" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="531514" relationship="Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="531520" relationship="Business Associate" description1="Special Interest Person (SIP)" description2="Trafficking" ex="true"></associate>
+      <associate peid="559589" relationship="Associate" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="567903" relationship="Legal Adviser" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="585957" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="602822" relationship="Friend" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="613931" relationship="Aunt" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="658214" relationship="Step-Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="659453" relationship="Friend" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+<associate peid="678596" relationship="Brother" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+<associate peid="678598" relationship="Niece" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+<associate peid="745239" relationship="Family Member" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+<associate peid="761755" relationship="Friend" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+<associate peid="783322" relationship="Nephew" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+<associate peid="890482" relationship="Nephew" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+<associate peid="1041247" relationship="Business Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+<associate peid="1541672" relationship="Sister" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+<associate peid="2259329" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+<associate peid="2924638" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+<associate peid="2963724" relationship="Cousin" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+<associate peid="3062887" relationship="Son-in-law" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+<associate peid="4380675" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4381968" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4381999" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4382015" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383480" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383484" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383503" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383529" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383559" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383565" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4383673" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4384578" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4509003" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+<associate peid="4687945" relationship="Grandson" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+<associate peid="11648314" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+<associate peid="11954332" relationship="Mother-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+</associates>
+</person>
+</records>

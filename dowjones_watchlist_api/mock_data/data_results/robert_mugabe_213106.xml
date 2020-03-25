@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="213106" date="2015-08-19 09:50:55.533">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <title-honorific>Air Vice Marshal</title-honorific>
+          <first-name>Robert</first-name>
+          <surname>Mhlanga</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date month="2" year="2012" date-type="Inactive as of (PEP)"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://www.idexonline.com/image_bank/image_folders/People/Dr.RobertMhlanga.png</image-url>
+      <image-url>http://www.newzimbabwe.com/news/images/news_bRobert-Mhlanga-250.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Members of the Armed Forces">Director General, Supporting Services, Air Force of Zimbabwe (AFZ)</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Senior Members of the Armed Forces">See Previous Roles</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>http://www.telegraph.co.uk/news/worldnews/africaandindianocean/zimbabwe/9080328/Zimbabwean-diamond-field-run-by-Robert-Mugabes-police-chiefs.html</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="207763" relationship="Employer" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="true"></associate>
+    </associates>
+  </person>
+</records>

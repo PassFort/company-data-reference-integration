@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="3275118" date="2014-11-12 18:43:31.447">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Miguel</first-name>
+          <middle-name>Ángel</middle-name>
+          <surname>Valdez Ovelar</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Miguel</first-name>
+              <middle-name>Angel</middle-name>
+              <surname>Valdez Ovelar</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Miguel</first-name>
+          <middle-name>Angel</middle-name>
+          <surname>Valdez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Miguel</first-name>
+          <middle-name>Ángel</middle-name>
+          <surname>Valdez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Miguel</first-name>
+          <middle-name>Ángel</middle-name>
+          <surname>Ovelar</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date year="1965" date-type="Date of Birth"></date>
+      <date year="1964" date-type="Date of Birth"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Country of Reported Allegation">
+        <country djii-region-code="PARA" iso2-country-code="PY" iso3-country-code="PRY" is-territory="false" country-profile="paraguay.doc">Paraguay</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="PARA" iso2-country-code="PY" iso3-country-code="PRY" is-territory="false" country-profile="paraguay.doc">Paraguay</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="PARA" iso2-country-code="PY" iso3-country-code="PRY" is-territory="false" country-profile="paraguay.doc">Paraguay</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://www.ultimahora.com/imagenes-01610001932760106540491/dos-imputados-desfalco-cuenta-bancaria-zapag.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Financial Crime"></description>
+      </descriptions>
+      <source-details>
+        <source>ABC - Paraguay, 15-Oct-2014, on Factiva (AN=ABCPRG0020141015eaaf0002h)</source>
+        <source>ABC - Paraguay, 04-Dec-2013, on Factiva (AN=ABCPRG0020131204e9c40001m)</source>
+      </source-details>
+      <profile-notes>Keywords: fraud, forgery, theft
+      People mentioned: Miguel Angel Valdez Ovelar
+      Companies mentioned: Banco Nacional de Fomento 
+      Profile:
+      Miguel Angel Valdez Ovelar was accused of fraud and falsification of documents on October 15, 2014. A complaint filed by the prosecution alleged that Valdez Ovelar forged the signatures of officials of the National Mutual of Ministry of Public Health and Social Welfare to transfer USD 105,000 to an account in China.
+      Valdez Ovelar had been arrested on December 3, 2013, on similar charges. In that case, the prosecution alleged that he stole USD 600,000 from bank accounts held at the Banco Nacional de Fomento (BNF), Paraguay's state-owned, national development bank. According to the prosecution, Valdez Ovelar and his associates accessed the bank accounts with the help of accomplices working at BNF and with the aid of falsified documents.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="3275119" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="3275121" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="3275124" relationship="Associated Special Interest Person" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+    </associates>
+  </person>
+</records>

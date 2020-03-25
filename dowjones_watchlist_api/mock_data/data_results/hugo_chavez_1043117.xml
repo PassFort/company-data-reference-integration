@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="1043117" date="2019-12-05 12:24:55.917">
+    <gender>Male</gender>
+    <deceased>true</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Aníbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Chávez Frías</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Anibal</first-name>
+              <middle-name>Jose</middle-name>
+              <surname>Chavez Frias</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Aníbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Chávez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Aníbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Frías</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Aníbal José</first-name>
+          <surname>Chávez Frías</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Anibal Jose</first-name>
+              <surname>Chavez Frias</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="9" month="1" year="1957" date-type="Date of Birth"></date>
+      <date day="17" month="7" year="2016" date-type="Deceased Date"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Sabaneta</place-name>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="National ID">V-4.259.886</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title>Deceased</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Brother" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="264181" relationship="Father" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="293631" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="304636" relationship="Niece" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="910765" relationship="Brother" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

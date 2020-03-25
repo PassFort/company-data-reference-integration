@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="298667" date="2013-12-13 14:18:01.673">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Jesús</first-name>
+          <middle-name>Arnaldo</middle-name>
+          <surname>Pérez Roque</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Jesus</first-name>
+              <middle-name>Arnaldo</middle-name>
+              <surname>Perez Roque</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Jesús</first-name>
+          <middle-name>Arnaldo</middle-name>
+          <surname>Pérez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Jesús</first-name>
+          <middle-name>Arnaldo</middle-name>
+          <surname>Roque</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Jesús Arnaldo</first-name>
+          <surname>Pérez Roque</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Jesus Arnaldo</first-name>
+              <surname>Perez Roque</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="11" month="11" year="1953" date-type="Date of Birth"></date>
+      <date day="13" month="12" year="2013" date-type="Inactive as of (PEP)"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Veguitas</place-name>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://www.voltairenet.org/IMG/jpg/es-Jesus-Arnaldo-Perez_390.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Inactive</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="26" since-month="10" since-year="2000" to-day="29" to-month="5" to-year="2002">Venezuelan Ambassador to Algeria</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="13" since-month="2" since-year="2004" to-day="3" to-month="5" to-year="2005">Minister of Foreign Relations</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-year="1999" to-year="2000">Minister of Environment and Natural Resources</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff">See Previous Roles</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="3" since-month="5" since-year="2005" to-day="4" to-month="7" to-year="2006">Venezuelan Ambassador to Canada</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="4" since-month="7" since-year="2006">Venezuelan Ambassador to France</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="29" since-month="5" since-year="2002" to-day="13" to-month="2" to-year="2004">Venezuelan Ambassador to France</occupation-title>
+        </role>
+      </role-details>
+      <source-details>
+        <source>http://web.archive.org/web/20080101114150/http://www.talcualdigital.com/especiales/Protagonistas_Jesus.asp</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Friend" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="747244" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747246" relationship="Friend" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747248" relationship="Father" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747249" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747265" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747267" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747272" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="747275" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

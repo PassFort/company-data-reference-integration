@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="522425" date="2019-12-05 12:24:55.917">
+    <gender>Female</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Nancy</first-name>
+          <surname>Colmenares</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Nancy</first-name>
+          <surname>Colmenares</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <birth-place-details>
+      <birth-place>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://dailyentertainmentnews.com/wpgo/wp-content/uploads/2013/03/Nancy-Colmenares-Hugo-Chavez-first-wife.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Relative or Close Associate (RCA)"></description>
+      </descriptions>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Husband" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="264181" relationship="Father-in-law" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="293631" relationship="Brother-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="true"></associate>
+      <associate peid="304636" relationship="Daughter" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="910765" relationship="Brother-in-law" description1="Person (SO)" description2="Board Member (BRD)" ex="true"></associate>
+      <associate peid="1479522" relationship="Son-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>

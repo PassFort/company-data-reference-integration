@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="11715476" date="2019-11-26 03:04:12.593">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Samer</first-name>
+          <surname>Foz</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Original Script Name">
+              <original-script-name osn-language-code="ar" script-language-code="ar">سامر فوز</original-script-name>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samir</first-name>
+          <surname>Foz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samir</first-name>
+          <surname>Fawz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samer</first-name>
+          <middle-name>Zuhair</middle-name>
+          <surname>Foz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samer</first-name>
+          <surname>Fawz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samer</first-name>
+          <surname>Al-Fouz</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Samer</first-name>
+              <surname>Al Fouz</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samer</first-name>
+          <surname>Fawaz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samer</first-name>
+          <surname>Fouz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samir</first-name>
+          <middle-name>Zuhair</middle-name>
+          <surname>Fawz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samer</first-name>
+          <middle-name>Zuhair</middle-name>
+          <surname>Fawz</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Samir</first-name>
+          <middle-name>Zuhair</middle-name>
+          <surname>Foz</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date month="5" year="1973" date-type="Date of Birth"></date>
+      <date day="20" month="5" year="1973" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <region>Latakia</region>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="TURK" iso2-country-code="TR" iso3-country-code="TUR" is-territory="false" country-profile="turkey.doc">Turkey</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SKIT" iso2-country-code="KN" iso3-country-code="KNA" is-territory="false" country-profile="st. kitts and nevis.doc">St. Kitts and Nevis</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UAE" iso2-country-code="AE" iso3-country-code="ARE" is-territory="false" country-profile="united arab emirates.doc">United Arab Emirates</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <address-line>Meadows 2, Street 3, Villa 5</address-line>
+        <city>Dubai</city>
+        <country djii-region-code="UAE" iso2-country-code="AE" iso3-country-code="ARE" is-territory="false" country-profile="united arab emirates.doc">United Arab Emirates</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="EU Sanctions Programme Indicator">SYR</identification>
+      <identification identification-type="EU Consolidated Electronic List ID">119208</identification>
+      <identification identification-type="HM Treasury Group ID">13755</identification>
+      <identification identification-type="National ID" identification-notes="Country of Issue: Syria  ">784197341865828</identification>
+      <identification identification-type="OFAC Program ID">SYRIA</identification>
+      <identification identification-type="OFAC Unique ID">26886</identification>
+      <identification identification-type="SECO SSID">40037</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+      </descriptions>
+      <sanctions-reference-details>
+        <sanctions-reference list-provider-name="Office of Foreign Assets Control, Department of the Treasury" list-provider-code="US-OFAC" description2="Sanctions Lists" status="Current" since-day="11" since-month="6" since-year="2019">OFAC - Specially Designated National List</sanctions-reference>
+        <sanctions-reference list-provider-name="HM Treasury" list-provider-code="GB-HMT" description2="Sanctions Lists" status="Current" since-day="22" since-month="1" since-year="2019">HM Treasury Consolidated List</sanctions-reference>
+        <sanctions-reference list-provider-name="Service d'Information et de Contrôle sur les Circuits Financiers (SICCFIN)" list-provider-code="MC-SICCFIN" description2="Sanctions Lists" status="Current" since-day="8" since-month="2" since-year="2019">Finance and Economy Ministry (Monaco) Economic Sanctions</sanctions-reference>
+        <sanctions-reference list-provider-name="Secrétariat d'Etat à l'économie (State Secretariat for Economic Affairs)" list-provider-code="CH-SECO" description2="Sanctions Lists" status="Current" since-day="17" since-month="7" since-year="2019">SECO (Switzerland) Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="21" since-month="1" since-year="2019">EC 2019/85 Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="European Union" list-provider-code="EU" description2="Sanctions Lists" status="Current" since-day="21" since-month="1" since-year="2019">EC (CFSP) 2019/87 Syria List</sanctions-reference>
+        <sanctions-reference list-provider-name="Ministère de l'Économie, des Finances et de l'Industrie" list-provider-code="FR-MINEFI" description2="Sanctions Lists" status="Current" since-day="24" since-month="1" since-year="2019">French Economy Ministry - EU and UN Asset Freezing Measures</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>Council implementing Decision (CFSP) 2019/87</source>
+        <source>Council Regulation (EU) No 2019/85</source>
+        <source>https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32019D0087&amp;from=EN</source>
+        <source>https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32019R0085&amp;from=EN</source>
+        <source>https://www.gov.uk/government/publications/financial-sanctions-syria</source>
+        <source>Arrêté Ministériel (Monaco) n° 2019-96 - sanctions économiques</source>
+        <source>http://journaldemonaco.gouv.mc/content/search?SearchText=%22gel+de+fonds%22+%22sanctions+%C3%A9conomiques%22&amp;SearchButton=&amp;start=1514761200&amp;sort=published_desc&amp;page_limit=60</source>
+        <source>https://goo.gl/Lu2Vub</source>
+        <source>https://www.legifrance.gouv.fr/initRechJO.do</source>
+        <source>https://www.legifrance.gouv.fr/jo_pdf.do?id=JORFTEXT000038047700</source>
+        <source>https://www.tresor.economie.gouv.fr/Ressources/11448_liste-unique-de-gels</source>
+        <source>https://home.treasury.gov/news/press-releases/sm704</source>
+        <source>https://home.treasury.gov/sites/default/files/136/Syria%20Action%20Graphic.PNG</source>
+        <source>https://www.treasury.gov/ofac/downloads/sdnlist.pdf</source>
+        <source>https://www.treasury.gov/resource-center/sanctions/OFAC-Enforcement/Pages/20190611.aspx</source>
+        <source>https://www.seco.admin.ch/seco/fr/home/Aussenwirtschaftspolitik_Wirtschaftliche_Zusammenarbeit/Wirtschaftsbeziehungen/exportkontrollen-und-sanktionen/sanktionen-embargos/sanktionsmassnahmen/massnahmen-gegenueber-syrien.html</source>
+        <source>Swiss Federal Council Ordinance 08-Jun-2012 (RS 946.231.172.7)</source>
+        <source>https://ofsistorage.blob.core.windows.net/publishlive/ConList.html</source>
+      </source-details>
+      <profile-notes>OFFICE OF FOREIGN ASSETS CONTROL (OFAC) NOTES:
+
+      Nationality Saint Kitts and Nevis; citizen Saint Kitts and Nevis
+
+      June 11, 2019
+      Treasury Designates Syrian Oligarch Samer Foz and His Luxury Reconstruction Business Empire
+
+      Designations include the Foz family and companies across the Middle East profiting from conflict and the Assad regime’s brutality
+
+      WASHINGTON – Today, the U.S. Department of the Treasury’s Office of Foreign Assets Control (OFAC) is designating 16 individuals and entities associated with an international network benefiting the Assad regime. These designations serve to cut off critical supplies and financiers for the regime’s luxury reconstruction and investment efforts. This action reinforces the United States’ commitment to imposing a financial toll on those supporting Assad’s authoritarian rule, including Syrian oligarch Samer Foz.
+
+      “Samer Foz, his relatives, and his business empire have leveraged the atrocities of the Syrian conflict into a profit-generating enterprise. This Syrian oligarch is directly supporting the murderous Assad regime and building luxury developments on land stolen from those fleeing his brutality,” said Undersecretary for Terrorism and Financial Intelligence Sigal Mandelker. “Treasury is committed to holding accountable profiteers who enrich the coffers of the Assad regime while Syrian civilians suffer this man-made humanitarian crisis.”
+
+      LUXURY RECONSTRUCTION AND INVESTMENT IN SYRIA
+
+      Samer Foz has been profiting heavily from reconstruction efforts in Syria—including through luxury developments on land seized by the Syrian regime from its own people—and has been attempting to enlist foreign investors into Syrian reconstruction projects.
+
+      On January 21, 2019, the European Union sanctioned Samer Foz, Aman Damascus, and 14 other individuals and entities for using their ties with the Syrian regime for their own financial benefit, and for helping to finance the regime including through joint ventures formed with regime­backed companies to develop land expropriated from persons displaced by the conflict in Syria. Those persons sanctioned by the EU have been supporting and benefiting from the Assad regime’s brutality, and their reconstruction investments prevent displaced persons from returning to their homes.
+
+      In 2012, Assad signed a decree to expel citizens in poorer areas of Damascus from their homes to pave the way for luxury reconstruction projects, including Marota City in the Mazzeh District. To fund and fulfill these contracts, the regime formed joint ventures with private businessmen, including Samer Foz. This tactic—taking over property owned by Syrian citizens and handing the land to wealthy regime insiders to develop in exchange for revenue sharing—has emerged as Assad’s go-to strategy for high-end reconstruction in war-torn Syria. In October 2017, Samer Foz’s company, Aman Holding, entered into one such partnership with the Assad regime when it and state-owned Damascus Cham PJSC formed a company called Aman Damascus, in which Aman Holding has the majority share. Aman Damascus was awarded the rights to build three skyscrapers and five exclusive housing properties in a contract valued at U.S. $312 million.
+
+      Samer Foz is the Chairman and General Manager of Aman Holding, which was formerly known as the Aman Group. Aman Holding owns and controls over a dozen companies, all of which benefit Samer Foz personally and ultimately allow him to invest more in Assad’s luxury reconstruction projects. Samer Foz’s Lebanon-based Lana TV, which is also being designated today, has been used to solicit investment in Syria by airing commercials for Marota City.
+
+      FOZ FAMILY AND ASM INTERNATIONAL GENERAL TRADING
+
+      Samer Foz’s Aman Holding serves as an umbrella for over a dozen different ventures, and in some of these companies, Samer Foz shares ownership and managerial duties with his siblings Amer Foz and Husen Foz. One such venture is UAE-based ASM International General Trading, LLC (ASM International Trading), where Amer Foz is the General Manager, Husen Foz is the Chief Operating Officer, and Samer Foz is the Chief Executive Officer. While many of the Foz family’s ventures are located in Syria, this UAE-based company serves as a means of exploiting the international financial system outside of Syria.
+
+      Although much of ASM International Trading’s overt trade is in foodstuff commodities such as grain and sugar, the company also operates in the fields of oilfield services, drilling products, and supplies to the oil and natural gas industry. Additionally, Husen Foz’s company, Silverpine DMCC, is also being designated today. Silverpine is an international trading company that operates out of the ASM International Trading offices.
+
+      Facilitating Shipments of Iranian Oil to Syria
+
+      The following Lebanon ­based entities are being designated for having facilitated shipments of Iranian-origin petroleum to Syria: Synergy SAL (Offshore) and BS Company (Offshore).
+
+      Synergy SAL (Offshore) has shipped tens of thousands of metric tons of Iranian oil into Syria in the past year by sea. Some of the vessels used by Synergy SAL (Offshore) to conduct these illicit shipments also appear in the OFAC Advisory to the Maritime Shipping Community.
+
+      Additionally, BS Company (Offshore) is one of the largest importers of crude oil into Syria, and has imported hundreds of thousands of metric tons of Iranian light crude oil in the past year using a variety of oil tanker vessels and tanker trucks. These land- and sea-based shipments are destined for Banias Refinery Company, which is identified as meeting the definition of Government of Syria pursuant to E.O. 13582. BS Company (Offshore) is also affiliated with the Qatirji Group. As of September 5, 2018, the Qatirji Group and its co-owner Mohammad Bara Qatirji are subject to U.S. sanctions pursuant to Executive Order 13582.
+
+      SAMER FOZ’S SYRIA-BASED ASSETS
+
+      Also under the umbrella of Aman Holding—and being designated today—are the following Syria-based entities: Foz for Trading, Al-Mohaimen for Transportation and Contracting, MENA Crystal Sugar, and Mainpharma. Aman Holding’s trading arm conducts international commodities trading with dozens of countries, while its transportation arm facilitates transfers of bulk cargo to Syria by land and sea using a fleet of tanker trucks and vessels. MENA Crystal Sugar is one of the largest sugar refineries in the Middle East, and is located near Homs, Syria. Mainpharma is located near Damascus and is valued at over U.S. $20 million.
+
+      ATTEMPTS TO GAIN INFLUENCE IN THE FINANCIAL SECTOR
+
+      In an attempt to gain further access, influence, and profit from the financial sector, Samer Foz has been gaining footholds in Syria financial sector, including recent purchases of ownership shares in the Syrian International Islamic Bank (SIIB) and Al Baraka Bank Syria. Samer Foz has also been seeking to establish a financial institution in Syria in partnership with a Russian bank in order to attract Russian investors to Syria.
+
+      In addition to trading, banking, construction, and commodities companies, Samer Foz also owns the Four Seasons Damascus and the Orient Club, which are also being designated today.
+
+      DESIGNATION BASES AND AUTHORITIES
+
+      Samer Foz has materially assisted, sponsored, or provided financial, material, or technological support for, or goods or services in support of, Bashar Al-Assad, and is being designated pursuant to E.O. 13573. Samer Foz has also materially assisted, sponsored, or provided financial, material, or technological support for, or goods or services to or in support of, the Government of Syria, and is being designated pursuant to E.O. 13582.
+
+      Aman Holding Company is owned or controlled by, directly or indirectly, Samer Foz, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      ASM International Trading, LLC is owned or controlled by, directly or indirectly, Samer Foz, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Amer Foz has acted or purported to act for or on behalf of, directly or indirectly, ASM International Trading, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Husen Foz has acted or purported to act for or on behalf of, directly or indirectly, ASM International Trading, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Silverpine DMCC is owned or controlled by, directly or indirectly, Husen Foz, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      MENA Crystal Sugar Company Limited is owned or controlled by, directly or indirectly, Aman Holding, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      MAINPHARMA is owned or controlled by, directly or indirectly, Aman Holding, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Aman Damascus Joint Stock Company is owned or controlled, directly or indirectly, by Aman Holding, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Foz for Trading is owned or controlled by, directly or indirectly, Aman Holding, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      AI-Mohaimen for Transportation &amp; Contracting is owned or controlled by, directly or indirectly, Aman Holding, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Orient Club is owned or controlled by, directly or indirectly, Sarner Foz, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      Lana TV is owned or controlled by Samer Foz and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      The Four Seasons Damascus is owned or controlled by, directly or indirectly, Samer Foz, and is being designated pursuant to E.O. 13573 and E.O. 13582.
+
+      BS Company (Offshore) has materially assisted, sponsored, or provided financial, material, or technological support for, or goods or services in support of, Banias Refinery Company, and is being designated pursuant to E.O. 13582.
+
+      Synergy SAL (Offshore) has materially assisted, sponsored, or provided financial, material, or technological support for, or goods or services in support of, Banias Refinery Company, and is being designated pursuant to E.O. 13582.
+
+      As a result of today’s action, all property and interests in property of these individuals and entities that are in the United States or in the possession or control of U.S. persons must be blocked and reported to OFAC. OFAC’s regulations generally prohibit all dealings by U.S. persons or within (or transiting) the United States that involve any property or interests in property of blocked or designated persons.
+
+      EU NOTES: 
+
+      Position: CEO of Aman Group
+      Other information: Executive President of Aman Group. Subsidiaries: Foz for Trading, Al-Mohaimen for Transportation &amp; Contracting. Aman Group is the private sector partner in Joint Venture Aman Damascus JSC with Damascus Cham Holding, in which Foz is an individual shareholder. Emmar Industries is a joint venture between Aman Group and the Hamisho Group, in which Foz has the majority stake and is the Chairman.
+      Reason: Leading businessperson operating in Syria, with interests and activities in multiple sectors of Syria's economy, including a regime-backed joint venture involved in the development of Marota City, a luxury residential and commercial development. Samer Foz provides financial and other support to the regime, including funding the Military Security Shield Forces in Syria and brokering grain deals. He also benefits financially from access to commercial opportunities through the wheat trade and reconstruction projects as a result of his links to the regime.
+
+      FRENCH ECONOMY MINISTRY NOTES:
+
+      Arrêté du 22 janvier 2019 portant application des articles L. 562-3, L. 745-13, L. 755-13 et L. 765-13 du code monétaire et financier
+
+      NOR: ECOT1902145A
+
+      Renseignements complémentaires : a) sexe : masculin ; b) PDG d'Aman Group, président exécutif d'Aman Group, filiales : Foz for Trading, Al-Mohaimen for Transportation &amp; Contracting. Aman Group est le partenaire privé de la coentreprise entre Aman Damascus JSC et Damascus Cham Holding, dans laquelle Foz est un actionnaire individuel. Emmar Industries est une coentreprise entre Aman Group et Hamisho Group, dans laquelle Foz détient une participation majoritaire et dont il est le président ; c) homme d'affaires influent exerçant ses activités en Syrie, ayant des intérêts et des activités dans de multiples secteurs de l'économie syrienne, y compris une coentreprise appuyée par le régime et active dans la construction de Marota City, un projet immobilier et commercial haut de gamme. Samer Foz fournit un soutien d'ordre financier et autre au régime, y compris en finançant le groupe paramilitaire appelé “Forces militaires de bouclier de sécurité” en Syrie et en offrant des services de courtage sur le marché des céréales. Il tire aussi des profits financiers de son accès à des débouchés commerciaux, ayant la haute main sur le marché du blé, et à des projets de reconstruction, grâce à ses liens avec le régime</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1547872" relationship="Associate" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11280564" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11339361" relationship="Associate" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11532677" relationship="Asset" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="11715474" relationship="Associate" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11717935" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11718028" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11719957" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11719995" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11720450" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11862203" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862204" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862205" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862207" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862208" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862209" relationship="Brother" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862210" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862211" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862213" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862214" relationship="Sister" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="11862385" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11863409" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11864397" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11882077" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11882213" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11885462" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11942767" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11943325" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="true"></associate>
+      <associate peid="11943356" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11947379" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11948151" relationship="Asset" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+      <associate peid="11986799" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Control and Ownership" ex="false"></associate>
+    </associates>
+  </person>
+</records>

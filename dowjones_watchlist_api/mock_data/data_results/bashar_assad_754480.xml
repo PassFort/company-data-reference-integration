@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="754480" date="2016-12-21 03:48:38.577">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Asif</first-name>
+          <surname>Shalish</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asef</first-name>
+          <surname>Al-Shalish</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Asef</first-name>
+              <surname>Al Shalish</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Assef</first-name>
+          <surname>Issa</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asef</first-name>
+          <middle-name>Isa</middle-name>
+          <surname>Shaleesh</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <title-honorific>Dr.</title-honorific>
+          <first-name>Asef</first-name>
+          <surname>Al-Shalish</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <title-honorific>Dr.</title-honorific>
+              <first-name>Asef</first-name>
+              <surname>Al Shalish</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <title-honorific>Dr.</title-honorific>
+          <first-name>Assef</first-name>
+          <middle-name>Essa</middle-name>
+          <surname>Shaleesh</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="1" month="1" year="1959" date-type="Date of Birth"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <city>Damascus</city>
+        <country djii-region-code="SYRIA" iso2-country-code="SY" iso3-country-code="SYR" is-territory="false" country-profile="syria.doc">Syria</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="Passport No." identification-notes="(Syria)">4713277</identification>
+      <identification identification-type="OFAC Program ID">IRAQ2</identification>
+      <identification identification-type="OFAC Unique ID">8881</identification>
+    </identification-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+      </descriptions>
+      <sanctions-reference-details>
+        <sanctions-reference list-provider-name="Office of Foreign Assets Control, Department of the Treasury" list-provider-code="US-OFAC" description2="Sanctions Lists" status="Current" since-day="9" since-month="6" since-year="2005">OFAC - Specially Designated National List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>http://www.treas.gov/offices/enforcement/ofac/sdn/sdnlist.txt</source>
+        <source>http://www.ustreas.gov/offices/enforcement/ofac/sdn/t11sdn.pdf</source>
+      </source-details>
+    </watchlist-content>
+    <associates>
+      <associate peid="307424" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="307853" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="754486" relationship="Associate" description1="Special Interest Entity (SIE)" description2="Sanctions Lists" ex="false"></associate>
+    </associates>
+  </person>
+</records>

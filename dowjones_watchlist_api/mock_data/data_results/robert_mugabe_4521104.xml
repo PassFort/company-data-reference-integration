@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="4521104" date="2018-07-16 09:06:15.810">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Robert</first-name>
+          <middle-name>Mugabe</middle-name>
+          <surname>Kakyebezi</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Robert</first-name>
+          <surname>Mugabe Kakyebezi</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Robert</first-name>
+          <surname>Kakyebezi Mugabi</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Robert</first-name>
+          <surname>Mugabe</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Low Quality AKA">
+          <first-name>Kakyebezi</first-name>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="UGANDA" iso2-country-code="UG" iso3-country-code="UGA" is-territory="false" country-profile="uganda.doc">Uganda</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="UGANDA" iso2-country-code="UG" iso3-country-code="UGA" is-territory="false" country-profile="uganda.doc">Uganda</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="UGANDA" iso2-country-code="UG" iso3-country-code="UGA" is-territory="false" country-profile="uganda.doc">Uganda</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://i2.wp.com/bigeye.ug/wp-content/uploads/2015/10/Kakyebezi.jpg?w=480</image-url>
+      <image-url>https://www.newvision.co.ug/w-images/1abce5fe-2847-4e12-831d-8b051b686fd5/2/MayorRobertKakyebezimugabe-703x422.jpg</image-url>
+      <image-url>http://www.monitor.co.ug/image/view/-/2939150/highRes/1164227/-/maxw/600/-/we8s2tz/-/elec03+pix.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="City Mayors" since-month="3" since-year="2016">Mayor of Mbarara</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+  </person>
+</records>

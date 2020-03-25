@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="604028" date="2018-05-24 15:17:41.057">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Asdrúbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Chávez Jiménez</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Asdrubal</first-name>
+              <middle-name>Jose</middle-name>
+              <surname>Chavez Jimenez</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asdrúbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Chávez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asdrúbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Jiménez</surname>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asdrúbal José</first-name>
+          <surname>Chávez Jiménez</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Asdrubal Jose</first-name>
+              <surname>Chavez Revelo</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asdrúbal</first-name>
+          <middle-name>José</middle-name>
+          <surname>Chávez Revelo</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Asdrubal</first-name>
+              <middle-name>Jose</middle-name>
+              <surname>Chavez Revelo</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Asdrúbal José</first-name>
+          <surname>Chávez Revelo</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="18" month="5" year="1954" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Santa Rita</place-name>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+    </country-details>
+    <identification-details>
+      <identification identification-type="National ID">V-4.259.859</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://www.maduradas.com/wp-content/uploads/2015/01/Asdrubal-Chavez-Ministro-de-Petroleo-y-Mineria-PDVSA-800x533-800x533.jpg</image-url>
+      <image-url>https://web.archive.org/web/20150815152843/http://hoyvenezuela.info/wp-content/uploads/2015/03/Azdrubal-Chavez_17_03_2015_-FOTOS-_LUIS-LAYA-12.jpg</image-url>
+      <image-url>http://www.asambleanacional.gob.ve/avatares/asdrubal-jose-chavez-jimenez-293.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Civil Servants-National Government" since-day="3" since-month="12" since-year="2009">Deputy Minister, Petrochemistry, Ministry of Energy and Oil</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Civil Servants-National Government" since-day="21" since-month="1" since-year="2014" to-day="2" to-month="9" to-year="2014">Deputy Minister, Refining and Petrochemistry, Ministry of Petroleum and Mining</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Corporation Executives" since-month="1" since-year="2005" to-day="23" to-month="5" to-year="2007">Member, Board of Directors, Petróleos de Venezuela</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="2" since-month="9" since-year="2014" to-day="19" to-month="8" to-year="2015">Minister of Petroleum and Mines</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Senior Civil Servants-National Government" since-day="23" since-month="5" since-year="2007">Vice President, Refining, Trade and Supply, Petróleos de Venezuela</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Corporation Executives" to-day="30" to-month="12" to-year="2014">Vice President, Petróleos de Venezuela</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="5" since-month="1" since-year="2016">Member, National Assembly, PSUV, Barinas</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Corporation Executives" to-day="30" to-month="12" to-year="2014">Member, Board of Directors, Petróleos de Venezuela</occupation-title>
+        </role>
+      </role-details>
+    </watchlist-content>
+    <state-owned-companies-content>
+      <content-notice>This Profile also contains information pertaining to the Dow Jones State Owned Companies data set.
+      However, your current subscription does not allow you to have access to
+      this data.
+      Please contact your Account Manager should you wish to have access to this
+      data set.</content-notice>
+    </state-owned-companies-content>
+    <associates>
+      <associate peid="263483" relationship="Cousin" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="293631" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="910765" relationship="Cousin" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="1047852" relationship="Employer" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="true"></associate>
+    </associates>
+  </person>
+</records>

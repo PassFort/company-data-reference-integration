@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="207765" date="2019-12-11 08:39:16.487">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Sydney</first-name>
+          <middle-name>Zikuzo</middle-name>
+          <surname>Gata</surname>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="17" month="12" year="1946" date-type="Date of Birth"></date>
+    </date-details>
+    <country-details>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>https://newzwire.live/wp-content/uploads/2019/11/sydney-gata-900.jpg</image-url>
+      <image-url>https://mbaretimes.com/wp-content/uploads/2019/11/Sydney-Gata.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="State Corporation Executives" since-month="11" since-year="2019">Chairman, Supervisory Board, ZESA Holdings</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Corporation Executives" since-month="7" since-year="2000" to-month="8" to-year="2006">Chairman, Supervisory Board, ZESA Holdings</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Corporation Executives" since-year="2003" to-month="8" to-year="2006">Chief Executive Officer, ZESA Holdings</occupation-title>
+        </role>
+      </role-details>
+      <sanctions-reference-details>
+        <sanctions-reference since-day="24" to-month="3" description2="Sanctions Lists" list-provider-code="AU-RBA" since-year="2005" status="Suspended" list-provider-name="Reserve Bank of Australia (RBA)" since-month="11" to-year="2012" to-day="7">Reserve Bank of Australia Zimbabwe List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>http://www.rba.gov.au/mkt-operations/fin-sanctions/index.html</source>
+        <source>http://www.rba.gov.au/media-releases/2008/mr-08-30.html</source>
+        <source>http://www.rba.gov.au/media-releases/2008/mr-08-30-annex.html</source>
+      </source-details>
+    </watchlist-content>
+    <state-owned-companies-content>
+      <content-notice>This Profile also contains information pertaining to the Dow Jones State Owned Companies data set.
+      However, your current subscription does not allow you to have access to
+      this data.
+      Please contact your Account Manager should you wish to have access to this
+      data set.</content-notice>
+    </state-owned-companies-content>
+    <associates>
+      <associate peid="207712" relationship="Sister-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="207763" relationship="Brother-in-law" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="585957" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="678596" relationship="Brother-in-law" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="1049805" relationship="Employer" description1="Entity (SO)" description2="State Owned Company (SOC)" ex="false"></associate>
+      <associate peid="1541672" relationship="Wife" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="2259329" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

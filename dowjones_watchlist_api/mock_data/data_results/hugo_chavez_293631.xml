@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="293631" date="2019-05-09 13:37:29.200">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Adan</first-name>
+          <middle-name>Coromoto</middle-name>
+          <surname>Chavez Frias</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Adán</first-name>
+              <middle-name>Coromoto</middle-name>
+              <surname>Chávez Frías</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Adán</first-name>
+          <middle-name>Coromoto</middle-name>
+          <surname>Chávez</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Adan</first-name>
+              <middle-name>Coromoto</middle-name>
+              <surname>Chavez</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Adán</first-name>
+          <middle-name>Coromoto</middle-name>
+          <surname>Frías</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Adan</first-name>
+              <middle-name>Coromoto</middle-name>
+              <surname>Frias</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Also Known As">
+          <first-name>Adán Coromoto</first-name>
+          <surname>Chávez Frías</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Adan Coromoto</first-name>
+              <surname>Chavez Frias</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="11" month="4" year="1953" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Barinas</place-name>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="CUBA" iso2-country-code="CU" iso3-country-code="CUB" is-territory="false" country-profile="cuba.doc">Cuba</country>
+      </country-value>
+    </country-details>
+    <address-details>
+      <address>
+        <region>Barinas</region>
+        <country djii-region-code="VEN" iso2-country-code="VE" iso3-country-code="VEN" is-territory="false" country-profile="venezuela.doc">Venezuela</country>
+      </address>
+    </address-details>
+    <identification-details>
+      <identification identification-type="National ID">V-3.915.103</identification>
+      <identification identification-type="National ID" identification-notes="Document Type: Cedula No.  Country of Issue: Venezuela  ">3915103</identification>
+      <identification identification-type="OFAC Program ID">VENEZUELA</identification>
+      <identification identification-type="OFAC Unique ID">22804</identification>
+    </identification-details>
+    <image-details>
+      <image-url>http://web.archive.org/web/20130918181812/http://www.aporrea.org/imagenes/gente/adan-chavez1.jpg</image-url>
+      <image-url>http://www.psuv.org.ve/wp-content/uploads/2010/06/Ad%C3%A1n-Ch%C3%A1vez-Fr%C3%ADas.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Other Official Lists"></description>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Heads &amp; Deputy Heads of Regional Government" since-day="10" since-month="12" since-year="2008" to-day="4" to-month="1" to-year="2017">Governor of Barinas</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="18" since-month="2" since-year="2004" to-month="7" to-year="2006">Venezuelan Ambassador to Cuba</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-month="7" since-year="2006" to-month="1" to-year="2007">Minister of the Secretariat of the Presidency</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="State Agency Officials">President, National Land Institute (INT)</occupation-title>
+        </role>
+        <role role-type="Other Roles">
+          <occupation-title occupation-category="Political Party Officials">Member, Board of Directors, Venezuelan United Socialist Party (PSUV)</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-month="1" since-year="2007" to-day="29" to-month="4" to-year="2008">Minister of Education</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="National Government Ministers" since-day="4" since-month="1" since-year="2017" to-day="15" to-month="6" to-year="2017">Minister of Culture</occupation-title>
+        </role>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="4" since-month="8" since-year="2017" to-day="20" to-month="3" to-year="2019">Member, Constituent Assembly, PSUV, Barinas</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Embassy &amp; Consular Staff" since-day="20" since-month="3" since-year="2019">Venezuelan Ambassador to Cuba</occupation-title>
+        </role>
+      </role-details>
+      <sanctions-reference-details>
+        <sanctions-reference list-provider-name="Office of Foreign Assets Control, Department of the Treasury" list-provider-code="US-OFAC" description2="Sanctions Lists" status="Current" since-day="9" since-month="8" since-year="2017">OFAC - Specially Designated National List</sanctions-reference>
+        <sanctions-reference list-provider-name="Department of Foreign Affairs, Trade and Development Canada" list-provider-code="CA-DFATD" description2="Sanctions Lists" status="Current" since-day="3" since-month="11" since-year="2017">DFATD (Canada) Justice for Victims of Corrupt Foreign Officials Regulations</sanctions-reference>
+        <sanctions-reference list-provider-name="Comisión Nacional contra el Blanqueo de Capitales (Panama) (CNBC)" list-provider-code="PA-CNBC" description2="Other Official Lists" status="Current" since-year="2018">CNBC (Panama) Warning List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>https://www.treasury.gov/ofac/downloads/sdnlist.pdf</source>
+        <source>https://www.treasury.gov/press-center/press-releases/Pages/sm0145.aspx</source>
+        <source>https://www.treasury.gov/resource-center/sanctions/OFAC-Enforcement/Pages/20170809.aspx</source>
+        <source>http://www.international.gc.ca/sanctions/countries-pays/victims_corrupt_regulations-victimes_corrompus_reglement.aspx?lang=eng</source>
+        <source>http://www.international.gc.ca/sanctions/countries-pays/victims_corrupt-victimes_corrompus.aspx?lang=eng</source>
+        <source>https://www.canada.ca/en/global-affairs/news/2017/11/case_2.html</source>
+        <source>http://www.mef.gob.pa/es/direcciones/CNBC/Documents/Anexo%20A-Resolucion%202-2018.pdf</source>
+        <source>http://www.mef.gob.pa/es/direcciones/CNBC/Paginas/NormativayResoluciones.aspx?selectedClass=menuItem-5</source>
+      </source-details>
+      <profile-notes>OFFICE OF FOREIGN ASSETS CONTROL (OFAC) NOTES:
+
+      Constituent of Venezuela's Constituent Assembly for Barinas Municipality in Barinas State; Secretary of Venezuela's Presidential Commission for the Constituent Assembly
+
+      Treasury Sanctions Eight Individuals Involved in Venezuela’s Illegitimate Constituent Assembly 
+
+      8/9/2017 Page Content
+      Washington – Today, the U.S. Department of the Treasury's Office of Foreign Assets Control (OFAC) designated eight individuals involved in organizing or otherwise supporting the creation of Venezuela's Constituent Assembly (Asamblea Constituyente or AC) and participating in anti-democratic actions pursuant to Executive Order (E.O.) 13692. The AC, which seeks to rewrite the Venezuelan constitution and dissolve Venezuelan state institutions, was created through an undemocratic process instigated by Venezuelan President Nicolas Maduro's government to subvert the will of the Venezuelan people. OFAC designated President Maduro on July 31, 2017, the day after AC elections were held. The AC was sworn in on August 4 and, in its first session on August 5, ousted Attorney General Luisa Marvelia Ortega Diaz, who had ordered an investigation into the possible AC election fraud, and replaced her with designated individual Tarek William Saab. 
+
+      "President Maduro swore in this illegitimate Constituent Assembly to further entrench his dictatorship, and continues to tighten his grip on the country," said Treasury Secretary Steven T. Mnuchin. "This regime's disregard for the will of the Venezuelan people is unacceptable, and the United States will stand with them in opposition to tyranny until Venezuela is restored to a peaceful and prosperous democracy."
+
+      Today's designations consist of seven current and former officials of the Venezuelan Government and one individual who has participated in actions or policies that undermine democratic processes or institutions in Venezuela. As a result of today's actions, all assets of these individuals subject to U.S. jurisdiction are frozen, and U.S. persons are prohibited from dealing with them.
+
+      OFAC designated six individuals who have played a significant role in organizing or creating the AC through their involvement in two bodies, the Presidential Commission for the AC and the Constituent Command Zamora 200. Maduro created the Presidential Commission, which is responsible for creating the main aspects of the formation and operation of the AC process. Maduro also created the Constituent Command Zamora 200 to carry out a campaign for the AC elections. These individuals were also elected as Constituents to the illegitimate AC. 
+
+      •Francisco Jose Ameliach Orta was appointed a member of the Presidential Commission for the AC. He is the AC Constituent for Valencia Municipality in Carabobo State. He was formerly the Governor of Carabobo State.
+      •Adan Coromoto Chavez Frias was appointed the Secretary of the Presidential Commission for the AC. He is the AC Constituent for Barinas Municipality in Barinas State. He was the former Minister of Culture and former Governor of Barinas State. He is the brother of deceased former Venezuelan President Hugo Chavez.
+      •Erika del Valle Farias Pena leads the electoral structure and mechanics for the Constituent Command Zamora 200. She is the AC Constituent for Ezequiel Zamora Municipality in Cojedes State. She was formerly the Minister of Urban Agriculture.
+      •Carmen Teresa Melendez Rivas is responsible for coordinating the street government command for the Constituent Command Zamora 200. She is the AC Constituent for Iribarren Municipality in Lara State. She was formerly the Sectoral Vice President of Political Sovereignty, Security, and Peace.
+      •Ramon Dario Vivas Velasco is in charge of the permanent mobilization team for the Constituent Command Zamora 200. He is the AC Constituent for Vargas Municipality in Vargas State. He was formerly a National Assembly Deputy for Vargas State.
+      •Hermann Eduardo Escarra Malave was appointed a member of the Presidential Commission for the AC. He is the AC Constituent for Zamora Municipality in Miranda State.
+      OFAC also designated today Tania D'Amelio Cardiet, a rector of Venezuela's National Electoral Council (CNE), and Bladimir Humberto Lugo Armas, the Commander of the Special Unit to the Federal Legislative Palace of Venezuela's Bolivarian National Guard. D'Amelio Cardiet has publicly defended the AC and is believed to be among the CNE officials that former Attorney General Luisa Ortega began to investigate for possible AC election fraud. Lugo Armas is responsible for security of the Federal Legislative Palace, the location of Venezuela's National Assembly. Lugo Armas has been involved in several acts of violence against National Assembly opposition members, including a direct assault against the President of the National Assembly Julio Borges. In July 2017, Lugo Armas was charged by the Attorney General's office for alleged human rights violations.</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="263483" relationship="Brother" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="264181" relationship="Father" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="264183" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="264589" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="304635" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="304636" relationship="Niece" description1="Politically Exposed Person (PEP)" ex="false"></associate>
+      <associate peid="304639" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="304640" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="522419" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="522425" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="604028" relationship="Cousin" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="910765" relationship="Brother" description1="Person (SO)" description2="Board Member (BRD)" ex="false"></associate>
+      <associate peid="1043115" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1043117" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1043119" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1755788" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>

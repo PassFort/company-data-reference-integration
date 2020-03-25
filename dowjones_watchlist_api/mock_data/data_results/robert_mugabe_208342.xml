@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records api-version="1.6.0">
+  <person peid="208342" date="2018-12-17 10:40:26.380">
+    <gender>Male</gender>
+    <deceased>false</deceased>
+    <person-name-details>
+      <person-names>
+        <person-name-value name-type="Primary Name">
+          <first-name>Philip</first-name>
+          <surname>Chiyangwa</surname>
+        </person-name-value>
+        <person-names-group>
+          <person-names>
+            <person-name-value name-type="Spelling Variation">
+              <first-name>Phillip</first-name>
+              <surname>Chiyangwa</surname>
+            </person-name-value>
+          </person-names>
+        </person-names-group>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Low Quality AKA">
+          <first-name>Tsivo</first-name>
+        </person-name-value>
+      </person-names>
+      <person-names>
+        <person-name-value name-type="Low Quality AKA">
+          <first-name>Phidza</first-name>
+        </person-name-value>
+      </person-names>
+    </person-name-details>
+    <date-details>
+      <date day="3" month="2" year="1959" date-type="Date of Birth"></date>
+    </date-details>
+    <birth-place-details>
+      <birth-place>
+        <place-name>Chegutu</place-name>
+        <region>Mashonaland West</region>
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </birth-place>
+    </birth-place-details>
+    <country-details>
+      <country-value country-type="Citizenship">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Jurisdiction">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+      <country-value country-type="Resident of">
+        <country djii-region-code="ZIMBAB" iso2-country-code="ZW" iso3-country-code="ZWE" is-territory="false" country-profile="zimbabwe.doc">Zimbabwe</country>
+      </country-value>
+    </country-details>
+    <image-details>
+      <image-url>http://bizsetup.files.wordpress.com/2010/10/phillip-chiyangwa.jpg</image-url>
+      <image-url>http://bizsetup.files.wordpress.com/2010/04/chiyangwa_phillip-bizsetup.jpg?w=300&amp;h=223</image-url>
+      <image-url>http://img.bulawayo24.com/articles/Chiyangwa_n.jpg</image-url>
+    </image-details>
+    <watchlist-content>
+      <active-status>Active</active-status>
+      <descriptions>
+        <description description1="Special Interest Person (SIP)" description2="Sanctions Lists"></description>
+        <description description1="Politically Exposed Person (PEP)"></description>
+      </descriptions>
+      <role-details>
+        <role role-type="Previous Roles">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="18" since-month="7" since-year="2000" to-day="30" to-month="3" to-year="2005">Member, House of Assembly, Chinhoyi, ZANU-PF</occupation-title>
+        </role>
+        <role role-type="Primary Occupation">
+          <occupation-title occupation-category="Members of the National Legislature" since-day="5" since-month="9" since-year="2018">Member, House of Assembly, Zvimba South, ZANU-PF</occupation-title>
+        </role>
+      </role-details>
+      <sanctions-reference-details>
+        <sanctions-reference since-day="7" to-month="3" description2="Sanctions Lists" list-provider-code="AU-DFAT" since-year="2012" status="Current" list-provider-name="Department of Foreign Relations &amp; Trade" since-month="3" to-year="2013" to-day="16">DFAT (Australia) Consolidated List</sanctions-reference>
+        <sanctions-reference since-day="24" to-month="3" description2="Sanctions Lists" list-provider-code="AU-RBA" since-year="2005" status="Suspended" list-provider-name="Reserve Bank of Australia (RBA)" since-month="11" to-year="2012" to-day="7">Reserve Bank of Australia Zimbabwe List</sanctions-reference>
+      </sanctions-reference-details>
+      <source-details>
+        <source>http://www.rba.gov.au/MediaReleases/2007/mr_07_10_annex.html</source>
+        <source>http://www.zwnews.com/issuefull.cfm?ArticleID=8451</source>
+        <source>http://www.rba.gov.au/MediaReleases/2005/mr_05_15_annex.html</source>
+        <source>http://www.rba.gov.au/media-releases/2008/mr-08-30.html</source>
+        <source>http://www.rba.gov.au/mkt-operations/fin-sanctions/xls/consolidated-list.xls</source>
+        <source>http://www.dfat.gov.au/icat/regulation8_consolidated.xls</source>
+      </source-details>
+      <profile-notes>DOW JONES NOTES:
+
+      [Arrested, Dec-2004 on spying charges then released Feb-2005];[Shareholder, Castle Cement];
+
+      -
+
+      DEPARTMENT OF FOREIGN RELATIONS &amp; TRADE (DFAT) NOTES:
+
+      Additional Information: Former Zanu-PF Provincial Chairman, Mashonaland West</profile-notes>
+    </watchlist-content>
+    <associates>
+      <associate peid="207763" relationship="Uncle" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="208529" relationship="Legal Adviser" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="556577" relationship="Cousin" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="658193" relationship="Legal Adviser" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="658196" relationship="Associate" description1="Special Interest Person (SIP)" description2="Other Official Lists" ex="false"></associate>
+      <associate peid="658197" relationship="Associate" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="658204" relationship="Legal Adviser" description1="Politically Exposed Person (PEP)" ex="true"></associate>
+      <associate peid="658205" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="744777" relationship="Associate" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="744780" relationship="Associate" description1="Special Interest Person (SIP)" description2="Financial Crime" ex="false"></associate>
+      <associate peid="752871" relationship="Unmarried Partner" description1="Relative or Close Associate (RCA)" ex="true"></associate>
+      <associate peid="783322" relationship="Family Member" description1="Special Interest Person (SIP)" description2="Sanctions Lists" ex="false"></associate>
+      <associate peid="1530275" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530285" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530293" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530297" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530298" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530304" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530305" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530306" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530309" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530314" relationship="Daughter" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530317" relationship="Son" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530322" relationship="Mother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530330" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530340" relationship="Brother" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530343" relationship="Sister-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530347" relationship="Niece" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530349" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530351" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530353" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530355" relationship="Nephew" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530359" relationship="Sister" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="1530368" relationship="Wife" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11683431" relationship="Son-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+      <associate peid="11683480" relationship="Son-in-law" description1="Relative or Close Associate (RCA)" ex="false"></associate>
+    </associates>
+  </person>
+</records>
