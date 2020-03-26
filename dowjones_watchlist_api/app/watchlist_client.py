@@ -62,7 +62,7 @@ class APIClient():
 
     def _get(self, route, params={}):
         resp = self.session.get(
-            f"{self.credentials.url}{route}",
+            f"{self.credentials.url.strip('/')}{route}",
             headers={
                 'Authorization': f'Basic {self.auth_token}'
             },
