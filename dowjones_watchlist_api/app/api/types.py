@@ -323,6 +323,14 @@ class Error(Model):
         }
 
     @staticmethod
+    def bad_credentials():
+        return Error({
+            'code': ErrorCode.MISCONFIGURATION_ERROR.value,
+            'source': 'API',
+            'message': 'Failed to authenticate with the provider. Check your credentials.',
+        })
+
+    @staticmethod
     def bad_api_request(e):
         return Error({
             'code': ErrorCode.INVALID_INPUT_DATA.value,
