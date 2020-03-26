@@ -1,4 +1,5 @@
 import logging
+import datetime
 from enum import unique, Enum
 from functools import wraps
 
@@ -29,6 +30,7 @@ from schematics.exceptions import (
 class PartialDateType(DateType):
     def __init__(self, *args, **kwargs):
         super().__init__(formats=["%Y", "%Y-%m", "%Y-%m-%d"], *args, **kwargs)
+
 
 
 class TimePeriod(Model):
@@ -280,6 +282,19 @@ class PersonalDetails(Model):
     dob = StringType(default=None)
     nationality = StringType(default=None)
 
+    @property
+    def dowjones_dob(self):
+     try:
+          datetime.datetime.strptime(self.dob, "%Y-%m-%d").date()
+          return self.dob
+     except (ValueError, TypeError):
+         pass
+     try:
+          datetime.datetime.strptime(self.dob, "%Y-%m").date()
+          return f'{self.dob}-A'
+     except (ValueError, TypeError):
+         pass
+     return f'{self.dob}-A-A'
 
 class InputData(Model):
     entity_type = StringType(choices=['INDIVIDUAL'], required=True)
