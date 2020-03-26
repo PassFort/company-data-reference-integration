@@ -9,7 +9,7 @@ import logging
 import errno
 
 from app.utils import create_response_from_file
-
+from dateutil.relativedelta import relativedelta
 
 class WorldCheckConnectionError(Exception):
     pass
@@ -91,8 +91,10 @@ class CaseHandler:
 
     def get_ongoing_screening_results(self, from_date):
         iso_dt = from_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        up_to_date = from_date + relativedelta(months=+1)
+        up_to_date = up_to_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
-        return self.parse_paginated_result(f"updateDate>='{iso_dt}'", 100)
+        return self.parse_paginated_result(f"updateDate>='{iso_dt}' and updateDate<'{up_to_date}'", 100)
 
     def parse_paginated_result(self, query, items_per_page):
         from swagger_client.models import OngoingScreeningUpdateSearchResponse, Pagination
