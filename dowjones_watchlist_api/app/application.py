@@ -1,6 +1,8 @@
 import logging
+import traceback
 
 from flask import Flask, jsonify
+import requests
 
 from app.api.types import (
     Associate,
@@ -188,6 +190,18 @@ def run_check(request_data: ScreeningRequest):
     }).to_primitive())
 
 
+@app.errorhandler(requests.exceptions.HTTPError)
+def dowjones_request_failure(error):
+    logging.error(error)
+    if error.response.status_code in {403, 404, 401}:
+        return jsonify(ScreeningResponse({
+            'errors': [Error.bad_credentials()]
+        }).to_primitive()), 403
+    else:
+        logging.error(traceback.format_exc())
+        return jsonify(errors=[Error.from_exception(error)]), 500
+
+
 @app.errorhandler(400)
 def api_400(error):
     logging.error(error)
@@ -198,6 +212,5 @@ def api_400(error):
 
 @app.errorhandler(500)
 def api_500(error):
-    import traceback
     logging.error(traceback.format_exc())
     return jsonify(errors=[Error.from_exception(error)]), 500
