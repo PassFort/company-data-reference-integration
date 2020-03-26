@@ -13,6 +13,7 @@ from app.api.responses import make_error_response
 from app.worldcheck_handler import CaseHandler, MatchHandler, WorldCheckPendingError, WorldCheckConnectionError
 
 from swagger_client.rest import ApiException
+from dateutil.relativedelta import relativedelta
 app = Flask(__name__)
 
 
@@ -154,17 +155,18 @@ def get_associate_data(request_data: AssociatesDataRequest, associate_id):
 @validate_model(OngoingScreeningResultsRequest)
 def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequest):
     from requests import RequestException
-
+    up_to_date = request_data.from_date + relativedelta(months=+1)
     result = CaseHandler(
             request_data.credentials, None, False
-        ).get_ongoing_screening_results(request_data.from_date)
+        ).get_ongoing_screening_results(request_data.from_date, up_to_date)
 
     try:
         send_to_callback(
             request_data.callback_url,
             {
                 'institution_id': request_data.institution_id,
-                'results': result
+                'results': result,
+                'last_run_date': up_to_date
             }
         )
     except RequestException as e:
