@@ -252,6 +252,36 @@ def test_one_complete_address(client):
     }
     assert lexisnexis_request_data == output_data
 
+def test_long_postal_code(client):
+    input_data = {
+        'input_data': {
+            'address_history': [
+                {
+                    "address": {
+                        "street_number": "10",
+                        "premise": 'My building',
+                        "subpremise": '0',
+                        "route": "Downing St",
+                        "postal_town": 'MORNING VIEW',
+                        "state_province": 'KY',
+                        "postal_code": "12345-1234",
+                        "type": "STRUCTURED",
+                    }
+                }
+            ]
+        }
+    }
+    lexisnexis_request_data = passfort_to_lexisnexis_data(input_data)
+    output_data = deepcopy(BASE_REQUEST)
+    output_data['InstantIDRequest']["SearchBy"] = {
+        'Address': {
+            'Zip5': "12345",
+            'StreetAddress1': "10 Downing St My building 0",
+            'City': 'MORNING VIEW',
+            'State': 'KY'
+        }
+    }
+    assert lexisnexis_request_data == output_data
 
 def test_communication_with_empty_values(client):
     input_data = {
