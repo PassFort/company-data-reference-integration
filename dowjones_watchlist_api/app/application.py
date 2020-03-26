@@ -193,7 +193,7 @@ def run_check(request_data: ScreeningRequest):
 @app.errorhandler(requests.exceptions.HTTPError)
 def dowjones_request_failure(error):
     logging.error(error)
-    if error.response.status_code in {403, 404, 401}:
+    if error.response.status_code in {403, 401}:
         return jsonify(ScreeningResponse({
             'errors': [Error.bad_credentials()]
         }).to_primitive()), 403
