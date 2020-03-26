@@ -98,7 +98,9 @@ def passfort_to_lexisnexis_data(passfort_data):
                     address['State'] = address_to_check['state_province']
 
                 if address_to_check.get('postal_code'):
-                    address['Zip5'] = address_to_check['postal_code']
+                    postal_code = address_to_check['postal_code'].strip()
+                    # Zip5 is the first 5 digits of the postal code
+                    address['Zip5'] = postal_code[:5] if len(postal_code) > 5 else postal_code
 
                 if address:
                     lexisnexis_pkg['InstantIDRequest']['SearchBy']['Address'] = address
