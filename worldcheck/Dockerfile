@@ -17,7 +17,7 @@ RUN env
 RUN apk --no-cache upgrade
 
 RUN mkdir /srv/logs/ && \
-    pip install pipenv==2018.5.18 && \
+    pip install pipenv==2018.11.26 && \
     mkdir -p ~/.ssh  && \
     echo "$git_key" > ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa && \
