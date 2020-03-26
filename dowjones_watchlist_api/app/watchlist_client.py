@@ -102,7 +102,7 @@ class APIClient():
         if len(input_data.personal_details.name.given_names) > 1:
             params['middle-name'] = ' '.join(input_data.personal_details.name.given_names[1:])
         if input_data.personal_details.dob is not None:
-            params['date-of-birth'] = input_data.personal_details.dob
+            params['date-of-birth'] = input_data.personal_details.dowjones_dob
         if input_data.personal_details.nationality is not None:
             params['filter-region'] = ','.join([
                 WATCHLIST_NOT_KNOWN_FILTER,
