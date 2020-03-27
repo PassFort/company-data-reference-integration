@@ -27,15 +27,9 @@ from schematics.exceptions import (
 )
 
 
-class PartialDateType(DateType):
-    def __init__(self, *args, **kwargs):
-        super().__init__(formats=["%Y", "%Y-%m", "%Y-%m-%d"], *args, **kwargs)
-
-
-
 class TimePeriod(Model):
-    from_date = PartialDateType(default=None)
-    to_date = PartialDateType(default=None)
+    from_date = StringType(default=None)
+    to_date = StringType(default=None)
 
     class Options:
         export_level = NOT_NONE
@@ -419,7 +413,7 @@ class CountryMatchData(Model):
 
 class DateMatchData(Model):
     type_ = StringType(required=True, serialized_name='type', choices=[ty.value for ty in DateMatchType])
-    date = PartialDateType()
+    date = StringType()
 
 
 class Associate(Model):
@@ -429,10 +423,10 @@ class Associate(Model):
     was_pep = BooleanType()
     is_sanction = BooleanType()
     was_sanction = BooleanType()
-    dobs = ListType(PartialDateType())
-    inactive_as_pep_dates = ListType(PartialDateType())
-    inactive_as_rca_related_to_pep_dates = ListType(PartialDateType())
-    deceased_dates = ListType(PartialDateType())
+    dobs = ListType(StringType())
+    inactive_as_pep_dates = ListType(StringType())
+    inactive_as_rca_related_to_pep_dates = ListType(StringType())
+    deceased_dates = ListType(StringType())
 
     class Options:
         export_level = NOT_NONE
@@ -441,8 +435,8 @@ class Associate(Model):
 class PepRole(Model):
     name = StringType()
     tier = IntType()
-    from_date = PartialDateType()
-    to_date = PartialDateType()
+    from_date = StringType()
+    to_date = StringType()
     is_current = BooleanType()
 
     class Options:
@@ -484,7 +478,7 @@ class MatchEvent(Model):
 
     # Match information
     match_name = StringType()
-    match_dates = ListType(PartialDateType())
+    match_dates = ListType(StringType())
     match_dates_data = ListType(ModelType(DateMatchData))
 
     score = FloatType()
