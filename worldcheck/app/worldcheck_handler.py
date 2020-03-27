@@ -10,7 +10,6 @@ import errno
 
 from app.utils import create_response_from_file
 
-
 class WorldCheckConnectionError(Exception):
     pass
 
@@ -89,10 +88,11 @@ class CaseHandler:
         else:
             self.case_api.cases_case_system_id_ongoing_screening_delete(case_system_id)
 
-    def get_ongoing_screening_results(self, from_date):
+    def get_ongoing_screening_results(self, from_date, to_date):
         iso_dt = from_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        iso_to_date = to_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
-        return self.parse_paginated_result(f"updateDate>='{iso_dt}'", 100)
+        return self.parse_paginated_result(f"updateDate>='{iso_dt}' and updateDate<'{iso_to_date}'", 100)
 
     def parse_paginated_result(self, query, items_per_page):
         from swagger_client.models import OngoingScreeningUpdateSearchResponse, Pagination
