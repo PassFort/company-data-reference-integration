@@ -563,15 +563,18 @@ class ContactAddress(Model):
 
         return None
 
-    def as_passfort_address(self):
-        if self.simple_value is None or self.country is None:
+    def as_passfort_address(self, default_country_code):
+        country_code = self.country if self.country is not None else default_country_code
+
+        if self.simple_value is None or country_code is None:
             return None
+
         return {
             'type': self.passfort_address_type,
             'address': {
                 "type": 'FREEFORM',
                 "text": self.simple_value,
-                "country": pycountry.countries.get(alpha_2=self.country).alpha_3
+                "country": pycountry.countries.get(alpha_2=country_code).alpha_3
             }
         }
 
@@ -990,10 +993,10 @@ class CreditSafeCompanyReport(Model):
 
     def as_passfort_format_41(self, request_handler=None):
         addresses = [
-            self.contact_information.main_address.as_passfort_address()
+            self.contact_information.main_address.as_passfort_address(self.summary.country)
         ]
         addresses.extend([
-            address.as_passfort_address()
+            address.as_passfort_address(self.summary.country)
             for address in self.contact_information.other_addresses
         ])
 
