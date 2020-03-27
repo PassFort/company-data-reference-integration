@@ -111,7 +111,22 @@ def poll_results_request(request_data: ScreeningResultsRequest, worldcheck_syste
 @app.route('/match/<string:match_id>', methods=['POST'])
 @validate_model(ScreeningResultsRequest)
 def get_match_data(request_data: ScreeningResultsRequest, match_id):
-    return jsonify(MatchHandler(request_data.credentials, None, request_data.is_demo).get_entity_for_match(match_id))
+    try:
+        return jsonify(MatchHandler(request_data.credentials, None, request_data.is_demo)
+                       .get_entity_for_match(match_id))
+    except ApiException as e:
+        # Sometimes the match is not found anymore:?
+        if e.status == 404:
+            logging.info(f"Match not found {match_id}")
+            return jsonify({
+                'output_data': None,
+                'raw': {},
+                'errors': [],
+                'events': [],
+                'associate_relationships': []
+            })
+        else:
+            raise e
 
 
 # TO BE DEPRECATED
@@ -142,23 +157,36 @@ def get_associate_data_old(request_data: ScreeningResultsRequest, match_id, asso
 @app.route('/match/associate/<string:associate_id>', methods=['POST'])
 @validate_model(AssociatesDataRequest)
 def get_associate_data(request_data: AssociatesDataRequest, associate_id):
-    return jsonify(
-        MatchHandler(
+    try:
+        response = MatchHandler(
             request_data.credentials,
             None,
             request_data.is_demo
         ).get_associate(associate_id, request_data.association)
-    )
+        return jsonify(response)
+    except ApiException as e:
+        # Sometimes the match is not found anymore:?
+        if e.status == 404:
+            logging.info(f"Associate not found {associate_id}")
+            return jsonify({
+                'output_data': None,
+                'raw': {},
+                'errors': []
+            })
+        else:
+            raise e
+
 
 
 @app.route('/results/ongoing_monitoring', methods=['POST'])
 @validate_model(OngoingScreeningResultsRequest)
 def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequest):
     from requests import RequestException
-    up_to_date = request_data.from_date + relativedelta(months=+1)
+    up_to_date = request_data.from_date + relativedelta(weeks=+2)
     result = CaseHandler(
             request_data.credentials, None, False
         ).get_ongoing_screening_results(request_data.from_date, up_to_date)
+    iso_date=up_to_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
     try:
         send_to_callback(
@@ -166,12 +194,13 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
             {
                 'institution_id': request_data.institution_id,
                 'results': result,
-                'last_run_date': up_to_date
+                'last_run_date': iso_date
             }
         )
     except RequestException as e:
         return jsonify(errors=[Error.from_exception(e)]), 500
-    return jsonify(errors=[])
+
+    return jsonify(errors=[], results=result, count=len(result), run_date=iso_date)
 
 
 @app.route('/config/ongoing_monitoring/<string:case_system_id>', methods=['DELETE'])
