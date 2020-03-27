@@ -79,7 +79,6 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
     base_event_data = {
         "match_id": entity.entity_id,
         "match_name": primary_name,
-        "match_dates": get_dobs(entity),
         "aliases": aliases,
         "sources": get_sources(entity),
         "details": get_details(entity)
@@ -89,6 +88,7 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
     if entity.entity_type == ProfileEntityType.INDIVIDUAL:
         base_event_data["gender"] = get_gender_if_any(entity)
         base_event_data["deceased"] = entity.is_deceased
+        base_event_data["match_dates"] = get_dobs(entity)
         roles = [{"name": role.title} for role in entity.roles] if entity.roles is not None else []
 
         nationalities = get_country_links_by_type(entity, CountryLinkType.NATIONALITY)
