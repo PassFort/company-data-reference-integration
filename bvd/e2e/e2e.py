@@ -202,6 +202,9 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(structured_company_type['ownership_type'], 'COMPANY')
         self.assertEqual(metadata['isin'], None)
         self.assertEqual(metadata['is_active'], True)
+        self.assertEqual(metadata['is_active_details'], "Active")
+        self.assertEqual(metadata['trade_description'], "Example trade description")
+        self.assertEqual(metadata['description'], "Example products and services")
         self.assertIsInstance(metadata['freeform_address'], str)
 
         self.assertIsInstance(officers['directors'], list)
