@@ -9,7 +9,7 @@ from requests.exceptions import ConnectionError, Timeout
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
     CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest, \
     CreditSafePortfolioRequest, CreditSafeMonitoringError, CreditSafeMonitoringRequest, \
-    CreditSafeMonitoringEventsRequest, CreditSafeMonitoringEventsResponse
+    CreditSafeMonitoringEventsRequest
 from .api.internal_types import CreditSafeNotificationEventsResponse
 from .request_handler import CreditSafeHandler
 from .demo_handler import DemoHandler
@@ -170,10 +170,9 @@ def monitor_company(request_data: 'CreditSafeMonitoringRequest'):
 def get_monitoring_events(request_data: CreditSafeMonitoringEventsRequest):
     handler = CreditSafeHandler(request_data.credentials)
 
-    all_events = handler.get_events(request_data)
-    response = CreditSafeNotificationEventsResponse.to_passfort_format(all_events)
+    handler.handle_events(request_data)
 
-    return jsonify(response.to_primitive())
+    return jsonify({})
 
 
 @app.errorhandler(400)

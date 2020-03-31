@@ -1499,66 +1499,34 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
         self.assertEqual(res.paging.next, 2)
         self.assertEqual(res.paging.last, 3)
 
-    def test_to_passfort_format_no_events(self):
-        events = []
-
-        response = CreditSafeNotificationEventsResponse.to_passfort_format(events)
-
-        self.assertListEqual(response.events, [])
-        self.assertListEqual(response.raw_data, [])
-
     def test_to_passfort_format_with_events(self):
-        events = [
-            CreditSafeNotificationEvent({
-                "company": {
-                    "id": "GB-0-03375464",
-                    "safeNumber": "UK03033453",
-                    "name": "THE DURHAM BREWERY LIMITED",
-                    "countryCode": "GB",
-                    "portfolioId": 1017586,
-                    "portfolioName": "Durham Brewery"
-                },
-                "eventId": 512812323,
-                "eventDate": "2020-02-28T05:33:02",
-                "newValue": "33",
-                "oldValue": "51",
-                "createdDate": "2020-02-29T00:16:47",
-                "notificationEventId": 81051991,
-                "ruleCode": 101,
-                "ruleName": "International Rating  |Reduce by {0} Band(s) OR Less than Band {1}"
-            }),
-            CreditSafeNotificationEvent({
-                "company": {
-                    "id": "GB-0-03375464",
-                    "safeNumber": "UK03033453",
-                    "name": "THE DURHAM BREWERY LIMITED",
-                    "countryCode": "GB",
-                    "portfolioId": 1017586,
-                    "portfolioName": "Durham Brewery"
-                },
-                "eventId": 512833061,
-                "eventDate": "2020-02-28T05:33:02",
-                "createdDate": "2020-02-29T00:44:58",
-                "notificationEventId": 81087316,
-                "ruleCode": 105,
-                "ruleName": "Address"
-            })
-        ]
+        event = CreditSafeNotificationEvent({
+            "company": {
+                "id": "GB-0-03375464",
+                "safeNumber": "UK03033453",
+                "name": "THE DURHAM BREWERY LIMITED",
+                "countryCode": "GB",
+                "portfolioId": 1017586,
+                "portfolioName": "Durham Brewery"
+            },
+            "eventId": 512812323,
+            "eventDate": "2020-02-28T05:33:02",
+            "newValue": "33",
+            "oldValue": "51",
+            "createdDate": "2020-02-29T00:16:47",
+            "notificationEventId": 81051991,
+            "ruleCode": 101,
+            "ruleName": "International Rating  |Reduce by {0} Band(s) OR Less than Band {1}"
+        })
 
-        response = CreditSafeNotificationEventsResponse.to_passfort_format(events)
+        response = CreditSafeNotificationEvent.to_passfort_format(event)
 
-        self.assertListEqual(response.events, [
+        self.assertEqual(
+            response,
             MonitoringEvent({
                 'creditsafe_id': 'GB-0-03375464',
                 'event_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA.value,
                 'event_date': '2020-02-28T05:33:02',
                 'rule_code': 101
-            }),
-            MonitoringEvent({
-                'creditsafe_id': 'GB-0-03375464',
-                'event_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS.value,
-                'event_date': '2020-02-28T05:33:02',
-                'rule_code': 105
             })
-        ])
-        self.assertListEqual(response.raw_data, [e.to_primitive() for e in events])
+        )

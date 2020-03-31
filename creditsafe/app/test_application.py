@@ -6,7 +6,10 @@ Integration tests for the request handler. A mix of requests that:
 
 import responses
 import unittest
+import uuid
 import math
+import json
+from unittest import mock
 from datetime import datetime, timedelta
 from itertools import chain
 from random import randint
@@ -607,17 +610,6 @@ class TestGetMonitoringEvents(unittest.TestCase):
         # propagate the exceptions to the test client
         self.app.testing = True
 
-        self.request_payload = {
-            'credentials': {
-                'username': 'x',
-                'password': 'y'
-            },
-            'search_params': [{
-                'portfolio_id': 111111111,
-                'last_run_date': datetime.now().isoformat()
-            }]
-        }
-
         self.date_regex = r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*'
 
         responses.add(
@@ -625,6 +617,24 @@ class TestGetMonitoringEvents(unittest.TestCase):
             'https://connect.creditsafe.com/v1/authenticate',
             json={'token': 'test'},
             status=200)
+
+    def get_mock_request(self, monitoring_configs=None):
+        if not monitoring_configs:
+            monitoring_configs = [{
+                'institution_config_id': uuid.uuid4(),
+                'portfolio_id': 111111111,
+                'last_run_date': datetime.now().isoformat()
+            }]
+
+        return {
+            'credentials': {
+                'username': 'x',
+                'password': 'y'
+            },
+            'monitoring_configs': monitoring_configs,
+            'callback_url': 'http://flask:9090/creditsafe/ongoing_monitoring'
+        }
+
 
     def mock_creditsafe_monitoring_pagination_events_response(self, num_events):
         num_of_pages = math.ceil(num_events / 1000)
@@ -675,8 +685,13 @@ class TestGetMonitoringEvents(unittest.TestCase):
             status=status
         )
 
+    def get_mock_callback_arguments(self, callback_mock):
+        args, kwargs = callback_mock.call_args_list[0]
+        return args[0], args[1], args[2], args[3]
+
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
     @responses.activate
-    def test_no_data(self):
+    def test_no_data(self, callback_mock):
         responses.add(
             responses.GET,
             'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
@@ -693,119 +708,176 @@ class TestGetMonitoringEvents(unittest.TestCase):
             status=200
         )
 
+        institution_config_id = uuid.uuid4()
+        configs = [{
+            'institution_config_id': institution_config_id,
+            'portfolio_id': 123454321,
+            'last_run_date': datetime.now().isoformat()
+        }]
+
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request(configs)
         )
 
-        resp_body = monitoring_events_response.json
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].request.url, 'https://connect.creditsafe.com/v1/authenticate')
+        self.assertIn('https://connect.creditsafe.com/v1/monitoring/notificationEvents', responses.calls[1].request.url)
+
+        self.assertEqual(callback_mock.call_count, 1)
+        callback_url, config, events, raw_events = self.get_mock_callback_arguments(callback_mock)
+
+        self.assertEqual(callback_url, 'http://flask:9090/creditsafe/ongoing_monitoring')
+        self.assertEqual(config.institution_config_id, institution_config_id)
+        self.assertEqual(config.portfolio_id, 123454321)
+
+        self.assertEqual(len(events), 0)
+        # Number of processed events should be the same length as raw_data
+        self.assertEqual(len(events), len(raw_events))
 
         self.assertEqual(monitoring_events_response.status_code, 200)
-        self.assertListEqual(resp_body['events'], [])
-        self.assertListEqual(resp_body['raw_data'], [])
 
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
     @responses.activate
-    def test_single_page_data(self):
+    def test_single_page_data(self, callback_mock):
         self.mock_creditsafe_monitoring_pagination_events_response(10)
 
+        institution_config_id = uuid.uuid4()
+        configs = [{
+            'institution_config_id': institution_config_id,
+            'portfolio_id': 589960,
+            'last_run_date': datetime.now().isoformat()
+        }]
+
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request(configs)
         )
-
-        resp_body = monitoring_events_response.json
 
         self.assertEqual(monitoring_events_response.status_code, 200)
 
-        self.assertEqual(len(resp_body['events']), 10)
-        # Number of processed events should be the same length as raw_data
-        self.assertEqual(len(resp_body['events']), len(resp_body['raw_data']))
+        self.assertEqual(callback_mock.call_count, 1)
+        callback_url, config, events, raw_events = self.get_mock_callback_arguments(callback_mock)
 
-        # Raw event should have all properties as those coming directly from the Creditsafe API
-        for raw_event in resp_body['raw_data']:
+        self.assertEqual(callback_url, 'http://flask:9090/creditsafe/ongoing_monitoring')
+        self.assertEqual(config.institution_config_id, institution_config_id)
+        self.assertEqual(config.portfolio_id, 589960)
+
+        self.assertEqual(len(events), 10)
+        # Number of processed events should be the same length as raw_data
+        self.assertEqual(len(events), len(raw_events))
+
+        for raw_event in raw_events:
             for expected_property in ['company', 'eventId', 'eventDate', 'notificationEventId', 'ruleCode', 'ruleName']:
                 self.assertIn(expected_property, raw_event)
 
         expected_config_types = [config.value for config in MonitoringConfigType]
         expected_rule_codes = [101, 105, 107]
-        for event in resp_body['events']:
+
+        for event in events:
             self.assertIn(event['event_type'], expected_config_types)
             self.assertRegex(event['event_date'], self.date_regex)
             self.assertIn(event['rule_code'], expected_rule_codes)
 
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
     @responses.activate
-    def test_multi_page_data(self):
+    def test_multi_page_data(self, callback_mock):
         self.mock_creditsafe_monitoring_pagination_events_response(3001)
 
+        institution_config_id = uuid.uuid4()
+        configs = [{
+            'institution_config_id': institution_config_id,
+            'portfolio_id': 589960,
+            'last_run_date': datetime.now().isoformat()
+        }]
+
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request(configs)
         )
-
-        resp_body = monitoring_events_response.json
 
         self.assertEqual(monitoring_events_response.status_code, 200)
 
-        self.assertEqual(len(resp_body['events']), 3001)
+        self.assertEqual(callback_mock.call_count, 1)
+        callback_url, config, events, raw_events = self.get_mock_callback_arguments(callback_mock)
+
+        self.assertEqual(callback_url, 'http://flask:9090/creditsafe/ongoing_monitoring')
+        self.assertEqual(len(events), 3001)
         # Number of processed events should be the same length as raw_data
-        self.assertEqual(len(resp_body['events']), len(resp_body['raw_data']))
+        self.assertEqual(len(events), len(raw_events))
 
         # Raw event should have all properties as those coming directly from the Creditsafe API
-        for raw_event in resp_body['raw_data']:
+        for raw_event in raw_events:
             for expected_property in ['company', 'eventId', 'eventDate', 'notificationEventId', 'ruleCode', 'ruleName']:
                 self.assertIn(expected_property, raw_event)
 
         expected_config_types = [config.value for config in MonitoringConfigType]
         expected_rule_codes = [101, 105, 107]
-        for event in resp_body['events']:
+
+        for event in events:
             self.assertIn(event['event_type'], expected_config_types)
             self.assertRegex(event['event_date'], self.date_regex)
             self.assertIn(event['rule_code'], expected_rule_codes)
 
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
     @responses.activate
-    def test_multiple_events_search(self):
+    def test_multiple_events_search(self, callback_mock):
         """Checks that one request is sent per MonitoringEventsSearch instance when their last_run_dates
         are not the same."""
 
-        self.request_payload['search_params'] = []
-        for _ in range(5):
-            self.mock_creditsafe_monitoring_pagination_events_response(10)
-            self.request_payload['search_params'].append({
-                'portfolio_id': 111111111,
-                'last_run_date': datetime.now().isoformat()
-            })
+        self.mock_creditsafe_monitoring_pagination_events_response(10)
+
+        configs = [{
+            'institution_config_id': uuid.uuid4(),
+            'portfolio_id': 11111111,
+            'last_run_date': datetime.now().isoformat()
+        }, {
+            'institution_config_id': uuid.uuid4(),
+            'portfolio_id': 22222222,
+            'last_run_date': datetime.now().isoformat()
+        }, {
+            'institution_config_id': uuid.uuid4(),
+            'portfolio_id': 33333333,
+            'last_run_date': datetime.now().isoformat()
+        }]
 
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request(configs)
         )
 
         self.assertEqual(monitoring_events_response.status_code, 200)
-        self.assertEqual(len(responses.calls), 6)  # 1 get token call + 5 expected get events calls
+        self.assertEqual(len(responses.calls), 4)  # 1 get token call + 3 expected get events calls
 
+        self.assertEqual(callback_mock.call_count, 3)
+
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
     @responses.activate
-    def test_multiple_events_search_same_last_run_date(self):
+    def test_multiple_events_search_same_last_run_date(self, callback_mock):
         """Checks that only one request is sent even when the last_run_date is the same across all
         MonitoringEventsSearch instances."""
 
         self.mock_creditsafe_monitoring_pagination_events_response(10)
         last_run_date = datetime.now().isoformat()
-        self.request_payload['search_params'] = [{
+        configs = [{
             'portfolio_id': 111111111,
-            'creditsafe_id': 'US-X-US22384484',
+            'institution_config_id': uuid.uuid4(),
             'last_run_date': last_run_date
         } for _ in range(5)]
 
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request(configs)
         )
 
         self.assertEqual(monitoring_events_response.status_code, 200)
         self.assertEqual(len(responses.calls), 2)  # 1 get token call + 1 expected get events call
 
+        self.assertEqual(callback_mock.call_count, 5)
+
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
     @responses.activate
-    def test_unknown_creditsafe_events(self):
+    def test_unknown_creditsafe_events(self, callback_mock):
         responses.add(
             responses.GET,
             'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
@@ -838,15 +910,308 @@ class TestGetMonitoringEvents(unittest.TestCase):
             status=200
         )
 
+        institution_config_id = uuid.uuid4()
+        configs = [{
+            'institution_config_id': institution_config_id,
+            'portfolio_id': 12321,
+            'last_run_date': datetime.now().isoformat()
+        }]
+
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request(configs)
         )
-        resp_body = monitoring_events_response.json
+
+        self.assertEqual(callback_mock.call_count, 1)
+        callback_url, config, events, raw_events = self.get_mock_callback_arguments(callback_mock)
+
+        self.assertEqual(callback_url, 'http://flask:9090/creditsafe/ongoing_monitoring')
+        self.assertEqual(config.institution_config_id, institution_config_id)
+        self.assertEqual(config.portfolio_id, 12321)
+
+        self.assertEqual(len(events), 0)
+        # Number of processed events should be the same length as raw_data
+        self.assertEqual(len(events), len(raw_events))
+        self.assertEqual(monitoring_events_response.status_code, 200)
+
+    @responses.activate
+    def test_multiple_portfolios(self):
+        """
+        Checks when we have multiple configs/portfolios with the same start date, the events
+        endpoint is called once, and the callback is called once per config.
+        """
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json={
+                "totalCount": 3,
+                "data": [
+                    {
+                        "company": {
+                            "id": "UK-11111111",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 11111111, # portfolio ID for first config
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 101010101,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 101,
+                        "ruleName": "Address"
+                    },
+                    {
+                        "company": {
+                            "id": "UK-2222222",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 22222222, # portfolio ID for second config
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 202020202,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 105,
+                        "ruleName": "Address"
+                    },
+                    {
+                        "company": {
+                            "id": "UK-33333333",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 33333333, # unknown portfolio ID
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 3030303,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 107,
+                        "ruleName": "Address"
+                    }
+
+                ],
+                "paging": {
+                    "size": 1000,
+                    "prev": None,
+                    "next": None,
+                    "last": 0
+                }
+            },
+            status=200
+        )
+
+        institution_config_id = uuid.uuid4()
+        institution_config_id_2 = uuid.uuid4()
+        last_run_date = datetime.now().isoformat()
+        configs = [{
+            'institution_config_id': str(institution_config_id),
+            'portfolio_id': 11111111,
+            'last_run_date': last_run_date
+        }, {
+            'institution_config_id': str(institution_config_id_2),
+            'portfolio_id': 22222222,
+            'last_run_date': last_run_date
+        }]
+
+        responses.add(
+            responses.POST,
+            'http://flask:9090/creditsafe/ongoing_monitoring',
+            status=200)
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.get_mock_request(configs)
+        )
 
         self.assertEqual(monitoring_events_response.status_code, 200)
-        self.assertListEqual(resp_body['events'], [])
-        self.assertListEqual(resp_body['raw_data'], [])
+
+        # the first call is to the authenticate endpoint, and the second is to the get events endpoint
+        self.assertEqual(len(responses.calls), 4)
+
+        # the last two calls are to the monolith callback
+        first_callback = json.loads(responses.calls[2].request.body.decode('utf-8'))
+
+        self.assertEqual(first_callback['institution_config_id'], str(institution_config_id))
+        self.assertEqual(first_callback['portfolio_id'], 11111111)
+        self.assertIsNotNone(first_callback['last_run_date'])
+        self.assertEqual(len(first_callback['events']), 1)
+        self.assertEqual(first_callback['events'][0]['creditsafe_id'], 'UK-11111111')
+        self.assertEqual(len(first_callback['raw_data']), 1)
+
+        second_callback = json.loads(responses.calls[3].request.body.decode('utf-8'))
+
+        self.assertEqual(second_callback['institution_config_id'], str(institution_config_id_2))
+        self.assertEqual(second_callback['portfolio_id'], 22222222)
+        self.assertIsNotNone(second_callback['last_run_date'])
+        self.assertEqual(len(second_callback['events']), 1)
+        self.assertEqual(second_callback['events'][0]['creditsafe_id'], 'UK-2222222')
+        self.assertEqual(len(second_callback['raw_data']), 1)
+
+
+    @responses.activate
+    def test_multiple_portfolios_different_last_run_date(self):
+        """
+        Checks when we have different start dates across multiple portfolios, it calls the
+        events endpoint twice, and the callback only once per config
+        """
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json={
+                "totalCount": 3,
+                "data": [
+                    {
+                        "company": {
+                            "id": "UK-11111111",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 11111111, # portfolio ID for first config
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 101010101,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 101,
+                        "ruleName": "Address"
+                    },
+                    {
+                        "company": {
+                            "id": "UK-2222222",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 22222222, # portfolio ID for second config
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 202020202,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 105,
+                        "ruleName": "Address"
+                    },
+                    {
+                        "company": {
+                            "id": "UK-33333333",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 33333333, # unknown portfolio ID
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 3030303,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 107,
+                        "ruleName": "Address"
+                    }
+
+                ],
+                "paging": {
+                    "size": 1000,
+                    "prev": None,
+                    "next": None,
+                    "last": 0
+                }
+            },
+            status=200
+        )
+
+        institution_config_id = uuid.uuid4()
+        institution_config_id_2 = uuid.uuid4()
+        configs = [{
+            'institution_config_id': str(institution_config_id),
+            'portfolio_id': 11111111,
+            'last_run_date': datetime.now().isoformat()
+        }, {
+            'institution_config_id': str(institution_config_id_2),
+            'portfolio_id': 22222222,
+            'last_run_date': datetime.now().isoformat()
+        }]
+
+        responses.add(
+            responses.POST,
+            'http://flask:9090/creditsafe/ongoing_monitoring',
+            status=200)
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.get_mock_request(configs)
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 200)
+
+        # the first call is to the authenticate endpoint, and the second and third are to the get events endpoint
+        self.assertEqual(len(responses.calls), 5)
+
+        # the last two calls are to the monolith callback
+        first_callback = json.loads(responses.calls[3].request.body.decode('utf-8'))
+
+        self.assertEqual(first_callback['institution_config_id'], str(institution_config_id))
+        self.assertEqual(first_callback['portfolio_id'], 11111111)
+        self.assertIsNotNone(first_callback['last_run_date'])
+        self.assertEqual(len(first_callback['events']), 1)
+        self.assertEqual(first_callback['events'][0]['creditsafe_id'], 'UK-11111111')
+        self.assertEqual(len(first_callback['raw_data']), 1)
+
+        second_callback = json.loads(responses.calls[4].request.body.decode('utf-8'))
+
+        self.assertEqual(second_callback['institution_config_id'], str(institution_config_id_2))
+        self.assertEqual(second_callback['portfolio_id'], 22222222)
+        self.assertIsNotNone(second_callback['last_run_date'])
+        self.assertEqual(len(second_callback['events']), 1)
+        self.assertEqual(second_callback['events'][0]['creditsafe_id'], 'UK-2222222')
+        self.assertEqual(len(second_callback['raw_data']), 1)
+
+
+    @responses.activate
+    def test_callback_error(self):
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json={
+                "totalCount": 1,
+                "data": [
+                    {
+                        "company": {
+                            "id": "UK-11111111",
+                            "safeNumber": "US22384484",
+                            "name": "GOOGLE LLC",
+                            "countryCode": "US",
+                            "portfolioId": 111111111,
+                            "portfolioName": "Default"
+                        },
+                        "eventId": 101010101,
+                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "notificationEventId": randint(1, 9999999999),
+                        "ruleCode": 101,
+                        "ruleName": "Address"
+                    }
+                ],
+                "paging": {
+                    "size": 1000,
+                    "prev": None,
+                    "next": None,
+                    "last": 0
+                }
+            },
+            status=200
+        )
+
+        responses.add(
+            responses.POST,
+            'http://flask:9090/creditsafe/ongoing_monitoring',
+            status=500)
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.get_mock_request()
+        )
+
+        self.assertEqual(monitoring_events_response.status_code, 500)
 
     @responses.activate
     def test_bad_request(self):
@@ -856,7 +1221,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
 
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request()
         )
 
         self.assertEqual(monitoring_events_response.status_code, 200)
@@ -870,7 +1235,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
 
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request()
         )
 
         self.assertEqual(monitoring_events_response.status_code, 200)
@@ -884,7 +1249,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
 
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request()
         )
 
         self.assertEqual(monitoring_events_response.status_code, 200)
@@ -898,7 +1263,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
 
         monitoring_events_response = self.app.post(
             '/monitoring_events',
-            json=self.request_payload
+            json=self.get_mock_request()
         )
 
         self.assertEqual(monitoring_events_response.status_code, 500)
