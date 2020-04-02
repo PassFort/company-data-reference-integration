@@ -14,6 +14,8 @@ from app.worldcheck_handler import CaseHandler, MatchHandler, WorldCheckPendingE
 
 from swagger_client.rest import ApiException
 from dateutil.relativedelta import relativedelta
+from datetime import datetime, timezone
+
 app = Flask(__name__)
 
 
@@ -177,16 +179,26 @@ def get_associate_data(request_data: AssociatesDataRequest, associate_id):
             raise e
 
 
-
 @app.route('/results/ongoing_monitoring', methods=['POST'])
 @validate_model(OngoingScreeningResultsRequest)
 def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequest):
     from requests import RequestException
+
+    # Request new data with an earlier date to account for gaps in data.
+    # E.g Worldcheck's time could be behind a few minutes,
+    # Also, send a more accurate last_run_date to the monolith, so it can store it exactly as used
+    # and not have to store its own current time, which will be later than it should)
+    safe_from_date = request_data.from_date + relativedelta(hours=-1)
+
+    current_date = datetime.now(timezone.utc)
     up_to_date = request_data.from_date + relativedelta(weeks=+2)
+    if up_to_date > current_date:
+        up_to_date = current_date
+
     result = CaseHandler(
             request_data.credentials, None, False
-        ).get_ongoing_screening_results(request_data.from_date, up_to_date)
-    iso_date=up_to_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        ).get_ongoing_screening_results(safe_from_date, up_to_date)
+    iso_date = up_to_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
     try:
         send_to_callback(
@@ -198,9 +210,18 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
             }
         )
     except RequestException as e:
-        return jsonify(errors=[Error.from_exception(e)]), 500
+        return jsonify(
+            errors=[Error.from_exception(e)],
+            from_date=safe_from_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            last_run_date=iso_date
+        ), 500
 
-    return jsonify(errors=[], results=result, count=len(result), run_date=iso_date)
+    return jsonify(
+        errors=[],
+        results=result,
+        count=len(result),
+        from_date=safe_from_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+        last_run_date=iso_date)
 
 
 @app.route('/config/ongoing_monitoring/<string:case_system_id>', methods=['DELETE'])
