@@ -2,6 +2,9 @@ from unittest import TestCase, skip
 import requests
 import time
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 API_URL = 'http://localhost:8001'
 
 TEST_API_KEY = 'a4364e62-e58b-4b64-9c71-faead5417557'
@@ -227,9 +230,6 @@ class WorldCheckScreenCase(TestCase):
 class WorldCheckOngoingScreening(TestCase):
 
     def test_completes_ongoing_results_request(self):
-        from datetime import datetime
-        from dateutil.relativedelta import relativedelta
-
         a_week_ago = datetime.now() + relativedelta(weeks=-1)
         with self.subTest('return error when callback errors'):
             response = requests.post(API_URL + '/results/ongoing_monitoring', json={
@@ -242,3 +242,38 @@ class WorldCheckOngoingScreening(TestCase):
             as_json = response.json()
             self.assertEqual(response.status_code, 500)
             self.assertEqual(len(as_json['errors']), 1)
+
+    def test_handles_ongoing_results_dates_close_to_current_time(self):
+
+        a_week_ago = datetime.now() + relativedelta(weeks=-1)
+        response = requests.post(API_URL + '/results/ongoing_monitoring', json={
+            "credentials": GOOD_CREDENTIALS,
+            "institution_id": "kansas",
+            "from_date": a_week_ago.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            "callback_url": "no_callback"
+        })
+        as_json = response.json()
+
+        with self.subTest('sets the last run date to at most the current time'):
+            self.assertTrue(datetime.strptime(as_json['last_run_date'], '%Y-%m-%dT%H:%M:%S.%fZ') <= datetime.now())
+
+        with self.subTest('sets a from date that is before the given date'):
+            self.assertTrue(datetime.strptime(as_json['from_date'], '%Y-%m-%dT%H:%M:%S.%fZ') < a_week_ago)
+
+    def test_handles_ongoing_results_dates_further_in_the_past(self):
+
+        iso_from_date = '2019-02-01T00:00:00.00000Z'
+        response = requests.post(API_URL + '/results/ongoing_monitoring', json={
+            "credentials": GOOD_CREDENTIALS,
+            "institution_id": "kansas",
+            "from_date": iso_from_date,
+            "callback_url": "no_callback"
+        })
+
+        as_json = response.json()
+
+        with self.subTest('sets the last run date to 2 weeks from start'):
+            self.assertEqual(as_json['last_run_date'], '2019-02-15T00:00:00.000000Z')
+
+        with self.subTest('sets a from date that is 1 hour before the given date'):
+            self.assertEqual(as_json['from_date'], '2019-01-31T23:00:00.000000Z')
