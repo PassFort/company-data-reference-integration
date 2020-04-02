@@ -194,6 +194,9 @@ class CompanyMetadata(BaseObject):
     contact_information: ContactDetails
     freeform_address: str
     is_active: Optional[bool]
+    is_active_details: Optional[str]
+    trade_description: Optional[str]
+    description: Optional[str]
 
     @staticmethod
     def from_raw_data(raw_data: CompanyRawData) -> 'CompanyMetadata':
@@ -220,6 +223,9 @@ class CompanyMetadata(BaseObject):
         metadata.country_of_incorporation = country_alpha2to3(raw_data.get('CTRYISO'))
         metadata.structured_company_type = format_structured_company_type(raw_data)
         metadata.is_active = format_is_active(raw_data)
+        metadata.is_active_details = format_current_status(raw_data)
+        metadata.trade_description = raw_data.get('TRADDESCEN')
+        metadata.description = raw_data.get('PRODUCTS_SERVICES')
         metadata.incorporation_date = format_date(raw_data.get('DATEINC'))
         metadata.previous_names = format_previous_names(raw_data)
         metadata.freeform_address = format_address(raw_data)
