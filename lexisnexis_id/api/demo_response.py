@@ -8,13 +8,6 @@ def create_demo_response(passfort_data):
         }
     }
 
-    matched_fields = [
-        "FORENAME",
-        "SURNAME",
-        "DOB",
-        "IDENTITY_NUMBER"
-    ]
-
     # Get complete name to check what kind of demo response will be returned
     names = passfort_data['input_data']['personal_details']['name']['given_names']
     if passfort_data['input_data']['personal_details']['name'].get('family_name'):
@@ -42,6 +35,9 @@ def create_demo_response(passfort_data):
                 matched_fields.append("DOB")
 
         else:
+            if passfort_data['config'].get('requires_address'):
+                matched_fields.append("ADDRESS")
+
             # Regardless of config, First + Last + DOB + SSN is always a match
             matched_fields.append("DOB")
             matched_fields.append("IDENTITY_NUMBER")
