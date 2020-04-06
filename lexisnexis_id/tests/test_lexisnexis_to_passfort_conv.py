@@ -151,7 +151,8 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
                                 "Month": 4,
                                 "Day": 6
                             }
-                        }
+                        },
+                        "DOBVerified": True,
                     }
                 }
             }
@@ -197,7 +198,8 @@ def test_record_with_one_datasource_with_dob_year_month_match(client):
                                 "Year": 1980,
                                 "Month": 4
                             }
-                        }
+                        },
+                        "DOBVerified": True,
                     }
                 }
             }
@@ -241,7 +243,8 @@ def test_record_with_one_datasource_with_dob_year_match(client):
                             "DOB": {
                                 "Year": 1980
                             }
-                        }
+                        },
+                        "DOBVerified": True,
                     }
                 }
             }
@@ -280,7 +283,8 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
                             "DOB": {
                                 "Year": 1980
                             }
-                        }
+                        },
+                        "DOBVerified": False,
                     }
                 }
             }
