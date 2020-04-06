@@ -136,6 +136,7 @@ def test_ekyc_check_demo_1_valid_data(client):
                     }
                 }
             },
+            'config': {},
             'is_demo': True
         }),
         content_type='application/json'

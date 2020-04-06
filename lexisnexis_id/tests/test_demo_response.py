@@ -42,6 +42,53 @@ def test_full_valid_package(client):
                     'given_names': ['Todd']
                 }
             }
+        },
+        'config': {
+            'use_dob': True,
+            'requires_address': False,
+        }
+    }
+    demo_response = {
+        "output_data": {
+            "entity_type": "INDIVIDUAL",
+            "electronic_id_check": {
+                "matches": [
+                    {
+                        "database_name": 'LexisNexis DB',
+                        "database_type": 'CIVIL',
+                        "matched_fields": matched_fields,
+                        "count": 1
+                    }
+                ]
+            }
+        },
+        "raw": "Demo response, Generated Automatically",
+        "errors": []
+    }
+
+    response = create_demo_response(input_data)
+    assert response == demo_response
+
+
+def test_full_valid_package_with_address(client):
+    matched_fields = [
+        "FORENAME",
+        "SURNAME",
+        "ADDRESS",
+        "DOB",
+        "IDENTITY_NUMBER",
+    ]
+    input_data = {
+        'input_data': {
+            'personal_details': {
+                'name': {
+                    'given_names': ['Todd']
+                }
+            }
+        },
+        'config': {
+            'use_dob': True,
+            'requires_address': True,
         }
     }
     demo_response = {
