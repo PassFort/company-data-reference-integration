@@ -175,13 +175,9 @@ def lexisnexis_to_passfort_data(lexisnexis_response_data):
                     match['matched_fields'].append('SURNAME')
 
             # check date of birthday (DOB)
-            if 'DOB' in lexisnexis_data['InstantIDResponseEx']['response']['Result']['InputEcho'] \
-                    and verified_input.get('DOB'):
-                input_dob = lexisnexis_data['InstantIDResponseEx']['response']['Result']['InputEcho']['DOB'].keys()
-                verified_dob = verified_input['DOB'].keys()
-
-                # If all part of the input date is in the verified date, added DOB verification
-                if not next(filter(lambda k: k not in verified_dob, input_dob), None):
+            if 'DOB' in lexisnexis_data['InstantIDResponseEx']['response']['Result']['InputEcho']:
+                dob_verified = lexisnexis_data['InstantIDResponseEx']['response']['Result']['DOBVerified']
+                if dob_verified:
                     match['matched_fields'].append('DOB')
 
             # check address
