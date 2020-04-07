@@ -1499,7 +1499,37 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
         self.assertEqual(res.paging.next, 2)
         self.assertEqual(res.paging.last, 3)
 
-    def test_to_passfort_format_with_events(self):
+    def test_to_passfort_format_with_company_data_events(self):
+        event = CreditSafeNotificationEvent({
+            "company": {
+                "id": "GB-0-03375464",
+                "safeNumber": "UK03033453",
+                "name": "THE DURHAM BREWERY LIMITED",
+                "countryCode": "GB",
+                "portfolioId": 1017586,
+                "portfolioName": "Durham Brewery"
+            },
+            "eventId": 512812323,
+            "eventDate": "2020-02-28T05:33:02",
+            "createdDate": "2020-02-29T00:16:47",
+            "notificationEventId": 81051991,
+            "ruleCode": 2202,
+            "ruleName": "Company Status"
+        })
+
+        response = CreditSafeNotificationEvent.to_passfort_format(event)
+
+        self.assertEqual(
+            response,
+            MonitoringEvent({
+                'creditsafe_id': 'GB-0-03375464',
+                'event_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS.value,
+                'event_date': '2020-02-28T05:33:02',
+                'rule_code': 2202
+            })
+        )
+
+    def test_to_passfort_format_with_financial_events(self):
         event = CreditSafeNotificationEvent({
             "company": {
                 "id": "GB-0-03375464",
@@ -1530,3 +1560,48 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
                 'rule_code': 101
             })
         )
+
+    def test_to_passfort_format_with_unsupported_events(self):
+        event = CreditSafeNotificationEvent({
+            "company": {
+                "id": "GB-0-03375464",
+                "safeNumber": "UK03033453",
+                "name": "THE DURHAM BREWERY LIMITED",
+                "countryCode": "GB",
+                "portfolioId": 1017586,
+                "portfolioName": "Durham Brewery"
+            },
+            "eventId": 512812323,
+            "eventDate": "2020-02-28T05:33:02",
+            "createdDate": "2020-02-29T00:16:47",
+            "notificationEventId": 81051991,
+            "ruleCode": 802,
+            "ruleName": "Share captial"
+        })
+
+        response = CreditSafeNotificationEvent.to_passfort_format(event)
+
+        self.assertIsNone(response)
+
+    def test_to_passfort_format_with_unknown_event(self):
+        event = CreditSafeNotificationEvent({
+            "company": {
+                "id": "GB-0-03375464",
+                "safeNumber": "UK03033453",
+                "name": "THE DURHAM BREWERY LIMITED",
+                "countryCode": "GB",
+                "portfolioId": 1017586,
+                "portfolioName": "Durham Brewery"
+            },
+            "eventId": 512812323,
+            "eventDate": "2020-02-28T05:33:02",
+            "createdDate": "2020-02-29T00:16:47",
+            "notificationEventId": 81051991,
+            "ruleCode": 1024545687,
+            "ruleName": "Share captial"
+        })
+
+        response = CreditSafeNotificationEvent.to_passfort_format(event)
+
+        self.assertIsNone(response)
+

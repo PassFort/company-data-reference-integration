@@ -72,15 +72,34 @@ _supported_events = {
                 'ruleCode': 3100
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 3101
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
-    # 'BE': [],  # Uncomment when we figured out what rules to apply for this country
+    'BE': [
+        {
+            'creditsafe_event': {
+                'ruleCode': 1718
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        }
+    ],
     'DK': [
         {
             'creditsafe_event': {
                 'ruleCode': 1010
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 1007
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
     'FR': [
@@ -89,6 +108,18 @@ _supported_events = {
                 'ruleCode': 302
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 704
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 802
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
     'FI': [
@@ -97,15 +128,40 @@ _supported_events = {
                 'ruleCode': 806
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 802
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
-    # 'DE': [],
+     'DE': [
+        {
+            'creditsafe_event': {
+                'ruleCode': 2004
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 2006
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        }
+    ],
     'IE': [
         {
             'creditsafe_event': {
                 'ruleCode': 3056
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 2103
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
     'IT': [
@@ -114,17 +170,50 @@ _supported_events = {
                 'ruleCode': 1406
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 1405
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
-    # 'LI': [],  # Uncomment when we figured out what rules to apply for this country
-    # 'LU': [],  # Uncomment when we figured out what rules to apply for this country
-    # 'NL': [],  # Uncomment when we figured out what rules to apply for this country
+     'LI': [
+        {
+            'creditsafe_event': {
+                'ruleCode': 2401
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        }
+    ],
+     'LU': [
+        {
+            'creditsafe_event': {
+                'ruleCode': 1308
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        }
+    ],
+    'NL': [
+        {
+            'creditsafe_event': {
+                'ruleCode': 1511
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        }
+    ],
     'NO': [
         {
             'creditsafe_event': {
                 'ruleCode': 924
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 925
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
     'ES': [
@@ -133,6 +222,12 @@ _supported_events = {
                 'ruleCode': 2202
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 2201
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ],
     'SE': [
@@ -141,6 +236,18 @@ _supported_events = {
                 'ruleCode': 3040
             },
             'passfort_type': MonitoringConfigType.VERIFY_COMPANY_DETAILS
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 3043
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
+        },
+        {
+            'creditsafe_event': {
+                'ruleCode': 3044
+            },
+            'passfort_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA
         }
     ]
 }
@@ -148,9 +255,12 @@ _supported_events = {
 
 def get_rule_code_to_monitoring_config():
     rule_code_to_monitoring_config = {}
-    for event_configs in _supported_events.values():
-        for event in event_configs:
-            rule_code_to_monitoring_config[event['creditsafe_event']['ruleCode']] = event['passfort_type']
+    for country_code in _supported_events:
+        for country_event in _supported_events[country_code]:
+            passfort_type = country_event['passfort_type']
+            # Only get financial events for GB and global for now
+            if passfort_type != MonitoringConfigType.ASSESS_FINANCIAL_DATA or country_code == 'GB' or country_code == 'XX':
+                rule_code_to_monitoring_config[country_event['creditsafe_event']['ruleCode']] = passfort_type
     return rule_code_to_monitoring_config
 
 
