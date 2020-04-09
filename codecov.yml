@@ -1,4 +1,5 @@
 codecov:
+  max_report_age: off
   archive:
     uploads: false
 
