@@ -21,6 +21,7 @@ from app.api.dowjones_types import (
     SearchResults,
 )
 
+WATCHLIST_PERSON_RECORD_TYPE = 'P'
 WATCHLIST_NOT_KNOWN_FILTER = 'NOTK'
 WATCHLIST_ANY_FILTER = 'ANY'
 WATCHLIST_NONE_FILTER = '-ANY'
@@ -74,6 +75,7 @@ class APIClient():
     def search_params(self, input_data: InputData):
         params = {
             # Base params present for all searches
+            'record-type': WATCHLIST_PERSON_RECORD_TYPE,
             'filter-sl-exclude-suspended': WATCHLIST_TRUE,
             'filter-ool-exclude-suspended': WATCHLIST_TRUE,
             'filter-oel-exclude-suspended': WATCHLIST_TRUE,
@@ -96,11 +98,14 @@ class APIClient():
             'date-of-birth-strict': WATCHLIST_TRUE if self.config.strict_dob_search else WATCHLIST_FALSE,
         }
 
+        names = input_data.personal_details.name.given_names
+        family_name = input_data.personal_details.name.family_name
+        if family_name is not None:
+            names.append(family_name)
+
         # Params decided by check input data
-        params['first-name'] = input_data.personal_details.name.given_names[0]
-        params['surname'] = input_data.personal_details.name.family_name
-        if len(input_data.personal_details.name.given_names) > 1:
-            params['middle-name'] = ' '.join(input_data.personal_details.name.given_names[1:])
+        params['name'] = ' '.join(names)
+
         if input_data.personal_details.dob is not None:
             params['date-of-birth'] = input_data.personal_details.dowjones_dob
         if input_data.personal_details.nationality is not None:
@@ -115,7 +120,7 @@ class APIClient():
         params = self.search_params(input_data)
 
         resp = self._get(
-            '/search/person-name',
+            '/search/name',
             params=params
         )
 
@@ -138,14 +143,7 @@ class DemoClient(APIClient):
     demo_name = None
 
     def extract_names(self, params):
-        names = []
-        if 'first-name' in params:
-            names.append(params['first-name'])
-        if 'middle-name' in params:
-            names.append(params['middle-name'])
-        if 'surname' in params:
-            names.append(params['surname'])
-        return ' '.join(names).lower()
+        return params['name'].lower()
 
     def set_demo_name(self, params):
         fullname = self.extract_names(params)
@@ -165,7 +163,7 @@ class DemoClient(APIClient):
             self.demo_name = 'david_cameron'
 
     def _get(self, route, params={}):
-        is_search_req = route.startswith('/search/person-name')
+        is_search_req = route.startswith('/search/name')
 
         # Set demo for client when making initial search request
         if is_search_req:
