@@ -153,7 +153,7 @@ class SearchInput(Model):
                 any_queries.append(f'name={quote_plus(self.name)}')
             elif self.query:
                 any_queries.append(f'name={quote_plus(self.query)}')
-        exact_search = '' if country_code == 'US' else '&exact=True'
+        exact_search = '' if country_code in ['US', 'JP'] else '&exact=True'
         if self.number:
             any_queries.append(f'regNo={quote_plus(self.number)}{exact_search}')
         elif self.query:
