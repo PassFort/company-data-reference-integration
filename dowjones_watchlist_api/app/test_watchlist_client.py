@@ -195,31 +195,15 @@ class TestConfigParams(unittest.TestCase):
 
 class TestInputDataParams(unittest.TestCase):
     def test_names(self):
-        with self.subTest("Sets `first-name` to first given name"):
+        with self.subTest("Sets `name` to full name"):
             client = DemoClient(
                 WatchlistAPIConfig(DEFAULT_CONFIG),
                 WatchlistAPICredentials()
             )
             params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
-            self.assertEqual(params['first-name'], 'David')
+            self.assertEqual(params['name'], 'David Cameron')
 
-        with self.subTest("Sets `surname` to family name"):
-            client = DemoClient(
-                WatchlistAPIConfig(DEFAULT_CONFIG),
-                WatchlistAPICredentials()
-            )
-            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
-            self.assertEqual(params['surname'], 'Cameron')
-
-        with self.subTest("Does not set `middle-name` if none provided"):
-            client = DemoClient(
-                WatchlistAPIConfig(DEFAULT_CONFIG),
-                WatchlistAPICredentials()
-            )
-            params = client.search_params(InputData(EXAMPLE_INPUT_DATA))
-            self.assertNotIn('middle-name', params)
-
-        with self.subTest("Sets `middle-name` to sum of all but the first of the given names"):
+        with self.subTest("Sets `middle-name` to in name if given"):
             client = DemoClient(
                 WatchlistAPIConfig(DEFAULT_CONFIG),
                 WatchlistAPICredentials()
@@ -232,7 +216,7 @@ class TestInputDataParams(unittest.TestCase):
                     },
                 }
             })))
-            self.assertEqual(params['middle-name'], 'Allen John')
+            self.assertEqual(params['name'], 'David Allen John Cameron')
 
     def test_date_of_birth(self):
         with self.subTest("Does not set `date-of-birth` if none provided"):
