@@ -52,6 +52,9 @@ parameters:
   reference_integration:
     type: boolean
     default: false
+  docver_reference_integration:
+      type: boolean
+      default: false
   lexisnexis_id:
     type: boolean
     default: false
@@ -800,6 +803,32 @@ workflows:
           package: reference_integration
           requires:
             - unit_reference_integration
+          filters:
+              branches:
+                ignore:
+                  - master
+
+  docver_reference_integration:
+    when: << pipeline.parameters.docver_reference_integration >>
+    jobs:
+      - unit_appengine:
+          name: unit_docver_reference_integration
+          package: docver_reference_integration
+      - deploy_appengine:
+          name: deploy_docver_reference_integration_staging
+          package: docver_reference_integration
+          requires:
+            - unit_docver_reference_integration
+          filters:
+              branches:
+                only:
+                  - staging
+      - build_docker_image:
+          context: org-global
+          name: build_docver_reference_integration_image
+          package: docver_reference_integration
+          requires:
+            - unit_docver_reference_integration
           filters:
               branches:
                 ignore:
