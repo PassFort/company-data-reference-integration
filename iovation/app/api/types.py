@@ -113,7 +113,7 @@ class TransctionInsight(Model):
 class DeviceData(Model):
     account_code = StringType(serialized_name="accountCode")
     blackbox = StringType()
-    statedip = StringType()
+    stated_ip = StringType(serialized_name="statedIp")
     transaction_insight = ModelType(TransctionInsight, serialized_name="transactionInsight")
     type = StringType(required=True)
 
@@ -130,7 +130,7 @@ class DeviceMetadata(Model):
         return DeviceData({
             'account_code': self.reference_id,
             'blackbox': self.token,
-            'statedip': self.stated_ip,
+            'stated_ip': self.stated_ip,
             'type': self.action,
         })
 
