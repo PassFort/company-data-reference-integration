@@ -48,7 +48,7 @@ class TestInputData(unittest.TestCase):
         iovation_device = device_data.as_iovation_device_data()
 
         self.assertEqual('BLACKBOX', iovation_device.blackbox)
-        self.assertEqual('123.12.12.123', iovation_device.statedip)
+        self.assertEqual('123.12.12.123', iovation_device.stated_ip)
         self.assertEqual('new_account', iovation_device.type)
         self.assertEqual('REF_ID', iovation_device.account_code)
 
@@ -93,7 +93,7 @@ class TestInputData(unittest.TestCase):
         iovation_device = check_input.as_iovation_device_data()
 
         self.assertEqual('BLACKBOX', iovation_device.blackbox)
-        self.assertEqual('123.12.12.123', iovation_device.statedip)
+        self.assertEqual('123.12.12.123', iovation_device.stated_ip)
         self.assertEqual('new_account', iovation_device.type)
         self.assertEqual('REF_ID', iovation_device.account_code)
 
@@ -112,7 +112,7 @@ class TestInputData(unittest.TestCase):
         iovation_device = device_data.as_iovation_device_data()
 
         self.assertEqual('BLACKBOX', iovation_device.blackbox)
-        self.assertEqual(None, iovation_device.statedip)
+        self.assertEqual(None, iovation_device.stated_ip)
         self.assertEqual('new_account', iovation_device.type)
         self.assertEqual(None, iovation_device.account_code)
 
