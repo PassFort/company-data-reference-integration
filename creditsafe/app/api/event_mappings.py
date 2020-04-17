@@ -258,9 +258,7 @@ def get_rule_code_to_monitoring_config():
     for country_code in _supported_events:
         for country_event in _supported_events[country_code]:
             passfort_type = country_event['passfort_type']
-            # Only get financial events for GB and global for now
-            if passfort_type != MonitoringConfigType.ASSESS_FINANCIAL_DATA or country_code == 'GB' or country_code == 'XX':
-                rule_code_to_monitoring_config[country_event['creditsafe_event']['ruleCode']] = passfort_type
+            rule_code_to_monitoring_config[country_event['creditsafe_event']['ruleCode']] = passfort_type
     return rule_code_to_monitoring_config
 
 

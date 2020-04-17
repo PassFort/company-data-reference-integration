@@ -1710,7 +1710,7 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
             })
         )
 
-    def test_to_passfort_format_with_unsupported_events(self):
+    def test_to_passfort_format_with_global_financial_events(self):
         event = CreditSafeNotificationEvent({
             "company": {
                 "id": "GB-0-03375464",
@@ -1730,7 +1730,15 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
 
         response = CreditSafeNotificationEvent.to_passfort_format(event)
 
-        self.assertIsNone(response)
+        self.assertEqual(
+            response,
+            MonitoringEvent({
+                'creditsafe_id': 'GB-0-03375464',
+                'event_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA.value,
+                'event_date': '2020-02-28T05:33:02',
+                'rule_code': 802
+            })
+        )
 
     def test_to_passfort_format_with_unknown_event(self):
         event = CreditSafeNotificationEvent({
