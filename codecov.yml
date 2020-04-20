@@ -1,25 +1,25 @@
 codecov:
-  max_report_age: off
+  max_report_age: false
   archive:
     uploads: false
 
-  flags:
-    # filter the folder(s) you wish to measure by that flag
-    bvd:
-      paths:
-        - bvd/
-    comply_advantage:
-      paths:
-        - comply_advantage/
-    duedil:
-      paths:
-        - duedil/
-    onfido:
-      paths:
-        - onfido/
-    worldcheck:
-      paths:
-        - worldcheck/
-    dowjones_watchlist_api
-      paths:
-        - dowjones_watchlist_api/
+flags:
+  # filter the folder(s) you wish to measure by that flag
+  bvd:
+    paths:
+      - bvd/
+  comply_advantage:
+    paths:
+      - comply_advantage/
+  duedil:
+    paths:
+      - duedil/
+  onfido:
+    paths:
+      - onfido/
+  worldcheck:
+    paths:
+      - worldcheck/
+  dowjones_watchlist_api:
+    paths:
+      - dowjones_watchlist_api/
