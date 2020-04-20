@@ -1432,11 +1432,11 @@ class TestFinancials(unittest.TestCase):
     def test_filters_consolidated_accounts(self):
         """
         Creditsafe sometimes sends reports that are "consolidated", alongside non consolidated ones.
+        And for some companies, only consolidated ones.
         Accountants usually use the non consolidated ones.
-        If we don't filter them out, we might show the wrong report.
+        Make sure we only send one type of report, and don't mix them on the same profile
         """
-
-        def get_statements(local_consolidated, global_consolidated):
+        def get_test_data(local_consolidated, global_consolidated):
             return {
                 "localFinancialStatements": [
                     {
@@ -1469,15 +1469,56 @@ class TestFinancials(unittest.TestCase):
             }
 
         for local_v, global_v, expected_number \
-                in [(False, False, 9), (True, True, 0), (False, True, 5), (True, False, 4)]:
+                in [(False, False, 9), (True, True, 9), (False, True, 5), (True, False, 4)]:
             report = Financials(
                 CreditSafeCompanyReport.from_json({
                     **self.base_metadata,
-                    **get_statements(local_v, global_v)
+                    **get_test_data(local_v, global_v)
                 }).to_financials()
             ).serialize()
-            # Returns expected number of statements, ignoring consolidated accounts
+            # Returns expected number of statements, ignoring consolidated accounts if both are present
             self.assertEqual(len(report.get("statements", [])), expected_number)
+
+    def test_handles_conflicting_consolidated_values(self):
+        report = Financials(
+            CreditSafeCompanyReport.from_json({
+                **self.base_metadata,
+                **{
+                    "localFinancialStatements": [
+                        {
+                            "type": "LocalFinancialsCSUK",
+                            "yearEndDate": "2017-12-31T00:00:00Z",
+                            "numberOfWeeks": 52,
+                            "currency": "GBP",
+                            "consolidatedAccounts": True,
+                            "auditQualification": "The company is exempt from audit",
+                            "profitAndLoss": {
+                                "depreciation": 7953.0,
+                                "auditFees": 0.0
+                            }
+                        },
+                        {
+                            "type": "LocalFinancialsCSUK",
+                            "yearEndDate": "2017-12-31T00:00:00Z",
+                            "numberOfWeeks": 52,
+                            "currency": "GBP",
+                            "consolidatedAccounts": False,
+                            "auditQualification": "The company is exempt from audit",
+                            "profitAndLoss": {
+                                "depreciation": 1000.0,
+                                "auditFees": 0.0
+                            }
+                        }
+                    ]
+                }
+            }).to_financials()
+        ).serialize()
+        # Returns a set of statements (not doubling it)
+        self.assertEqual(len(report.get("statements", [])), 5)
+
+        # Picks up the non consolidated ones by default
+        self.assertEqual(report['statements'][0]['entries'][5]['value']['value'], 1000)
+        self.assertEqual(report['statements'][0]['entries'][5]['name'], 'depreciation')
 
 
 class TestYoy(unittest.TestCase):

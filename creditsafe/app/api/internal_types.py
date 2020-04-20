@@ -1090,6 +1090,42 @@ class CreditSafeCompanyReport(Model):
         model.validate()
         return model
 
+    @classmethod
+    def get_filtered_statements(cls, raw_statements, scope, is_consolidated):
+        return sorted(
+            list(chain(
+                *[s.to_json() for s in raw_statements
+                  if s.scope == scope and s.is_consolidated == is_consolidated])),
+            key=lambda x: x['date'],
+            reverse=True
+        )
+
+    @property
+    def statements(self):
+        '''
+        Returns local and global statements. in order to keep the numbers consistent,
+        only returns consolidated or non consolidated accounts, defaulting to non consolidated.
+        '''
+        local_non_consolidated_statements = self.get_filtered_statements(
+            self.local_financial_statements, 'LocalFinancialsCSUK', is_consolidated=False)
+
+        global_non_consolidated_statements = self.get_filtered_statements(
+            self.global_financial_statements, 'GlobalFinancialsGGS', is_consolidated=False)
+
+        statements = local_non_consolidated_statements + global_non_consolidated_statements
+
+        if len(statements) == 0:
+            # Try to get the consolidated ones then
+
+            local_consolidated_statements = self.get_filtered_statements(
+                self.local_financial_statements, 'LocalFinancialsCSUK', is_consolidated=True)
+
+            global_consolidated_statements = self.get_filtered_statements(
+                self.global_financial_statements, 'GlobalFinancialsGGS', is_consolidated=True)
+            statements = local_consolidated_statements + global_consolidated_statements
+
+        return statements
+
     def to_financials(self):
         contract_limit = None
         current_international_rating = None
@@ -1123,27 +1159,10 @@ class CreditSafeCompanyReport(Model):
             if previous_international_rating and len(credit_history) > 1:
                 credit_history[1].update(previous_international_rating)
 
-        statements = sorted(
-            list(chain(
-                *[s.to_json() for s in self.local_financial_statements
-                  if s.scope == 'LocalFinancialsCSUK' and not s.is_consolidated])),
-            key=lambda x: x['date'],
-            reverse=True
-        )
-
-        global_statements = sorted(
-            list(chain(
-                *[s.to_json() for s in self.global_financial_statements
-                  if s.scope == 'GlobalFinancialsGGS' and not s.is_consolidated])),
-            key=lambda x: x['date'],
-            reverse=True
-        )
-        statements.extend(global_statements)
-
         financials = Financials({
             'contract_limit': contract_limit,
             'credit_history': credit_history,
-            'statements': statements
+            'statements': self.statements
         })
         financials.validate()
 
