@@ -25,6 +25,7 @@ integrations = {
     'uk_charities_commission': './uk_charities_commission',
     'cifas': './cifas',
     'lexisnexis_id': './lexisnexis_id',
+    'mastercard_match': './mastercard_match'
 }
 
 sentry = {
