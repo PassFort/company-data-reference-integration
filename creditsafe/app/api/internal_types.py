@@ -780,13 +780,13 @@ class AdditionalInformation(Model):
 
 
 class CreditsafeFinancialStatement(Model):
+    currency = StringType(default=None)
+    is_consolidated = BooleanType(serialized_name="consolidatedAccounts", default=None)
     scope = StringType(serialized_name="type", required=True)
     date = UTCDateTimeType(serialized_name="yearEndDate", required=True)
-    currency = StringType(default=None)
     profit_and_loss = DictType(BaseType, default={}, serialized_name="profitAndLoss")
     balance_sheet = DictType(BaseType, default={}, serialized_name="balanceSheet")
     other_financials = DictType(BaseType, default={}, serialized_name="otherFinancials")
-    cash_flow = DictType(BaseType, default={}, serialized_name="cashFlow")
 
     def parse_dict_entries(self, group_map, input_dict):
         entries = []
@@ -811,6 +811,149 @@ class CreditsafeFinancialStatement(Model):
                     'group_name': to_snake_case(k)
                 })
         return entries, groups
+
+
+class CreditsafeGlobalFinancialStatement(CreditsafeFinancialStatement):
+
+    def to_json(self):
+        pl_map = {
+            'revenue': [],
+            'operatingProfit': [
+                'operatingCosts',
+            ],
+            'profitBeforeTax': [
+                'pensionCosts',
+                'wagesAndSalaries',
+                'financialIncome',
+                'financialExpenses',
+                'extraordinaryIncome',
+                'extraordinaryCosts',
+                'depreciation',
+                'amortisation'
+            ],
+            'profitAfterTax': [
+                'tax'
+            ],
+            'retainedProfit': [
+                'dividends',
+                'minorityInterests',
+                'otherAppropriations'
+            ]
+        }
+
+        balance_map = {
+            'cash': [],
+            'totalReceivables': [
+                'tradeReceivables',
+                'groupReceivables',
+                'receivablesDueAfter1Year',
+                'miscellaneousReceivables'
+            ],
+            'totalInventories': [
+                'rawMaterials',
+                'workInProgress',
+                'finishedGoods',
+                'otherInventories'
+            ],
+            'totalCurrentAssets': [
+                'otherCurrentAssets'
+            ],
+            'totalTangibleAssets': [
+                'landAndBuildings',
+                'plantAndMachinery',
+                'otherTangibleAssets'
+            ],
+            'totalOtherFixedAssets': [
+                'investments',
+                'loansToGroup',
+                'otherLoans',
+                'miscellaneousFixedAssets'
+            ],
+            'totalIntangibleAssets': [
+                'goodwill',
+                'otherIntangibleAssets'
+            ],
+            'totalFixedAssets': [],
+            'totalCurrentLiabilities': [
+                'tradePayables',
+                'bankLiabilities',
+                'otherLoansOrFinance',
+                'groupPayables',
+                'miscellaneousLiabilities'
+            ],
+            'totalLongTermLiabilities': [
+                'tradePayablesDueAfter1Year',
+                'bankLiabilitiesDueAfter1Year',
+                'otherLoansOrFinanceDueAfter1Year',
+                'groupPayablesDueAfter1Year',
+                'miscellaneousLiabilitiesDueAfter1Year'
+            ]
+        }
+
+        cap_and_reserves_map = {
+            'totalShareholdersEquity': [
+                'calledUpShareCapital',
+                'sharePremium',
+                'revenueReserves',
+                'otherReserves'
+            ]
+        }
+
+        other_financials_map = {
+            'netWorth': [],	 # otherFinancials
+            'workingCapital': [],  # otherFinancials
+            'totalAssets': [],  # balanceSheet
+            'totalLiabilities': [],  # balanceSheet
+        }
+
+        pl_entries, pl_groups = self.parse_dict_entries(pl_map, self.profit_and_loss)
+        balance_entries, balance_groups = self.parse_dict_entries(
+            balance_map, self.balance_sheet)
+
+        cap_and_reserves_entries, cap_and_reserves_groups = self.parse_dict_entries(
+            cap_and_reserves_map, self.balance_sheet)
+
+        other_fin_entries, other_fin_groups = self.parse_dict_entries(
+            other_financials_map, {**self.balance_sheet, **self.other_financials})
+
+        return [
+            {
+                'statement_type': 'PROFIT_AND_LOSS',
+                'statement_format': self.scope,
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': pl_entries,
+                'groups': pl_groups
+            },
+            {
+                'statement_type': 'BALANCE_SHEET',
+                'statement_format': self.scope,
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': balance_entries,
+                'groups': balance_groups
+            },
+            {
+                'statement_type': 'CAPITAL_AND_RESERVES',
+                'statement_format': self.scope,
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': cap_and_reserves_entries,
+                'groups': cap_and_reserves_groups
+            },
+            {
+                'statement_type': 'OTHER_FINANCIAL_ITEMS',
+                'statement_format': self.scope,
+                'date': self.date,
+                'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
+                'entries': other_fin_entries,
+                'groups': other_fin_groups
+            }
+        ]
+
+
+class CreditsafeLocalFinancialStatement(CreditsafeFinancialStatement):
+    cash_flow = DictType(BaseType, default={}, serialized_name="cashFlow")
 
     def to_json(self):
         pl_map = {
@@ -874,6 +1017,7 @@ class CreditsafeFinancialStatement(Model):
         return [
             {
                 'statement_type': 'PROFIT_AND_LOSS',
+                'statement_format': self.scope,
                 'date': self.date,
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': pl_entries,
@@ -881,6 +1025,7 @@ class CreditsafeFinancialStatement(Model):
             },
             {
                 'statement_type': 'BALANCE_SHEET',
+                'statement_format': self.scope,
                 'date': self.date,
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': balance_entries,
@@ -888,6 +1033,7 @@ class CreditsafeFinancialStatement(Model):
             },
             {
                 'statement_type': 'CAPITAL_AND_RESERVES',
+                'statement_format': self.scope,
                 'date': self.date,
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': cap_and_reserves_entries,
@@ -895,6 +1041,7 @@ class CreditsafeFinancialStatement(Model):
             },
             {
                 'statement_type': 'OTHER_FINANCIAL_ITEMS',
+                'statement_format': self.scope,
                 'date': self.date,
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': other_fin_entries,
@@ -902,6 +1049,7 @@ class CreditsafeFinancialStatement(Model):
             },
             {
                 'statement_type': 'CASH_FLOW',
+                'statement_format': self.scope,
                 'date': self.date,
                 'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None,
                 'entries': cash_flow_entries,
@@ -919,8 +1067,10 @@ class CreditSafeCompanyReport(Model):
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
     additional_information = ModelType(AdditionalInformation, default=None, serialized_name="additionalInformation")
     credit_score = ModelType(CreditScore, serialized_name="creditScore", default=None)
-    local_financial_statements = ListType(ModelType(CreditsafeFinancialStatement),
+    local_financial_statements = ListType(ModelType(CreditsafeLocalFinancialStatement),
                                           serialized_name="localFinancialStatements", default=[])
+    global_financial_statements = ListType(ModelType(CreditsafeGlobalFinancialStatement),
+                                           serialized_name="financialStatements", default=[])
 
     @property
     def credit_limit_history(self):
@@ -939,6 +1089,42 @@ class CreditSafeCompanyReport(Model):
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
         return model
+
+    @classmethod
+    def get_filtered_statements(cls, raw_statements, scope, is_consolidated):
+        return sorted(
+            list(chain(
+                *[s.to_json() for s in raw_statements
+                  if s.scope == scope and s.is_consolidated == is_consolidated])),
+            key=lambda x: x['date'],
+            reverse=True
+        )
+
+    @property
+    def statements(self):
+        '''
+        Returns local and global statements. in order to keep the numbers consistent,
+        only returns consolidated or non consolidated accounts, defaulting to non consolidated.
+        '''
+        local_non_consolidated_statements = self.get_filtered_statements(
+            self.local_financial_statements, 'LocalFinancialsCSUK', is_consolidated=False)
+
+        global_non_consolidated_statements = self.get_filtered_statements(
+            self.global_financial_statements, 'GlobalFinancialsGGS', is_consolidated=False)
+
+        statements = local_non_consolidated_statements + global_non_consolidated_statements
+
+        if len(statements) == 0:
+            # Try to get the consolidated ones then
+
+            local_consolidated_statements = self.get_filtered_statements(
+                self.local_financial_statements, 'LocalFinancialsCSUK', is_consolidated=True)
+
+            global_consolidated_statements = self.get_filtered_statements(
+                self.global_financial_statements, 'GlobalFinancialsGGS', is_consolidated=True)
+            statements = local_consolidated_statements + global_consolidated_statements
+
+        return statements
 
     def to_financials(self):
         contract_limit = None
@@ -973,16 +1159,10 @@ class CreditSafeCompanyReport(Model):
             if previous_international_rating and len(credit_history) > 1:
                 credit_history[1].update(previous_international_rating)
 
-        statements = sorted(
-            list(chain(
-                *[s.to_json() for s in self.local_financial_statements if s.scope == 'LocalFinancialsCSUK'])),
-            key = lambda x: x['date'],
-            reverse=True
-        )
         financials = Financials({
             'contract_limit': contract_limit,
             'credit_history': credit_history,
-            'statements': statements
+            'statements': self.statements
         })
         financials.validate()
 
