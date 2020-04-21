@@ -171,7 +171,7 @@ class TestCompanyReport(unittest.TestCase):
         self.assertEqual(entry['value'].get('value', None), value)
 
         self.assertEqual(entry.get('group_name', None), group_name)
-        self.assertEqual(entry.get('yoy', None), yoy)
+        self.assertAlmostEqual(entry.get('yoy', None), yoy)
 
     def test_returns_company_metadata(self):
         self.assertEqual(
@@ -234,12 +234,15 @@ class TestCompanyReport(unittest.TestCase):
                 'is_public': False
             }
         )
+
+    def test_returns_financials(self):
         self.assertEqual(
             self.formatted_report['financials']['contract_limit'],
             {
                 'currency_code': 'GBP', 'value': 49500.0
             }
         )
+
         self.assertEqual(
             self.formatted_report['financials']['credit_history'],
             [
@@ -273,9 +276,10 @@ class TestCompanyReport(unittest.TestCase):
             ]
         )
 
-        with self.subTest('returns profit and loss'):
+        with self.subTest('returns profit and loss (local UK)'):
             actual_pl = self.formatted_report['financials']['statements'][0]
             self.assertEqual(actual_pl['statement_type'], 'PROFIT_AND_LOSS')
+            self.assertEqual(actual_pl['statement_format'], 'LocalFinancialsCSUK')
 
             self.assert_entry_with(
                 actual_pl['entries'][0],
@@ -298,9 +302,10 @@ class TestCompanyReport(unittest.TestCase):
                 yoy=2.417705199828105
             )
 
-        with self.subTest('returns balance sheet'):
+        with self.subTest('returns balance sheet (local UK)'):
             actual_balance_sheet = self.formatted_report['financials']['statements'][1]
             self.assertEqual(actual_balance_sheet['statement_type'], 'BALANCE_SHEET')
+            self.assertEqual(actual_balance_sheet['statement_format'], 'LocalFinancialsCSUK')
 
             self.assert_entry_with(
                 actual_balance_sheet['entries'][0],
@@ -324,9 +329,10 @@ class TestCompanyReport(unittest.TestCase):
                 'total_long_term_liabilities',
             )
 
-        with self.subTest('returns capital & reserves'):
+        with self.subTest('returns capital & reserves (local UK)'):
             actual_cap_sheet = self.formatted_report['financials']['statements'][2]
             self.assertEqual(actual_cap_sheet['statement_type'], 'CAPITAL_AND_RESERVES')
+            self.assertEqual(actual_cap_sheet['statement_format'], 'LocalFinancialsCSUK')
 
             self.assert_entry_with(
                 actual_cap_sheet['entries'][0],
@@ -352,9 +358,10 @@ class TestCompanyReport(unittest.TestCase):
                     yoy=-1.3751146173227045
                 )
 
-        with self.subTest('returns other financial items'):
+        with self.subTest('returns other financial items (local UK)'):
             actual_other_financials = self.formatted_report['financials']['statements'][3]
             self.assertEqual(actual_other_financials['statement_type'], 'OTHER_FINANCIAL_ITEMS')
+            self.assertEqual(actual_other_financials['statement_format'], 'LocalFinancialsCSUK')
 
             self.assertEqual(actual_other_financials['entries'], [])
 
@@ -368,6 +375,7 @@ class TestCompanyReport(unittest.TestCase):
         with self.subTest('returns cash flow'):
             actual_cash_flow = self.formatted_report['financials']['statements'][4]
             self.assertEqual(actual_cash_flow['statement_type'], 'CASH_FLOW')
+            self.assertEqual(actual_cash_flow['statement_format'], 'LocalFinancialsCSUK')
 
             self.assertEqual(actual_cash_flow['entries'], [])
 
@@ -376,6 +384,96 @@ class TestCompanyReport(unittest.TestCase):
                 'net_cash_flow_from_operations',
                 None
             )
+
+        with self.subTest('returns profit and loss (global)'):
+            actual_pl = self.formatted_report['financials']['statements'][15]
+            self.assertEqual(actual_pl['statement_type'], 'PROFIT_AND_LOSS')
+            self.assertEqual(actual_pl['statement_format'], 'GlobalFinancialsGGS')
+
+            self.assert_entry_with(
+                actual_pl['entries'][0],
+                'operating_costs',
+                None,
+                'operating_profit'
+            )
+
+            self.assert_entry_with(
+                actual_pl['groups'][0],
+                'revenue',
+                None,
+            )
+
+            self.assert_entry_with(
+                actual_pl['entries'][7],
+                'depreciation',
+                7953.0,
+                'profit_before_tax',
+                yoy=2.417705199828105
+            )
+
+        with self.subTest('returns balance sheet (global)'):
+            actual_balance_sheet = self.formatted_report['financials']['statements'][15+1]
+            self.assertEqual(actual_balance_sheet['statement_type'], 'BALANCE_SHEET')
+            self.assertEqual(actual_balance_sheet['statement_format'], 'GlobalFinancialsGGS')
+
+            self.assert_entry_with(
+                actual_balance_sheet['entries'][0],
+                'trade_receivables',
+                31764.0,
+                'total_receivables',
+                yoy=0.05922368947579031
+            )
+
+            self.assert_entry_with(
+                actual_balance_sheet['groups'][0],
+                'cash',
+                244244.0,
+                yoy=0.62977099236641229
+            )
+
+        with self.subTest('returns capital & reserves (global)'):
+            actual_cap_sheet = self.formatted_report['financials']['statements'][15+2]
+            self.assertEqual(actual_cap_sheet['statement_type'], 'CAPITAL_AND_RESERVES')
+            self.assertEqual(actual_cap_sheet['statement_format'], 'GlobalFinancialsGGS')
+
+            self.assert_entry_with(
+                actual_cap_sheet['entries'][0],
+                'called_up_share_capital',
+                138.0,
+                'total_shareholders_equity',
+                yoy=0.14049586776859505
+            )
+
+            self.assert_entry_with(
+                actual_cap_sheet['groups'][0],
+                'total_shareholders_equity',
+                263198.0,
+                yoy=0.6043180377432097
+            )
+
+            with self.subTest('handles yoy with negative numbers'):
+                self.assert_entry_with(
+                    actual_cap_sheet['entries'][2],
+                    'revenue_reserves',
+                    -1150078,
+                    'total_shareholders_equity',
+                    yoy=-1.3751146173227045
+                )
+
+        with self.subTest('returns other financial items (global)'):
+            actual_other_financials = self.formatted_report['financials']['statements'][15+3]
+            self.assertEqual(actual_other_financials['statement_type'], 'OTHER_FINANCIAL_ITEMS')
+            self.assertEqual(actual_other_financials['statement_format'], 'GlobalFinancialsGGS')
+
+            self.assertEqual(actual_other_financials['entries'], [])
+
+            self.assert_entry_with(
+                actual_other_financials['groups'][0],
+                'net_worth',
+                263198.0,
+                yoy=0.6043180377432097
+            )
+
 
     def test_handles_missing_data(self):
         report = CreditSafeCompanyReport.from_json({
@@ -1331,6 +1429,97 @@ class TestFinancials(unittest.TestCase):
             }
         )
 
+    def test_filters_consolidated_accounts(self):
+        """
+        Creditsafe sometimes sends reports that are "consolidated", alongside non consolidated ones.
+        And for some companies, only consolidated ones.
+        Accountants usually use the non consolidated ones.
+        Make sure we only send one type of report, and don't mix them on the same profile
+        """
+        def get_test_data(local_consolidated, global_consolidated):
+            return {
+                "localFinancialStatements": [
+                    {
+                        "type": "LocalFinancialsCSUK",
+                        "yearEndDate": "2017-12-31T00:00:00Z",
+                        "numberOfWeeks": 52,
+                        "currency": "GBP",
+                        "consolidatedAccounts": local_consolidated,
+                        "auditQualification": "The company is exempt from audit",
+                        "profitAndLoss": {
+                            "depreciation": 7953.0,
+                            "auditFees": 0.0
+                        }
+                    }
+                ],
+                "financialStatements": [
+                    {
+                        "type": "GlobalFinancialsGGS",
+                        "yearEndDate": "2017-12-31T00:00:00Z",
+                        "numberOfWeeks": 52,
+                        "currency": "GBP",
+                        "consolidatedAccounts": global_consolidated,
+                        "profitAndLoss": {
+                            "depreciation": 7953.0,
+                            "amortisation": 0.0,
+                            "otherAppropriations": 0.0
+                        }
+                    }
+                ]
+            }
+
+        for local_v, global_v, expected_number \
+                in [(False, False, 9), (True, True, 9), (False, True, 5), (True, False, 4)]:
+            report = Financials(
+                CreditSafeCompanyReport.from_json({
+                    **self.base_metadata,
+                    **get_test_data(local_v, global_v)
+                }).to_financials()
+            ).serialize()
+            # Returns expected number of statements, ignoring consolidated accounts if both are present
+            self.assertEqual(len(report.get("statements", [])), expected_number)
+
+    def test_handles_conflicting_consolidated_values(self):
+        report = Financials(
+            CreditSafeCompanyReport.from_json({
+                **self.base_metadata,
+                **{
+                    "localFinancialStatements": [
+                        {
+                            "type": "LocalFinancialsCSUK",
+                            "yearEndDate": "2017-12-31T00:00:00Z",
+                            "numberOfWeeks": 52,
+                            "currency": "GBP",
+                            "consolidatedAccounts": True,
+                            "auditQualification": "The company is exempt from audit",
+                            "profitAndLoss": {
+                                "depreciation": 7953.0,
+                                "auditFees": 0.0
+                            }
+                        },
+                        {
+                            "type": "LocalFinancialsCSUK",
+                            "yearEndDate": "2017-12-31T00:00:00Z",
+                            "numberOfWeeks": 52,
+                            "currency": "GBP",
+                            "consolidatedAccounts": False,
+                            "auditQualification": "The company is exempt from audit",
+                            "profitAndLoss": {
+                                "depreciation": 1000.0,
+                                "auditFees": 0.0
+                            }
+                        }
+                    ]
+                }
+            }).to_financials()
+        ).serialize()
+        # Returns a set of statements (not doubling it)
+        self.assertEqual(len(report.get("statements", [])), 5)
+
+        # Picks up the non consolidated ones by default
+        self.assertEqual(report['statements'][0]['entries'][5]['value']['value'], 1000)
+        self.assertEqual(report['statements'][0]['entries'][5]['name'], 'depreciation')
+
 
 class TestYoy(unittest.TestCase):
 
@@ -1338,6 +1527,7 @@ class TestYoy(unittest.TestCase):
     def create_statement(cls, date, value_1, value_2):
         r = Statement().import_data({
             'currency_code': 'GBP',
+            'statement_format': 'LocalFinancialsCSUK',
             'date': date,
             'entries': [
                 {
@@ -1561,7 +1751,7 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
             })
         )
 
-    def test_to_passfort_format_with_unsupported_events(self):
+    def test_to_passfort_format_with_global_financial_events(self):
         event = CreditSafeNotificationEvent({
             "company": {
                 "id": "GB-0-03375464",
@@ -1581,7 +1771,15 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
 
         response = CreditSafeNotificationEvent.to_passfort_format(event)
 
-        self.assertIsNone(response)
+        self.assertEqual(
+            response,
+            MonitoringEvent({
+                'creditsafe_id': 'GB-0-03375464',
+                'event_type': MonitoringConfigType.ASSESS_FINANCIAL_DATA.value,
+                'event_date': '2020-02-28T05:33:02',
+                'rule_code': 802
+            })
+        )
 
     def test_to_passfort_format_with_unknown_event(self):
         event = CreditSafeNotificationEvent({

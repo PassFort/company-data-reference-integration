@@ -311,6 +311,7 @@ class StatementEntryGroup(StatementEntryBase):
 class Statement(Model):
     statement_type = StringType(required=True, choices=[
         'PROFIT_AND_LOSS', 'BALANCE_SHEET', 'CAPITAL_AND_RESERVES', 'OTHER_FINANCIAL_ITEMS', 'CASH_FLOW'])
+    statement_format = StringType(required=True)
     currency_code = StringType(default=None)
     date = UTCDateTimeType(required=True)  # (Y-M-D, Y-M, or Y)
     groups = ListType(ModelType(StatementEntryGroup), default=[])
