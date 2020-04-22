@@ -58,6 +58,9 @@ parameters:
   lexisnexis_id:
     type: boolean
     default: false
+  mastercard_match:
+    type: boolean
+    default: false
 
 executors:
   python-builder:
@@ -121,7 +124,7 @@ jobs:
           pipenv --three
           pipenv install
           pipenv run python deploy.py -bs << parameters.package >> staging
-  
+
   unit:
     executor: python-builder
     parameters:
@@ -173,7 +176,7 @@ jobs:
       - store_artifacts:
           path: coverage.xml
           destination: coverage.xml
-  
+
   unit_appengine:
     executor: python
     parameters:
@@ -221,7 +224,7 @@ jobs:
           pipenv --three
           pipenv install
           pipenv run python deploy.py -ds << parameters.package >> << parameters.to >>
-  
+
   deploy_appengine:
     executor: cloud-deploy
     parameters:
@@ -233,7 +236,7 @@ jobs:
       - run: |
           cat << parameters.package >>/env_variables.yaml.envsubst | envsubst > << parameters.package >>/env_variables.yaml
           cd << parameters.package >> && gcloud app deploy
-  
+
   build_docker_image:
     executor: cloud-deploy
     parameters:
@@ -865,3 +868,34 @@ workflows:
               branches:
                   only:
                     - master
+  mastercard_match:
+    when: << pipeline.parameters.mastercard_match >>
+    jobs:
+      - build:
+          name: build_mastercard_match
+          package: mastercard_match
+      - unit:
+          name: unit_mastercard_match
+          package: mastercard_match
+          requires:
+            - build_mastercard_match
+      - deploy_common:
+         name: deploy_mastercard_match_staging
+         package: mastercard_match
+         to: staging
+         requires:
+           - unit_mastercard_match
+         filters:
+             branches:
+               only:
+                 - staging
+      - deploy_common:
+         name: deploy_mastercard_match_staging
+         package: mastercard_match
+         to: master
+         requires:
+           - unit_mastercard_match
+         filters:
+             branches:
+               only:
+                 - master
