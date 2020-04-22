@@ -749,6 +749,7 @@ class CreditScore(Model):
     current_contract_limit = ModelType(CreditsafeMonetaryValue, serialized_name="currentContractLimit", default=None)
     current_credit_rating = ModelType(SummarisedCreditRating, serialized_name="currentCreditRating", default=None)
     previous_credit_rating = ModelType(SummarisedCreditRating, serialized_name="previousCreditRating", default=None)
+    latest_rating_date = UTCDateTimeType(serialized_name="latestRatingChangeDate", default=None)
 
 
 class CompanyRating(Model):
@@ -767,10 +768,10 @@ class CompanyRating(Model):
 
 class CreditLimit(Model):
     date = UTCDateTimeType(required=True)
-    value = ModelType(CreditsafeMonetaryValue, default=None, serialized_name="companyValue")
+    monetary_value = ModelType(CreditsafeMonetaryValue, default=None, serialized_name="companyValue")
 
     def to_json(self):
-        return self.value and self.value.to_json()
+        return self.monetary_value and self.monetary_value.to_json()
 
 
 class AdditionalInformation(Model):
@@ -781,12 +782,16 @@ class AdditionalInformation(Model):
 
 class CreditsafeFinancialStatement(Model):
     currency = StringType(default=None)
-    is_consolidated = BooleanType(serialized_name="consolidatedAccounts", default=None)
-    scope = StringType(serialized_name="type", required=True)
+    _is_consolidated = BooleanType(serialized_name="consolidatedAccounts", default=None)
+    _scope = StringType(serialized_name="type", required=True)
     date = UTCDateTimeType(serialized_name="yearEndDate", required=True)
     profit_and_loss = DictType(BaseType, default={}, serialized_name="profitAndLoss")
     balance_sheet = DictType(BaseType, default={}, serialized_name="balanceSheet")
     other_financials = DictType(BaseType, default={}, serialized_name="otherFinancials")
+
+    @property
+    def is_consolidated(self):
+        return False if self._is_consolidated is None else self._is_consolidated
 
     def parse_dict_entries(self, group_map, input_dict):
         entries = []
@@ -814,6 +819,13 @@ class CreditsafeFinancialStatement(Model):
 
 
 class CreditsafeGlobalFinancialStatement(CreditsafeFinancialStatement):
+
+    @property
+    def scope(self):
+        # Deal with creditsafe inconsistent data...
+        if self._scope == 'GGS Standardised':
+            return 'GlobalFinancialsGGS'
+        return self._scope
 
     def to_json(self):
         pl_map = {
@@ -955,6 +967,10 @@ class CreditsafeGlobalFinancialStatement(CreditsafeFinancialStatement):
 class CreditsafeLocalFinancialStatement(CreditsafeFinancialStatement):
     cash_flow = DictType(BaseType, default={}, serialized_name="cashFlow")
 
+    @property
+    def scope(self):
+        return self._scope
+
     def to_json(self):
         pl_map = {
             'turnover': [],
@@ -1062,7 +1078,7 @@ class CreditSafeCompanyReport(Model):
     creditsafe_id = StringType(required=True, serialized_name="companyId")
     summary = ModelType(CompanySummary, required=True, serialized_name="companySummary")
     identification = ModelType(CompanyIdentification, required=True, serialized_name="companyIdentification")
-    contact_information = ModelType(ContactInformation, required=True, serialized_name="contactInformation")
+    contact_information = ModelType(ContactInformation, default=None, serialized_name="contactInformation")
     directors = ModelType(CompanyDirectorsReport, default=None)
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
     additional_information = ModelType(AdditionalInformation, default=None, serialized_name="additionalInformation")
@@ -1158,6 +1174,13 @@ class CreditSafeCompanyReport(Model):
                 credit_history[0].update(current_international_rating)
             if previous_international_rating and len(credit_history) > 1:
                 credit_history[1].update(previous_international_rating)
+        elif current_international_rating:
+            credit_history = [
+                {
+                    'date': self.credit_score.latest_rating_date,
+                    **current_international_rating
+                }
+            ]
 
         financials = Financials({
             'contract_limit': contract_limit,
@@ -1175,11 +1198,13 @@ class CreditSafeCompanyReport(Model):
     def as_passfort_format_41(self, request_handler=None):
         addresses = [
             self.contact_information.main_address.as_passfort_address(self.summary.country)
-        ]
-        addresses.extend([
-            address.as_passfort_address(self.summary.country)
-            for address in self.contact_information.other_addresses
-        ])
+        ] if self.contact_information else []
+
+        if self.contact_information:
+            addresses.extend([
+                address.as_passfort_address(self.summary.country)
+                for address in self.contact_information.other_addresses
+            ])
 
         metadata = PassFortMetadata({
             'name': self.identification.basic_info.name,
