@@ -1,0 +1,15 @@
+{
+  "ContactResponse": {
+    "Contact": [
+      {
+        "BankName": "Banque Federative du Credit Mutuel (BFCM)",
+        "Region": "Europe",
+        "FirstName": "Didier",
+        "LastName": "Tomasi",
+        "PhoneNumber": "145966271",
+        "FaxNumber": "388147010",
+        "EmailAddress": "didier.tomasi@cmcic.com"
+      }
+    ]
+  }
+}
