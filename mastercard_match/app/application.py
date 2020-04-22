@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask
+from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 
 app = Flask(__name__)
@@ -48,6 +48,6 @@ if sentry_url:
     )
 
 
-@app.route('/')
-def main():
-    return 'hello'
+@app.route('/health')
+def health():
+    return jsonify('success')
