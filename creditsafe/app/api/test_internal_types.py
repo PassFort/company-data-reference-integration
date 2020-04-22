@@ -495,12 +495,6 @@ class TestCompanyReport(unittest.TestCase):
                     },
                     'companyStatus': {}
                 }
-            },
-            'contactInformation': {
-                'mainAddress': {
-                    'type': 'Some Address',
-                    'postalCode': 'E1 6QH'
-                }
             }
         })
 
@@ -1429,6 +1423,30 @@ class TestFinancials(unittest.TestCase):
             }
         )
 
+    def test_handles_missing_credit_and_limit_history(self):
+        report = CreditSafeCompanyReport.from_json({
+            **self.base_metadata,
+            'creditScore': {
+                'currentCreditRating': {
+                    'commonValue': 'A'
+                },
+                'previousCreditRating': {
+                    'commonValue': 'B'
+                },
+                'latestRatingChangeDate': '2011-03-29 00:00:00'
+            },
+        })
+
+        self.assertDictEqual(
+            Financials(report.to_financials()).serialize(),
+            {
+                'credit_history': [{
+                    'date': '2011-03-29 00:00:00',
+                    'international_rating': {'value': 'A'}
+                }]
+            }
+        )
+
     def test_filters_consolidated_accounts(self):
         """
         Creditsafe sometimes sends reports that are "consolidated", alongside non consolidated ones.
@@ -1469,7 +1487,9 @@ class TestFinancials(unittest.TestCase):
             }
 
         for local_v, global_v, expected_number \
-                in [(False, False, 9), (True, True, 9), (False, True, 5), (True, False, 4)]:
+                in [
+                    (False, False, 9), (True, True, 9), (False, True, 5), (True, False, 4),
+                    (None, False, 9), (None, None, 9), (False, None, 9), (None, True, 5), (True, None, 4)]:
             report = Financials(
                 CreditSafeCompanyReport.from_json({
                     **self.base_metadata,
@@ -1477,7 +1497,7 @@ class TestFinancials(unittest.TestCase):
                 }).to_financials()
             ).serialize()
             # Returns expected number of statements, ignoring consolidated accounts if both are present
-            self.assertEqual(len(report.get("statements", [])), expected_number)
+            self.assertEqual(len(report.get("statements", [])), expected_number, f"case {local_v}, {global_v}")
 
     def test_handles_conflicting_consolidated_values(self):
         report = Financials(
@@ -1519,6 +1539,28 @@ class TestFinancials(unittest.TestCase):
         # Picks up the non consolidated ones by default
         self.assertEqual(report['statements'][0]['entries'][5]['value']['value'], 1000)
         self.assertEqual(report['statements'][0]['entries'][5]['name'], 'depreciation')
+
+    def test_handles_known_bad_scope(self):
+        other_ggs_type = "GGS Standardised"
+        report = Financials(
+            CreditSafeCompanyReport.from_json({
+                **self.base_metadata,
+                **{
+                    "financialStatements": [
+                        {
+                            "type": other_ggs_type,
+                            "yearEndDate": "2017-12-31T00:00:00Z",
+                            "numberOfWeeks": 52,
+                            "currency": "GBP",
+                            "consolidatedAccounts": True,
+                            "auditQualification": "The company is exempt from audit",
+                        }
+                    ]
+                }
+            }).to_financials()
+        ).serialize()
+        # Returns a set of global statements
+        self.assertEqual(len(report.get("statements", [])), 4)
 
 
 class TestYoy(unittest.TestCase):

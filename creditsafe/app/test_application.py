@@ -285,7 +285,7 @@ class TestDemoData(unittest.TestCase):
         # propagate the exceptions to the test client
         self.app.testing = True
 
-    def test_pass(self):
+    def test_pass_uk(self):
         search_response = self.app.post(
             '/search',
             json={
@@ -314,6 +314,7 @@ class TestDemoData(unittest.TestCase):
                 'is_demo': True,
                 'input_data': {
                     'creditsafe_id': 'pass',
+                    'country_of_incorporation': 'GBR'
                 }
             }
         ).json
@@ -324,7 +325,7 @@ class TestDemoData(unittest.TestCase):
         with self.subTest('returns associates'):
             self.assertEqual(len(report_response['output_data']['associated_entities']), 29)
 
-    def test_partial(self):
+    def test_partial_uk(self):
         search_response = self.app.post(
             '/search',
             json={
@@ -353,12 +354,128 @@ class TestDemoData(unittest.TestCase):
                 'is_demo': True,
                 'input_data': {
                     'creditsafe_id': 'partial',
+                    'country_of_incorporation': 'GBR'
                 }
             }
         ).json
 
         with self.subTest('returns demo company report, with partial id'):
             self.assertEqual(report_response['output_data']['metadata']['number'], '1111111')
+
+    def test_pass_global(self):
+        search_response = self.app.post(
+            '/search',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'query': 'test',
+                    'country': 'FRA'
+                }
+            }
+        ).json
+        with self.subTest('returns demo company data, with pass id'):
+            self.assertEqual(len(search_response['output_data']), 1)
+            self.assertDictEqual(
+                search_response['output_data'][0],
+                {
+                    'name': 'Aerial Traders',
+                    'number': '5560642554',
+                    'creditsafe_id': 'pass',
+                    'country_of_incorporation': 'FRA'
+                }
+            )
+
+        report_response = self.app.post(
+            '/company_report',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'creditsafe_id': 'pass',
+                    'country_of_incorporation': 'FRA'
+                }
+            }
+        ).json
+
+        with self.subTest('returns demo company report, with pass id'):
+            self.assertEqual(report_response['output_data']['metadata']['number'], '5560642554')
+            self.assertEqual(report_response['output_data']['metadata']['name'], 'Aerial Traders')
+
+    def test_partial_global(self):
+        search_response = self.app.post(
+            '/search',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'query': ' gfr partial grgeger$',
+                    'country': 'FRA'
+                }
+            }
+        ).json
+        with self.subTest('returns demo company data, with partial id'):
+            self.assertEqual(len(search_response['output_data']), 1)
+            self.assertDictEqual(
+                search_response['output_data'][0],
+                {
+                    'name': 'Aerial Traders PARTIAL',
+                    'number': '5560642554',
+                    'creditsafe_id': 'partial',
+                    'country_of_incorporation': 'FRA'
+                }
+            )
+
+        report_response = self.app.post(
+            '/company_report',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'creditsafe_id': 'partial',
+                    'country_of_incorporation': 'FRA'
+                }
+            }
+        ).json
+
+        with self.subTest('returns demo company report, with partial id'):
+            self.assertEqual(report_response['output_data']['metadata']['number'], '1111111')
+            self.assertEqual(report_response['output_data']['metadata']['name'], 'Aerial Traders PARTIAL')
+
+    def test_partial_financials_global(self):
+        search_response = self.app.post(
+            '/search',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'query': ' gfr partial_financial grgeger$',
+                    'country': 'FRA'
+                }
+            }
+        ).json
+        with self.subTest('returns demo company data, with partial id'):
+            self.assertEqual(len(search_response['output_data']), 1)
+            self.assertDictEqual(
+                search_response['output_data'][0],
+                {
+                    'name': 'Aerial Traders PARTIAL FINANCIAL',
+                    'number': '5560642554',
+                    'creditsafe_id': 'partial_financial',
+                    'country_of_incorporation': 'FRA'
+                }
+            )
+
+        report_response = self.app.post(
+            '/company_report',
+            json={
+                'is_demo': True,
+                'input_data': {
+                    'creditsafe_id': 'partial_financial',
+                    'country_of_incorporation': 'FRA'
+                }
+            }
+        ).json
+
+        with self.subTest('returns demo company report, with no statements'):
+            self.assertEqual(report_response['output_data']['metadata']['number'], '5560642554')
+            self.assertEqual(report_response['output_data']['metadata']['name'], 'Aerial Traders PARTIAL FINANCIAL')
+            self.assertEqual(report_response['output_data']['financials'], None)
 
     def test_fail(self):
         search_response = self.app.post(
