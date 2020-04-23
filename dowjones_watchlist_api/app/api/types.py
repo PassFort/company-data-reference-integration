@@ -278,17 +278,18 @@ class PersonalDetails(Model):
 
     @property
     def dowjones_dob(self):
-     try:
-          datetime.datetime.strptime(self.dob, "%Y-%m-%d").date()
-          return self.dob
-     except (ValueError, TypeError):
-         pass
-     try:
-          datetime.datetime.strptime(self.dob, "%Y-%m").date()
-          return f'{self.dob}-A'
-     except (ValueError, TypeError):
-         pass
-     return f'{self.dob}-A-A'
+        try:
+            datetime.datetime.strptime(self.dob, "%Y-%m-%d").date()
+            return self.dob
+        except (ValueError, TypeError):
+            pass
+        try:
+            datetime.datetime.strptime(self.dob, "%Y-%m").date()
+            return f'{self.dob}-A'
+        except (ValueError, TypeError):
+            pass
+        return f'{self.dob}-A-A'
+
 
 class InputData(Model):
     entity_type = StringType(choices=['INDIVIDUAL'], required=True)
@@ -381,7 +382,6 @@ class Gender(Enum):
             return Gender.F
         else:
             return None
-
 
 
 @unique
