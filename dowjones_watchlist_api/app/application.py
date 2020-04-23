@@ -162,7 +162,11 @@ def run_check(request_data: ScreeningRequest):
             'match_id': record.person.peid,
             'provider_name': PROVIDER_NAME,
             'match_custom_label': risk_icon,
-            'match_name': match.payload.matched_name,
+            'match_name': next(
+                (value.name.join() for value in record.person.name_details.values
+                 if value.name.type_.lower() == 'primary name'),
+                match.payload.primary_name
+            ),
             'match_dates': [match.date for match in date_matches] if date_matches else None,
             'match_dates_data': date_matches,
             'aliases': [

@@ -45,6 +45,7 @@ class SearchResultPayload(XmlElementModel):
     tag_name = 'payload'
     risk_icons = XmlChild(RiskIcons)
     matched_name = XmlChildContent(XmlStringType(), serialized_name='matched-name')
+    primary_name = XmlChildContent(XmlStringType(), serialized_name='primary-name')
 
 
 class SearchResultsMatch(XmlElementModel):
