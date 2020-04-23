@@ -2,6 +2,10 @@ import os
 import logging
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
+from .api.passfort import validate_model, InquiryRequest
+from .api.match import TerminationInquiryRequest
+import traceback
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
@@ -51,3 +55,17 @@ if sentry_url:
 @app.route('/health')
 def health():
     return jsonify('success')
+
+
+@app.route('/inquiry-request')
+@validate_model(InquiryRequest)
+def inquiry_request(data: InquiryRequest):
+    terminationInquiryRequest = TerminationInquiryRequest().from_passfort(data)
+    logging.info(terminationInquiryRequest.to_primitive())
+    return jsonify(terminationInquiryRequest.to_primitive())
+
+
+@app.errorhandler(400)
+def api_400(error):
+    logging.error(error.description)
+    return jsonify(errors=[error.description]), 400
