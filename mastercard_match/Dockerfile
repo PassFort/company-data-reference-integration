@@ -8,13 +8,13 @@ WORKDIR /src
 
 RUN apk --no-cache upgrade
 
-RUN apk add --no-cache make openssh-client git gcc musl-dev
+RUN apk add --no-cache make openssh-client git gcc musl-dev python3-dev libffi-dev openssl-dev
 
 COPY Pipfile Pipfile.lock Makefile /src/
 
 RUN pip install pipenv \
     && pipenv install \
-    && apk del --no-cache git openssh-client gcc musl-dev
+    && apk del --no-cache git openssh-client gcc musl-dev libffi-dev
 
 COPY main.py /src
 COPY coverage /src
