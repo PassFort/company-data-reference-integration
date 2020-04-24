@@ -11,7 +11,7 @@ from typing import Dict, Optional, Set, List
 
 from schematics import Model
 from schematics.types import BooleanType, StringType, ModelType, ListType, UTCDateTimeType, IntType, DecimalType, \
-    UUIDType, DateType, DictType, BaseType
+    UUIDType, DateType, DictType, BaseType, UnionType
 
 from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
@@ -718,31 +718,53 @@ class PSCReport(Model):
 
 
 class CreditsafeMonetaryValue(Model):
-    value = DecimalType(default=None)
+    value = UnionType((DecimalType, StringType), default=None)
     currency = StringType(default=None)
 
     def to_json(self):
-        if self.value is not None and self.currency in SUPPORTED_CURRENCIES:
-            return {
-                'value': self.value,
-                'currency_code': self.currency
-            }
+        if self.value is not None:
+            try:
+                return {
+                    'value': float(self.value),
+                    'currency_code': self.currency if self.currency in SUPPORTED_CURRENCIES else None
+                }
+            except ValueError:
+                # No actual credit limit if we can't parse it
+                return None
         return None
+
+
+class ProviderCreditRating(Model):
+    value = StringType(default=None)
+    minValue = StringType(default=None)
+    maxValue = StringType(default=None)
 
 
 class SummarisedCreditRating(Model):
     international_value = StringType(serialized_name="commonValue", default=None)
     international_description = StringType(serialized_name="commonDescription", default=None)
+    credit_limit = ModelType(CreditsafeMonetaryValue, serialized_name="creditLimit", default=None)
+    provider_value = ModelType(ProviderCreditRating, serialized_name="providerValue", default=None)
+    provider_description = StringType(serialized_name="providerDescription", default=None)
 
     def to_json(self):
+        result = {}
+
         if self.international_value:
-            return {
-                'international_rating': {
-                    'value': self.international_value,
-                    'description': self.international_description
-                }
+            result['international_rating'] = {
+                'value': self.international_value,
+                'description': self.international_description
             }
-        return None
+        if self.provider_value:
+            result['credit_rating'] = {
+                'value': self.provider_value.value,
+                'description': self.provider_description
+            }
+        if self.credit_limit:
+            credit_limit = self.credit_limit.to_json()
+            result['credit_limit'] = credit_limit
+
+        return result
 
 
 class CreditScore(Model):
