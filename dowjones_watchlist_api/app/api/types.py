@@ -432,6 +432,14 @@ class Associate(Model):
         export_level = NOT_NONE
 
 
+class Location(Model):
+    type = StringType(required=True)
+    country = StringType()
+    region = StringType()
+    city = StringType()
+    address = StringType()
+
+
 class PepRole(Model):
     name = StringType()
     tier = IntType()
@@ -490,6 +498,7 @@ class MatchEvent(Model):
     aliases = ListType(StringType(), required=True, default=[])
     associates = ListType(ModelType(Associate), default=[])
     profile_notes = StringType()
+    locations = ListType(ModelType(Location), default=[])
     sources = ListType(ModelType(Source), default=[])
     gender = StringType(choices=[gender.value for gender in Gender])
     deceased = BooleanType()

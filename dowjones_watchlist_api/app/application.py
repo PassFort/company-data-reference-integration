@@ -11,6 +11,7 @@ from app.api.types import (
     DateMatchData,
     DateMatchType,
     Error,
+    Location,
     Gender,
     MatchEvent,
     MatchEventType,
@@ -157,6 +158,16 @@ def run_check(request_data: ScreeningRequest):
             if associate is not None
         ]
 
+        locations = [
+            Location({
+                'type': 'BIRTH',
+                'region': birth_place.region,
+                'country': birth_place.country.iso3_country_code,
+                'city': birth_place.place_name,
+            })
+            for birth_place in record.person.birth_place_details.values
+        ] if record.person.birth_place_details else []
+
         return MatchEvent({
             'event_type': event_type.value,
             'match_id': record.person.peid,
@@ -178,6 +189,7 @@ def run_check(request_data: ScreeningRequest):
             'profile_notes': record.person.watchlist_content.profile_notes,
             'sources': [Source({'name': source.reference}) for source in record.person.watchlist_content.sources],
             'associates': associates,
+            'locations': locations,
             'match_countries': [match.country_code for match in country_matches],
             'match_countries_data': country_matches,
             'gender': gender.value if gender else None,
