@@ -240,13 +240,15 @@ class PassFortStructuredCompanyType(Model):
 
 
 class MonetaryValue(Model):
-    currency_code = StringType(required=True)
+    currency_code = StringType(default=None)
     value = DecimalType(required=True)
 
     @serializable(serialized_name="value")
     def value_out(self):
         return float(self.value)
 
+    class Options:
+        serialize_when_none = False
 
 def to_passfort_datetime_format(utc):
     return utc.strftime("%Y-%m-%d %H:%M:%S")

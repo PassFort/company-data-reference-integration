@@ -143,7 +143,7 @@ def get_report(creditsafe_id, country_alpha_3):
                     },
                     "providerDescription": "No account",
                     "providerValue": {
-                        "value": "No credit rating"
+                        "value": "-"
                     }
                 },
                 "latestShareholdersEquityFigure": {
@@ -175,7 +175,7 @@ def get_report(creditsafe_id, country_alpha_3):
                     },
                     "providerDescription": "No account",
                     "providerValue": {
-                        "value": "No credit rating"
+                        "value": "-"
                     }
                 },
                 "latestRatingChangeDate": "2019-11-01T00:00:00Z",
