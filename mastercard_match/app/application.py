@@ -1,15 +1,18 @@
-import os
 import logging
-from flask import Flask, jsonify
-from raven.contrib.flask import Sentry
+import os
 import traceback
-from werkzeug.exceptions import HTTPException
-from .auth.oauth import OAuth, load_signing_key
-import requests
-from .api.passfort import validate_model, InquiryRequest
-from .api.match import TerminationInquiryRequest, Merchant
-from .request_handler import MatchHandler
 
+import requests
+from flask import Flask, Response, jsonify, request
+from raven.contrib.flask import Sentry
+from requests.exceptions import ConnectionError, Timeout
+from werkzeug.exceptions import HTTPException
+
+from .api.errors import Error, ErrorCode, MatchException
+from .api.match import Merchant, TerminationInquiryRequest
+from .api.passfort import InquiryRequest, validate_model
+from .auth.oauth import OAuth, load_signing_key
+from .request_handler import MatchHandler
 
 app = Flask(__name__)
 
@@ -61,6 +64,19 @@ def health():
     return jsonify('success')
 
 
+@app.after_request
+def send_analytics(response):
+    tags = [
+        'method:{}'.format(request.method),
+        'endpoint:{}'.format(request.endpoint),
+        'path:{}'.format(request.path),
+        'full_path:{}'.format(request.full_path),
+        'status_code:{}'.format(response.status_code)
+    ]
+    app.dd.increment('passfort.services.match.api_call', tags=tags)
+    return response
+
+
 @app.route('/inquiry-request')
 @validate_model(InquiryRequest)
 def inquiry_request(data: InquiryRequest):
@@ -72,3 +88,46 @@ def inquiry_request(data: InquiryRequest):
 def api_400(error):
     logging.error(error.description)
     return jsonify(errors=[error.description]), 400
+
+
+@app.errorhandler(MatchException)
+def app_error(check_error):
+    response = check_error.response
+    response_content = response.json()
+    errors = response_content.get('Errors')
+    errors = errors.get('Error') if errors else []
+    if isinstance(errors, list):
+        errors = [e.get('description') for e in errors]
+    else:
+        errors = [errors.get('description')]
+
+    if response.status_code == 400:
+        errors = [Error.provider_unknown_error(e) for e in errors]
+        return jsonify(
+            raw=response_content,
+            errors=errors
+        ), 200
+    elif response.status_code == 401 or response.status_code == 403:
+        errors = [Error.provider_misconfiguration_error(e) for e in errors]
+        return jsonify(
+            raw=response_content,
+            errors=errors
+        ), 200
+    else:
+        errors = [Error.provider_unknown_error(e) for e in errors]
+        return jsonify(
+            raw=response_content,
+            errors=errors
+        ), 500
+
+
+@app.errorhandler(ConnectionError)
+def connection_error(e):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[Error.provider_connection_error(e)]), 200
+
+
+@app.errorhandler(Timeout)
+def timeout_error(e):
+    logging.error(traceback.format_exc())
+    return jsonify(errors=[Error.provider_connection_error(e)]), 200

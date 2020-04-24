@@ -1,6 +1,7 @@
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from .api.errors import MatchException, Error
 from .api.match import TerminationInquiryRequest
 from .auth.oauth import OAuth
 import pprint
@@ -30,7 +31,7 @@ class MatchHandler():
         self.oauth = OAuth(pem_cert, consumer_key)
         self.session = requests_retry_session()
 
-    def prepare_request(self, url, method, body=None, params=None):
+    def fire_request(self, url, method, body=None, params=None):
         auth_header = self.oauth.get_authorization_header(url, method, body, params)
 
         headers = {
@@ -38,8 +39,14 @@ class MatchHandler():
             "Accept": "application/json",
             "Content-Type": "application/json",
         }
-        request = requests.Request(method, url, headers=headers, json=body, params=params)
-        return request.prepare()
+        try:
+            request = self.session.request(method, url, headers=headers, json=body, params=params)
+            response = self.session.send(request)
+        except Exception as err:
+            return {
+                "errors": [Error.provider_connection_error(err)]
+            }
+        return response.json()
 
     def inquiry_request(self, body, page_offset=0, page_length=10):
         url = self.base_url + '/fraud/merchant/v3/termination-inquiry'
@@ -49,7 +56,6 @@ class MatchHandler():
         }
 
         inquiry_request_body = TerminationInquiryRequest().from_passfort(body).as_request_body()
-        request = self.prepare_request(url, 'POST', body=inquiry_request_body, params=params)
-        response = self.session.send(request)
+        response = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
 
-        return response.json()
+        return response
