@@ -1386,7 +1386,8 @@ class TestFinancials(unittest.TestCase):
             Financials(report.to_financials()).serialize(),
             {
                 'credit_history': [{
-                    'date': '2011-03-29 00:00:00'
+                    'date': '2011-03-29 00:00:00',
+                    'credit_limit': {'value': 0.0}
                 }]
             }
         )
@@ -1428,10 +1429,43 @@ class TestFinancials(unittest.TestCase):
             **self.base_metadata,
             'creditScore': {
                 'currentCreditRating': {
-                    'commonValue': 'A'
+                    'commonValue': 'A',
+                    'providerValue': {
+                        'value': '75'
+                    },
+                    'providerDescription': 'Good value',
+                    'creditLimit': {
+                        'value': '1500.0'
+                    }
                 },
                 'previousCreditRating': {
                     'commonValue': 'B'
+                },
+                'latestRatingChangeDate': '2011-03-29 00:00:00'
+            },
+        })
+
+        self.assertDictEqual(
+            Financials(report.to_financials()).serialize(),
+            {
+                'credit_history': [{
+                    'date': '2011-03-29 00:00:00',
+                    'international_rating': {'value': 'A'},
+                    'credit_rating': {'value': '75', 'description': 'Good value'},
+                    'credit_limit': {'value': 1500.0}
+                }]
+            }
+        )
+
+    def test_handles_bad_credit_limit_and_does_not_return_it(self):
+        report = CreditSafeCompanyReport.from_json({
+            **self.base_metadata,
+            'creditScore': {
+                'currentCreditRating': {
+                    'commonValue': 'A',
+                    'creditLimit': {
+                        'value': 'text'
+                    }
                 },
                 'latestRatingChangeDate': '2011-03-29 00:00:00'
             },
