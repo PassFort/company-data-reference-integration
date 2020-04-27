@@ -205,7 +205,7 @@ class Associate(XmlElementModel):
 class BirthPlace(XmlElementModel):
     tag_name = 'birth-place'
     place_name = XmlChildContent(XmlStringType(), serialized_name='place-name')
-    region = XmlChildContent(XmlStringType())
+    region = XmlChildContent(XmlStringType(), default=None)
     country = XmlChild(Country)
 
 

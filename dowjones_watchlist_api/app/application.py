@@ -35,6 +35,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 
 PROVIDER_NAME = 'Dow Jones Watchlist API'
+BRAND_TEXT = 'Powered By Dow Jones. Copyright © 2020 Dow Jones & Company, Inc. All rights reserved.'
 
 
 @app.route('/health')
@@ -172,6 +173,7 @@ def run_check(request_data: ScreeningRequest):
             'event_type': event_type.value,
             'match_id': record.person.peid,
             'provider_name': PROVIDER_NAME,
+            'brand_text': BRAND_TEXT,
             'match_custom_label': risk_icon,
             'match_name': next(
                 (value.name.join() for value in record.person.name_details.values

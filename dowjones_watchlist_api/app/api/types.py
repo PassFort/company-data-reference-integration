@@ -480,6 +480,7 @@ class MatchEvent(Model):
     event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
     match_id = StringType(required=True)
     provider_name = StringType(required=True)
+    brand_text = StringType(required=True)
 
     pep = ModelType(PepData)
     sanctions = ListType(ModelType(SanctionsData))
