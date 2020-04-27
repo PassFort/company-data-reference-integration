@@ -98,7 +98,7 @@ class DocumentMetadata(Model):
     document_type = StringType(required=True)
     number = StringType(required=True)
     country_code = StringType(required=True)
-    issuing_state = StringType()
+    issuing_state = StringType(default=None)
 
 
 class IndividualData(Model):
@@ -111,9 +111,15 @@ class IndividualData(Model):
         return next((doc for doc in self.document_metadata if doc.document_type == 'DRIVING_LICENCE'), None)
 
 
+class CompanyContactDetails(Model):
+    phone_number = StringType(default=None)
+    url = StringType(default=None)
+
+
 class CompanyMetadata(Model):
     name = StringType(required=True)
     addresses = ListType(ModelType(AddressWrapper), required=True, min_size=1)
+    contact_details: CompanyContactDetails = ModelType(CompanyContactDetails, default={})
 
     @property
     def first_address(self) -> Address:
@@ -129,15 +135,15 @@ class CompanyData(Model):
             entities = raw_data.get('associated_entities')
             if entities:
                 raw_data['associated_entities'] = [e for e in entities if e.get('entity_type') == 'INDIVIDUAL']
-        super(CompanyData, self).import_data(raw_data, **kwargs)
+        return super(CompanyData, self).import_data(raw_data, **kwargs)
 
 
 class MatchConfig(Model):
-    aquirer_id = StringType(required=True)
+    acquirer_id = StringType(required=True)
 
 
 class MatchCredentials(Model):
-    certificate_p12 = StringType(required=True)
+    certificate = StringType(required=True)
     consumer_key = StringType(required=True)
 
 

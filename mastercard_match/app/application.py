@@ -2,10 +2,14 @@ import os
 import logging
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
-from .api.passfort import validate_model, InquiryRequest
-from .api.match import TerminationInquiryRequest
 import traceback
 from werkzeug.exceptions import HTTPException
+from .auth.oauth import OAuth, load_signing_key
+import requests
+from .api.passfort import validate_model, InquiryRequest
+from .api.match import TerminationInquiryRequest, Merchant
+from .request_handler import MatchHandler
+
 
 app = Flask(__name__)
 
@@ -60,9 +64,8 @@ def health():
 @app.route('/inquiry-request')
 @validate_model(InquiryRequest)
 def inquiry_request(data: InquiryRequest):
-    terminationInquiryRequest = TerminationInquiryRequest().from_passfort(data)
-    logging.info(terminationInquiryRequest.to_primitive())
-    return jsonify(terminationInquiryRequest.to_primitive())
+    handler = MatchHandler(data.credentials.certificate, data.credentials.consumer_key)
+    return handler.inquiry_request(data, 0, 10)
 
 
 @app.errorhandler(400)
