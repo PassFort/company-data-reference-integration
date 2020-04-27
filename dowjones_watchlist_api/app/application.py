@@ -11,6 +11,7 @@ from app.api.types import (
     DateMatchData,
     DateMatchType,
     Error,
+    Location,
     Gender,
     MatchEvent,
     MatchEventType,
@@ -34,6 +35,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 
 PROVIDER_NAME = 'Dow Jones Watchlist API'
+BRAND_TEXT = 'Powered By Dow Jones. Copyright © 2020 Dow Jones & Company, Inc. All rights reserved.'
 
 
 @app.route('/health')
@@ -157,12 +159,27 @@ def run_check(request_data: ScreeningRequest):
             if associate is not None
         ]
 
+        locations = [
+            Location({
+                'type': 'BIRTH',
+                'region': birth_place.region,
+                'country': birth_place.country.iso3_country_code,
+                'city': birth_place.place_name,
+            })
+            for birth_place in record.person.birth_place_details.values
+        ] if record.person.birth_place_details else []
+
         return MatchEvent({
             'event_type': event_type.value,
             'match_id': record.person.peid,
             'provider_name': PROVIDER_NAME,
+            'brand_text': BRAND_TEXT,
             'match_custom_label': risk_icon,
-            'match_name': match.payload.matched_name,
+            'match_name': next(
+                (value.name.join() for value in record.person.name_details.values
+                 if value.name.type_.lower() == 'primary name'),
+                match.payload.primary_name
+            ),
             'match_dates': [match.date for match in date_matches] if date_matches else None,
             'match_dates_data': date_matches,
             'aliases': [
@@ -174,6 +191,7 @@ def run_check(request_data: ScreeningRequest):
             'profile_notes': record.person.watchlist_content.profile_notes,
             'sources': [Source({'name': source.reference}) for source in record.person.watchlist_content.sources],
             'associates': associates,
+            'locations': locations,
             'match_countries': [match.country_code for match in country_matches],
             'match_countries_data': country_matches,
             'gender': gender.value if gender else None,

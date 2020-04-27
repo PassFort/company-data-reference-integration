@@ -278,17 +278,18 @@ class PersonalDetails(Model):
 
     @property
     def dowjones_dob(self):
-     try:
-          datetime.datetime.strptime(self.dob, "%Y-%m-%d").date()
-          return self.dob
-     except (ValueError, TypeError):
-         pass
-     try:
-          datetime.datetime.strptime(self.dob, "%Y-%m").date()
-          return f'{self.dob}-A'
-     except (ValueError, TypeError):
-         pass
-     return f'{self.dob}-A-A'
+        try:
+            datetime.datetime.strptime(self.dob, "%Y-%m-%d").date()
+            return self.dob
+        except (ValueError, TypeError):
+            pass
+        try:
+            datetime.datetime.strptime(self.dob, "%Y-%m").date()
+            return f'{self.dob}-A'
+        except (ValueError, TypeError):
+            pass
+        return f'{self.dob}-A-A'
+
 
 class InputData(Model):
     entity_type = StringType(choices=['INDIVIDUAL'], required=True)
@@ -383,7 +384,6 @@ class Gender(Enum):
             return None
 
 
-
 @unique
 class DateMatchType(Enum):
     DOB = 'DOB'
@@ -432,6 +432,14 @@ class Associate(Model):
         export_level = NOT_NONE
 
 
+class Location(Model):
+    type = StringType(required=True)
+    country = StringType()
+    region = StringType()
+    city = StringType()
+    address = StringType()
+
+
 class PepRole(Model):
     name = StringType()
     tier = IntType()
@@ -472,6 +480,7 @@ class MatchEvent(Model):
     event_type = StringType(required=True, choices=[ty.value for ty in MatchEventType])
     match_id = StringType(required=True)
     provider_name = StringType(required=True)
+    brand_text = StringType(required=True)
 
     pep = ModelType(PepData)
     sanctions = ListType(ModelType(SanctionsData))
@@ -490,6 +499,7 @@ class MatchEvent(Model):
     aliases = ListType(StringType(), required=True, default=[])
     associates = ListType(ModelType(Associate), default=[])
     profile_notes = StringType()
+    locations = ListType(ModelType(Location), default=[])
     sources = ListType(ModelType(Source), default=[])
     gender = StringType(choices=[gender.value for gender in Gender])
     deceased = BooleanType()

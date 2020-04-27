@@ -45,6 +45,7 @@ class SearchResultPayload(XmlElementModel):
     tag_name = 'payload'
     risk_icons = XmlChild(RiskIcons)
     matched_name = XmlChildContent(XmlStringType(), serialized_name='matched-name')
+    primary_name = XmlChildContent(XmlStringType(), serialized_name='primary-name')
 
 
 class SearchResultsMatch(XmlElementModel):
@@ -201,6 +202,18 @@ class Associate(XmlElementModel):
     ex = XmlAttribute(XmlBoolType(bool_values=['true', 'false']))
 
 
+class BirthPlace(XmlElementModel):
+    tag_name = 'birth-place'
+    place_name = XmlChildContent(XmlStringType(), serialized_name='place-name')
+    region = XmlChildContent(XmlStringType(), default=None)
+    country = XmlChild(Country)
+
+
+class BirthPlaceDetails(XmlElementModel):
+    tag_name = 'birth-place-details'
+    values = XmlChildren(BirthPlace)
+
+
 class PersonRecord(XmlElementModel):
     tag_name = 'person'
     peid = XmlAttribute(XmlStringType())
@@ -209,6 +222,7 @@ class PersonRecord(XmlElementModel):
     gender = XmlChildContent(XmlStringType(), default=None)
     deceased = XmlChildContent(XmlBoolType(bool_values=['true', 'false']))
     name_details = XmlChild(PersonNameDetails)
+    birth_place_details = XmlChild(BirthPlaceDetails, default=None)
     country_details = XmlChild(CountryDetails)
     date_details = XmlChild(DateDetails, default=None)
     watchlist_content = XmlChild(WatchlistContent)
