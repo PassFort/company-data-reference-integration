@@ -66,9 +66,11 @@ class Address(Model):
         route = passfort_address.get('route')
         premise = passfort_address.get('premise')
         subpremise = passfort_address.get('subpremise')
-        state = passfort_address.get('state', None)
+        state = passfort_address.get('state')
 
-        address['Line1'] = ' '.join([str(v) for v in [street_number, route, premise, subpremise] if v is not None])
+        address['Line1'] = ' '.join(
+            [str(v) for v in [street_number, route, premise, subpremise] if v is not None]
+        ).strip()
         address['City'] = passfort_address.get('postal_town', None) or passfort_address.get('locality')
         address['Country'] = passfort_address.get('country')
 
@@ -104,7 +106,7 @@ class Principal(Model):
     phone_number = StringType(serialized_name='PhoneNumber')
     national_id = StringType(serialized_name='NationalId')
     address: Address = ModelType(Address, serialized_name='Address')
-    search_criteria: SearchCriteria = ModelType(SearchCriteria, serialized_name="SearchCriteria")
+    search_criteria: SearchCriteria = ModelType(SearchCriteria, serialized_name="SearchCriteria", default={})
     drivers_license: DriversLicense = ModelType(DriversLicense, serialized_name="DriversLicense")
 
     class Options:
@@ -123,7 +125,6 @@ class Principal(Model):
             "last_name": individual_data.personal_details.name.family_name,
             "middle_initial": individual_data.personal_details.name.middle_initial,
             "national_id": individual_data.personal_details.national_id,
-            "phone_number": individual_data.contact_details.phone_number,
             "address": Address().from_passfort(individual_data.personal_details.current_address),
             "drivers_license": drivers_license,
         }, apply_defaults=True)
@@ -131,11 +132,16 @@ class Principal(Model):
 
 class Merchant(Model):
     name: str = StringType(required=True, serialized_name="Name")
+    phone_number = StringType(serialized_name="PhoneNumber")
     address: Address = ModelType(Address, required=True, serialized_name="Address")
     principals: List[Principal] = ListType(
         ModelType(Principal), serialized_name='Principal', min_size=1
     )
-    search_criteria: SearchCriteria = ModelType(SearchCriteria, serialized_name="SearchCriteria", default={})
+    url = StringType(default=None)
+    search_criteria: SearchCriteria = ModelType(SearchCriteria, serialized_name='SearchCriteria', default={})
+
+    class Options():
+        export_level = NOT_NONE
 
     @classmethod
     def from_passfort(cls, company_data: CompanyData):
@@ -143,7 +149,8 @@ class Merchant(Model):
         return cls().import_data({
             "name": company_data.metadata.name,
             "address": Address().from_passfort(company_data.metadata.first_address),
-            "principals": principals
+            "principals": principals,
+            "url": company_data.metadata.contact_details.url,
         }, apply_defaults=True)
 
 
@@ -174,16 +181,20 @@ class PossibleInquiryMatches(Model):
 
 
 class TerminationInquiryRequest(Model):
-    aquirer_id: str = StringType(required=True, serialized_name="AquirerId")
-    search_criteria: SearchCriteria = ModelType(SearchCriteria, serialized_name='SearchCriteria', default={})
+    acquirer_id: str = StringType(required=True, serialized_name="AcquirerId")
     merchant: Merchant = ModelType(Merchant, serialized_name='Merchant')
 
     @classmethod
     def from_passfort(cls, passfort_data: InquiryRequest):
         return cls().import_data({
-            "AquirerId": passfort_data.config.aquirer_id,
+            "AcquirerId": passfort_data.config.acquirer_id,
             "Merchant": Merchant.from_passfort(passfort_data.input_data)
         }, apply_defaults=True)
+
+    def as_request_body(self):
+        return {
+            "TerminationInquiryRequest": self.to_primitive()
+        }
 
 
 class TerminationInquiryResponse(Model):
