@@ -35,7 +35,12 @@ logging.getLogger().setLevel(logging.INFO)
 
 
 PROVIDER_NAME = 'Dow Jones Watchlist API'
-BRAND_TEXT = 'Powered By Dow Jones. Copyright © 2020 Dow Jones & Company, Inc. All rights reserved.'
+
+
+def brand_text():
+    from datetime import datetime
+    year = datetime.now().year
+    return f'Powered By Dow Jones. Copyright © {year} Dow Jones & Company, Inc. All rights reserved.'
 
 
 @app.route('/health')
@@ -171,7 +176,7 @@ def events_from_match(client, match):
             'event_type': event_type.value,
             'match_id': record.person.peid,
             'provider_name': PROVIDER_NAME,
-            'brand_text': BRAND_TEXT,
+            'brand_text': brand_text(),
             'match_name': next(
                 (value.name.join() for value in record.person.name_details.values
                  if value.name.type_.lower() == 'primary name'),
