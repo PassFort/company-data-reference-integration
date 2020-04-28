@@ -1,5 +1,6 @@
 import logging
 import traceback
+from collections import defaultdict
 
 from flask import Flask, jsonify
 import requests
@@ -106,12 +107,9 @@ def fetch_associate_data(client, associate_match_data):
 def events_from_match(client, match):
     record = client.fetch_data_record(match.peid)
 
-    risk_icon_map = {
-        MatchEventType.from_risk_icon(icon): icon
-        for icon in match.payload.risk_icons.icons
-    }
-
-    print(risk_icon_map)
+    risk_icon_map = defaultdict(list)
+    for icon in match.payload.risk_icons.icons:
+        risk_icon_map[MatchEventType.from_risk_icon(icon)].append(icon)
 
     gender = Gender.from_dowjones(record.person.gender)
 
@@ -182,7 +180,7 @@ def events_from_match(client, match):
                  if value.name.type_.lower() == 'primary name'),
                 match.payload.primary_name
             ),
-            'match_custom_label': risk_icon_map.get(event_type),
+            'match_custom_label': label,
             'match_dates': [match.date for match in date_matches] if date_matches else None,
             'match_dates_data': date_matches,
             'aliases': [
@@ -209,8 +207,8 @@ def events_from_match(client, match):
 
     return [
         build_event(event_type, icon)
-        for event_type, icon
-        in risk_icon_map.items()
+        for event_type in risk_icon_map
+        for icon in risk_icon_map[event_type]
     ]
 
 
