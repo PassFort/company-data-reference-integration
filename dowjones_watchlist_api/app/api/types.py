@@ -360,7 +360,7 @@ class MatchEventType(Enum):
     def from_risk_icon(icon):
         if icon == 'AM':
             return MatchEventType.ADVERSE_MEDIA_FLAG
-        elif icon == 'PEP':
+        elif icon == 'PEP' or icon == 'BRD':
             return MatchEventType.PEP_FLAG
         elif icon == 'SAN':
             return MatchEventType.SANCTION_FLAG
