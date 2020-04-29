@@ -1,8 +1,10 @@
-from unittest import TestCase
-from os import path
 from json import loads
-from .match import TerminationInquiryRequest, Principal, Merchant
-from .passfort import InquiryRequest, MatchConfig, MatchCredentials, CompanyData
+from os import path
+from unittest import TestCase
+
+from .match import InputMerchant, Principal, TerminationInquiryRequest
+from .passfort import (CompanyData, InquiryRequest, MatchConfig,
+                       MatchCredentials)
 
 
 def read_test_data(name):
@@ -15,7 +17,7 @@ company_with_associates_json = loads(read_test_data('company_with_associate.json
 
 class TestPassfortToMatch(TestCase):
     company_data = CompanyData().import_data(company_with_associates_json, apply_defaults=True)
-    merchant = Merchant().from_passfort(company_data)
+    merchant = InputMerchant().from_passfort(company_data)
 
     def test_parses_associates(self):
         self.maxDiff = None
