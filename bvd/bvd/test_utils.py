@@ -2,7 +2,7 @@ from unittest import TestCase
 from mock import patch
 
 from bvd.utils import send_request, BvDServiceException, match, BvDInvalidConfigException, get_data, \
-    get_demo_search_data
+    get_demo_search_data, country_alpha2to3
 
 
 class MockResponse:
@@ -138,4 +138,9 @@ class TestUtils(TestCase):
         passfort = passfort[0]
 
         self.assertEqual(passfort['NationalId'], '09565115')
-        
+
+    def test_country_alpha2to3(self):
+        self.assertEqual(country_alpha2to3('n.a'), None)
+        self.assertEqual(country_alpha2to3(None), None)
+
+        self.assertEqual(country_alpha2to3('GB'), 'GBR')

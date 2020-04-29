@@ -1,7 +1,7 @@
 from typing import List, Tuple, Dict, ItemsView, Optional, cast
 from pycountry import countries
 
-from bvd.utils import CompanyRawData
+from bvd.utils import CompanyRawData, country_alpha2to3
 from bvd.format_utils import BaseObject, EntityType, format_names
 from bvd.officers import DATA_NOT_ACCESSIBLE
 
@@ -24,10 +24,7 @@ SHAREHOLDER_FIELD_MAP = {
 
 def format_country_code(raw_data: Dict[str, str]) -> Optional[str]:
     input_code = raw_data.get('country_code')
-    try:
-        return countries.get(alpha_2=input_code).alpha_3
-    except KeyError:
-        return None
+    return country_alpha2to3(input_code)
 
 
 def format_shareholders_names(type_: EntityType, raw_data: Dict[str, str]) -> Tuple[str, str]:

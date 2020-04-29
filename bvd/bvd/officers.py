@@ -68,7 +68,7 @@ def format_officer_names(type_: EntityType, raw_data: OfficerRawData) -> Tuple[s
 def format_nationality(country_name: str) -> Optional[str]:
     try:
         return countries.get(name=country_name).alpha_3
-    except KeyError:
+    except AttributeError:
         return None
 
 
