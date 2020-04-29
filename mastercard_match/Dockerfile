@@ -20,6 +20,7 @@ COPY main.py /src
 COPY coverage /src
 COPY app /src/app
 COPY mock_data /src/mock_data
+COPY test_data /src/test_data
 
 EXPOSE 8001
 

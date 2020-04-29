@@ -1,13 +1,12 @@
 from json import JSONDecodeError
 
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
-
 from app.api.errors import Error, MatchException
 from app.api.match import (ContactDetails, InquiryResults,
                            TerminationInquiryRequest)
 from app.auth.oauth import OAuth
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 
 def requests_retry_session(
@@ -75,7 +74,7 @@ class MatchHandler:
         body = {'ContactRequest': {'AcquirerId': acquirer_id}}
 
         response, status_code = self.fire_request(url, 'POST', body=body)
-        if status_code == 404:
+        if status_code == 400:
             return None
         return response
 
@@ -92,11 +91,9 @@ class MatchHandler:
             'PageLength': page_length,
         }
 
-        inquiry_request_body = (
-            TerminationInquiryRequest().from_passfort(body).as_request_body())
+        inquiry_request_body = TerminationInquiryRequest().from_passfort(body).as_request_body()
 
-        response, _ = self.fire_request(
-            url, 'POST', body=inquiry_request_body, params=params)
+        response, _ = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
         response: InquiryResults = InquiryResults.from_match_response(response)
         self.join_contact_details(response)
 
