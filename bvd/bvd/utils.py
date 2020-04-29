@@ -234,7 +234,7 @@ def country_alpha2to3(alpha2):
     try:
         country = countries.get(alpha_2=alpha2)
         return country.alpha_3
-    except KeyError:
+    except AttributeError:
         return None
 
 
