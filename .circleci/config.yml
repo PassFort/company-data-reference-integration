@@ -890,9 +890,9 @@ workflows:
                only:
                  - staging
       - deploy_common:
-         name: deploy_mastercard_match_staging
+         name: deploy_mastercard_match_production
          package: mastercard_match
-         to: master
+         to: production
          requires:
            - unit_mastercard_match
          filters:

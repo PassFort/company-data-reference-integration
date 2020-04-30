@@ -1,40 +1,62 @@
 from threading import Thread
-from typing import Optional, List, Tuple
+from typing import List, Tuple
 from uuid import UUID
-from flask import Blueprint, send_file
-import requests
+from flask import Blueprint, send_file, Response, abort
+from datetime import date
 
-from app.auth import auth, outbound_auth
-from app.startup import passfort_base_url
+from app.auth import auth
 from app.api import Document, DatedAddress, DemoResultType, Error, ErrorType, Field, \
     DocumentData, RunCheckRequest, RunCheckResponse, validate_models, IndividualData, \
     DocumentResult, CheckedDocumentFieldResult, FinishResponse, \
-    FinishRequest
+    FinishRequest, DownloadImageRequest, DocumentCategory, DocumentType, DocumentImageType
 from app.shared import create_demo_field_checks, invalid_fields_from_result_type, uncertain_fields_from_result_type, \
     create_demo_forgery_check, create_demo_image_check, task_thread
 
-blueprint = Blueprint('docver', __name__, url_prefix='/docver')
+blueprint = Blueprint('docfetch', __name__, url_prefix='/docfetch')
 
 SUPPORTED_COUNTRIES = ['GBR', 'USA', 'CAN', 'NLD']
-DEMO_PROVIDER_ID = UUID('f0214ca0-3b69-463e-9dd6-c8601034195f')
+DEMO_PROVIDER_ID = UUID('5c0bf04f-fce5-4f3a-a078-33dab7f65783')
 
 
 @blueprint.route('/')
 def index():
-    return send_file('../static/docver/metadata.json', cache_timeout=-1)
+    return send_file('../static/docfetch/metadata.json', cache_timeout=-1)
 
 
 @blueprint.route('/config')
 @auth.login_required
 def get_config():
-    return send_file('../static/docver/config.json', cache_timeout=-1)
+    return send_file('../static/docfetch/config.json', cache_timeout=-1)
 
 
-def _synthesize_demo_result(document: Document, entity_data: IndividualData, demo_result: DemoResultType) -> Document:
+def _extract_input(req: RunCheckRequest) -> Tuple[List[Error], str]:
+    errors = []
+
+    external_ref = req.check_input.get_external_ref()
+    if external_ref is None:
+        errors.append(Error.missing_required_field(Field.EXTERNAL_REFERENCE))
+
+    if errors:
+        return errors, None
+    else:
+        return [], external_ref
+
+
+def _synthesize_demo_result(entity_data: IndividualData, demo_result: DemoResultType) -> Document:
     """
-    Takes a Document and populates the extracted_data and verification_result
+    Populates a document with the extracted_data and verification_result
     based on the desired demo_result
     """
+    document = Document({
+        'category': DocumentCategory.PROOF_OF_IDENTITY,
+        'document_type': DocumentType.PASSPORT,
+        'images': [{
+            'image_type': DocumentImageType.FRONT,
+            'upload_date': date.today(),
+            'provider_reference': 'DUMMY_IMAGE'
+        }]
+    })
+
     # If we get an 'ANY' Demo Request, treat it as an ALL_PASS
     if demo_result == DemoResultType.ANY:
         demo_result = DemoResultType.DOCUMENT_ALL_PASS
@@ -81,7 +103,7 @@ def _synthesize_demo_result(document: Document, entity_data: IndividualData, dem
         'forgery_checks_passed': forgery_checks_passed,
         'image_checks': [create_demo_image_check(image_checks_passed)],
         'image_checks_passed': image_checks_passed,
-        'provider_name': "Document Verification Reference",
+        'provider_name': "Document Fetch Reference",
     })
 
     extracted = DocumentData({
@@ -96,66 +118,20 @@ def _synthesize_demo_result(document: Document, entity_data: IndividualData, dem
     return document
 
 
-def _extract_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[IndividualData]]:
-    errors = []
-
-    # Extract address
-    # TODO: Validate required address fields
-    current_address = req.check_input.get_current_address()
-    if current_address is None and req.provider_config.require_address:
-        errors.append(Error.missing_required_field(Field.ADDRESS_HISTORY))
-
-    # Extract DOB
-    dob = req.check_input.get_dob()
-    if dob is None and req.provider_config.require_dob:
-        errors.append(Error.missing_required_field(Field.DOB))
-
-    # Extract given names
-    given_names = req.check_input.get_given_names()
-    if given_names is None:
-        errors.append(Error.missing_required_field(Field.GIVEN_NAMES))
-
-    # Extract family name
-    family_name = req.check_input.get_family_name()
-    if family_name is None:
-        errors.append(Error.missing_required_field(Field.FAMILY_NAME))
-
-    # Extract documents
-    documents = req.check_input.get_documents()
-    if not documents:
-        errors.append(Error.missing_documents())
-
-    if errors:
-        return errors, None
-    else:
-        return [], req.check_input
-
-
-def _download_image(image_id: UUID):
-    session = requests.Session()
-    url = f'{passfort_base_url}/v1/images/{image_id}'
-
-    res = session.get(url, auth=outbound_auth())
-    res.raise_for_status()
-    return res.content
-
-
-
 # We store the computed demo result in the custom data retained for us
 # by the server
 def _run_demo_check(check_id: UUID, check_input: IndividualData, demo_result: str) -> RunCheckResponse:
-    documents = check_input.get_documents()
-    verified_documents = [
-        _synthesize_demo_result(doc, check_input, demo_result)
-        for doc in documents
-    ]
-    check_input.documents = verified_documents
+    check_output = IndividualData({
+        'documents': [
+            _synthesize_demo_result(check_input, demo_result)
+        ]
+    })
 
     response = RunCheckResponse({
         'provider_id': DEMO_PROVIDER_ID,
         'reference': f'DEMODATA-{check_id}',
         'custom_data': {
-            'demo_result': check_input.serialize(),
+            'demo_result': check_output.serialize(),
         },
     })
 
@@ -171,23 +147,16 @@ def _run_demo_check(check_id: UUID, check_input: IndividualData, demo_result: st
 @auth.login_required
 @validate_models
 def run_check(req: RunCheckRequest) -> RunCheckResponse:
-    errors, check_input = _extract_input(req)
+    errors, _external_ref = _extract_input(req)
     if errors:
         return RunCheckResponse.error(errors)
 
-    country = check_input.get_current_address().country
+    country = req.check_input.get_current_address().country
     if country not in SUPPORTED_COUNTRIES:
         return RunCheckResponse.error([Error.unsupported_country()])
 
-    # Download the images even though we won't do anything with them
-    doc_images = {}
-    for doc_image_id in check_input.get_document_image_ids():
-        content = _download_image(doc_image_id)
-        assert len(content) > 0
-        doc_images[doc_image_id] = content
-
     if req.demo_result is not None:
-        return _run_demo_check(req.id, check_input, req.demo_result)
+        return _run_demo_check(req.id, req.check_input, req.demo_result)
 
     return RunCheckResponse.error([Error({
         'type': ErrorType.PROVIDER_MESSAGE,
@@ -213,7 +182,19 @@ def finish_check(req: FinishRequest, _id: UUID) -> FinishResponse:
             'message': 'Demo finish request did not contain demo result',
         })])
 
+
     return FinishResponse({
         'check_output': IndividualData().import_data(req.custom_data['demo_result']),
     })
 
+
+# Download an image
+@blueprint.route('/download_image', methods=['POST'])
+@auth.login_required
+@validate_models
+def download_image(req: DownloadImageRequest) -> Response:
+    # We probably shouldn't have made it this far if they were trying a live check
+    if req.image_reference != 'DUMMY_IMAGE':
+        abort(400, 'Live checks are not supported')
+    
+    return send_file('../static/docfetch/demo_image.png', cache_timeout=-1)

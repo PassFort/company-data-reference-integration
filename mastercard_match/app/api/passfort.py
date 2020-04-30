@@ -1,9 +1,11 @@
-from schematics.exceptions import ValidationError, DataError
-from schematics.models import Model
-from schematics.types import StringType, ListType, ModelType, DictType
-from flask import request, abort
 from functools import wraps
 from typing import List, Optional
+
+from flask import abort, request
+from schematics.exceptions import DataError, ValidationError
+from schematics.models import Model
+from schematics.types import DictType, ListType, ModelType, StringType
+
 from .errors import Error
 
 

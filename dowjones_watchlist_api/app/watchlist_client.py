@@ -69,6 +69,9 @@ class APIClient():
             },
             params=params,
         )
+        # Kludge to capture the 403 body while we debug with DJ
+        if resp.status_code == 403:
+            logging.error(f'RnC Error 403: {resp.text}')
         resp.raise_for_status()
         return resp.text
 
