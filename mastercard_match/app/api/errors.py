@@ -1,4 +1,7 @@
-from enum import unique, Enum
+from datetime import datetime
+from enum import Enum, unique
+
+from flask import Response
 
 
 @unique
@@ -11,9 +14,8 @@ class ErrorCode(Enum):
 
 
 class MatchException(Exception):
-    def __init__(self, message: str, raw_output: str = None):
-        self.message = message
-        self.raw_output = raw_output
+    def __init__(self, response: Response):
+        self.response = response
 
 
 class Error(object):
@@ -25,4 +27,47 @@ class Error(object):
             'source': 'API',
             'message': 'Bad API request',
             'info': e.to_primitive()
+        }
+
+    @staticmethod
+    def provider_connection_error(e):
+        return {
+            'code': ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': 'Connection error when contacting MATCH',
+            'info': {
+                'raw': '{}'.format(e)
+            }
+        }
+
+    @staticmethod
+    def provider_misconfiguration_error(e):
+        return {
+            'code': ErrorCode.PROVIDER_MISCONFIGURATION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': f"Provider Configuration Error: '{e}' while running the 'MATCH' service",
+            'info': {
+                "Provider": "Match",
+                "Timestamp": str(datetime.now())
+            }
+        }
+
+    @staticmethod
+    def provider_unknown_error(e):
+        return {
+            'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+            'source': 'PROVIDER',
+            'message': e or 'There was an error calling MATCH',
+            'info': {
+                "Provider": "Match",
+                "Timestamp": str(datetime.now())
+            }
+        }
+
+    @staticmethod
+    def from_exception(e):
+        return {
+            'code': ErrorCode.UNKNOWN_INTERNAL_ERROR.value,
+            'source': 'ENGINE',
+            'message': '{}'.format(e)
         }
