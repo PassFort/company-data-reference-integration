@@ -256,6 +256,20 @@ jobs:
             docker push passfort/integrations-<< parameters.package >>:latest
           fi
 
+  mirror_public_repo:
+    executor: cloud-deploy
+    parameters:
+      package:
+        type: string
+      repo:
+        type: string
+    steps:
+      - checkout
+      - run: |
+          git subtree split --prefix=<< parameters.package >> --branch=subtree-for-master
+          git push << parameters.repo >> subtree-for-master:master
+
+
 workflows:
   version: 2
 
@@ -836,6 +850,14 @@ workflows:
               branches:
                 ignore:
                   - master
+      - mirror_public_repo:
+          name: mirror_docver_reference_public_repo
+          package: docver_reference_integration
+          repo: git@github.com:PassFort/document-reference-integration
+          filters:
+            branches:
+              only:
+                - master
 
   lexisnexis_id:
     when: << pipeline.parameters.lexisnexis_id >>
