@@ -169,9 +169,15 @@ class DatedAddress(Model):
     end_date = ApproxDateType(default=None)
 
     def as_iovation_transaction_insight(self):
+        country = None
+        if self.address.country is not None:
+            country_res = pycountry.countries.get(alpha_3=self.address.country)
+            if country_res is not None:
+                country = country_res.alpha_2
+
         return TransctionInsight({
             "billing_city": self.address.locality,
-            "billing_country": self.address.country,
+            "billing_country": country,
             "billing_postal_code": self.address.postal_code,
             "billing_region": self.address.state_province,
             "billing_street": self.address.route,

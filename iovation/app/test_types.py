@@ -97,7 +97,7 @@ class TestInputData(unittest.TestCase):
         self.assertEqual('new_account', iovation_device.type)
         self.assertEqual('REF_ID', iovation_device.account_code)
 
-        self.assertEqual('GBR', iovation_device.transaction_insight.billing_country)
+        self.assertEqual('GB', iovation_device.transaction_insight.billing_country)
         self.assertEqual('London', iovation_device.transaction_insight.billing_city)
         self.assertEqual(None, iovation_device.transaction_insight.billing_region)
         self.assertEqual('Princelet Street', iovation_device.transaction_insight.billing_street)
