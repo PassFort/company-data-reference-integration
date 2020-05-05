@@ -824,6 +824,14 @@ workflows:
               branches:
                 ignore:
                   - master
+      - mirror_public_repo:
+          name: mirror_reference_public_repo
+          package: reference_integration
+          repo: git@github.com:PassFort/identity-reference-integration
+          filters:
+            branches:
+              only:
+                - master
 
   docver_reference_integration:
     when: << pipeline.parameters.docver_reference_integration >>
