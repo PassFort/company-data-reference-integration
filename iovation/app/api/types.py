@@ -170,25 +170,17 @@ class DatedAddress(Model):
 
     def as_iovation_transaction_insight(self):
         country = None
-        postal_code = None
-        street = None
         if self.address.country is not None:
             country_res = pycountry.countries.get(alpha_3=self.address.country)
             if country_res is not None:
                 country = country_res.alpha_2
 
-        is_usa = country == 'US'
-        if is_usa and self.address.postal_code is not None and len(self.address.postal_code) <= 120:
-            postal_code = self.address.postal_code
-        if is_usa and self.address.route is not None and len(self.address.route) < 640:
-            street = self.address.route
-
         return TransctionInsight({
             "billing_city": self.address.locality,
             "billing_country": country,
-            "billing_postal_code": postal_code,
+            "billing_postal_code": self.address.postal_code,
             "billing_region": self.address.state_province,
-            "billing_street": street,
+            "billing_street": self.address.route,
         })
 
 
