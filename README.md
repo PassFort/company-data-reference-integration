@@ -6,6 +6,14 @@ This repo contains code for wrapping third party services.
 
 It is also setup for continuous integration and deployment of these services. Staging is deployed to the staging cluster; production to the production cluster.
 
+## External Reference Integrations
+The two reference integrations are automatically split and published to semi-public repos by CI.
+You should keep this in mind when adding any code to these directories, as they will be visible to
+integration partners who are developing against the Bridge.
+
+- [Identity Verification Reference Integration](https://github.com/PassFort/identity-reference-integration)
+- [Document Reference Integration](https://github.com/PassFort/document-reference-integration)
+
 ## Service API & Responsibilities
 
 Please see: https://docs.google.com/document/d/1eHZANyyfG9WZT3-k3mVFFqu7u2LxpkmLweQej8710lU
