@@ -1,4 +1,5 @@
 import pycountry
+import logging
 
 from datetime import datetime
 from enum import unique, Enum
@@ -329,7 +330,11 @@ class IovationCheckResponse(Model):
             if output.details.real_ip.ip_location:
                 real_ip_location = output.details.real_ip.ip_location
                 if real_ip_location.country_code:
-                    ip_location.country = pycountry.countries.get(alpha_2=real_ip_location.country_code).alpha_3
+                    country = pycountry.countries.get(alpha_2=real_ip_location.country_code)
+                    if country is not None:
+                        ip_location.country = country.alpha_3
+                    else:
+                        logging.warning(f'Iovation sent unrecognised Real IP Country Code: {real_ip_location.country_code}')
                 ip_location.region = output.details.real_ip.ip_location.region
                 ip_location.city = output.details.real_ip.ip_location.city
             return cls({
