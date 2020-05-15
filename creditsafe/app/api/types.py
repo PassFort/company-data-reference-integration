@@ -263,14 +263,19 @@ class Rating(Model):
 
 
 class CreditChangeEntry(Model):
-    date = UTCDateTimeType(required=True)
+    date = UTCDateTimeType(default=None)
     credit_limit = ModelType(MonetaryValue, default=None)
     credit_rating = ModelType(Rating, default=None)
     international_rating = ModelType(Rating, default=None)
 
     @serializable(serialized_name="date")
     def date_out(self):
-        return to_passfort_datetime_format(self.date)
+        # This seems to be called even when the field is None, despite
+        # serialize_when_none being set False below
+        if self.date is None:
+            return None
+        else:
+            return to_passfort_datetime_format(self.date)
 
     class Options:
         serialize_when_none = False
