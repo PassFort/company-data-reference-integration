@@ -3,12 +3,13 @@ from app.auth import CustomAuthApiClient
 from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData, WorldCheckProviderType, Error
 from app.api.responses import make_screening_started_response, make_results_response, make_match_response, \
     make_associate_response, make_associates_response
-from swagger_client.api import CaseApi, ReferenceApi
+from swagger_client.api import CaseApi, GroupsApi, ReferenceApi
 
 import logging
 import errno
 
 from app.utils import create_response_from_file
+
 
 class WorldCheckConnectionError(Exception):
     pass
@@ -30,6 +31,7 @@ class CaseHandler:
             credentials.api_secret
         )
         self.case_api = CaseApi(custom_client)
+        self.groups_api = GroupsApi(custom_client)
         self.config = config
         self.is_demo = is_demo
 
@@ -74,6 +76,18 @@ class CaseHandler:
 
             results: list[Result] = self.case_api.cases_case_system_id_results_get(case_system_id)
 
+        if self.config.use_provider_fp_reduction:
+            resolution_toolkit = self.groups_api.groups_group_id_resolution_toolkit_get(self.config.group_id)
+            fp_resolution_statuses = {
+                status.id
+                for status in resolution_toolkit.resolution_fields.statuses
+                if status.type == 'FALSE'
+            } if resolution_toolkit else {}
+            results = [
+                result
+                for result in results
+                if result.resolution is None or result.resolution.status_id not in fp_resolution_statuses
+            ]
         return make_results_response(results=results, config=self.config)
 
     def set_ongoing_screening(self, case_system_id):

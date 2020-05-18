@@ -187,6 +187,7 @@ class WorldCheckConfig(Model):
     )
     enable_ongoing_monitoring = BooleanType(default=False)
     use_client_watchlist = BooleanType(default=False)
+    use_provider_fp_reduction = BooleanType(default=False)
 
 
 class FullName(Model):
