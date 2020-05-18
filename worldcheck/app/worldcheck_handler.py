@@ -19,6 +19,14 @@ class WorldCheckPendingError(Exception):
     pass
 
 
+def record_result_count(count, is_demo, provider_fp_reduction):
+    from app.application import app
+    app.dd.increment('passfort.services.worldcheck.results', tags=[
+        f'is_demo:{is_demo}',
+        f'provider_fp_reduction:{provider_fp_reduction}',
+    ])
+
+
 class CaseHandler:
     """
     Implements functionality to screen a new case and get the results of the screening
@@ -66,7 +74,6 @@ class CaseHandler:
                     results = []
                 else:
                     raise
-
         else:
             audit_response = self.case_api.cases_case_system_id_audit_events_post(
                 case_system_id,
@@ -76,18 +83,21 @@ class CaseHandler:
 
             results: list[Result] = self.case_api.cases_case_system_id_results_get(case_system_id)
 
-        if self.config.use_provider_fp_reduction:
-            resolution_toolkit = self.groups_api.groups_group_id_resolution_toolkit_get(self.config.group_id)
-            fp_resolution_statuses = {
-                status.id
-                for status in resolution_toolkit.resolution_fields.statuses
-                if status.type == 'FALSE'
-            } if resolution_toolkit else {}
-            results = [
-                result
-                for result in results
-                if result.resolution is None or result.resolution.status_id not in fp_resolution_statuses
-            ]
+            if self.config.use_provider_fp_reduction:
+                resolution_toolkit = self.groups_api.groups_group_id_resolution_toolkit_get(self.config.group_id)
+                false_positive_statuses = {
+                    status.id
+                    for status in resolution_toolkit.resolution_fields.statuses
+                    if status.type == 'FALSE'
+                } if resolution_toolkit else {}
+                results = [
+                    result
+                    for result in results
+                    if result.resolution is None or result.resolution.status_id not in false_positive_statuses
+                ]
+
+        record_result_count(len(results), self.is_demo, self.config.use_provider_fp_reduction)
+
         return make_results_response(results=results, config=self.config)
 
     def set_ongoing_screening(self, case_system_id):

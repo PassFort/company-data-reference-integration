@@ -246,7 +246,7 @@ class WorldCheckScreenCase(TestCase):
             self.assertEqual(result['errors'], [])
             self.assertGreater(len(result['raw']), 0)
 
-    def test_jacks_feature(self):
+    def test_provider_false_positive_resduction(self):
         with self.subTest('starts the screening succesfully'):
             response = requests.post(API_URL + '/screening_request', json={
                 "config": FP_REDUCTION_CONFIG,
