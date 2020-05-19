@@ -370,7 +370,7 @@ def test_record_error_bad_request(client):
                                     "electronic_id_check": {"matches": []}
                                 },
                                 "raw": worldview_data['body'],
-                                "errors": [{'code': 303, 'message': f'Provider Error: UNKNOW ERROR: {worldview_data["body"]}'}]
+                                "errors": [{'code': 303, 'message': f'Provider Error: UNKNOWN ERROR: {worldview_data["body"]}'}]
                             }
 
 def test_record_error_auth_error(client):
@@ -399,5 +399,5 @@ def test_record_generic_error_provider(client):
                                     "electronic_id_check": {"matches": []}
                                 },
                                 "raw": worldview_data['body'],
-                                "errors": [{'code': 303, 'message': 'Provider Error: UNKNOW ERROR: Not found!'}]
+                                "errors": [{'code': 303, 'message': 'Provider Error: UNKNOWN ERROR: Not found!'}]
     }

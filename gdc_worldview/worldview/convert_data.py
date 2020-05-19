@@ -229,7 +229,7 @@ def worldview_to_passfort_data(worldview_response_data):
         else:
             response_body['errors'].append({
                 'code': 303,
-                'message': f'Provider Error: UNKNOW ERROR: {body}'
+                'message': f'Provider Error: UNKNOWN ERROR: {body}'
             })
         
         response_body['output_data']['decision'] = ERROR

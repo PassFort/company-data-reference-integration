@@ -29,9 +29,6 @@ def echo_test_request(credentials):
     return response.status_code
 
 def verify(request_body, credentials):
-    
-    # TODO complete request 
-
     headers = {'Content-Type': 'application/json'}
     url = credentials['url']
     
@@ -44,9 +41,10 @@ def verify(request_body, credentials):
     }
 
     # for GDC we also need to pass those extra options
-    query_options = credentials.get('options')
+    # Hard code them, since the response relies on them begin present
+    # Plus, adding more options incurs extra costs.
     
-    options = { 'options': query_options } if query_options else {}
+    options = {'options': 'IdentityVerify;MessageVerbose'}
 
     response = requests.post(
         url = url,

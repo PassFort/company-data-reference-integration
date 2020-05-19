@@ -77,7 +77,9 @@ def test_verify_request(mock_post_verify, client):
     mock_post_verify.assert_called_with(
         url=credentials['url'],
         headers=headers,
-        data='{"pkg": "test", "credentials": {"username": "dummy-user", "password": "dummy-pass", "tenant": "dummy-tenant"}}')
+        data='{"pkg": "test", "credentials": '
+             '{"username": "dummy-user", "password": "dummy-pass", "tenant": "dummy-tenant"}, '
+             '"options": "IdentityVerify;MessageVerbose"}')
 
 
 

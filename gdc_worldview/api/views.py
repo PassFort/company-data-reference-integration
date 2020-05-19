@@ -32,30 +32,26 @@ class Ekyc_check(BaseEkycResource):
 
             return response_body
 
-        if not self.is_credentials_valid(request_json.get('credentials')):
-            response_body = {
-                "output_data": {
-                },
-                "raw": {},
-                "errors": [
-                    {
-                        'code': 203,
-                        'message': 'MISSING_API_KEY'
-                    }
-                ]
-            }
-
-            return response_body
-
         if request_json.get('is_demo'):
             response = create_demo_response(request_json)
         else:
-            # TODO
-            response = 'OK'
+            if not self.is_credentials_valid(request_json.get('credentials')):
+                response_body = {
+                    "output_data": {
+                    },
+                    "raw": {},
+                    "errors": [
+                        {
+                            'code': 203,
+                            'message': 'MISSING_API_KEY'
+                        }
+                    ]
+                }
+
+                return response_body
+
             worldview_request_data = passfort_to_worldview_data(request_json)
-            # for GDC worldview we have an options object we need to pass in order to make more accurate queries to the service
-            credentials = { **request_json['credentials'], 'options': request_json['options'] } if request_json.get('options') else request_json['credentials']
-            worldview_response_data = verify(worldview_request_data, credentials)
+            worldview_response_data = verify(worldview_request_data, request_json['credentials'])
 
             # return worldview_response_data
             response = worldview_to_passfort_data(worldview_response_data)
