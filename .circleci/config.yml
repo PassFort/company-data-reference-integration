@@ -61,6 +61,9 @@ parameters:
   mastercard_match:
     type: boolean
     default: false
+  gdc_worldview:
+    type: boolean
+    default: false
 
 executors:
   python-builder:
@@ -929,3 +932,34 @@ workflows:
              branches:
                only:
                  - master
+  gdc_worldview:
+    when: << pipeline.parameters.gdc_worldview >>
+    jobs:
+      - build:
+          name: build_gdc_worldview
+          package: gdc_worldview
+      - unit:
+          name: unit_gdc_worldview
+          package: gdc_worldview
+          requires:
+            - build_gdc_worldview
+      - deploy_common:
+          name: deploy_gdc_worldview_staging
+          package: gdc_worldview
+          to: staging
+          requires:
+            - unit_gdc_worldview
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy_common:
+          name: deploy_gdc_worldview_production
+          package: gdc_worldview
+          to: master
+          requires:
+            - unit_gdc_worldview
+          filters:
+            branches:
+              only:
+                - master
