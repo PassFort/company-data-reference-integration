@@ -34,7 +34,7 @@ spec:
           value: {sentry_url}
         readinessProbe:
           httpGet:
-            path: '/health'
+            path: '/health-check'
             port: 8001
 
 ---
