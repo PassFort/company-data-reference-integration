@@ -1275,14 +1275,14 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
     default_entity = associate_data.entity_type
     if associate_data.entity_type != INDIVIDUAL_ENTITY:
         default_entity = INDIVIDUAL_ENTITY
-        if associate_data.shareholder:
-            name = associate_data.shareholder.name
-            if associate_data.shareholder.entity_type is not None:
-                default_entity = associate_data.shareholder.entity_type
-        elif associate_data.psc:
+        if associate_data.psc:
             name = associate_data.psc.name
             if associate_data.psc.entity_type is not None:
                 default_entity = associate_data.psc.entity_type
+        elif associate_data.shareholder:
+            name = associate_data.shareholder.name
+            if associate_data.shareholder.entity_type is not None:
+                default_entity = associate_data.shareholder.entity_type
         else:
             # Officer has lowest priority as CreditSafe does not communicate whether
             # an officer is an individual or person reliably
