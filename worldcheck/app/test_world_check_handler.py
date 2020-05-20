@@ -30,9 +30,17 @@ PERSONAL_DETAILS_TM = {
     },
     "nationality": {
         "v": "GBR",
-    }
+    },
+
 }
-SCREENING_DATA = ScreeningRequestData({"entity_type": "INDIVIDUAL", "personal_details": PERSONAL_DETAILS_TM})
+SCREENING_DATA = ScreeningRequestData({
+    "entity_type": "INDIVIDUAL",
+    "personal_details": PERSONAL_DETAILS_TM,
+    "address_history": [
+        {"address": {"country": "GBR"}},
+        {"address": {"country": "SYR"}}
+    ]
+})
 
 
 class CaseHandlerTest(TestCase):
@@ -56,6 +64,7 @@ class CaseHandlerTest(TestCase):
         expected = [
             Field(type_id="SFCT_1", value="MALE"),
             Field(type_id="SFCT_2", date_time_value="1956"),
+            Field(type_id="SFCT_3", value="GBR"),
             Field(type_id="SFCT_5", value="GBR"),
         ]
 

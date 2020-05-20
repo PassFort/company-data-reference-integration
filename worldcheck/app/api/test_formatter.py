@@ -144,6 +144,7 @@ class TestEntityFormatter(TestCase):
                 country_links=[
                     CountryLink(type=CountryLinkType.NATIONALITY, country=Country(code="GBR", name="United Kingdom")),
                     CountryLink(type=CountryLinkType.NATIONALITY, country=Country(code="ESP", name="Spain")),
+                    CountryLink(type='LOCATION', country=Country(code="SYR", name="Syria")),
                     CountryLink(type=CountryLinkType.RESIDENT, country=Country(code="GBR", name="United Kingdom"))
                 ],
                 addresses=[
@@ -153,8 +154,17 @@ class TestEntityFormatter(TestCase):
             formatted_result = entity_to_passfort_format(entity)
             self.assertListEqual(formatted_result["match_countries"], [{"v": "GBR"}, {"v": "ESP"}])
             self.assertListEqual(
+                formatted_result["match_countries_data"],
+                [
+                    {"country_code": "GBR", "type": "NATIONALITY"},
+                    {"country_code": "ESP", "type": "NATIONALITY"},
+                    {"country_code": "SYR", "type": "RESIDENCE"},
+                ]
+            )
+            self.assertListEqual(
                 formatted_result["locations"],
                 [
+                    {"v": {"type": "LOCATION", "country": "SYR"}},
                     {"v": {"type": "RESIDENT", "country": "GBR"}},
                     {"v": {"type": "ADDRESS", "country": "GBR", "city": "London", "address": "EC3N 4DR"}}
                 ])
