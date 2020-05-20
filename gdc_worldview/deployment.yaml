@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: integrations-gdc-worldview
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  selector:
+    matchLabels:
+      passfort: integrations-gdc-worldview
+  progressDeadlineSeconds: 240
+  template:
+    metadata:
+      name: integrations-gdc-worldview
+      labels:
+        passfort: integrations-gdc-worldview
+    spec:
+      containers:
+      - name: integrations-gdc-worldview
+        image: {container_uri}
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "128Mi"
+        ports:
+        - containerPort: 8001
+        env:
+        - name: CLUSTER
+          value: {cluster}
+        - name: SENTRY_URL
+          value: {sentry_url}
+        readinessProbe:
+          httpGet:
+            path: '/health'
+            port: 8001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: integrations-gdc-worldview
+spec:
+  ports:
+    - name: http
+      port: 8001
+  selector:
+    passfort: integrations-gdc-worldview

@@ -8,18 +8,51 @@ flags:
   bvd:
     paths:
       - bvd/
+  cifas:
+    paths:
+      - cifas/
   comply_advantage:
     paths:
       - comply_advantage/
-  duedil:
+  creditsafe:
     paths:
-      - duedil/
-  onfido:
-    paths:
-      - onfido/
-  worldcheck:
-    paths:
-      - worldcheck/
+      - creditsafe/
   dowjones_watchlist_api:
     paths:
       - dowjones_watchlist_api/
+  duedil:
+    paths:
+      - duedil/
+  equifax:
+    paths:
+      - equifax/
+  equifax_au:
+    paths:
+      - equifax_au/
+  gdc_worldview:
+    paths:
+      - gdc_worldview/
+  iovation:
+    paths:
+      - iovation/
+  lexisnexis_id:
+    paths:
+      - lexisnexis_id/
+  mastercard_match:
+    paths:
+      - mastercard_match/
+  onfido:
+    paths:
+      - onfido/
+  trulioo:
+    paths:
+      - trulioo/
+  uk_charities_commission:
+    paths:
+      - uk_charities_commision/
+  vsure:
+    paths:
+      - vsure/
+  worldcheck:
+    paths:
+      - worldcheck/
