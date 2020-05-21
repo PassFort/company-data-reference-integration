@@ -956,7 +956,7 @@ workflows:
       - deploy_common:
           name: deploy_gdc_worldview_production
           package: gdc_worldview
-          to: master
+          to: production
           requires:
             - unit_gdc_worldview
           filters:
