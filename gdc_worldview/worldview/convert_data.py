@@ -168,6 +168,7 @@ FIELDS_TO_MATCH = {
     'LASTNAME': 'SURNAME',
     'DATEOFBIRTH': 'DOB',
     'ADDRESS': 'ADDRESS',
+    'NATIONALID': 'IDENTITY_NUMBER',
 }
 
 class MatchResult():
@@ -190,7 +191,7 @@ class MatchResult():
         # all returned database codes comes with a trailing number 
         # we won't need. E.g: CMM1 -> CMM (Commercial)
         self.database_code = database_code[:-1]
-        self.database_name = DATABASES[self.database_code]
+        self.database_name = DATABASES[self.database_code] + f' (source #{database_code[-1]})'
         self.database_type = 'CREDIT' if self.database_code == 'CRD' else 'CIVIL'
 
         self.field_name = field_name
@@ -271,7 +272,9 @@ def worldview_to_passfort_data(worldview_response_data):
                 matches.append(match)
             
             match['matched_fields'].append(FIELDS_TO_MATCH[code.field_name])
-            match['count'] += 1
+            
+            if not match['count']:
+                match['count'] = 1
 
         response_body['output_data']['electronic_id_check']['matches'] = matches
 
