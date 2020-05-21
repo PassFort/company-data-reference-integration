@@ -87,14 +87,55 @@ def test_record_with_one_datasource_with_dob_forename_surname_match(client):
                                     "electronic_id_check": {
                                         "matches": [
                                             {
-                                                "database_name": "Commercial",
+                                                "database_name": "Commercial (source #1)",
                                                 "database_type": "CIVIL",
                                                 "matched_fields": [
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB"
                                                 ],
-                                                "count": 3
+                                                "count": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                "raw": worldview_data['body'],
+                                "errors": []
+                            }    
+
+def test_record_with_one_datasource_with_identity_number_match(client):
+    worldview_data = {'status': 200, 'body':
+        {   
+            "identity": {
+                "codes": {
+                    "reliability": "10",
+                    "messages": [
+                        {
+                            "code": "1MT-FR-CMM1-NATIONALID",
+                            "value": "Full match was made on National ID"
+                        }
+                    ],
+                    "detailList": ""
+                }
+            }
+        }
+    }
+
+    response_body = worldview_to_passfort_data(worldview_data)
+
+    assert response_body == {
+                                "output_data": {
+                                    "decision": "PASS",
+                                    "entity_type": "INDIVIDUAL",
+                                    "electronic_id_check": {
+                                        "matches": [
+                                            {
+                                                "database_name": "Commercial (source #1)",
+                                                "database_type": "CIVIL",
+                                                "matched_fields": [
+                                                    "IDENTITY_NUMBER"
+                                                ],
+                                                "count": 1
                                             }
                                         ]
                                     }
@@ -162,14 +203,14 @@ def test_record_with_one_datasource_with_address_forename_surname_match(client):
                                     "electronic_id_check": {
                                         "matches": [
                                             {
-                                                "database_name": "Commercial",
+                                                "database_name": "Commercial (source #1)",
                                                 "database_type": "CIVIL",
                                                 "matched_fields": [
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "ADDRESS"
                                                 ],
-                                                "count": 3
+                                                "count": 1
                                             }
                                         ]
                                     }
@@ -224,7 +265,11 @@ def test_record_with_one_datasource_with_full_match(client):
                         {
                             "code": "4MT-FR-CMM1-SUBPREMISE",
                             "value": "Datasource does not contain element Sub Premise Descriptors provided in Address Lines"
-                        }   
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-NATIONALID",
+                            "value": "Full match was made on National ID"
+                        }
                     ],
                     "detailList": ""
                 }
@@ -241,15 +286,16 @@ def test_record_with_one_datasource_with_full_match(client):
                                     "electronic_id_check": {
                                         "matches": [
                                             {
-                                                "database_name": "Commercial",
+                                                "database_name": "Commercial (source #1)",
                                                 "database_type": "CIVIL",
                                                 "matched_fields": [
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB",
-                                                    "ADDRESS"
+                                                    "ADDRESS",
+                                                    "IDENTITY_NUMBER"
                                                 ],
-                                                "count": 4
+                                                "count": 1
                                             }
                                         ]
                                     }
@@ -288,7 +334,148 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                         {
                             "code": "1MT-FR-CMM1-ADDRESS",
                             "value": "Full match was made on address elements provided in Address Lines"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-NATIONALID",
+                            "value": "Full match was made on National ID"
                         },  
+                        {
+                            "code": "1MT-FR-CRD14-COMPLETENAME",
+                            "value": "Full match was made on Complete Name"
+                        },
+                        {
+                            "code": "1MT-FR-CRD14-FIRSTINITIAL",
+                            "value": "Full match was made on First Initial"
+                        },
+                        {
+                            "code": "1MT-FR-CRD14-FIRSTNAME",
+                            "value": "Full match was made on First Name/Given Name"
+                        },
+                        {
+                            "code": "1MT-FR-CRD14-LASTNAME",
+                            "value": "Full match was made on Last Name/Surname "
+                        },
+                        {
+                            "code": "1MT-FR-CRD14-DATEOFBIRTH",
+                            "value": "Full match was made on Date of Birth"
+                        },
+                        {
+                            "code": "1MT-FR-CRD14-ADDRESS",
+                            "value": "Full match was made on address elements provided in Address Lines"
+                        },
+                        {
+                            "code": "1MT-FR-CRD14-NATIONALID",
+                            "value": "Full match was made on National ID"
+                        } 
+                    ],
+                    "detailList": ""
+                }
+            }
+        }
+    }
+
+    response_body = worldview_to_passfort_data(worldview_data)
+
+    assert response_body == {
+                                "output_data": {
+                                    "decision": "PASS",
+                                    "entity_type": "INDIVIDUAL",
+                                    "electronic_id_check": {
+                                        "matches": [
+                                            {
+                                                "database_name": "Commercial (source #1)",
+                                                "database_type": "CIVIL",
+                                                "matched_fields": [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "DOB",
+                                                    "ADDRESS",
+                                                    "IDENTITY_NUMBER"
+                                                ],
+                                                "count": 1
+                                            },
+                                            {
+                                                "database_name": "Credit (source #14)",
+                                                "database_type": "CREDIT",
+                                                "matched_fields": [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "DOB",
+                                                    "ADDRESS",
+                                                    "IDENTITY_NUMBER"
+                                                ],
+                                                "count": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                "raw": worldview_data['body'],
+                                "errors": []
+                            }    
+
+def test_record_with_one_datasource_with_full_match_diff_database_in_the_same_code(client):
+    worldview_data = {'status': 200, 'body':
+        {   
+            "identity": {
+                "codes": {
+                    "reliability": "10",
+                    "messages": [
+                        {
+                            "code": "1MT-FR-CMM1-COMPLETENAME",
+                            "value": "Full match was made on Complete Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-FIRSTINITIAL",
+                            "value": "Full match was made on First Initial"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-FIRSTNAME",
+                            "value": "Full match was made on First Name/Given Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-LASTNAME",
+                            "value": "Full match was made on Last Name/Surname "
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-DATEOFBIRTH",
+                            "value": "Full match was made on Date of Birth"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-ADDRESS",
+                            "value": "Full match was made on address elements provided in Address Lines"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-NATIONALID",
+                            "value": "Full match was made on National ID"
+                        }, 
+                        {
+                            "code": "1MT-FR-CMM2-COMPLETENAME",
+                            "value": "Full match was made on Complete Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM2-FIRSTINITIAL",
+                            "value": "Full match was made on First Initial"
+                        },
+                        {
+                            "code": "1MT-FR-CMM2-FIRSTNAME",
+                            "value": "Full match was made on First Name/Given Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM2-LASTNAME",
+                            "value": "Full match was made on Last Name/Surname "
+                        },
+                        {
+                            "code": "1MT-FR-CMM2-DATEOFBIRTH",
+                            "value": "Full match was made on Date of Birth"
+                        },
+                        {
+                            "code": "1MT-FR-CMM2-ADDRESS",
+                            "value": "Full match was made on address elements provided in Address Lines"
+                        },
+                        {
+                            "code": "1MT-FR-CMM2-NATIONALID",
+                            "value": "Full match was made on National ID"
+                        },
                         {
                             "code": "1MT-FR-CRD4-COMPLETENAME",
                             "value": "Full match was made on Complete Name"
@@ -312,7 +499,11 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                         {
                             "code": "1MT-FR-CRD4-ADDRESS",
                             "value": "Full match was made on address elements provided in Address Lines"
-                        }   
+                        },
+                        {
+                            "code": "1MT-FR-CRD4-NATIONALID",
+                            "value": "Full match was made on National ID"
+                        } 
                     ],
                     "detailList": ""
                 }
@@ -329,26 +520,40 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                     "electronic_id_check": {
                                         "matches": [
                                             {
-                                                "database_name": "Commercial",
+                                                "database_name": "Commercial (source #1)",
                                                 "database_type": "CIVIL",
                                                 "matched_fields": [
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB",
-                                                    "ADDRESS"
+                                                    "ADDRESS",
+                                                    "IDENTITY_NUMBER"
                                                 ],
-                                                "count": 4
+                                                "count": 1
                                             },
                                             {
-                                                "database_name": "Credit",
+                                                "database_name": "Commercial (source #2)",
+                                                "database_type": "CIVIL",
+                                                "matched_fields": [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "DOB",
+                                                    "ADDRESS",
+                                                    "IDENTITY_NUMBER"
+                                                ],
+                                                "count": 1
+                                            },
+                                            {
+                                                "database_name": "Credit (source #4)",
                                                 "database_type": "CREDIT",
                                                 "matched_fields": [
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB",
-                                                    "ADDRESS"
+                                                    "ADDRESS",
+                                                    "IDENTITY_NUMBER"
                                                 ],
-                                                "count": 4
+                                                "count": 1
                                             }
                                         ]
                                     }
