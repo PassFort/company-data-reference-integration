@@ -3,7 +3,9 @@ from flask import abort, g, request
 from enum import unique, Enum
 from functools import wraps
 from schematics import Model
+from schematics.common import NOT_NONE
 from schematics.types import BooleanType, StringType, ModelType, ListType, DateType, DateTimeType
+from schematics.types.base import TypeMeta
 from schematics.exceptions import DataError, ValidationError
 
 from swagger_client.rest import ApiException
@@ -253,7 +255,7 @@ class Associate(Model):
 
 class Location(Model):
     type = StringType(required=True)
-    country = StringType()  # On api v4, this is actually constrained to alpha_3 country codes
+    country = StringType()  #  On api v4, this is actually constrained to alpha_3 country codes
     city = StringType()
     address = StringType()
 
@@ -294,6 +296,27 @@ class FormattedDate(Model):
     format = StringType(required=True)
 
 
+@unique
+class CountryMatchType(Enum):
+    AFFILIATION = 'AFFILIATION'
+    CITIZENSHIP = 'CITIZENSHIP'
+    CURRENT_OWNERSHIP = 'CURRENT_OWNERSHIP'
+    OWNERSHIP = 'OWNERSHIP'
+    JURISDICTION = 'JURISDICTION'
+    REGISTRATION = 'REGISTRATION'
+    ALLEGATION = 'ALLEGATION'
+    RESIDENCE = 'RESIDENCE'
+    RISK = 'RISK'
+    FORMERLY_SANCTIONED = 'FORMERLY_SANCTIONED'
+    SANCTIONED = 'SANCTIONED'
+    NATIONALITY = 'NATIONALITY'
+
+
+class MatchCountryData(Model):
+    country_code = StringType(required=True)
+    type = StringType(required=True, choices=[ty.value for ty in CountryMatchType])
+
+
 class MatchEvent(Model):
     event_type = StringType(required=True, choices=['PEP_FLAG', 'SANCTION_FLAG', 'REFER_FLAG'])
     match_id = StringType(required=True)
@@ -306,6 +329,7 @@ class MatchEvent(Model):
 
     # Nationality or country of incorporation.
     match_countries = ListType(StringType)
+    match_countries_data = ListType(ModelType(MatchCountryData))
 
     # Additional information
     aliases = ListType(StringType)
@@ -359,9 +383,44 @@ class ReferMatchEvent(MatchEvent):
         serialize_when_none = False
 
 
+class AddressType(StringType):
+    STRUCTURED = 'STRUCTURED'
+
+
+class StructuredAddress(Model):
+    country = StringType(required=True)
+    state_province = StringType(default=None)
+    county = StringType(default=None)
+    postal_code = StringType(default=None)
+    locality = StringType(default=None)
+    postal_town = StringType(default=None)
+    route = StringType(default=None)
+    street_number = StringType(default=None)
+    premise = StringType(default=None)
+    subpremise = StringType(default=None)
+    address_lines = ListType(StringType(), default=None)
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class Address(StructuredAddress):
+    type = AddressType(required=True, default=AddressType.STRUCTURED)
+    original_freeform_address = StringType(default=None)
+    original_structured_address = ModelType(StructuredAddress, default=None)
+
+
+class DatedAddress(Model):
+    address: Address = ModelType(Address, required=True)
+
+    class Options:
+        export_level = NOT_NONE
+
+
 class ScreeningRequestData(Model):
     entity_type = StringType(choices=['INDIVIDUAL', 'COMPANY'], required=True)
 
+    address_history = ListType(ModelType(DatedAddress), default=None)
     personal_details = ModelType(PersonalDetails, default=None)
     metadata = ModelType(CompanyMetadata, default=None)
 

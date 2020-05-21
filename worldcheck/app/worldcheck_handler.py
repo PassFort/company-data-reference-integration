@@ -138,6 +138,10 @@ class CaseHandler:
                 fields.append(
                     Field(type_id="SFCT_2",
                           date_time_value=input_data.personal_details.dob.v))
+            if input_data.address_history:
+                first_address = next((address for address in input_data.address_history), None)
+                if first_address:
+                    fields.append(Field(type_id="SFCT_3", value=first_address.address.country))
             if input_data.personal_details.nationality and input_data.personal_details.nationality.v:
                 fields.append(
                     Field(type_id="SFCT_5",

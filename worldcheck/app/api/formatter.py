@@ -50,9 +50,30 @@ def entity_to_passfort_format(entity: 'Entity'):
         result["deceased"] = {"v": entity.is_deceased}
         roles = [{"name": role.title} for role in entity.roles] if entity.roles is not None else []
 
+        match_countries_data = []
         nationalities = get_country_links_by_type(entity, CountryLinkType.NATIONALITY)
         if len(nationalities) > 0:
             result["match_countries"] = tagged_list(nationalities)
+            match_countries_data += [
+                {
+                    "country_code": nationality,
+                    "type": "NATIONALITY"
+                }
+                for nationality in nationalities
+            ]
+
+        address_countries = get_country_links_by_type(entity, 'LOCATION')
+        if len(address_countries) > 0:
+            match_countries_data += [
+                {
+                    "country_code": country,
+                    "type": "RESIDENCE"
+                }
+                for country in address_countries
+            ]
+
+        if len(match_countries_data) > 0:
+            result["match_countries_data"] = match_countries_data
 
     if entity.entity_type == ProfileEntityType.ORGANISATION:
         countries_of_inc = get_country_links_by_type(entity, CountryLinkType.REGISTEREDIN)
@@ -91,9 +112,30 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
         base_event_data["match_dates"] = get_dobs(entity)
         roles = [{"name": role.title} for role in entity.roles] if entity.roles is not None else []
 
+        match_countries_data = []
         nationalities = get_country_links_by_type(entity, CountryLinkType.NATIONALITY)
         if len(nationalities) > 0:
             base_event_data["match_countries"] = nationalities
+            match_countries_data += [
+                {
+                    "country_code": nationality,
+                    "type": "NATIONALITY"
+                }
+                for nationality in nationalities
+            ]
+
+        address_countries = get_country_links_by_type(entity, 'LOCATION')
+        if len(address_countries) > 0:
+            match_countries_data += [
+                {
+                    "country_code": country,
+                    "type": "RESIDENCE"
+                }
+                for country in address_countries
+            ]
+
+        if len(match_countries_data) > 0:
+            base_event_data["match_countries_data"] = match_countries_data
 
     if entity.entity_type == ProfileEntityType.ORGANISATION:
         countries_of_inc = get_country_links_by_type(entity, CountryLinkType.REGISTEREDIN)
