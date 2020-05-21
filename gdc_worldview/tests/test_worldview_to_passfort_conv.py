@@ -340,31 +340,31 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                             "value": "Full match was made on National ID"
                         },  
                         {
-                            "code": "1MT-FR-CRD4-COMPLETENAME",
+                            "code": "1MT-FR-CRD14-COMPLETENAME",
                             "value": "Full match was made on Complete Name"
                         },
                         {
-                            "code": "1MT-FR-CRD4-FIRSTINITIAL",
+                            "code": "1MT-FR-CRD14-FIRSTINITIAL",
                             "value": "Full match was made on First Initial"
                         },
                         {
-                            "code": "1MT-FR-CRD4-FIRSTNAME",
+                            "code": "1MT-FR-CRD14-FIRSTNAME",
                             "value": "Full match was made on First Name/Given Name"
                         },
                         {
-                            "code": "1MT-FR-CRD4-LASTNAME",
+                            "code": "1MT-FR-CRD14-LASTNAME",
                             "value": "Full match was made on Last Name/Surname "
                         },
                         {
-                            "code": "1MT-FR-CRD4-DATEOFBIRTH",
+                            "code": "1MT-FR-CRD14-DATEOFBIRTH",
                             "value": "Full match was made on Date of Birth"
                         },
                         {
-                            "code": "1MT-FR-CRD4-ADDRESS",
+                            "code": "1MT-FR-CRD14-ADDRESS",
                             "value": "Full match was made on address elements provided in Address Lines"
                         },
                         {
-                            "code": "1MT-FR-CRD4-NATIONALID",
+                            "code": "1MT-FR-CRD14-NATIONALID",
                             "value": "Full match was made on National ID"
                         } 
                     ],
@@ -395,7 +395,7 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                                 "count": 1
                                             },
                                             {
-                                                "database_name": "Credit (source #4)",
+                                                "database_name": "Credit (source #14)",
                                                 "database_type": "CREDIT",
                                                 "matched_fields": [
                                                     "FORENAME",

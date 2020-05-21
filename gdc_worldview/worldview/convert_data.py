@@ -180,7 +180,7 @@ class MatchResult():
         if not len(split_list) == PARTS_COUNT:
             raise Exception(f'Code must have {PARTS_COUNT} parts')
 
-        match_code, country_code, database_code, field_name = split_list
+        match_code, country_code, database_abbrv, field_name = split_list
 
         self.full_match = match_code[0] == FULL_MATCH
 
@@ -190,8 +190,8 @@ class MatchResult():
 
         # all returned database codes comes with a trailing number 
         # we won't need. E.g: CMM1 -> CMM (Commercial)
-        self.database_code = database_code[:-1]
-        self.database_name = DATABASES[self.database_code] + f' (source #{database_code[-1]})'
+        self.database_code = database_abbrv[0:3]
+        self.database_name = DATABASES[self.database_code] + f' (source #{database_abbrv[3:]})'
         self.database_type = 'CREDIT' if self.database_code == 'CRD' else 'CIVIL'
 
         self.field_name = field_name
