@@ -500,7 +500,7 @@ class CreditsafeSearchAddress(Model):
 class CreditSafeCompanySearchResponse(Model):
     creditsafe_id = StringType(required=True, serialized_name="id")
     registration_number = StringType(default=None, serialized_name="regNo")
-    name = StringType(required=True)
+    name = StringType(default=None)
     address = ModelType(CreditsafeSearchAddress, default=None)
 
     def as_passfort_format(self, country, state):
@@ -524,6 +524,8 @@ class CreditSafeCompanySearchResponse(Model):
     def name_match_confidence(self, search):
         if not search.name:
             return 100
+        if not self.name:
+            return 0
         matcher = CompanyNameMatcher()
         return matcher.match_ratio(search.name, self.name)
 
@@ -535,8 +537,8 @@ class CreditSafeCompanySearchResponse(Model):
 
         # If Company number matches be less strict with name matching
         matcher = CompanyNameMatcher(50 if matches_number else fuzz_factor)
-
-        if search.name and not matcher.match(search.name, self.name):
+        names_present = search.name is not None and self.name is not None
+        if names_present and not matcher.match(search.name, self.name):
             return False
 
         if search.state and self.address and self.address.province:

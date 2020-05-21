@@ -86,6 +86,16 @@ class TestCompanySearchResponse(unittest.TestCase):
             'name': 'PASSF LMITED',
         }), fuzz_factor=90))
 
+    def test_no_name_response(self):
+        searchResp = CreditSafeCompanySearchResponse.from_json({
+            'creditsafe_id': '1000',
+            'regNo': '09565115',
+        })
+
+        self.assertTrue(searchResp.matches_search(SearchInput({
+            'number': '09565115',
+        }), fuzz_factor=90))
+
 
 class TestPSC(unittest.TestCase):
     def test_country_of_incorporation(self):
@@ -1257,7 +1267,7 @@ class TestFinancials(unittest.TestCase):
             }
         }
         cls.maxDiff = None
-    
+
     def test_handles_missing_entries(self):
         report = CreditSafeCompanyReport.from_json({
             **self.base_metadata,
