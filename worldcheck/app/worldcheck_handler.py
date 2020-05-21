@@ -1,5 +1,5 @@
 from swagger_client.models import NewCase, ProviderType, Case, CaseEntityType, Result, Filter, Field, MatchStrength
-from app.auth import CustomAuthApiClient
+from app.auth import CustomAuthApiClient, CustomAuthApiClient_1_6
 from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData, WorldCheckProviderType, Error
 from app.api.responses import make_screening_started_response, make_results_response, make_match_response, \
     make_associate_response, make_associates_response
@@ -33,13 +33,21 @@ class CaseHandler:
     """
 
     def __init__(self, credentials: WorldCheckCredentials, config: WorldCheckConfig, is_demo=False):
+        import worldcheck_client_1_6
         custom_client = CustomAuthApiClient(
             credentials.url,
             credentials.api_key,
             credentials.api_secret
         )
+        custom_client_1_6 = CustomAuthApiClient_1_6(
+            credentials.url,
+            credentials.api_key,
+            credentials.api_secret
+        )
+
         self.case_api = CaseApi(custom_client)
         self.groups_api = GroupsApi(custom_client)
+        self.groups_api_1_6 = worldcheck_client_1_6.api.GroupsApi(custom_client_1_6)
         self.config = config
         self.is_demo = is_demo
 
@@ -84,12 +92,15 @@ class CaseHandler:
             results: list[Result] = self.case_api.cases_case_system_id_results_get(case_system_id)
 
             if self.config.use_provider_fp_reduction:
-                resolution_toolkit = self.groups_api.groups_group_id_resolution_toolkit_get(self.config.group_id)
-                false_positive_statuses = {
-                    status.id
-                    for status in resolution_toolkit.resolution_fields.statuses
-                    if status.type == 'FALSE'
-                } if resolution_toolkit else {}
+                resolution_toolkits = self.groups_api_1_6.groups_group_id_resolution_toolkits_get(self.config.group_id)
+                false_positive_statuses = set()
+
+                # One toolkit per provider type
+                # TODO: Do we need to filter to providers on this case?
+                for toolkit in resolution_toolkits.values():
+                    for status in toolkit.resolution_fields.statuses:
+                        if status.type == 'FALSE':
+                            false_positive_statuses.add(status.id)
                 results = [
                     result
                     for result in results
