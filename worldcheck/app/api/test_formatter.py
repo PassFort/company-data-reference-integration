@@ -5,7 +5,9 @@ from app.api.formatter import entity_to_passfort_format, get_some_name
 from swagger_client.models import Address, IndividualEntity, OrganisationEntity, Name, NameType, ActionDetail, \
     ProfileActionType, \
     ProviderSource, Role, \
-    ProviderSourceStatus, ProviderSourceType, ProviderSourceTypeCategoryDetail, Country, CountryLink, CountryLinkType
+    ProviderSourceStatus, ProviderSourceType, ProviderSourceTypeCategoryDetail, Country
+
+from worldcheck_client_1_6 import CountryLink, CountryLinkType
 
 
 bashar_uk_sanction = ActionDetail(
@@ -144,7 +146,7 @@ class TestEntityFormatter(TestCase):
                 country_links=[
                     CountryLink(type=CountryLinkType.NATIONALITY, country=Country(code="GBR", name="United Kingdom")),
                     CountryLink(type=CountryLinkType.NATIONALITY, country=Country(code="ESP", name="Spain")),
-                    CountryLink(type='LOCATION', country=Country(code="SYR", name="Syria")),
+                    CountryLink(type=CountryLinkType.LOCATION, country=Country(code="SYR", name="Syria")),
                     CountryLink(type=CountryLinkType.RESIDENT, country=Country(code="GBR", name="United Kingdom"))
                 ],
                 addresses=[

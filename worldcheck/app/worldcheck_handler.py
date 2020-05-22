@@ -19,11 +19,12 @@ class WorldCheckPendingError(Exception):
     pass
 
 
-def record_result_count(count, is_demo, provider_fp_reduction):
+def record_result_count(count, is_demo, provider_fp_reduction, group_id):
     from app.application import app
     app.dd.increment('passfort.services.worldcheck.results', tags=[
         f'is_demo:{is_demo}',
         f'provider_fp_reduction:{provider_fp_reduction}',
+        f'group_id:{group_id}',
     ])
 
 
@@ -46,7 +47,6 @@ class CaseHandler:
         )
 
         self.case_api = CaseApi(custom_client)
-        self.groups_api = GroupsApi(custom_client)
         self.groups_api_1_6 = worldcheck_client_1_6.api.GroupsApi(custom_client_1_6)
         self.config = config
         self.is_demo = is_demo
@@ -96,7 +96,6 @@ class CaseHandler:
                 false_positive_statuses = set()
 
                 # One toolkit per provider type
-                # TODO: Do we need to filter to providers on this case?
                 for toolkit in resolution_toolkits.values():
                     for status in toolkit.resolution_fields.statuses:
                         if status.type == 'FALSE':
@@ -107,7 +106,12 @@ class CaseHandler:
                     if result.resolution is None or result.resolution.status_id not in false_positive_statuses
                 ]
 
-        record_result_count(len(results), self.is_demo, self.config.use_provider_fp_reduction)
+        record_result_count(
+            len(results),
+            self.is_demo,
+            self.config.use_provider_fp_reduction,
+            self.config.group_id
+        )
 
         return make_results_response(results=results, config=self.config)
 

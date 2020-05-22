@@ -3,7 +3,9 @@ import pycountry
 from typing import List, TYPE_CHECKING
 from .types import MatchEvent, PEPMatchEvent, SanctionsMatchEvent, ReferMatchEvent
 
-from swagger_client.models import NameType, DetailType, ProfileEntityType, CountryLinkType, EventType
+from swagger_client.models import NameType, DetailType, ProfileEntityType, EventType
+
+from worldcheck_client_1_6.models import CountryLinkType
 
 if TYPE_CHECKING:
     from swagger_client.models import Address, Associate, Entity, IndividualEntity, Name, Result, Event
@@ -62,7 +64,7 @@ def entity_to_passfort_format(entity: 'Entity'):
                 for nationality in nationalities
             ]
 
-        address_countries = get_country_links_by_type(entity, 'LOCATION')
+        address_countries = get_country_links_by_type(entity, CountryLinkType.LOCATION)
         if len(address_countries) > 0:
             match_countries_data += [
                 {
@@ -124,7 +126,7 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
                 for nationality in nationalities
             ]
 
-        address_countries = get_country_links_by_type(entity, 'LOCATION')
+        address_countries = get_country_links_by_type(entity, CountryLinkType.LOCATION)
         if len(address_countries) > 0:
             match_countries_data += [
                 {
