@@ -291,9 +291,49 @@ class PersonalDetails(Model):
         return f'{self.dob}-A-A'
 
 
+class AddressType(StringType):
+    STRUCTURED = 'STRUCTURED'
+
+
+class StructuredAddress(Model):
+    country = StringType(required=True)
+    state_province = StringType(default=None)
+    county = StringType(default=None)
+    postal_code = StringType(default=None)
+    locality = StringType(default=None)
+    postal_town = StringType(default=None)
+    route = StringType(default=None)
+    street_number = StringType(default=None)
+    premise = StringType(default=None)
+    subpremise = StringType(default=None)
+    address_lines = ListType(StringType(), default=None)
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class Address(StructuredAddress):
+    type = AddressType(required=True, default=AddressType.STRUCTURED)
+    original_freeform_address = StringType(default=None)
+    original_structured_address = ModelType(StructuredAddress, default=None)
+
+
+class DatedAddress(Model):
+    address: Address = ModelType(Address, required=True)
+
+    class Options:
+        export_level = NOT_NONE
+
+
 class InputData(Model):
     entity_type = StringType(choices=['INDIVIDUAL'], required=True)
     personal_details = ModelType(PersonalDetails, required=True)
+    address_history = ListType(ModelType(DatedAddress), default=None)
+
+    @property
+    def most_recent_address(self):
+        if self.address_history and len(self.address_history) > 0:
+            return self.address_history[0]
 
 
 class ScreeningRequest(Model):
