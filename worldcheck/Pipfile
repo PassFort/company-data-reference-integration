@@ -18,6 +18,7 @@ raven = {extras = ["flask"]}
 pycountry="*"
 python-json-logger = "*"
 swagger-client = {git = "ssh://git@github.com/PassFort/python-worldcheck-client.git", ref="997ffa71befba2e176be87f13dac33189be57090", editable=true}
+worldcheck-client-1-6 = {git = "ssh://git@github.com/PassFort/python-worldcheck-client.git", ref="67bad0b74ad902e5905de958e87ad304654b8ab4", editable=true}    
 coverage = "*"
 codecov = "*"
 markupsafe = "==1.1.1"
