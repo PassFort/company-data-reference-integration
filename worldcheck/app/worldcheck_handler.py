@@ -1,14 +1,15 @@
 from swagger_client.models import NewCase, ProviderType, Case, CaseEntityType, Result, Filter, Field, MatchStrength
-from app.auth import CustomAuthApiClient
+from app.auth import CustomAuthApiClient, CustomAuthApiClient_1_6
 from app.api.types import WorldCheckCredentials, WorldCheckConfig, ScreeningRequestData, WorldCheckProviderType, Error
 from app.api.responses import make_screening_started_response, make_results_response, make_match_response, \
     make_associate_response, make_associates_response
-from swagger_client.api import CaseApi, ReferenceApi
+from swagger_client.api import CaseApi, GroupsApi, ReferenceApi
 
 import logging
 import errno
 
 from app.utils import create_response_from_file
+
 
 class WorldCheckConnectionError(Exception):
     pass
@@ -18,18 +19,35 @@ class WorldCheckPendingError(Exception):
     pass
 
 
+def record_result_count(count, is_demo, provider_fp_reduction, group_id):
+    from app.application import app
+    app.dd.increment('passfort.services.worldcheck.results', tags=[
+        f'is_demo:{is_demo}',
+        f'provider_fp_reduction:{provider_fp_reduction}',
+        f'group_id:{group_id}',
+    ])
+
+
 class CaseHandler:
     """
     Implements functionality to screen a new case and get the results of the screening
     """
 
     def __init__(self, credentials: WorldCheckCredentials, config: WorldCheckConfig, is_demo=False):
+        import worldcheck_client_1_6
         custom_client = CustomAuthApiClient(
             credentials.url,
             credentials.api_key,
             credentials.api_secret
         )
+        custom_client_1_6 = CustomAuthApiClient_1_6(
+            credentials.url,
+            credentials.api_key,
+            credentials.api_secret
+        )
+
         self.case_api = CaseApi(custom_client)
+        self.groups_api_1_6 = worldcheck_client_1_6.api.GroupsApi(custom_client_1_6)
         self.config = config
         self.is_demo = is_demo
 
@@ -64,7 +82,6 @@ class CaseHandler:
                     results = []
                 else:
                     raise
-
         else:
             audit_response = self.case_api.cases_case_system_id_audit_events_post(
                 case_system_id,
@@ -73,6 +90,28 @@ class CaseHandler:
                 raise WorldCheckPendingError()
 
             results: list[Result] = self.case_api.cases_case_system_id_results_get(case_system_id)
+
+            if self.config.use_provider_fp_reduction:
+                resolution_toolkits = self.groups_api_1_6.groups_group_id_resolution_toolkits_get(self.config.group_id)
+                false_positive_statuses = set()
+
+                # One toolkit per provider type
+                for toolkit in resolution_toolkits.values():
+                    for status in toolkit.resolution_fields.statuses:
+                        if status.type == 'FALSE':
+                            false_positive_statuses.add(status.id)
+                results = [
+                    result
+                    for result in results
+                    if result.resolution is None or result.resolution.status_id not in false_positive_statuses
+                ]
+
+        record_result_count(
+            len(results),
+            self.is_demo,
+            self.config.use_provider_fp_reduction,
+            self.config.group_id
+        )
 
         return make_results_response(results=results, config=self.config)
 

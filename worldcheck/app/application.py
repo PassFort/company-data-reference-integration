@@ -196,8 +196,8 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
         up_to_date = current_date
 
     result = CaseHandler(
-            request_data.credentials, None, False
-        ).get_ongoing_screening_results(safe_from_date, up_to_date)
+        request_data.credentials, None, False
+    ).get_ongoing_screening_results(safe_from_date, up_to_date)
     iso_date = up_to_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
     try:

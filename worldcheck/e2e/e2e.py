@@ -17,6 +17,16 @@ GOOD_CREDENTIALS = {
     "is_pilot": True
 }
 
+NO_FP_REDUCTION_CONFIG = {
+    "group_id": TEST_GROUP_ID,
+    "use_provider_fp_reduction": False,
+}
+
+FP_REDUCTION_CONFIG = {
+    "group_id": TEST_GROUP_ID,
+    "use_provider_fp_reduction": True,
+}
+
 PERSONAL_DETAILS_TM = {
     "name": {
         "v": {
@@ -27,6 +37,20 @@ PERSONAL_DETAILS_TM = {
     },
     "dob": {
         "v": "1956"
+    }
+}
+
+# Nationality is not a match so WC mark as false positive
+PERSONAL_DETAILS_BA = {
+    "name": {
+        "v": {
+            "given_names": ["Bashar"],
+            "family_name": "Assad",
+
+        }
+    },
+    "nationality": {
+        "v": "GBR"
     }
 }
 
@@ -221,6 +245,67 @@ class WorldCheckScreenCase(TestCase):
             result = response.json()
             self.assertEqual(result['errors'], [])
             self.assertGreater(len(result['raw']), 0)
+
+    def test_provider_false_positive_resduction(self):
+        with self.subTest('starts the screening succesfully'):
+            response = requests.post(API_URL + '/screening_request', json={
+                "config": FP_REDUCTION_CONFIG,
+                "credentials": GOOD_CREDENTIALS,
+                "input_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": PERSONAL_DETAILS_BA
+                }
+            })
+
+            self.assertEqual(response.status_code, 200)
+            result = response.json()
+
+            self.assertEqual(result['errors'], [])
+            case_system_id = result['output_data']['worldcheck_system_id']
+
+            self.assertIsNotNone(case_system_id)
+
+        with self.subTest('gets unfiltered results from worldcheck'):
+            retries = 60
+
+            while retries > 0:
+                response = requests.post(API_URL + '/results/' + case_system_id, json={
+                    "credentials": GOOD_CREDENTIALS,
+                    "config": NO_FP_REDUCTION_CONFIG,
+                })
+
+                if response.status_code != 202:
+                    break
+                retries -= 1
+                time.sleep(1)
+
+            self.assertEqual(response.status_code, 200)
+            result = response.json()
+            no_fp_result_count = len(result['output_data'])
+
+        with self.subTest('gets filtered results from worldcheck'):
+            retries = 60
+
+            while retries > 0:
+                response = requests.post(API_URL + '/results/' + case_system_id, json={
+                    "credentials": GOOD_CREDENTIALS,
+                    "config": FP_REDUCTION_CONFIG,
+                })
+
+                if response.status_code != 202:
+                    break
+                retries -= 1
+                time.sleep(1)
+
+            self.assertEqual(response.status_code, 200)
+            result = response.json()
+            fp_result_count = len(result['output_data'])
+
+            self.assertEqual(result['errors'], [])
+            self.assertGreater(len(result['raw']), 0)
+
+        with self.subTest('gets fewer results with fp reduction enabled'):
+            self.assertGreater(no_fp_result_count, fp_result_count)
 
     @skip('to be implemented')
     def test_company_successful_screening_request(self):
