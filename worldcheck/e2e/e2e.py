@@ -357,8 +357,8 @@ class WorldCheckOngoingScreening(TestCase):
 
         as_json = response.json()
 
-        with self.subTest('sets the last run date to 2 weeks from start'):
-            self.assertEqual(as_json['last_run_date'], '2019-02-15T00:00:00.000000Z')
+        with self.subTest('sets the last run date to 3 days from start'):
+            self.assertEqual(as_json['last_run_date'], '2019-02-04T00:00:00.000000Z')
 
         with self.subTest('sets a from date that is 1 hour before the given date'):
             self.assertEqual(as_json['from_date'], '2019-01-31T23:00:00.000000Z')
