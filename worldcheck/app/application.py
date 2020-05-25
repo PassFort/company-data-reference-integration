@@ -191,7 +191,7 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
     safe_from_date = request_data.from_date + relativedelta(hours=-1)
 
     current_date = datetime.now(timezone.utc)
-    up_to_date = request_data.from_date + relativedelta(weeks=+2)
+    up_to_date = request_data.from_date + relativedelta(days=+3)
     if up_to_date > current_date:
         up_to_date = current_date
 
