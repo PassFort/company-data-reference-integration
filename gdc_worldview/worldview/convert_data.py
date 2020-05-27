@@ -147,7 +147,7 @@ def passfort_to_worldview_data(passfort_data):
 NOT_FOUND = -1
 SEPARATOR_COUNT = 3
 PARTS_COUNT = 4
-RELIABLE = '10' # this is the code for reliable messages
+RELIABLE = ['10', '20'] # this is the code for reliable messages
 FULL_MATCH = '1' # this is the code for full matches
 PASS = 'PASS'
 ERROR = 'ERROR'
@@ -200,7 +200,7 @@ class MatchResult():
 is_valid_message = lambda message: bool(message.get('code')) and message['code'].count('-') == SEPARATOR_COUNT and message['code'].find('MATCHED') == NOT_FOUND
 is_valid_field = lambda field: field in FIELDS_TO_MATCH.keys()
 is_full_match = lambda code: code.full_match == True # we only care about full matches
-is_section_reliable = lambda section: section['codes']['reliability'] == RELIABLE
+is_section_reliable = lambda section: section['codes']['reliability'] in RELIABLE
 map_codes = lambda section: [ MatchResult(message['code']) for message in section['codes']['messages'] if is_valid_message(message) ]
 
 def worldview_to_passfort_data(worldview_response_data):

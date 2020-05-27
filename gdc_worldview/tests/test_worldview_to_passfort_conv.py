@@ -562,6 +562,113 @@ def test_record_with_one_datasource_with_full_match_diff_database_in_the_same_co
                                 "errors": []
                             }    
 
+def test_record_with_reliability_20_match(client):
+    worldview_data = {'status': 200, 'body':
+        {   
+            "identity": {
+                "codes": {
+                    "reliability": "20",
+                    "messages": [
+                        {
+                            "code": "1MT-FR-CMM1-COMPLETENAME",
+                            "value": "Full match was made on Complete Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-FIRSTINITIAL",
+                            "value": "Full match was made on First Initial"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-FIRSTNAME",
+                            "value": "Full match was made on First Name/Given Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-LASTNAME",
+                            "value": "Full match was made on Last Name/Surname "
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-DATEOFBIRTH",
+                            "value": "Full match was made on Date of Birth"
+                        }
+                    ],
+                    "detailList": ""
+                }
+            }
+        }
+    }
+
+    response_body = worldview_to_passfort_data(worldview_data)
+
+    assert response_body == {
+                                "output_data": {
+                                    "decision": "PASS",
+                                    "entity_type": "INDIVIDUAL",
+                                    "electronic_id_check": {
+                                        "matches": [
+                                            {
+                                                "database_name": "Commercial (source #1)",
+                                                "database_type": "CIVIL",
+                                                "matched_fields": [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "DOB"
+                                                ],
+                                                "count": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                "raw": worldview_data['body'],
+                                "errors": []
+                            }    
+
+def test_record_with_reliability_30_nomatch(client):
+    worldview_data = {'status': 200, 'body':
+        {   
+            "identity": {
+                "codes": {
+                    "reliability": "30",
+                    "messages": [
+                        {
+                            "code": "1MT-FR-CMM1-COMPLETENAME",
+                            "value": "Full match was made on Complete Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-FIRSTINITIAL",
+                            "value": "Full match was made on First Initial"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-FIRSTNAME",
+                            "value": "Full match was made on First Name/Given Name"
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-LASTNAME",
+                            "value": "Full match was made on Last Name/Surname "
+                        },
+                        {
+                            "code": "1MT-FR-CMM1-DATEOFBIRTH",
+                            "value": "Full match was made on Date of Birth"
+                        }
+                    ],
+                    "detailList": ""
+                }
+            }
+        }
+    }
+
+    response_body = worldview_to_passfort_data(worldview_data)
+
+    assert response_body == {
+                                "output_data": {
+                                    "decision": "FAIL",
+                                    "entity_type": "INDIVIDUAL",
+                                    "electronic_id_check": {
+                                        "matches": []
+                                    }
+                                },
+                                "raw": worldview_data['body'],
+                                "errors": []
+                            }        
+
 def test_record_error_bad_request(client):
     worldview_data = {'status': 500, 'body':
         'Bad request message'
