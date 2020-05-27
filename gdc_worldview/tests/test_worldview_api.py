@@ -79,7 +79,7 @@ def test_verify_request(mock_post_verify, client):
         headers=headers,
         data='{"pkg": "test", "credentials": '
              '{"username": "dummy-user", "password": "dummy-pass", "tenant": "dummy-tenant"}, '
-             '"options": "IdentityVerify;MessageVerbose"}')
+             '"options": "IdentityVerify;DisableDQChecks;MessageVerbose"}')
 
 
 
