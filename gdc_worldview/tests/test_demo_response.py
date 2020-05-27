@@ -35,7 +35,8 @@ def test_full_valid_package(client):
         "FORENAME",
         "SURNAME",
         "ADDRESS",
-        "DOB"
+        "DOB",
+        "IDENTITY_NUMBER"
     ]
     demo_response = {
         "output_data": {
@@ -43,13 +44,13 @@ def test_full_valid_package(client):
             "electronic_id_check": {
                 "matches": [
                     {
-                        "database_name": 'Credit Agency',
+                        "database_name": 'Credit (source #1)',
                         "database_type": 'CREDIT',
                         "matched_fields": matched_fields,
                         "count": 1
                     },
                     {
-                        "database_name": 'Electoral Roll',
+                        "database_name": 'Telco (source #1)',
                         "database_type": 'CIVIL',
                         "matched_fields": matched_fields,
                         "count": 1
@@ -78,7 +79,8 @@ def test_1_plus_1_valid_package(client):
         "FORENAME",
         "SURNAME",
         "ADDRESS",
-        "DOB"
+        "DOB",
+        "IDENTITY_NUMBER"
     ]
     demo_response = {
         "output_data": {
@@ -86,7 +88,7 @@ def test_1_plus_1_valid_package(client):
             "electronic_id_check": {
                 "matches": [
                     {
-                        "database_name": 'Credit Agency',
+                        "database_name": 'Credit (source #1)',
                         "database_type": 'CREDIT',
                         "matched_fields": matched_fields,
                         "count": 1
