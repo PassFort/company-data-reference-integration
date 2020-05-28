@@ -8,7 +8,7 @@ from schematics.exceptions import DataError, ValidationError
 from schematics.types import DateType, IntType, ListType, ModelType, StringType
 from schematics.types.base import TypeMeta
 
-from .passfort import CompanyData, IndividualData, InquiryRequest
+from .passfort import CompanyData, IndividualData, InquiryRequest, MatchConfig
 
 
 class EnumMeta(TypeMeta):
@@ -97,6 +97,19 @@ class SearchCriteria(Model):
     class Options:
         export_level = NOT_NONE
 
+    @classmethod
+    def from_passfort(cls, config: MatchConfig):
+        if config.worldwide_search:
+            search_all = 'Y'
+        else:
+            search_all = 'N'
+        return cls().import_data({
+            'search_all': search_all,
+            'country': config.country_search,
+            'min_possible_match_count': config.min_phonetic_matches,
+            'region': config.region_search
+        }, apply_defaults=True)
+
 
 class DriversLicense(Model):
     number = StringType(serialized_name='Number')
@@ -124,7 +137,7 @@ class InputPrincipal(Principal):
     search_criteria: SearchCriteria = ModelType(SearchCriteria, serialized_name='SearchCriteria', default={})
 
     @classmethod
-    def from_passfort(cls, individual_data: IndividualData):
+    def from_passfort(cls, individual_data: IndividualData, search_criteria: SearchCriteria):
         drivers_license = ({
             'number': individual_data.drivers_license.number,
             'country': individual_data.drivers_license.country_code,
@@ -138,6 +151,7 @@ class InputPrincipal(Principal):
             'national_id': individual_data.personal_details.national_id,
             'address': Address().from_passfort(individual_data.personal_details.current_address),
             'drivers_license': drivers_license,
+            'search_criteria': search_criteria,
         }, apply_defaults=True)
 
 
@@ -156,9 +170,10 @@ class InputMerchant(Merchant):
     principals: List[InputPrincipal] = ListType(ModelType(InputPrincipal), serialized_name='Principal', min_size=1)
 
     @classmethod
-    def from_passfort(cls, company_data: CompanyData):
+    def from_passfort(cls, company_data: CompanyData, search_criteria):
+        search_criteria = SearchCriteria().from_passfort(search_criteria)
         principals = [
-            InputPrincipal().from_passfort(p) for p in company_data.associated_entities
+            InputPrincipal().from_passfort(p, search_criteria) for p in company_data.associated_entities
         ] or None
 
         return cls().import_data({
@@ -166,6 +181,8 @@ class InputMerchant(Merchant):
             'address': Address().from_passfort(company_data.metadata.first_address),
             'principals': principals,
             'url': company_data.metadata.contact_details.url,
+            'search_criteria': search_criteria
+
         }, apply_defaults=True)
 
 
@@ -176,8 +193,8 @@ class TerminationInquiryRequest(Model):
     @classmethod
     def from_passfort(cls, passfort_data: InquiryRequest):
         return cls().import_data({
-            'AcquirerId': passfort_data.config.acquirer_id,
-            'Merchant': InputMerchant.from_passfort(passfort_data.input_data),
+            'AcquirerId': passfort_data.credentials.acquirer_id,
+            'Merchant': InputMerchant.from_passfort(passfort_data.input_data, passfort_data.config),
         })
 
     def as_request_body(self):
@@ -185,9 +202,8 @@ class TerminationInquiryRequest(Model):
 
 
 class InquiredMerchant(Merchant):
-    added_on = DateType(required=True, serialized_name='AddedOnDate', formats=['%m/%d/%Y'])
-    added_by_aquirer_id = StringType(required=True, serialized_name='AddedByAcquirerID')
     principals: List[Principal] = ListType(ModelType(Principal), serialized_name='Principal', min_size=1)
+    merchant_match = ModelType(MerchantMatch, required=True, serialized_name='MerchantMatch')
 
 
 class ContactDetails(Model):
@@ -214,7 +230,7 @@ class TerminatedMerchant(Merchant):
     def add_contact_details(self, raw_data):
         data = raw_data.get('ContactResponse', {})
         data = data.get('Contact', [])
-        self.contact_details = [ContactDetails.import_data({
+        self.contact_details = [ContactDetails().import_data({
             'bank_name': c.get('BankName'),
             'region': c.get('Region'),
             'first_name': c.get('FirstName'),

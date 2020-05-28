@@ -23,8 +23,11 @@ def requests_retry_session(
 
 
 class MatchHandler:
-    def __init__(self, pem_cert, consumer_key):
-        self.base_url = 'https://sandbox.api.mastercard.com/fraud/merchant/v3'
+    def __init__(self, pem_cert, consumer_key, use_sandbox=False):
+        if use_sandbox:
+            self.base_url = 'https://sandbox.api.mastercard.com/fraud/merchant/v3'
+        else:
+            self.base_url = 'https://api.mastercard.com/fraud/merchant/v3'
         self.oauth = OAuth(pem_cert, consumer_key)
         self.session = requests_retry_session()
 

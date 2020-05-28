@@ -80,8 +80,11 @@ def send_analytics(response):
 @app.route('/inquiry-request')
 @validate_model(InquiryRequest)
 def inquiry_request(data: InquiryRequest):
-    handler = MatchHandler(data.credentials.certificate, data.credentials.consumer_key)
-    return handler.inquiry_request(data, 0, 10)
+    return MatchHandler(
+        data.credentials.certificate,
+        data.credentials.consumer_key,
+        data.config.use_sandbox,
+    ).inquiry_request(data)
 
 
 @app.errorhandler(400)

@@ -4,7 +4,7 @@ from typing import List, Optional
 from flask import abort, request
 from schematics.exceptions import DataError, ValidationError
 from schematics.models import Model
-from schematics.types import DictType, ListType, ModelType, StringType
+from schematics.types import DictType, ListType, ModelType, StringType, BooleanType, NumberType
 
 from .errors import Error
 
@@ -141,12 +141,17 @@ class CompanyData(Model):
 
 
 class MatchConfig(Model):
-    acquirer_id = StringType(required=True)
+    use_sandbox = BooleanType(default=False)
+    worldwide_search = BooleanType(default=True)
+    country_search = ListType(StringType, max_size=9, default=None)
+    region_search = ListType(StringType, default=None)
+    min_phonetic_matches = NumberType(default=None)
 
 
 class MatchCredentials(Model):
     certificate = StringType(required=True)
     consumer_key = StringType(required=True)
+    acquirer_id = StringType(required=True)
 
 
 class InquiryRequest(Model):
