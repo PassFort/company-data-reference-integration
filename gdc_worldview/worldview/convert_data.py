@@ -2,71 +2,73 @@ import pycountry
 import json
 from datetime import datetime
 
+
+def identity_details(input_data, id_country):
+    # check personal details
+    personal_details = input_data.get('personal_details')
+    identity = {}
+    if personal_details:
+        # check name details
+        name_details = personal_details.get('name')
+
+        if name_details:
+            given_names = name_details.get('given_names')
+
+            if given_names:
+                identity['givenfullname'] = given_names[0]
+
+            family_name = name_details.get('family_name')
+
+            if family_name:
+                identity['surnameFirst'] = family_name
+
+            if given_names and family_name:
+                # Let me know if you find this too convoluted.
+                # I tried to make it small and safe for joining
+                # a string list with a single string in one line.
+                identity['completename'] = ' '.join([*given_names, family_name])
+
+        # check date of birth
+        dob = personal_details.get('dob')
+
+        if dob:
+            if len(dob) <= 4:
+                date_of_birth = dob
+            elif len(dob) <= 7 and '-' in dob:
+                date_of_birth = datetime.strptime(dob, '%Y-%M').strftime('%M/%Y')
+            else:
+                date_of_birth = datetime.strptime(dob, '%Y-%M-%d').strftime('%M/%d/%Y')
+
+            identity['dob'] = date_of_birth
+
+        # check personal number
+        national_identity_number = personal_details.get('national_identity_number')
+
+        if national_identity_number:
+            # national_identity_number is a dict/object
+            # with country as the key and the number as value.
+            national_id = national_identity_number.get(id_country, None)
+            if national_id:
+                identity['nationalid'] = national_id
+
+        # check gender
+        gender = personal_details.get('gender')
+
+        if gender:
+            identity['gender'] = gender
+    return identity
+
+
 def passfort_to_worldview_data(passfort_data):
     worldview_pkg = {}
 
     input_data = passfort_data.get('input_data')
 
     if input_data:
-        # check personal details
-        personal_details = input_data.get('personal_details')
-
-        if personal_details:
-            identity = {}
-
-            # check name details
-            name_details = personal_details.get('name')
-
-            if name_details:
-                given_names = name_details.get('given_names')
-
-                if given_names:
-                    identity['givenfullname'] = given_names[0]
-                
-                family_name = name_details.get('family_name')
-
-                if family_name:
-                    identity['surnameFirst'] = family_name
-                
-                if given_names and family_name:
-                    # Let me know if you find this too convoluted.
-                    # I tried to make it small and safe for joining 
-                    # a string list with a single string in one line.
-                    identity['completename'] = ' '.join([*given_names, family_name])
-            
-            # check date of birth
-            dob = personal_details.get('dob')
-
-            if dob:
-                if len(dob) <= 4:
-                    date_of_birth = dob
-                elif len(dob) <= 7 and '-' in dob:
-                    date_of_birth = datetime.strptime(dob, '%Y-%M').strftime('%M/%Y')
-                else:
-                    date_of_birth = datetime.strptime(dob, '%Y-%M-%d').strftime('%M/%d/%Y')
-                
-                identity['dob'] = date_of_birth
-            
-            # check personal number
-            national_identity_number = personal_details.get('national_identity_number')
-
-            if national_identity_number:
-                # national_identity_number is a dict/object 
-                # with country as the key and the number as value. 
-                # We just need to get the first value.
-                identity['nationalid'] = list(national_identity_number.values())[0]
-            
-            # check gender
-            gender = personal_details.get('gender')
-
-            if gender:
-                identity['gender'] = gender
-            
-            worldview_pkg['identity'] = identity
             
         # check address details
         address_history = input_data.get('address_history')
-
+        address_country = None
         if address_history:
             # GDC allows only one address per search.
             # We need to get the last history entry.
@@ -76,7 +78,6 @@ def passfort_to_worldview_data(passfort_data):
                 address = {}
                 
                 address_parts = []
-
 
                 street_number = address_details.get('street_number')
                 route = address_details.get('route')
@@ -121,15 +122,18 @@ def passfort_to_worldview_data(passfort_data):
                 if state_province:
                     address['province'] = state_province
                 
-                countryCode = address_details.get('country')
+                address_country = address_details.get('country')
 
-                if countryCode:
+                if address_country:
                     # GDC uses only 2 alpha country code and PassFort uses 3. (e.g: GBR -> GB)
-                    country = pycountry.countries.get(alpha_3=countryCode)
+                    country = pycountry.countries.get(alpha_3=address_country)
                     address['countryCode'] = country.alpha_2
 
                 worldview_pkg['address'] = address
-        
+        # Use the address country to decide which national identity number to send
+        identity = identity_details(input_data, id_country=address_country)
+        if identity:
+            worldview_pkg['identity'] = identity
         contact_details = input_data.get('contact_details')
 
         if contact_details:
@@ -147,7 +151,7 @@ def passfort_to_worldview_data(passfort_data):
 NOT_FOUND = -1
 SEPARATOR_COUNT = 3
 PARTS_COUNT = 4
-RELIABLE = '10' # this is the code for reliable messages
+RELIABLE = ['10', '20'] # this is the code for reliable messages
 FULL_MATCH = '1' # this is the code for full matches
 PASS = 'PASS'
 ERROR = 'ERROR'
@@ -200,7 +204,7 @@ class MatchResult():
 is_valid_message = lambda message: bool(message.get('code')) and message['code'].count('-') == SEPARATOR_COUNT and message['code'].find('MATCHED') == NOT_FOUND
 is_valid_field = lambda field: field in FIELDS_TO_MATCH.keys()
 is_full_match = lambda code: code.full_match == True # we only care about full matches
-is_section_reliable = lambda section: section['codes']['reliability'] == RELIABLE
+is_section_reliable = lambda section: section['codes']['reliability'] in RELIABLE
 map_codes = lambda section: [ MatchResult(message['code']) for message in section['codes']['messages'] if is_valid_message(message) ]
 
 def worldview_to_passfort_data(worldview_response_data):

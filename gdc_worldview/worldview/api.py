@@ -44,7 +44,7 @@ def verify(request_body, credentials):
     # Hard code them, since the response relies on them begin present
     # Plus, adding more options incurs extra costs.
     
-    options = {'options': 'IdentityVerify;MessageVerbose'}
+    options = {'options': 'IdentityVerify;DisableDQChecks;MessageVerbose'}
 
     response = requests.post(
         url = url,

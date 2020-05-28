@@ -1,7 +1,7 @@
 def create_demo_response(passfort_data):
     databases = [
-        {'name': 'Credit Agency', 'type': 'CREDIT'},
-        {'name': 'Electoral Roll', 'type': 'CIVIL'}]
+        {'name': 'Credit (source #1)', 'type': 'CREDIT'},
+        {'name': 'Telco (source #1)', 'type': 'CIVIL'}]
 
     demo_response = {
         "entity_type": "INDIVIDUAL",
@@ -17,6 +17,7 @@ def create_demo_response(passfort_data):
         "SURNAME",
         "ADDRESS",
         "DOB",
+        "IDENTITY_NUMBER"
     ]
          
     #Get complete name to check what kind of demo response will be returned

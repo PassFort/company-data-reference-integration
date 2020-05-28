@@ -307,3 +307,69 @@ def test_communication_with_full_values(client):
         }
     }
     assert worldview_request_data == output_data
+
+
+def test_identity_number_for_current_country(client):
+    input_data = {
+        'input_data': {
+            'personal_details': {
+                'national_identity_number': {
+                    'MEX': 'MEX_ID',
+                    'GBR': 'GBR_ID'
+                }
+            },
+            'address_history': [
+                {
+                    "address": {
+                        "country": "GBR",
+                        "postal_code": "12345",
+                        "subpremise": "10",
+                        "type": "STRUCTURED"
+                    }
+                }
+            ]
+        }
+    }
+    worldview_request_data = passfort_to_worldview_data(input_data)
+    output_data = {
+        'address': {
+            'houseNumber': '10',
+            'postalCode': '12345',
+            'countryCode': 'GB',
+        },
+        'identity': {
+            'nationalid': 'GBR_ID'
+        }
+    }
+    assert worldview_request_data == output_data
+
+def test_identity_number_for_other_countries_are_not_sent(client):
+    input_data = {
+        'input_data': {
+            'personal_details': {
+                'national_identity_number': {
+                    'MEX': 'MEX_ID',
+                    'USA': 'USA_ID'
+                }
+            },
+            'address_history':[
+                {
+                    "address": {
+                        "country": "GBR",
+                        "postal_code": "12345",
+                        "subpremise": "10",
+                        "type": "STRUCTURED"
+                    }
+                }
+            ]
+        }
+    }
+    worldview_request_data = passfort_to_worldview_data(input_data)
+    output_data = {
+        'address': {
+            'houseNumber': '10',
+            'postalCode': '12345',
+            'countryCode': 'GB',
+        }
+    }
+    assert worldview_request_data == output_data
