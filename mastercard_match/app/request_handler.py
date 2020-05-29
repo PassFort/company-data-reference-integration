@@ -7,6 +7,7 @@ from app.api.match import (ContactDetails, InquiryResults,
 from app.auth.oauth import OAuth
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from app.api.match import merchant_to_events
 
 
 def requests_retry_session(
@@ -87,23 +88,34 @@ class MatchHandler:
             if response:
                 match.add_contact_details(response)
 
-    def inquiry_request(self, body, page_offset=0, page_length=10):
+    def inquiry_request(self, body, page_offset=0, page_length=30):
         url = self.base_url + '/termination-inquiry'
         params = {
             'PageOffset': page_offset,
             'PageLength': page_length,
         }
 
-        inquiry_request_body = TerminationInquiryRequest().from_passfort(body).as_request_body()
+        associate_ids = [idx['associate_id'] for idx in body['input_data']['associated_entities']]
+        inquiry_request: TerminationInquiryRequest = TerminationInquiryRequest().from_passfort(body)
+
+        inquiry_request_body = inquiry_request.as_request_body()
 
         response, _ = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
+        print(response)
         response: InquiryResults = InquiryResults.from_match_response(response)
-        self.join_contact_details(response)
+        events = []
+        for x in [*response.possible_merchant_matches, *response.possible_inquiry_matches]:
+            events.extend(merchant_to_events(x, inquiry_request.merchant, associate_ids))
+
+        #  self.join_contact_details(response)
 
         while response.should_fetch_more():
             params['PageOffset'] += 1
             new_response, _ = self.fire_request(
                 url, 'POST', body=inquiry_request_body, params=params
             )
-            response.merge_data(new_response)
-        return response.to_primitive()
+            new_response = InquiryResults.from_match_response(new_response)
+            for x in [*new_response.possible_merchant_matches, *new_response.possible_inquiry_matches]:
+                events.extend(merchant_to_events(x, inquiry_request.merchant, associate_ids))
+
+        return {"events": events}
