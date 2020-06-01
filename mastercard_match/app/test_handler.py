@@ -20,11 +20,13 @@ company_data = {
     },
     "associated_entities": [
         {
-            "entity_type": "INDIVIDUAL",
-            "personal_details": {
-                "name": {
-                    "family_name": "Bridges",
-                    "given_names": ["Sam"],
+            "associate_id": "F99B94CC-595B-49C7-B393-307151A39569",
+            "collected_data": {
+                "personal_details": {
+                    "name": {
+                        "family_name": "Bridges",
+                        "given_names": ["Sam"],
+                    },
                 },
                 "address_history": [
                     {
@@ -37,7 +39,6 @@ company_data = {
                     }
                 ]
             },
-
         }
     ]
 }
@@ -56,9 +57,11 @@ def load_file(path):
 credentials = {
     "certificate": load_cert(),
     "consumer_key": "akey",
+    "acquirer_id": "12345",
 }
+
 config = {
-    "acquirer_id": '12345'
+    "worldwide_search": True,
 }
 
 
@@ -71,7 +74,7 @@ def paginated_request_callback(request):
     return 200, {}, json.dumps(body)
 
 
-BASE_URL = 'https://sandbox.api.mastercard.com/fraud/merchant/v3'
+BASE_URL = 'https://api.mastercard.com/fraud/merchant/v3'
 INQUIRY_REQUEST_URL = f'{BASE_URL}/termination-inquiry'
 CONTACT_REQUEST = f'{BASE_URL}/common/contact-details'
 
@@ -89,11 +92,11 @@ class TestHandler(unittest.TestCase):
         request = InquiryRequest().import_data({
             "input_data": company_data,
             "credentials": credentials,
-            "config": config
+            "config": config,
         }, apply_defaults=True)
 
         handler = MatchHandler(request.credentials.certificate, request.credentials.consumer_key)
 
         result = handler.inquiry_request(request, 0, 2)
 
-        self.assertEqual(len(result['possible_merchant_matches']), 4)
+        self.assertEqual(len(result['raw']['possible_merchant_matches']), 4)

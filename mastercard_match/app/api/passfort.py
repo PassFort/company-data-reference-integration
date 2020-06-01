@@ -80,12 +80,7 @@ class FullName(Model):
 
 class PersonalDetails(Model):
     name: FullName = ModelType(FullName, required=True)
-    address_history: List[AddressWrapper] = ListType(ModelType(AddressWrapper), required=True, min_size=1)
     national_identity_number = DictType(StringType(), default={})
-
-    @property
-    def current_address(self) -> Address:
-        return self.address_history[0].address
 
     @property
     def national_id(self):
@@ -107,10 +102,15 @@ class CollectedData(Model):
     personal_details: PersonalDetails = ModelType(PersonalDetails)
     contact_details: ContactDetails = ModelType(ContactDetails, default={})
     document_metadata: DocumentMetadata = ListType(ModelType(DocumentMetadata), default=[])
+    address_history: List[AddressWrapper] = ListType(ModelType(AddressWrapper), required=True, min_size=1)
 
     @property
     def drivers_license(self) -> DocumentMetadata:
         return next((doc for doc in self.document_metadata if doc.document_type == 'DRIVING_LICENCE'), None)
+
+    @property
+    def current_address(self) -> Address:
+        return self.address_history[0].address
 
 
 class IndividualData(Model):

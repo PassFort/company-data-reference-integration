@@ -3,10 +3,12 @@ import os
 import traceback
 
 import requests
+
 from flask import Flask, Response, jsonify, request
 from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
 from werkzeug.exceptions import HTTPException
+from json import JSONDecodeError
 
 from .api.errors import Error, ErrorCode, MatchException
 from .api.match import Merchant, TerminationInquiryRequest
@@ -77,7 +79,7 @@ def send_analytics(response):
     return response
 
 
-@app.route('/inquiry-request')
+@app.route('/inquiry-request', methods=["POST"])
 @validate_model(InquiryRequest)
 def inquiry_request(data: InquiryRequest):
     return MatchHandler(
@@ -96,13 +98,19 @@ def api_400(error):
 @app.errorhandler(MatchException)
 def app_error(check_error):
     response = check_error.response
-    response_content = response.json()
-    errors = response_content.get('Errors')
-    errors = errors.get('Error') if errors else []
-    if isinstance(errors, list):
-        errors = [e.get('description') for e in errors]
-    else:
-        errors = [errors.get('description')]
+    try:
+        response_content = response.json()
+        errors = response_content.get('Errors')
+        errors = errors.get('Error') if errors else []
+
+        if isinstance(errors, list):
+            errors = [e.get('Description') for e in errors]
+        else:
+            errors = [errors.get('Description')]
+    # Sometimes they send back xml :|
+    except JSONDecodeError:
+        response_content = response.text
+        errors = [response_content]
 
     if response.status_code == 400:
         errors = [Error.provider_unknown_error(e) for e in errors]

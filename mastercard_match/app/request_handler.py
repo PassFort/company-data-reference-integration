@@ -7,7 +7,7 @@ from app.api.match import (ContactDetails, InquiryResults,
 from app.auth.oauth import OAuth
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from app.api.match import merchant_to_events
+from app.api.passfort_convert import merchant_to_events
 
 
 def requests_retry_session(
@@ -25,6 +25,7 @@ def requests_retry_session(
 
 class MatchHandler:
     def __init__(self, pem_cert, consumer_key, use_sandbox=False):
+        self.use_sandbox = use_sandbox
         if use_sandbox:
             self.base_url = 'https://sandbox.api.mastercard.com/fraud/merchant/v3'
         else:
@@ -95,27 +96,30 @@ class MatchHandler:
             'PageLength': page_length,
         }
 
-        associate_ids = [idx['associate_id'] for idx in body['input_data']['associated_entities']]
+        associate_ids = [aid['associate_id'] for aid in body['input_data']['associated_entities']]
         inquiry_request: TerminationInquiryRequest = TerminationInquiryRequest().from_passfort(body)
 
         inquiry_request_body = inquiry_request.as_request_body()
 
         response, _ = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
-        print(response)
+
         response: InquiryResults = InquiryResults.from_match_response(response)
+
         events = []
         for x in [*response.possible_merchant_matches, *response.possible_inquiry_matches]:
             events.extend(merchant_to_events(x, inquiry_request.merchant, associate_ids))
 
-        #  self.join_contact_details(response)
+        if not self.use_sandbox:
+            self.join_contact_details(response)
 
         while response.should_fetch_more():
             params['PageOffset'] += 1
             new_response, _ = self.fire_request(
                 url, 'POST', body=inquiry_request_body, params=params
             )
+            response.merge_data(new_response)
+
             new_response = InquiryResults.from_match_response(new_response)
             for x in [*new_response.possible_merchant_matches, *new_response.possible_inquiry_matches]:
                 events.extend(merchant_to_events(x, inquiry_request.merchant, associate_ids))
-
-        return {"events": events}
+        return {"result": {"events": events, "ref": response.ref}, "raw": response.to_primitive(), "errors": []}

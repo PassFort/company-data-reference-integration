@@ -17,15 +17,15 @@ company_with_associates_json = loads(read_test_data('company_with_associate.json
 
 class TestPassfortToMatch(TestCase):
     company_data = CompanyData().import_data(company_with_associates_json, apply_defaults=True)
-    merchant = InputMerchant().from_passfort(company_data)
+    merchant = InputMerchant().from_passfort(company_data, MatchConfig())
 
     def test_parses_associates(self):
-        self.maxDiff = None
         self.assertListEqual(self.merchant.to_primitive()['Principal'], [{
             'FirstName': 'Sam',
             'MiddleInitial': 'P',
             'LastName': 'Bridges',
             'NationalId': 'QQ123456C',
+            "PhoneNumber": "+446240211322",
             'Address': {
                 'City': 'London',
                 'Country': 'GBR',
