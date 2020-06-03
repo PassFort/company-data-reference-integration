@@ -4,7 +4,7 @@ from typing import List, Optional
 from flask import abort, request
 from schematics.exceptions import DataError, ValidationError
 from schematics.models import Model
-from schematics.types import DictType, ListType, ModelType, StringType
+from schematics.types import DictType, ListType, ModelType, StringType, BooleanType, IntType, UUIDType
 
 from .errors import Error
 
@@ -80,12 +80,7 @@ class FullName(Model):
 
 class PersonalDetails(Model):
     name: FullName = ModelType(FullName, required=True)
-    address_history: List[AddressWrapper] = ListType(ModelType(AddressWrapper), required=True, min_size=1)
     national_identity_number = DictType(StringType(), default={})
-
-    @property
-    def current_address(self) -> Address:
-        return self.address_history[0].address
 
     @property
     def national_id(self):
@@ -103,14 +98,24 @@ class DocumentMetadata(Model):
     issuing_state = StringType(default=None)
 
 
-class IndividualData(Model):
+class CollectedData(Model):
     personal_details: PersonalDetails = ModelType(PersonalDetails)
     contact_details: ContactDetails = ModelType(ContactDetails, default={})
     document_metadata: DocumentMetadata = ListType(ModelType(DocumentMetadata), default=[])
+    address_history: List[AddressWrapper] = ListType(ModelType(AddressWrapper), required=True, min_size=1)
 
     @property
     def drivers_license(self) -> DocumentMetadata:
         return next((doc for doc in self.document_metadata if doc.document_type == 'DRIVING_LICENCE'), None)
+
+    @property
+    def current_address(self) -> Address:
+        return self.address_history[0].address
+
+
+class IndividualData(Model):
+    collected_data: CollectedData = ModelType(CollectedData, required=True)
+    associate_id = UUIDType(required=True)
 
 
 class CompanyContactDetails(Model):
@@ -132,21 +137,19 @@ class CompanyData(Model):
     metadata: CompanyMetadata = ModelType(CompanyMetadata, required=True)
     associated_entities: List[IndividualData] = ListType(ModelType(IndividualData), required=True, min_size=1)
 
-    def import_data(self, raw_data, **kwargs):
-        if raw_data:
-            entities = raw_data.get('associated_entities')
-            if entities:
-                raw_data['associated_entities'] = [e for e in entities if e.get('entity_type') == 'INDIVIDUAL']
-        return super(CompanyData, self).import_data(raw_data, **kwargs)
-
 
 class MatchConfig(Model):
-    acquirer_id = StringType(required=True)
+    use_sandbox = BooleanType(default=False)
+    worldwide_search = BooleanType(default=True)
+    country_search = ListType(StringType, max_size=9, default=None)
+    region_search = ListType(StringType, default=None)
+    min_phonetic_matches = IntType(default=3)
 
 
 class MatchCredentials(Model):
     certificate = StringType(required=True)
     consumer_key = StringType(required=True)
+    acquirer_id = StringType(required=True)
 
 
 class InquiryRequest(Model):

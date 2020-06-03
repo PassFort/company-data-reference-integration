@@ -40,7 +40,8 @@
     },
     "associated_entities": [
         {
-            "entity_type": "INDIVIDUAL",
+            "associate_id": "F99B94CC-595B-49C7-B393-307151A39569",
+            "collected_data": {
             "personal_details": {
                 "dob": "1965-11-13",
                 "name": {
@@ -52,38 +53,38 @@
                 },
                 "national_identity_number": {
                     "GBR": "QQ123456C"
-                },
-                "address_history": [
-                    {
-                        "address": {
+                } 
+            },
+            "address_history": [
+                {
+                    "address": {
+                        "country": "GBR",
+                        "county": "Tower Hamlets",
+                        "locality": "London",
+                        "original_freeform_address": ", Passfort Ltd, 11, Princelet Street, London, , Tower Hamlets, , E1 6QH",
+                        "original_structured_address": {
                             "country": "GBR",
                             "county": "Tower Hamlets",
                             "locality": "London",
-                            "original_freeform_address": ", Passfort Ltd, 11, Princelet Street, London, , Tower Hamlets, , E1 6QH",
-                            "original_structured_address": {
-                                "country": "GBR",
-                                "county": "Tower Hamlets",
-                                "locality": "London",
-                                "postal_code": "E1 6QH",
-                                "postal_town": "",
-                                "premise": "Passfort Ltd",
-                                "route": "Princelet Street",
-                                "state_province": "",
-                                "street_number": "11",
-                                "subpremise": ""
-                            },
                             "postal_code": "E1 6QH",
                             "postal_town": "",
                             "premise": "Passfort Ltd",
                             "route": "Princelet Street",
                             "state_province": "",
                             "street_number": "11",
-                            "subpremise": "",
-                            "type": "STRUCTURED"
-                        }
+                            "subpremise": ""
+                        },
+                        "postal_code": "E1 6QH",
+                        "postal_town": "",
+                        "premise": "Passfort Ltd",
+                        "route": "Princelet Street",
+                        "state_province": "",
+                        "street_number": "11",
+                        "subpremise": "",
+                        "type": "STRUCTURED"
                     }
-                ]
-            },
+                }
+            ],
             "document_metadata": [
                 {
                     "document_type": "DRIVING_LICENCE",
@@ -100,6 +101,7 @@
                 "email": "sam.bridges@gmail.com",
                 "phone_number": "+446240211322"
             }
+        }
         }
     ]
 }

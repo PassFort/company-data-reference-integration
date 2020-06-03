@@ -27,7 +27,7 @@
               "NationalTaxId": "*****",
               "ServiceProvLegal": "XYZ FINANCIAL SERVICE INCORPORATED",
               "ServiceProvDBA": "XYZ FINANCIAL SERVICE",
-              "Principl": [
+              "Principal": [
                 {
                   "FirstName": "DAVID",
                   "LastName": "SMITH",
