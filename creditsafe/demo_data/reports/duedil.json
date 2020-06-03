@@ -946,9 +946,7 @@
           "type": "Trading Address"
         }
       ],
-      "websites": [
-        "DUEDIL.CO.UK"
-      ]
+      "websites": ["DUEDIL.CO.UK"]
     },
     "creditScore": {
       "currentContractLimit": {
@@ -2956,7 +2954,6 @@
         {
           "currency": "GBP",
           "name": "AUGMENTUM FINTECH PLC",
-          "percentSharesHeld": 0,
           "shareType": "PREFERRED D",
           "shareholderType": "Company",
           "totalNumberOfSharesOwned": 1

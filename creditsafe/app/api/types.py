@@ -250,6 +250,7 @@ class MonetaryValue(Model):
     class Options:
         serialize_when_none = False
 
+
 def to_passfort_datetime_format(utc):
     return utc.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -459,7 +460,7 @@ class BaseRelationship(Model):
             "BENEFICIAL_OWNER",
             "PARTNER",
             "OTHER"
-        ]) # The only choices supported by this integration
+        ])  # The only choices supported by this integration
 
     is_active = BooleanType(required=True)
 
@@ -504,11 +505,11 @@ class PassFortShareholding(Model):
     share_class = StringType(default=None)
     currency = StringType(default=None)
     amount = IntType(default=None)
-    percentage = DecimalType(required=True)
+    percentage = DecimalType(default=None)
 
     @serializable(serialized_name="percentage")
     def percentage_out(self):
-        return float(self.percentage)
+        return float(self.percentage) if self.percentage is not None else None
 
     @serializable
     def provider_name(self):
@@ -523,7 +524,7 @@ class ShareholderRelationship(BaseRelationship):
 
     @serializable
     def total_percentage(self):
-        return float(sum(x.percentage for x in self.shareholdings))
+        return float(sum(x.percentage for x in self.shareholdings if x.percentage is not None))
 
     @serializable
     def relationship_type(self):

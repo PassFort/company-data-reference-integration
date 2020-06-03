@@ -45,7 +45,7 @@ DIRECTOR_POSITIONS = [
     'Non-Executive Director',
     'Personnel Director',
     'Producton Director',
-    'Production Director', # for when CreditSafe fixes their typo
+    'Production Director',  # for when CreditSafe fixes their typo
     'Research Director',
     'Sales & Marketing Director',
     'Sales Director',
@@ -171,7 +171,7 @@ class CreditsafeSingleShareholder(Model):
 
     @property
     def total_percentage(self):
-        return float(sum(x.percentage for x in self.shareholdings))
+        return float(sum(x.percentage for x in self.shareholdings if x.percentage is not None))
 
     def to_passfort_shareholder(self, entity_type, associate_id, search_data=None):
         if entity_type == INDIVIDUAL_ENTITY:
@@ -325,7 +325,8 @@ class PersonOfSignificantControl(Model):
         for country_name in [self.country_of_registration, self.country]:
             # Sometimes the country of registration is not searchable
             if country_name:
-                country = pycountry.countries.get(name=country_name) or pycountry.countries.get(official_name=country_name)
+                country = pycountry.countries.get(
+                    name=country_name) or pycountry.countries.get(official_name=country_name)
                 if not country:
                     try:
                         country_list = pycountry.countries.search_fuzzy(country_name)
@@ -650,7 +651,7 @@ class Shareholder(Model):
     share_class = StringType(default=None, serialized_name="shareType")
     currency = StringType(default=None)
     amount = IntType(serialized_name="totalNumberOfSharesOwned", default=None)
-    percentage = DecimalType(serialized_name="percentSharesHeld", required=True)
+    percentage = DecimalType(serialized_name="percentSharesHeld", default=None)
 
     def format_name(self, entity_type):
         if entity_type == INDIVIDUAL_ENTITY:
@@ -1429,6 +1430,7 @@ class CreditSafeNotificationEvent(Model):
             return event
 
         return None
+
 
 class EventsConfigGroup:
     last_run_date: datetime
