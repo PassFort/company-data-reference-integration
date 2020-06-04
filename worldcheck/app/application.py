@@ -227,11 +227,19 @@ def ongoing_monitoring_results_request(request_data: OngoingScreeningResultsRequ
 @app.route('/config/ongoing_monitoring/<string:case_system_id>', methods=['DELETE'])
 @validate_model(OngoingScreeningDisableRequest)
 def disable_ongoing_monitoring_request(request_data: OngoingScreeningDisableRequest, case_system_id):
-    CaseHandler(
-        request_data.credentials,
-        request_data.config,
-        request_data.is_demo
-    ).disable_ongoing_screening(case_system_id)
+    try:
+        CaseHandler(
+            request_data.credentials,
+            request_data.config,
+            request_data.is_demo
+        ).disable_ongoing_screening(case_system_id)
+    except ApiException as e:
+        # If the resource doesn't exist, consider it successful
+        if e.status == 404:
+            logging.info(f"DisableMonitoring: Case not found {case_system_id}")
+            return jsonify(errors=[])
+        else:
+            raise e
     return jsonify(errors=[])
 
 
