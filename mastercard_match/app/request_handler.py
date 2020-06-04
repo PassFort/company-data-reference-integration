@@ -7,7 +7,7 @@ from app.api.match import (ContactDetails, InquiryResults,
 from app.auth.oauth import OAuth
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from app.api.passfort_convert import merchant_to_events
+from app.api.passfort_convert import merchant_to_event
 
 
 def requests_retry_session(
@@ -100,14 +100,13 @@ class MatchHandler:
         inquiry_request: TerminationInquiryRequest = TerminationInquiryRequest().from_passfort(body)
 
         inquiry_request_body = inquiry_request.as_request_body()
-
         response, _ = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
 
         response: InquiryResults = InquiryResults.from_match_response(response)
 
         events = []
         for x in [*response.possible_merchant_matches, *response.possible_inquiry_matches]:
-            events.extend(merchant_to_events(x, inquiry_request.merchant, associate_ids))
+            events.append(merchant_to_event(x, inquiry_request.merchant, associate_ids))
 
         if not self.use_sandbox:
             self.join_contact_details(response)
@@ -121,5 +120,5 @@ class MatchHandler:
 
             new_response = InquiryResults.from_match_response(new_response)
             for x in [*new_response.possible_merchant_matches, *new_response.possible_inquiry_matches]:
-                events.extend(merchant_to_events(x, inquiry_request.merchant, associate_ids))
+                events.append(merchant_to_event(x, inquiry_request.merchant, associate_ids))
         return {"result": {"events": events, "ref": response.ref}, "raw": response.to_primitive(), "errors": []}
