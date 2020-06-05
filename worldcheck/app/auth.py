@@ -29,8 +29,11 @@ class CustomAuthApiClient(ApiClient):
 
         def auth_request():
             auth_headers = self.generate_headers(path, method, body)
-
             updated_headers = auth_headers if headers is None else {**headers, **auth_headers}
+
+            logging.info(
+                f'Sending authorized request ({method} {url}) with headers:\n{updated_headers}\nand body:\n{body}')
+
             return super(CustomAuthApiClient, self).request(
                 method,
                 url,
@@ -45,9 +48,9 @@ class CustomAuthApiClient(ApiClient):
             '''
             The underying library automatically retries connection errors 3 times. 
             If it still fails, it raises a MaxRetryError.
-            
+
             429 codes are specific to worldcheck:
-            
+
                 The API client is making too many concurrent requests, and some are being throttled.
                 Throttled requests can be retried (with an updated request Date and HTTP signature) after a short delay.
             '''
@@ -123,6 +126,10 @@ class CustomAuthApiClient_1_6(worldcheck_client_1_6.ApiClient):
             auth_headers = self.generate_headers(path, method, body)
 
             updated_headers = auth_headers if headers is None else {**headers, **auth_headers}
+
+            logging.info(
+                f'Sending authorized request ({method} {url}) with headers:\n{updated_headers}\nand body:\n{body}')
+
             return super(CustomAuthApiClient_1_6, self).request(
                 method,
                 url,
@@ -137,9 +144,9 @@ class CustomAuthApiClient_1_6(worldcheck_client_1_6.ApiClient):
             '''
             The underying library automatically retries connection errors 3 times. 
             If it still fails, it raises a MaxRetryError.
-            
+
             429 codes are specific to worldcheck:
-            
+
                 The API client is making too many concurrent requests, and some are being throttled.
                 Throttled requests can be retried (with an updated request Date and HTTP signature) after a short delay.
             '''
