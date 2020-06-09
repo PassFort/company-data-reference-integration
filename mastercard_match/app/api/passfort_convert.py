@@ -1,6 +1,7 @@
 import logging
 import hashlib
 import random
+import uuid
 from fuzzywuzzy import fuzz
 
 from app.api.match import termination_reason_mapping, termination_reason_description_mapping
@@ -48,6 +49,8 @@ def contact_details_to_passfort(contact_details):
 
 
 def match_from_in_out(match_type, input_value, output_value):
+    if not match_type:
+        return None
     severity = {
         'M00': 'No match',
         'M01': 'Exact match',
@@ -153,17 +156,17 @@ def build_associate_matches(output_data, input_data, match_data, associate_id):
         return match_from_in_out(match_data[field_name], input_data.get(field_name), output_data.get(field_name))
 
     return {
-        'name': match_from_in_out(match_data['Name'], join_names(input_data), join_names(output_data)),
+        'name': match_from_in_out(match_data.get('Name'), join_names(input_data), join_names(output_data)),
         'phone_number': build_simple_match('PhoneNumber'),
         'alt_phone_number': build_simple_match('AltPhoneNumber'),
         'national_id': build_simple_match('NationalId'),
         'address': match_from_in_out(
-            match_data['Address'],
+            match_data.get('Address'),
             address_to_passfort_format(input_data.get('Address')),
             address_to_passfort_format(output_data.get('Address')),
         ),
         'driving_licence': match_from_in_out(
-            match_data['DriversLicense'],
+            match_data.get('DriversLicense'),
             driving_licence_to_passfort_format(input_data.get('DriversLicense')),
             driving_licence_to_passfort_format(output_data.get('DriversLicense')),
         ),
@@ -176,13 +179,12 @@ def build_company_matches(output_data, input_data, match_data):
         if not match_data.get(field_name):
             return None
         return match_from_in_out(match_data[field_name], input_data.get(field_name), output_data.get(field_name))
-
     return {
         'name': build_simple_match('Name'),
         'doing_business_as_name': build_simple_match('DoingBusinessAsName'),
         'phone_number': build_simple_match('PhoneNumber'),
         'address': match_from_in_out(
-            match_data['Address'],
+            match_data.get('Address'),
             address_to_passfort_format(input_data.get('Address')),
             address_to_passfort_format(output_data.get('Address')),
         ),
@@ -192,9 +194,12 @@ def build_company_matches(output_data, input_data, match_data):
 
 
 def generate_match_id(output_merchant):
-    rand_num = random.randint(0, 1000000)
-    string = output_merchant.get('AddedOnDate', '') + output_merchant.get('AddedByAcquirerID', '') + str(rand_num)
-    return int(hashlib.sha256(string.encode('utf-8')).hexdigest(), 16) % 10**8
+    match_id = str(uuid.uuid4())
+    date = output_merchant.get('AddedOnDate')
+    added_by = output_merchant.get('AddedByAcquirerID')
+    if date and added_by:
+        match_id = date + added_by
+    return match_id
 
 
 def merchant_to_event(output_merchant, input_merchant, associate_ids):

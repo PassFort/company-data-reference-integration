@@ -237,8 +237,8 @@ class InputMerchant(Merchant):
     principals: List[InputPrincipal] = ListType(ModelType(InputPrincipal), serialized_name='Principal', min_size=1)
 
     @classmethod
-    def from_passfort(cls, company_data: CompanyData, search_criteria):
-        search_criteria = SearchCriteria().from_passfort(search_criteria)
+    def from_passfort(cls, company_data: CompanyData, search_criteria=None):
+        search_criteria = SearchCriteria().from_passfort(search_criteria) if search_criteria else SearchCriteria()
         principals = [
             InputPrincipal().from_passfort(p['collected_data'], search_criteria)
             for p in company_data.associated_entities
@@ -307,6 +307,52 @@ class TerminatedMerchant(Merchant):
         }, apply_defaults=True) for c in data]
 
 
+def from_match_inquiry_response(data):
+    def unwrap_match(match):
+        return {
+            **match.get('Merchant'),
+            'MerchantMatch': match.get('MerchantMatch'),
+        }
+
+    possible_merchant_matches = data.get('PossibleMerchantMatches', {})
+    possible_inquiry_matches = data.get('PossibleInquiryMatches', {})
+
+    possible_merchant_matches = (possible_merchant_matches[0] if possible_merchant_matches else {})
+    possible_inquiry_matches = (possible_inquiry_matches[0] if possible_inquiry_matches else {})
+
+    total_merchant_matches = possible_merchant_matches.get('TotalLength')
+    total_inquiry_matches = possible_inquiry_matches.get('TotalLength')
+
+    possible_merchant_matches = possible_merchant_matches.get('TerminatedMerchant', [])
+    possible_inquiry_matches = possible_inquiry_matches.get('InquiredMerchant', [])
+
+    possible_merchant_matches = [unwrap_match(m) for m in possible_merchant_matches]
+    possible_inquiry_matches = [unwrap_match(m) for m in possible_inquiry_matches]
+
+    return {
+        'possible_merchant_matches': possible_merchant_matches,
+        'possible_inquiry_matches': possible_inquiry_matches,
+        'total_merchant_matches': total_merchant_matches,
+        'total_inquiry_matches': total_inquiry_matches,
+        'Ref': data.get('Ref')
+    }
+
+
+class RetroInquiryResults(Model):
+    possible_merchant_matches: List[TerminatedMerchant] = ListType(ModelType(TerminatedMerchant), default=[])
+
+    @classmethod
+    def from_match_response(cls, data):
+        data = from_match_inquiry_response(data.get('RetroInquiryResponse', {}))
+
+        obj = cls().import_data({
+            'possible_merchant_matches': data.get('possible_merchant_matches'),
+        })
+        obj.validate()
+
+        return obj
+
+
 class InquiryResults(Model):
     inquiry_reference = StringType(required=True)
     possible_merchant_matches: List[TerminatedMerchant] = ListType(ModelType(TerminatedMerchant), default=[])
@@ -337,33 +383,14 @@ class InquiryResults(Model):
     @classmethod
     def from_match_response(cls, data):
         data = data.get('TerminationInquiry', {})
-        possible_merchant_matches = data.get('PossibleMerchantMatches', {})
-        possible_inquiry_matches = data.get('PossibleInquiryMatches', {})
-
-        possible_merchant_matches = (possible_merchant_matches[0] if possible_merchant_matches else {})
-        possible_inquiry_matches = (possible_inquiry_matches[0] if possible_inquiry_matches else {})
-
-        total_merchant_matches = possible_merchant_matches.get('TotalLength')
-        total_inquiry_matches = possible_inquiry_matches.get('TotalLength')
-
-        possible_merchant_matches = possible_merchant_matches.get('TerminatedMerchant', [])
-        possible_inquiry_matches = possible_inquiry_matches.get('InquiredMerchant', [])
-
-        def unwrap_match(match):
-            return {
-                **match.get('Merchant'),
-                'MerchantMatch': match.get('MerchantMatch'),
-            }
-
-        possible_merchant_matches = [unwrap_match(m) for m in possible_merchant_matches]
-        possible_inquiry_matches = [unwrap_match(m) for m in possible_inquiry_matches]
+        data = from_match_inquiry_response(data)
 
         obj = cls().import_data({
             'inquiry_reference': data.get('Ref'),
-            'possible_merchant_matches': possible_merchant_matches,
-            'possible_inquiry_matches': possible_inquiry_matches,
-            'total_merchant_matches': total_merchant_matches,
-            'total_inquiry_matches': total_inquiry_matches,
+            'possible_merchant_matches': data.get('possible_merchant_matches'),
+            'possible_inquiry_matches': data.get('possible_inquiry_matches'),
+            'total_merchant_matches': data.get('total_merchant_matches'),
+            'total_inquiry_matches': data.get('total_inquiry_matches'),
         }, apply_defaults=True)
 
         obj.validate()

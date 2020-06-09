@@ -12,7 +12,7 @@ from json import JSONDecodeError
 
 from .api.errors import Error, ErrorCode, MatchException
 from .api.match import Merchant, TerminationInquiryRequest
-from .api.passfort import InquiryRequest, validate_model
+from .api.passfort import InquiryRequest, RetroInquiryRequest, RetroInquiryDetailsRequest, validate_model
 from .auth.oauth import OAuth, load_signing_key
 from .request_handler import MatchHandler
 
@@ -79,7 +79,7 @@ def send_analytics(response):
     return response
 
 
-@app.route('/inquiry-request', methods=["POST"])
+@app.route('/inquiry-request', methods=['POST'])
 @validate_model(InquiryRequest)
 def inquiry_request(data: InquiryRequest):
     return MatchHandler(
@@ -87,6 +87,24 @@ def inquiry_request(data: InquiryRequest):
         data.credentials.consumer_key,
         data.config.use_sandbox,
     ).inquiry_request(data)
+
+
+@app.route('/retro-inquiry', methods=['POST'])
+@validate_model(RetroInquiryRequest)
+def retro_inquiry(data: RetroInquiryRequest):
+    return MatchHandler(
+        data.credentials.certificate,
+        data.credentials.consumer_key,
+    ).retro_inquiry_request(data.credentials.acquirer_id)
+
+
+@app.route('/retro-inquiry-details', methods=['POST'])
+@validate_model(RetroInquiryDetailsRequest)
+def retro_inquiry_details(data: RetroInquiryDetailsRequest):
+    return MatchHandler(
+        data.credentials.certificate,
+        data.credentials.consumer_key,
+    ).retro_inquiry_details_request(data, data.credentials.acquirer_id, data.ref)
 
 
 @app.errorhandler(400)
