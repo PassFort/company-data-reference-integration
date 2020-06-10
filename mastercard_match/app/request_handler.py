@@ -1,4 +1,6 @@
+import json
 from json import JSONDecodeError
+from flask import jsonify
 
 import requests
 from app.api.errors import Error, MatchException
@@ -101,6 +103,9 @@ class MatchHandler:
                 match.add_contact_details(response)
 
     def inquiry_request(self, body, page_offset=0, page_length=30):
+        if body.get('is_demo'):
+            return handle_demo_request(body)
+
         url = self.base_url + '/termination-inquiry'
         params = {
             'PageOffset': page_offset,
@@ -112,7 +117,6 @@ class MatchHandler:
 
         inquiry_request_body = inquiry_request.as_request_body()
         response, _ = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
-
         response: InquiryResults = InquiryResults.from_match_response(response)
 
         events = []
@@ -133,3 +137,11 @@ class MatchHandler:
             for x in [*new_response.possible_merchant_matches, *new_response.possible_inquiry_matches]:
                 events.append(merchant_to_event(x, inquiry_request.merchant, associate_ids))
         return {'result': {'events': events, 'ref': response.ref}, 'raw': response.to_primitive(), 'errors': []}
+
+
+def handle_demo_request(body):
+    file = 'demo_pass_response.json'
+    if 'fraud' in body.input_data.metadata.name.lower():
+        file = 'demo_response.json'
+    with open(f'demo_data/{file}', 'r') as f:
+        return json.loads(f.read())

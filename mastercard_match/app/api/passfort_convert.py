@@ -49,7 +49,7 @@ def contact_details_to_passfort(contact_details):
 
 
 def match_from_in_out(match_type, input_value, output_value):
-    if not match_type:
+    if not match_type or not (input_value or output_value):
         return None
     severity = {
         'M00': 'No match',
@@ -255,7 +255,7 @@ def merchant_to_event(output_merchant, input_merchant, associate_ids):
                     found_index = find_fuzzy_matching_associate(input_principals, phonetic_fields, output_principal)
             if found_index is not None:
                 input_principal = input_principals[found_index]
-                associate_id = associate_ids[found_index]
+                associate_id = str(associate_ids[found_index])
 
         associate_match_fields.append(build_associate_matches(
             output_principal, input_principal, p_matched_fields, associate_id

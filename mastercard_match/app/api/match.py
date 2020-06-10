@@ -68,8 +68,8 @@ termination_reason_description_mapping = {
           "transaction records that were not valid transactions for sales of goods or services between that merchant and a bona fide cardholder.",
     "04": "With respect to a Merchant reported by a Mastercard Acquirer, the number of chargebacks in any single month" +
           "exceeded 1% of its Mastercard sales transactions inthat month, and those chargebacks totaled USD 5,000 or more." +
-          "With respect to a merchant reported by an American Express® acquirer (ICA numbers102 through 125), the merchant" +
-          "exceeded the chargeback thresholds of AmericanExpress, as determined by American Express.",
+          "With respect to a merchant reported by an American Express® acquirer (ICA numbers 102 through 125), the merchant" +
+          "exceeded the chargeback thresholds of American Express, as determined by American Express.",
     "05": "The merchant affected fraudulent transactions of any type (counterfeit or otherwise) meeting or exceeding the" +
           "following minimum reporting standard: the merchant’s fraud-to-sales dollar volume ratio was 8% or greater in a" +
           "calendar month, and the merchant affected ten or more fraudulent transactions totaling USD 5,000 or more in that calendar month.",
@@ -79,21 +79,21 @@ termination_reason_description_mapping = {
           "Questionable Merchant Audit Program (refer to section 8.4 ofthe Security Rules and Procedures manual.",
     "09": "The merchant was unable or is likely to become unable to discharge its financial obligations.",
     "10": "With respect to a merchant reported by a Mastercard Acquirer, the merchant was inviolation of one or more" +
-          "Mastercard Standards that describe procedures to be employedby the merchant in Transactions in which Mastercard" +
+          "Mastercard Standards that describe procedures to be employe dby the merchant in Transactions in which Mastercard" +
           "cards are used, including by way of example and not limitation the Standards for honoring all Cards, displaying the" +
-          "Marks,charges to Cardholders, minimum/maximum Transaction amount restrictions, andprohibited Transactions set forth" +
-          "in the Mastercard Rules manual:With respect to a merchant reported by an American Express acquirer (ICA numbers 102" +
+          "Marks,charges to Cardholders, minimum/maximum Transaction amount restrictions, and prohibited Transactions set forth" +
+          "in the Mastercard Rules manual: With respect to a merchant reported by an American Express acquirer (ICA numbers 102" +
           "through 125), the merchant was in violation of one or more American Express bylaws, rules operating regulations, and" +
-          "policies that set forth procedures to be employed by themerchant in transactions in which American Express cards are used.",
+          "policies that set forth procedures to be employed by the merchant in transactions in which American Express cards are used.",
     "11": "The merchant participated in fraudulent collusive activity.",
     "12": "The merchant failed to comply with Payment Card Industry (PCI) Data Security Standard requirements.",
     "13": "The merchant was engaged in illegal transactions",
-    "14": "The acquirer has reason to believe that the identity of the listed merchant or its principalowners" +
+    "14": "The acquirer has reason to believe that the identity of the listed merchant or its principal owners" +
           "was unlawfully assumed for the purpose of unlawfully entering into a merchant agreement.",
     "20": "Merchant that Mastercard has determined to be a Questionable Merchant as per thecriteria set" +
           "forth in the Mastercard Questionable Merchant Audit Program (refer tosection 8.4 of this manual).",
-    "21": "A non-face-to-face adult content and services Merchant that Mastercard has determinedto have violated Mastercard excessive chargeback Standards.",
-    "22": "A merchant that Mastercard has determined to have violated the Mastercard Excessive Chargeback Program and is not an Electronic Commerce Adult Content (Videotext)Special Merchant.",
+    "21": "A non-face-to-face adult content and services Merchant that Mastercard has determined to have violated Mastercard excessive chargeback Standards.",
+    "22": "A merchant that Mastercard has determined to have violated the Mastercard Excessive Chargeback Program and is not an Electronic Commerce Adult Content (Videotext) Special Merchant.",
     "23": "The merchant participated in fraudulent collusive activity, as determined by the acquirerby" +
           "any means, including data reporting, criminal conviction, law enforcement investigation, or as determined by Mastercard.",
     "24": "The merchant was engaged in illegal transactions",
