@@ -185,14 +185,6 @@ class DriversLicense(Model):
     class Options:
         export_level = NOT_NONE
 
-    def to_passfort(self):
-        return {
-            'document_type': 'DRIVING_LICENCE',
-            'number': self.number,
-            'country': self.country,
-            'country_sub_division': self.country_sub_division,
-        }
-
 
 class Principal(Model):
     first_name = StringType(required=True, serialized_name='FirstName')
@@ -300,19 +292,19 @@ class TerminatedMerchant(Merchant):
     added_by_aquirer_id = StringType(required=True, serialized_name='AddedByAcquirerID')
     principals: List[Principal] = ListType(ModelType(Principal), serialized_name='Principal', min_size=1)
     merchant_match = ModelType(MerchantMatch, required=True, serialized_name='MerchantMatch')
-    contact_details: List[ContactDetails] = ListType(ModelType(ContactDetails))
+    contact_details: List[ContactDetails] = ListType(ModelType(ContactDetails), default=[])
 
     def add_contact_details(self, raw_data):
         data = raw_data.get('ContactResponse', {})
         data = data.get('Contact', [])
-        self.contact_details = [{c.get('BankName', "Unknown"): ContactDetails().import_data({
+        self.contact_details = [ContactDetails().import_data({
             'bank_name': c.get('BankName'),
             'region': c.get('Region'),
             'first_name': c.get('FirstName'),
             'last_name': c.get('LastName'),
             'phone_number': c.get('FaxNumber'),
             'email_address': c.get('EmailAddress'),
-        }, apply_defaults=True) for c in data}]
+        }, apply_defaults=True) for c in data]
 
 
 class InquiryResults(Model):
