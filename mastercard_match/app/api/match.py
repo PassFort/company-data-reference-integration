@@ -68,8 +68,8 @@ termination_reason_description_mapping = {
           "transaction records that were not valid transactions for sales of goods or services between that merchant and a bona fide cardholder.",
     "04": "With respect to a Merchant reported by a Mastercard Acquirer, the number of chargebacks in any single month" +
           "exceeded 1% of its Mastercard sales transactions inthat month, and those chargebacks totaled USD 5,000 or more." +
-          "With respect to a merchant reported by an American Express® acquirer (ICA numbers102 through 125), the merchant" +
-          "exceeded the chargeback thresholds of AmericanExpress, as determined by American Express.",
+          "With respect to a merchant reported by an American Express® acquirer (ICA numbers 102 through 125), the merchant" +
+          "exceeded the chargeback thresholds of American Express, as determined by American Express.",
     "05": "The merchant affected fraudulent transactions of any type (counterfeit or otherwise) meeting or exceeding the" +
           "following minimum reporting standard: the merchant’s fraud-to-sales dollar volume ratio was 8% or greater in a" +
           "calendar month, and the merchant affected ten or more fraudulent transactions totaling USD 5,000 or more in that calendar month.",
@@ -79,21 +79,21 @@ termination_reason_description_mapping = {
           "Questionable Merchant Audit Program (refer to section 8.4 ofthe Security Rules and Procedures manual.",
     "09": "The merchant was unable or is likely to become unable to discharge its financial obligations.",
     "10": "With respect to a merchant reported by a Mastercard Acquirer, the merchant was inviolation of one or more" +
-          "Mastercard Standards that describe procedures to be employedby the merchant in Transactions in which Mastercard" +
+          "Mastercard Standards that describe procedures to be employe dby the merchant in Transactions in which Mastercard" +
           "cards are used, including by way of example and not limitation the Standards for honoring all Cards, displaying the" +
-          "Marks,charges to Cardholders, minimum/maximum Transaction amount restrictions, andprohibited Transactions set forth" +
-          "in the Mastercard Rules manual:With respect to a merchant reported by an American Express acquirer (ICA numbers 102" +
+          "Marks,charges to Cardholders, minimum/maximum Transaction amount restrictions, and prohibited Transactions set forth" +
+          "in the Mastercard Rules manual: With respect to a merchant reported by an American Express acquirer (ICA numbers 102" +
           "through 125), the merchant was in violation of one or more American Express bylaws, rules operating regulations, and" +
-          "policies that set forth procedures to be employed by themerchant in transactions in which American Express cards are used.",
+          "policies that set forth procedures to be employed by the merchant in transactions in which American Express cards are used.",
     "11": "The merchant participated in fraudulent collusive activity.",
     "12": "The merchant failed to comply with Payment Card Industry (PCI) Data Security Standard requirements.",
     "13": "The merchant was engaged in illegal transactions",
-    "14": "The acquirer has reason to believe that the identity of the listed merchant or its principalowners" +
+    "14": "The acquirer has reason to believe that the identity of the listed merchant or its principal owners" +
           "was unlawfully assumed for the purpose of unlawfully entering into a merchant agreement.",
     "20": "Merchant that Mastercard has determined to be a Questionable Merchant as per thecriteria set" +
           "forth in the Mastercard Questionable Merchant Audit Program (refer tosection 8.4 of this manual).",
-    "21": "A non-face-to-face adult content and services Merchant that Mastercard has determinedto have violated Mastercard excessive chargeback Standards.",
-    "22": "A merchant that Mastercard has determined to have violated the Mastercard Excessive Chargeback Program and is not an Electronic Commerce Adult Content (Videotext)Special Merchant.",
+    "21": "A non-face-to-face adult content and services Merchant that Mastercard has determined to have violated Mastercard excessive chargeback Standards.",
+    "22": "A merchant that Mastercard has determined to have violated the Mastercard Excessive Chargeback Program and is not an Electronic Commerce Adult Content (Videotext) Special Merchant.",
     "23": "The merchant participated in fraudulent collusive activity, as determined by the acquirerby" +
           "any means, including data reporting, criminal conviction, law enforcement investigation, or as determined by Mastercard.",
     "24": "The merchant was engaged in illegal transactions",
@@ -237,8 +237,8 @@ class InputMerchant(Merchant):
     principals: List[InputPrincipal] = ListType(ModelType(InputPrincipal), serialized_name='Principal', min_size=1)
 
     @classmethod
-    def from_passfort(cls, company_data: CompanyData, search_criteria):
-        search_criteria = SearchCriteria().from_passfort(search_criteria)
+    def from_passfort(cls, company_data: CompanyData, search_criteria=None):
+        search_criteria = SearchCriteria().from_passfort(search_criteria) if search_criteria else SearchCriteria()
         principals = [
             InputPrincipal().from_passfort(p['collected_data'], search_criteria)
             for p in company_data.associated_entities
@@ -307,6 +307,52 @@ class TerminatedMerchant(Merchant):
         }, apply_defaults=True) for c in data]
 
 
+def from_match_inquiry_response(data):
+    def unwrap_match(match):
+        return {
+            **match.get('Merchant'),
+            'MerchantMatch': match.get('MerchantMatch'),
+        }
+
+    possible_merchant_matches = data.get('PossibleMerchantMatches', {})
+    possible_inquiry_matches = data.get('PossibleInquiryMatches', {})
+
+    possible_merchant_matches = (possible_merchant_matches[0] if possible_merchant_matches else {})
+    possible_inquiry_matches = (possible_inquiry_matches[0] if possible_inquiry_matches else {})
+
+    total_merchant_matches = possible_merchant_matches.get('TotalLength')
+    total_inquiry_matches = possible_inquiry_matches.get('TotalLength')
+
+    possible_merchant_matches = possible_merchant_matches.get('TerminatedMerchant', [])
+    possible_inquiry_matches = possible_inquiry_matches.get('InquiredMerchant', [])
+
+    possible_merchant_matches = [unwrap_match(m) for m in possible_merchant_matches]
+    possible_inquiry_matches = [unwrap_match(m) for m in possible_inquiry_matches]
+
+    return {
+        'possible_merchant_matches': possible_merchant_matches,
+        'possible_inquiry_matches': possible_inquiry_matches,
+        'total_merchant_matches': total_merchant_matches,
+        'total_inquiry_matches': total_inquiry_matches,
+        'Ref': data.get('Ref')
+    }
+
+
+class RetroInquiryResults(Model):
+    possible_merchant_matches: List[TerminatedMerchant] = ListType(ModelType(TerminatedMerchant), default=[])
+
+    @classmethod
+    def from_match_response(cls, data):
+        data = from_match_inquiry_response(data.get('RetroInquiryResponse', {}))
+
+        obj = cls().import_data({
+            'possible_merchant_matches': data.get('possible_merchant_matches'),
+        })
+        obj.validate()
+
+        return obj
+
+
 class InquiryResults(Model):
     inquiry_reference = StringType(required=True)
     possible_merchant_matches: List[TerminatedMerchant] = ListType(ModelType(TerminatedMerchant), default=[])
@@ -337,33 +383,14 @@ class InquiryResults(Model):
     @classmethod
     def from_match_response(cls, data):
         data = data.get('TerminationInquiry', {})
-        possible_merchant_matches = data.get('PossibleMerchantMatches', {})
-        possible_inquiry_matches = data.get('PossibleInquiryMatches', {})
-
-        possible_merchant_matches = (possible_merchant_matches[0] if possible_merchant_matches else {})
-        possible_inquiry_matches = (possible_inquiry_matches[0] if possible_inquiry_matches else {})
-
-        total_merchant_matches = possible_merchant_matches.get('TotalLength')
-        total_inquiry_matches = possible_inquiry_matches.get('TotalLength')
-
-        possible_merchant_matches = possible_merchant_matches.get('TerminatedMerchant', [])
-        possible_inquiry_matches = possible_inquiry_matches.get('InquiredMerchant', [])
-
-        def unwrap_match(match):
-            return {
-                **match.get('Merchant'),
-                'MerchantMatch': match.get('MerchantMatch'),
-            }
-
-        possible_merchant_matches = [unwrap_match(m) for m in possible_merchant_matches]
-        possible_inquiry_matches = [unwrap_match(m) for m in possible_inquiry_matches]
+        data = from_match_inquiry_response(data)
 
         obj = cls().import_data({
             'inquiry_reference': data.get('Ref'),
-            'possible_merchant_matches': possible_merchant_matches,
-            'possible_inquiry_matches': possible_inquiry_matches,
-            'total_merchant_matches': total_merchant_matches,
-            'total_inquiry_matches': total_inquiry_matches,
+            'possible_merchant_matches': data.get('possible_merchant_matches'),
+            'possible_inquiry_matches': data.get('possible_inquiry_matches'),
+            'total_merchant_matches': data.get('total_merchant_matches'),
+            'total_inquiry_matches': data.get('total_inquiry_matches'),
         }, apply_defaults=True)
 
         obj.validate()

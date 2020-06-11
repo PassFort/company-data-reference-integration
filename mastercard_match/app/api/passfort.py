@@ -156,3 +156,14 @@ class InquiryRequest(Model):
     config: MatchConfig = ModelType(MatchConfig, required=True)
     credentials: MatchCredentials = ModelType(MatchCredentials, required=True)
     input_data: CompanyData = ModelType(CompanyData, required=True)
+    is_demo: bool = BooleanType(default=False)
+
+
+class RetroInquiryRequest(Model):
+    credentials: MatchCredentials = ModelType(MatchCredentials, required=True)
+
+
+class RetroInquiryDetailsRequest(Model):
+    credentials: MatchCredentials = ModelType(MatchCredentials, required=True)
+    input_data: CompanyData = ModelType(CompanyData, required=True)
+    ref: str = StringType(required=True)

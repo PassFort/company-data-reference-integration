@@ -1,9 +1,11 @@
+import json
 from json import JSONDecodeError
+from flask import jsonify
 
 import requests
 from app.api.errors import Error, MatchException
-from app.api.match import (ContactDetails, InquiryResults,
-                           TerminationInquiryRequest)
+from app.api.match import (ContactDetails, InquiryResults, InputMerchant,
+                           TerminationInquiryRequest, RetroInquiryResults)
 from app.auth.oauth import OAuth
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -58,21 +60,32 @@ class MatchHandler:
         body = {'RetroRequest': {'AcquirerId': acquirer_id}}
 
         response, _ = self.fire_request(url, 'POST', body=body)
-        return response
+        results = response.get('RetroResponse', {}).get('Retroactive-Inquiry-Results', [])
+        return {'result': [{'ref_number': x.get('RefNum'), 'date': x.get('Date')} for x in results]}
 
-    def retro_inquiry_details_request(self, acquirer_id, match_reference):
+    def retro_inquiry_details_request(self, inquiry_request, acquirer_id, reference):
         url = self.base_url + '/retro/retro-inquiry-details'
         params = {
-            "AcquirerId": acquirer_id
+            'AcquirerId': acquirer_id
         }
         body = {
-            "RetroInquiryRequest": match_reference
+            'RetroInquiryRequest': {'InquiryReferenceNumber': reference}
         }
+        associate_ids = [a['associate_id'] for a in inquiry_request['input_data']['associated_entities']]
 
-        response, _ = self.fire_request(url, 'POST', json=body, params=params)
-        response: InquiryResults = InquiryResults.from_match_response(response)
+        response, _ = self.fire_request(url, 'POST', body=body, params=params)
 
-        return response.to_primitive()
+        response: RetroInquiryResults = RetroInquiryResults.from_match_response(response)
+
+        self.join_contact_details(response)
+
+        merchant = InputMerchant().from_passfort(inquiry_request.input_data)
+        events = [merchant_to_event(m, merchant, associate_ids)
+                  for m in response.possible_merchant_matches]
+        return {
+            'result': {'events': events, 'ref': reference},
+            'raw': response.to_primitive(), 'errors': []
+        }
 
     def contact_request(self, acquirer_id):
         url = self.base_url + '/common/contact-details'
@@ -90,6 +103,9 @@ class MatchHandler:
                 match.add_contact_details(response)
 
     def inquiry_request(self, body, page_offset=0, page_length=30):
+        if body.get('is_demo'):
+            return handle_demo_request(body)
+
         url = self.base_url + '/termination-inquiry'
         params = {
             'PageOffset': page_offset,
@@ -101,7 +117,6 @@ class MatchHandler:
 
         inquiry_request_body = inquiry_request.as_request_body()
         response, _ = self.fire_request(url, 'POST', body=inquiry_request_body, params=params)
-
         response: InquiryResults = InquiryResults.from_match_response(response)
 
         events = []
@@ -121,4 +136,12 @@ class MatchHandler:
             new_response = InquiryResults.from_match_response(new_response)
             for x in [*new_response.possible_merchant_matches, *new_response.possible_inquiry_matches]:
                 events.append(merchant_to_event(x, inquiry_request.merchant, associate_ids))
-        return {"result": {"events": events, "ref": response.ref}, "raw": response.to_primitive(), "errors": []}
+        return {'result': {'events': events, 'ref': response.ref}, 'raw': response.to_primitive(), 'errors': []}
+
+
+def handle_demo_request(body):
+    file = 'demo_pass_response.json'
+    if 'fraud' in body.input_data.metadata.name.lower():
+        file = 'demo_response.json'
+    with open(f'demo_data/{file}', 'r') as f:
+        return json.loads(f.read())
