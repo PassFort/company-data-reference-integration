@@ -4,7 +4,7 @@ from flask import Flask, Response, request, jsonify
 from raven.contrib.flask import Sentry
 from passfort.cifas_check import CifasCheck, CifasCheckResponse
 from passfort.error import Error
-from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError
+from cifas import CifasAPIClient, CifasConnectionError, CifasHTTPError, CifasFaultError
 from cifas.search import FullSearchRequest
 from passfort_demo import get_demo_response
 
@@ -42,6 +42,8 @@ def run_cifas_search():
             error = Error.connection_error(exc)
         except CifasHTTPError as exc:
             error = Error.provider_error(exc)
+        except CifasFaultError as exc:
+            error = Error.provider_validation_error(exc)
         finally:
             api_client.destroy()
 
