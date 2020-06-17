@@ -12,7 +12,7 @@ from zeep.plugins import HistoryPlugin
 from requests import Session
 from requests.exceptions import HTTPError, ConnectionError
 from passfort.cifas_check import CifasCredentials, CifasConfig
-from passfort.error import CifasConnectionError, CifasHTTPError
+from passfort.error import CifasConnectionError, CifasHTTPError, CifasFaultError
 from cifas.search import FullSearchRequest, FullSearchResponse
 from cifas.soap_header import StandardHeader
 
@@ -43,7 +43,7 @@ def request_ctx(client):
             'message': 'soap_fault',
             'soap_fault_detail': client.wsdl.types.deserialize(e.detail[0])
         })
-        raise e
+        raise CifasFaultError(client.wsdl.types.deserialize(e.detail[0]))
 
 
 def create_soap_client(cert_file: str, wsdl_path: str,
