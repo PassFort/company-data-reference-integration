@@ -24,6 +24,7 @@ class CustomAuthApiClient(ApiClient):
                 post_params=None, body=None, _preload_content=True,
                 _request_timeout=None):
         from app.worldcheck_handler import WorldCheckConnectionError
+        from swagger_client.rest import ApiException
 
         path = url[len(self.configuration.host):]
 
@@ -54,7 +55,18 @@ class CustomAuthApiClient(ApiClient):
                 The API client is making too many concurrent requests, and some are being throttled.
                 Throttled requests can be retried (with an updated request Date and HTTP signature) after a short delay.
             '''
-            return auth_request()
+            try:
+                return auth_request()
+            except ApiException as e:
+                '''
+                Massive hack: sometimes when we retry after a delay, the "Date" header deviation is too great
+                and our authentication fails. To avoid this, we retry the whole thing once with a freshly
+                authenticated request.
+                '''
+                if e.status == 401:
+                    return auth_request()
+                else:
+                    raise
         except MaxRetryError:
             raise WorldCheckConnectionError('Unable to connect to {}'.format(url))
 
@@ -119,6 +131,7 @@ class CustomAuthApiClient_1_6(worldcheck_client_1_6.ApiClient):
                 post_params=None, body=None, _preload_content=True,
                 _request_timeout=None):
         from app.worldcheck_handler import WorldCheckConnectionError
+        from worldcheck_client_1_6.rest import ApiException
 
         path = url[len(self.configuration.host):]
 
@@ -150,7 +163,18 @@ class CustomAuthApiClient_1_6(worldcheck_client_1_6.ApiClient):
                 The API client is making too many concurrent requests, and some are being throttled.
                 Throttled requests can be retried (with an updated request Date and HTTP signature) after a short delay.
             '''
-            return auth_request()
+            try:
+                return auth_request()
+            except ApiException as e:
+                '''
+                Massive hack: sometimes when we retry after a delay, the "Date" header deviation is too great
+                and our authentication fails. To avoid this, we retry the whole thing once with a freshly
+                authenticated request.
+                '''
+                if e.status == 401:
+                    return auth_request()
+                else:
+                    raise
         except MaxRetryError:
             raise WorldCheckConnectionError('Unable to connect to {}'.format(url))
 
@@ -199,28 +223,3 @@ class CustomAuthApiClient_1_6(worldcheck_client_1_6.ApiClient):
                 msg=data_to_sign.encode('utf-8'),
                 digestmod=hashlib.sha256
             ).digest())
-
-
-def retry(f, status_codes, attempts=3, name="request", log=True, retry_backoff_sec=0.0):
-    from swagger_client.rest import ApiException
-    retry_count = 0
-    while True:
-        try:
-            return f()
-        except ApiException as e:
-            if e.status not in status_codes:
-                raise
-
-            retry_count += 1
-            if retry_count < attempts:
-                if log:
-                    logging.info("Retrying {}after error (attempts remaining: {}). Error: {!r}".format(
-                        name + " ", attempts - retry_count, e))
-                if retry_backoff_sec > 0:
-                    sleep_interval = pow(2, retry_count - 1) * retry_backoff_sec
-                    if log:
-                        logging.info("Retrying {}after {}s)".format(name + " ", sleep_interval))
-                    time.sleep(sleep_interval)
-                continue
-            else:
-                raise
