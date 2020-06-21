@@ -59,7 +59,7 @@ def union_field(*dataclasses, **kwargs):
 
 
 def union_list(*dataclasses, **kwargs):
-    decoder = decode_tagged_union(*dataclasses, **kwargs) 
+    decoder = decode_tagged_union(*dataclasses, **kwargs)
     return field(
         metadata=config(
             decoder=lambda value: [

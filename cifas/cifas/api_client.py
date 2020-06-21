@@ -113,6 +113,19 @@ class CifasAPIClient:
         self.log_last_request()
         return FullSearchResponse.from_dict(serialize_object(response_object))
 
+    def get_codes(self, code: str):
+        with request_ctx(self.soap_client):
+            response_object = self.soap_client.service.CodeTableValue(
+                _soapheaders=[self.get_header(self.config.member_id)],
+                CodeTableId=code
+            )
+
+        code_dict = {}
+        for code in response_object:
+            code_dict[code['Code']] = code['Description']
+
+        return code_dict
+
     def log_last_request(self):
         history = self.history
         logger.info({

@@ -7,6 +7,7 @@ def read_test_data(name: str) -> str:
         return file.read()
 
 
+MEMBERS_RESPONSE = read_test_data('members.xml')
 MATCH_RESPONSE = read_test_data('match.xml')
 NOMATCH_RESPONSE = read_test_data('nomatch.xml')
 INDIVIDUAL_DATA_FULL = loads(read_test_data('individual_data_full.json'))

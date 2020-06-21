@@ -1,0 +1,1497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <CodeTableValueResponse xmlns="http://codes.find-cifas.org.uk">
+      <CodeItem>
+        <Code>1</Code>
+        <Description>Cifas Office</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>2</Code>
+        <Description>GE Capital Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>3</Code>
+        <Description>Ventura</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>4</Code>
+        <Description>resignation checking</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>6</Code>
+        <Description>Creation Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>7</Code>
+        <Description>Marks &amp; Spencer Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>8</Code>
+        <Description>staff only member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>10</Code>
+        <Description>Cifas 010</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>14</Code>
+        <Description>bgnbgfbngfbn</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>20</Code>
+        <Description>Black Horse Ltd (Collections - Cardiff)</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>22</Code>
+        <Description>Alliance &amp; Leicester Personal Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>24</Code>
+        <Description>First National Motor Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>30</Code>
+        <Description>Cogworx</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>31</Code>
+        <Description>FCE Bank plc (incorp: Ford Credit)</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>32</Code>
+        <Description>Royscot Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>33</Code>
+        <Description>Co-operative Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>34</Code>
+        <Description>American Express Services Europe Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>36</Code>
+        <Description>Capital Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>37</Code>
+        <Description>North Pole Insurance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>45</Code>
+        <Description>Black Horse Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>46</Code>
+        <Description>Black Horse Ltd (New Business - Edinburgh)</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>47</Code>
+        <Description>Hitachi Credit UK plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>52</Code>
+        <Description>Barclaycard</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>56</Code>
+        <Description>Time Retail Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>57</Code>
+        <Description>Alliance &amp; Leicester Giro</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>58</Code>
+        <Description>Cater Allen Private Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>59</Code>
+        <Description>Northern Rock</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>61</Code>
+        <Description>HSBC Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>63</Code>
+        <Description>Lloyds TSB</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>67</Code>
+        <Description>Lloyds TSB  Card Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>68</Code>
+        <Description>Bank of Scotland</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>73</Code>
+        <Description>Yorkshire Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>74</Code>
+        <Description>Benton Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>77</Code>
+        <Description>First Direct</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>80</Code>
+        <Description>Royal Bank of Scotland plc - Cards</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>81</Code>
+        <Description>Royal Bank of Scotland plc - Mortgages</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>84</Code>
+        <Description>Clydesdale Financial Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>87</Code>
+        <Description>Progressive Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>88</Code>
+        <Description>Nationwide Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>89</Code>
+        <Description>Nationwide Trust Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>92</Code>
+        <Description>O2 (UK) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>93</Code>
+        <Description>Singer &amp; Friedlander Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>94</Code>
+        <Description>Halifax plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>95</Code>
+        <Description>Equifax plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>96</Code>
+        <Description>Experian plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>97</Code>
+        <Description>CIFAS Protective Registration</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>98</Code>
+        <Description>EDA - Experian Limited - Experian Decision Analytics</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>100</Code>
+        <Description>Synectics Solutions Ltd</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>101</Code>
+        <Description>JCB International (Europe) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>102</Code>
+        <Description>Norwich &amp; Peterborough Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>103</Code>
+        <Description>GBG Client</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>105</Code>
+        <Description>Mailorder Mortgages</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>107</Code>
+        <Description>GMAC (UK) plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>108</Code>
+        <Description>T-Mobile UK</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>109</Code>
+        <Description>Lombard Direct</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>112</Code>
+        <Description>Close Motor Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>113</Code>
+        <Description>MBNA Europe Bank Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>114</Code>
+        <Description>Bank of Scotland - Residential Mortgages</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>116</Code>
+        <Description>HFC Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>119</Code>
+        <Description>Singlepoint (4U) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>120</Code>
+        <Description>Paragon Finance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>122</Code>
+        <Description>Britannic Money plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>125</Code>
+        <Description>Associates Capital Corporation Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>126</Code>
+        <Description>Legal &amp; General Bank Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>128</Code>
+        <Description>Network Vehicles Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>129</Code>
+        <Description>Credit Acceptance Corporation UK Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>130</Code>
+        <Description>GE Capital Woodchester</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>131</Code>
+        <Description>Portman Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>134</Code>
+        <Description>Birmingham Midshires</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>137</Code>
+        <Description>Orange Personal Communications Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>138</Code>
+        <Description>Direct Line Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>139</Code>
+        <Description>Sovereign Finance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>141</Code>
+        <Description>Vodafone Connect Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>143</Code>
+        <Description>British Credit Trust Group of Companies</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>146</Code>
+        <Description>Yorkshire Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>147</Code>
+        <Description>Leeds &amp; Holbeck Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>148</Code>
+        <Description>BMW Financial Services (GB) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>150</Code>
+        <Description>First National Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>151</Code>
+        <Description>ntl Group Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>153</Code>
+        <Description>Capital One Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>156</Code>
+        <Description>Private and Commercial Finance Co Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>159</Code>
+        <Description>igroup Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>160</Code>
+        <Description>Daimler-Chrysler Financial Services UK Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>161</Code>
+        <Description>Ikano Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>162</Code>
+        <Description>Dan M's staff fraud member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>163</Code>
+        <Description>T.M.V Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>164</Code>
+        <Description>On:Line Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>167</Code>
+        <Description>Toyota Financial Services (UK) plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>168</Code>
+        <Description>London Taxi Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>171</Code>
+        <Description>Volkswagen Financial Services (UK)</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>172</Code>
+        <Description>Woolwich plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>173</Code>
+        <Description>Sainsbury's Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>174</Code>
+        <Description>Royscot Trust</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>181</Code>
+        <Description>Volvo Car Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>187</Code>
+        <Description>Fiat Auto Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>190</Code>
+        <Description>Egg Banking plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>191</Code>
+        <Description>Tesco Personal Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>194</Code>
+        <Description>Park Asset Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>195</Code>
+        <Description>Royal Bank of Scotland plc - Credit Direct</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>196</Code>
+        <Description>National Westminster Bank plc - Cards</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>201</Code>
+        <Description>Nissan Finance (GB) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>203</Code>
+        <Description>Honda Finance Europe Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>205</Code>
+        <Description>Littlewoods Retail Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>206</Code>
+        <Description>Standard Life Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>207</Code>
+        <Description>Direct Auto Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>209</Code>
+        <Description>National Westminster Bank plc - Branch Network</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>210</Code>
+        <Description>Southern Finance Co Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>211</Code>
+        <Description>Scottish Widows Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>212</Code>
+        <Description>Barclays Bank Plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>213</Code>
+        <Description>Halifax Card Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>214</Code>
+        <Description>Firstplus Financial Group plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>215</Code>
+        <Description>Cheltenham and Gloucester plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>219</Code>
+        <Description>Lombard North Central</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>220</Code>
+        <Description>Chelsea Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>223</Code>
+        <Description>Lloyds TSB Commercial Finance Ltd</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>225</Code>
+        <Description>Direct Line Insurance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>227</Code>
+        <Description>Ulster Bank Card Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>228</Code>
+        <Description>Providian</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>229</Code>
+        <Description>Close Invoice Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>230</Code>
+        <Description>Royal Bank of Scotland - Branch Network</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>232</Code>
+        <Description>NMB Heller Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>234</Code>
+        <Description>Morgan Stanley</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>235</Code>
+        <Description>Halifax Cetelem Credit Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>236</Code>
+        <Description>JCB Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>237</Code>
+        <Description>Yorkshire Bank public ltd co</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>240</Code>
+        <Description>First Response Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>241</Code>
+        <Description>American Express Bank Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>242</Code>
+        <Description>TD Waterhouse Investor Services (Europe) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>246</Code>
+        <Description>Legal and General Assurance Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>247</Code>
+        <Description>RDM Factors Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>251</Code>
+        <Description>PSA Finance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>252</Code>
+        <Description>Bibby Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>253</Code>
+        <Description>CIT tda Dell Financial Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>254</Code>
+        <Description>Capital Home Loans Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>255</Code>
+        <Description>Auto Credit Trust Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>258</Code>
+        <Description>Halifax Share Dealing Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>259</Code>
+        <Description>Style Financial Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>262</Code>
+        <Description>Forthright Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>263</Code>
+        <Description>Daewoo Direct Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>264</Code>
+        <Description>Capital Personal Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>265</Code>
+        <Description>Freeway Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>266</Code>
+        <Description>The Mortgage Business plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>269</Code>
+        <Description>Britannia Personal Lending Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>270</Code>
+        <Description>GUS Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>271</Code>
+        <Description>Inchcape Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>272</Code>
+        <Description>International Motors Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>273</Code>
+        <Description>MVI Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>274</Code>
+        <Description>Membership Services Finance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>276</Code>
+        <Description>NFU Mutual Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>277</Code>
+        <Description>RFS Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>278</Code>
+        <Description>Centrica Personal Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>280</Code>
+        <Description>Cedar Holdings</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>282</Code>
+        <Description>L and S Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>283</Code>
+        <Description>Lloyds UDT Leasing</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>285</Code>
+        <Description>RIGP Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>286</Code>
+        <Description>Hyundai Car Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>287</Code>
+        <Description>MCL Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>288</Code>
+        <Description>Proton Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>289</Code>
+        <Description>Shogun Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>292</Code>
+        <Description>AG Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>295</Code>
+        <Description>Paragon Personal Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>296</Code>
+        <Description>Paragon Mortgages Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>297</Code>
+        <Description>Paragon Car Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>298</Code>
+        <Description>Girobank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>299</Code>
+        <Description>Jaguar Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>301</Code>
+        <Description>Porsche Financial Services GB Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>302</Code>
+        <Description>AMP Bank Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>303</Code>
+        <Description>UCB Homeloans Corporation Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>308</Code>
+        <Description>Royscot Motor Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>309</Code>
+        <Description>Royscot Auto Credit Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>310</Code>
+        <Description>Royscot Larch Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>312</Code>
+        <Description>Suzuki Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>313</Code>
+        <Description>First National Mortgage company</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>314</Code>
+        <Description>Intelligent Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>316</Code>
+        <Description>Churchill Insurance Co Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>317</Code>
+        <Description>GMAC - RFC Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>318</Code>
+        <Description>Hansar Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>319</Code>
+        <Description>Open + Direct Retail Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>320</Code>
+        <Description>Nova Vehicle Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>322</Code>
+        <Description>British Gas Trading Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>324</Code>
+        <Description>Zurich Insurance Company</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>325</Code>
+        <Description>Privilege Insurance Company Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>328</Code>
+        <Description>Private &amp; Commercial Credit Corporation Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>329</Code>
+        <Description>College Credit Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>330</Code>
+        <Description>St James's Place Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>331</Code>
+        <Description>Merrill Lynch HSBC Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>332</Code>
+        <Description>Barclays Stockbrokers Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>333</Code>
+        <Description>Sterling Credit Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>334</Code>
+        <Description>Endeavour Personal Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>335</Code>
+        <Description>LTSB - Accucard</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>336</Code>
+        <Description>Conister Trust plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>337</Code>
+        <Description>Derbyshire Building Society</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>339</Code>
+        <Description>Lloyds TSB Motor Direct Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>340</Code>
+        <Description>Citibank International plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>341</Code>
+        <Description>Royal &amp; SunAlliance Insurance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>342</Code>
+        <Description>First Financial</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>343</Code>
+        <Description>Direct Auto Financial Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>344</Code>
+        <Description>Banque PSA Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>345</Code>
+        <Description>The One Account Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>346</Code>
+        <Description>Admiral Insurance Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>347</Code>
+        <Description>ARG Card Services Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>348</Code>
+        <Description>Callcredit plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>349</Code>
+        <Description>The Funding Corporation</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>350</Code>
+        <Description>Secure Trust Bank plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>351</Code>
+        <Description>UK Insurance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>352</Code>
+        <Description>RBS Nautilus Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>354</Code>
+        <Description>ARG Personal Loans</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>355</Code>
+        <Description>Goldfish Bank Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>356</Code>
+        <Description>Preferred Mortgages Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>357</Code>
+        <Description>National Westminster Home Loans Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>358</Code>
+        <Description>Mytravel Personal Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>359</Code>
+        <Description>RBS Advanta</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>360</Code>
+        <Description>Centrica Telecommunications Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>361</Code>
+        <Description>RDM Asset Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>362</Code>
+        <Description>Redcats Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>363</Code>
+        <Description>La Redoute (UK) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>364</Code>
+        <Description>Redcats (Brands) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>365</Code>
+        <Description>Vert Baudet (UK) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>366</Code>
+        <Description>Movitex (UK) Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>367</Code>
+        <Description>LeasePlan UK Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>368</Code>
+        <Description>Automotive Leasing Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>369</Code>
+        <Description>Clydesdale Bank Asset Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>370</Code>
+        <Description>GMAC Commercial Credit Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>371</Code>
+        <Description>IGF Invoice Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>372</Code>
+        <Description>Sygma Bank UK</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>373</Code>
+        <Description>Hutchison 3G UK Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>374</Code>
+        <Description>Legal &amp; General Insurance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>375</Code>
+        <Description>Venture Finance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>376</Code>
+        <Description>Gresham Insurance Company Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>377</Code>
+        <Description>Potential Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>378</Code>
+        <Description>Yorkshire Bank Homeloans Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>379</Code>
+        <Description>Bank of Scotland (Business Banking)</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>380</Code>
+        <Description>Dynamic Commercial Finance plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>381</Code>
+        <Description>Park Asset Management Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>382</Code>
+        <Description>Gateway Credit</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>401</Code>
+        <Description>Who Cares Credit</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>402</Code>
+        <Description>Mortgages R Us</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>405</Code>
+        <Description>Raymonds Risky Loans</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>407</Code>
+        <Description>Switchboard Financial Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>411</Code>
+        <Description>MidgyEast</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>438</Code>
+        <Description>Santander Consumer (UK) plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>443</Code>
+        <Description>Lennys Loans</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>444</Code>
+        <Description>Advantage Finance Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>463</Code>
+        <Description>Liverpool Victoria Insurance Company Limited</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>481</Code>
+        <Description>Colins Credit Cards</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>497</Code>
+        <Description>White Pony Financial Services</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>501</Code>
+        <Description>Testing Staff</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>502</Code>
+        <Description>Barings Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>547</Code>
+        <Description>NFIB</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>551</Code>
+        <Description>Transactis</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>552</Code>
+        <Description>Testing the Alert</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>555</Code>
+        <Description>Member Practice</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>556</Code>
+        <Description>Member Practice Joint Venture Choosing Own ARNs</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>557</Code>
+        <Description>Member Practice Subsidiary with Default Product Code</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>592</Code>
+        <Description>AXA Insurance UK Plc</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>600</Code>
+        <Description>A Test Bank</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>603</Code>
+        <Description>The Home Office</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>650</Code>
+        <Description>LogicaCMG Helpdesk</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>672</Code>
+        <Description>Auther Daly Motors</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>673</Code>
+        <Description>Dodgy Motor Co</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>674</Code>
+        <Description>Testy Funky Cars</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>675</Code>
+        <Description>Testy Affiliate</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>676</Code>
+        <Description>Resigning Member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>700</Code>
+        <Description>Security Testing - Plus</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>704</Code>
+        <Description>Cifas - Death Registration Information</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>765</Code>
+        <Description>Seven Six Five</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>778</Code>
+        <Description>NotImportant Cards</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>789</Code>
+        <Description>Christine</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>800</Code>
+        <Description>UAT Testing</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>850</Code>
+        <Description>Protective Registration</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>855</Code>
+        <Description>UAT test Member 2</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>867</Code>
+        <Description>Test Member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>875</Code>
+        <Description>UAT test member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>888</Code>
+        <Description>A Test Member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>900</Code>
+        <Description>CGI Hosting</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>901</Code>
+        <Description>Synectics Member 1</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>902</Code>
+        <Description>Synectics Member 2</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>995</Code>
+        <Description>Training - Pre FIND</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>996</Code>
+        <Description>CIFAS Motor Finance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>997</Code>
+        <Description>CIFAS Bank with a very long name  used for testing Ltd</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>998</Code>
+        <Description>CIFAS Insurance</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>999</Code>
+        <Description>Organisation Name</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1000</Code>
+        <Description>Four Digit Member</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1100</Code>
+        <Description>Featurespace</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1101</Code>
+        <Description>Featurespace client 1</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1102</Code>
+        <Description>Featurespace client 2</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1103</Code>
+        <Description>GDS Link</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1104</Code>
+        <Description>GDS Link client</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1105</Code>
+        <Description>Passfort</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1106</Code>
+        <Description>Passfort Client</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1107</Code>
+        <Description>Direct Agency</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1108</Code>
+        <Description>DA Client</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1111</Code>
+        <Description>1st Line Support</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1120</Code>
+        <Description>Tradle</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>1121</Code>
+        <Description>Tradle client</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>4856</Code>
+        <Description>Honey Bee</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>7860</Code>
+        <Description>Star Fish LTD</Description>
+        <Active>true</Active>
+      </CodeItem>
+      <CodeItem>
+        <Code>9999</Code>
+        <Description>Last Chance</Description>
+        <Active>true</Active>
+      </CodeItem>
+    </CodeTableValueResponse>
+  </soap:Body>
+</soap:Envelope>
