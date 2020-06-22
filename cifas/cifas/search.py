@@ -5,10 +5,11 @@ from dataclasses_json import dataclass_json, config
 from datetime import date
 from uuid import uuid4
 
+from cifas.codes import Product, FilingReason, CaseType, Member
 from passfort.individual_data import IndividualData, UKBankAccount, Address as PassFortAddress
 from passfort.company_data import CompanyData
 from passfort.cifas_check import CifasConfig, OutputData
-from passfort.fraud_detection import FraudDetection
+from passfort.fraud_detection import FraudDetection, FraudCase, DatabaseType
 from passfort.date import DatePrecision
 
 
@@ -122,9 +123,59 @@ class FullSearchRequest:
 
 @dataclass_json
 @dataclass
+class BasicCaseDetail:
+    CaseId: int
+    OwningMember: int
+    ManagingMember: int
+    CaseType: str
+    Product: str
+    DoNotFilter: bool
+    SupplyDate: Optional[date]
+    ApplicationDate: Optional[date]
+    ClaimDate: Optional[date]
+
+
+@dataclass_json
+@dataclass
+class FullCaseDetail:
+    BasicCaseDetail: BasicCaseDetail
+    FilingReason: List[str]
+    DeliveryChannel: Optional[str]
+    IPAddress: Optional[str]
+    Facility: Optional[str]
+    LinkedCasesCount: int
+
+
+@dataclass_json
+@dataclass
 class FullSearchResultItem:
-    # Data under this object is currently unused by the integration
-    ...
+    FullCaseDetail: FullCaseDetail
+
+    def convert_code(self, cached_codes, get_codes, code_name, k):
+        try:
+            return cached_codes[k].value
+        except KeyError:
+            return get_codes(code_name)[k]
+
+    def to_passfort_output_data(self, get_codes):
+        reporting_company = self.convert_code(Member, get_codes, 'MEMBER',
+                                              str(self.FullCaseDetail.BasicCaseDetail.OwningMember))
+        case_type = self.convert_code(CaseType, get_codes, 'CASTYP', self.FullCaseDetail.BasicCaseDetail.CaseType)
+        product = self.convert_code(Product, get_codes, 'PRODCT', self.FullCaseDetail.BasicCaseDetail.Product)
+        filing_reason = [self.convert_code(FilingReason, get_codes, 'FILREA', fr) for fr in self.FullCaseDetail.FilingReason]
+
+        return FraudCase(
+            id=str(self.FullCaseDetail.BasicCaseDetail.CaseId),
+            reporting_company=reporting_company,
+            case_type=case_type,
+            product=product,
+            do_not_filter=self.FullCaseDetail.BasicCaseDetail.DoNotFilter,
+            supply_date=self.FullCaseDetail.BasicCaseDetail.SupplyDate,
+            application_date=self.FullCaseDetail.BasicCaseDetail.ApplicationDate,
+            claim_date=self.FullCaseDetail.BasicCaseDetail.ClaimDate,
+            filing_reason=filing_reason,
+            database_type=DatabaseType.CIFAS,
+        )
 
 
 @dataclass_json
@@ -138,11 +189,12 @@ class FullSearchResponse:
     def from_dict(cls, value: Mapping) -> 'FullSearchResponse':
         ...
 
-    def to_passfort_output_data(self):
+    def to_passfort_output_data(self, members):
         return OutputData(
             fraud_detection=FraudDetection(
                 search_reference=str(self.FINDsearchReference),
                 match_count=len(self.FullSearchResult),
+                matches=[i.to_passfort_output_data(members) for i in self.FullSearchResult]
             ),
         )
 

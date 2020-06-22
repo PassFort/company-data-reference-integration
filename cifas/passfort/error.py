@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from requests.exceptions import HTTPError
 from zeep.helpers import serialize_object
 
+
 class CifasConnectionError(Exception):
     pass
 
@@ -21,7 +22,6 @@ class Error:
     code: int
     message: str
     info: dict
-
 
     @classmethod
     def connection_error(self, error: Exception):
@@ -51,12 +51,15 @@ class Error:
         err_message = err_dict.get('Error')
         err_elem = err_dict.get('Element')
         err_text = ''
+
+        original_error = {k: error.raw_obj[k] for k in error.raw_obj}
+
         if err_value and err_message and err_elem:
             err_text = f': {err_message} Value: {err_value} Element: {err_elem}'
         return Error(
             code=303,
             message=f'Cifas validation error{err_text}',
             info={
-                'original_error': error.raw_obj
+                'original_error': original_error
             },
         )

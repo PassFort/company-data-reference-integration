@@ -1,12 +1,9 @@
-from typing import Union, List, Dict, Optional
-from enum import Enum
-from collections.abc import Mapping
+from typing import Union, List, Optional
 from dataclasses import dataclass, field
-from dataclasses_json import dataclass_json, config
-from passfort import EntityType, union_field, coerce_integer
+from dataclasses_json import dataclass_json
+from passfort import union_field, coerce_integer
 from passfort.individual_data import IndividualData
 from passfort.company_data import CompanyData
-from passfort.date import PartialDate
 from passfort.fraud_detection import FraudDetection
 from passfort.error import Error
 
@@ -31,8 +28,8 @@ class CifasCheck:
     config: CifasConfig
     credentials: CifasCredentials
     input_data: Union[IndividualData, CompanyData] = union_field(
-        IndividualData, 
-        CompanyData, 
+        IndividualData,
+        CompanyData,
         tag='entity_type',
     )
 
@@ -42,7 +39,7 @@ class CifasCheck:
 @dataclass_json
 @dataclass
 class OutputData:
-    fraud_detection: FraudDetection 
+    fraud_detection: FraudDetection
 
 
 @dataclass_json

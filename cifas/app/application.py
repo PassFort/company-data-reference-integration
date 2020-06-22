@@ -37,7 +37,7 @@ def run_cifas_search():
             api_client = CifasAPIClient(cifas_search.config, cifas_search.credentials)
             search_request = FullSearchRequest.from_passfort_data(cifas_search.input_data, cifas_search.config)
             response = api_client.full_search(search_request)
-            output_data = response.to_passfort_output_data()
+            output_data = response.to_passfort_output_data(api_client.get_codes)
         except CifasConnectionError as exc:
             error = Error.connection_error(exc)
         except CifasHTTPError as exc:

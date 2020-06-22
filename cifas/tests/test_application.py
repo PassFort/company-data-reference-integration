@@ -4,7 +4,7 @@ from requests.exceptions import HTTPError, ConnectionError
 from unittest import TestCase
 from app.application import app
 from tests import MATCH_RESPONSE, NOMATCH_RESPONSE, INDIVIDUAL_DATA_MINIMAL, \
-    COMPANY_DATA_MINIMAL
+    COMPANY_DATA_MINIMAL, MEMBERS_RESPONSE
 
 
 class TestApplication(TestCase):
@@ -37,14 +37,26 @@ class TestApplication(TestCase):
             content_type='text/xml; charset=utf-8',
         )
 
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MEMBERS_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
         response = self.run_cifas_search(INDIVIDUAL_DATA_MINIMAL)
         output_data = response.json['output_data']
         errors = response.json['errors']
         fraud_detection = output_data['fraud_detection']
+        matches = fraud_detection.get('matches')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(errors), 0)
         self.assertEqual(fraud_detection['match_count'], 1)
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0]['reporting_company'], 'Member Practice')
+        self.assertEqual(matches[0]['filing_reason'][0], 'Impersonation - previous address fraud')
+        self.assertEqual(matches[0]['case_type'], 'Identity fraud')
         self.assertEqual(type(fraud_detection['search_reference']), str)
 
     @responses.activate
@@ -53,6 +65,13 @@ class TestApplication(TestCase):
             responses.POST,
             'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
             body=NOMATCH_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MEMBERS_RESPONSE,
             content_type='text/xml; charset=utf-8',
         )
 
@@ -75,6 +94,13 @@ class TestApplication(TestCase):
             content_type='text/xml; charset=utf-8',
         )
 
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MEMBERS_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
         response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
         output_data = response.json['output_data']
         errors = response.json['errors']
@@ -91,6 +117,13 @@ class TestApplication(TestCase):
             responses.POST,
             'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
             body=NOMATCH_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MEMBERS_RESPONSE,
             content_type='text/xml; charset=utf-8',
         )
 
@@ -115,11 +148,16 @@ class TestApplication(TestCase):
             content_type='text/xml; charset=utf-8',
         )
 
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MEMBERS_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
         response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
         output_data = response.json['output_data']
         errors = response.json['errors']
-
-        print(errors)
 
         self.assertEqual(response.status_code, 200)
         self.assertGreater(len(errors), 0)
@@ -134,11 +172,16 @@ class TestApplication(TestCase):
             content_type='text/xml; charset=utf-8',
         )
 
+        responses.add(
+            responses.POST,
+            'https://services.find-cifas.org.uk/Direct/CIFAS/Request.asmx',
+            body=MEMBERS_RESPONSE,
+            content_type='text/xml; charset=utf-8',
+        )
+
         response = self.run_cifas_search(COMPANY_DATA_MINIMAL)
         output_data = response.json['output_data']
         errors = response.json['errors']
-
-        print(errors)
 
         self.assertEqual(response.status_code, 200)
         self.assertGreater(len(errors), 0)
