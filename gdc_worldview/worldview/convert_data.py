@@ -258,9 +258,7 @@ def worldview_to_passfort_data(worldview_response_data):
         all_codes = [*address_codes, *identity_codes]
 
         matches = []
-        print(all_codes)
         for code in [code for code in all_codes if is_full_match(code) and is_valid_field(code.field_name)]:
-            print(code)
             filtered = list(filter(lambda entry: entry['database_name'] == code.database_name, matches))
 
             if filtered:
@@ -284,5 +282,9 @@ def worldview_to_passfort_data(worldview_response_data):
 
         if matches:
             response_body['output_data']['decision'] = PASS
+
+        if identity and 'detailCode' in identity.get('codes', {}):
+            response_body['output_data']['electronic_id_check']['provider_reference_number'] = \
+                identity['codes']['detailCode']
 
     return response_body

@@ -21,7 +21,8 @@ def test_record_with_empty_datasource_results(client):
                 "codes": {
                     "reliability": "30",
                     "messages": [],
-                    "detailList": ""
+                    "detailList": "",
+                    "detailCode": "WS-3908188.2020.4.26.test",
                 }
             }
         }
@@ -34,14 +35,13 @@ def test_record_with_empty_datasource_results(client):
                                     "decision": "FAIL",
                                     "entity_type": "INDIVIDUAL",
                                     "electronic_id_check": {
-                                        "matches": []
-                                    }
+                                        "matches": [],
+                                        "provider_reference_number": "WS-3908188.2020.4.26.test"
+                                    },
                                 },
                                 "raw": worldview_data['body'],
                                 "errors": []
-                            }    
-
-
+                            }
 
 
 def test_record_with_one_datasource_with_dob_forename_surname_match(client):
@@ -271,7 +271,8 @@ def test_record_with_one_datasource_with_full_match(client):
                             "value": "Full match was made on National ID"
                         }
                     ],
-                    "detailList": ""
+                    "detailList": "",
+                    "detailCode": "WS-3908188.2020.4.26.test",
                 }
             }
         }
@@ -297,12 +298,14 @@ def test_record_with_one_datasource_with_full_match(client):
                                                 ],
                                                 "count": 1
                                             }
-                                        ]
-                                    }
+                                        ],
+                                        "provider_reference_number": "WS-3908188.2020.4.26.test"
+                                    },
                                 },
                                 "raw": worldview_data['body'],
                                 "errors": []
-                            }    
+                            }
+
 
 def test_record_with_one_datasource_with_full_match_diff_database(client):
     worldview_data = {'status': 200, 'body':
@@ -649,7 +652,8 @@ def test_record_with_reliability_30_nomatch(client):
                             "value": "Full match was made on Date of Birth"
                         }
                     ],
-                    "detailList": ""
+                    "detailList": "",
+                    "detailCode": "WS-3908188.2020.4.26.test",
                 }
             }
         }
@@ -662,7 +666,8 @@ def test_record_with_reliability_30_nomatch(client):
                                     "decision": "FAIL",
                                     "entity_type": "INDIVIDUAL",
                                     "electronic_id_check": {
-                                        "matches": []
+                                        "matches": [],
+                                        "provider_reference_number": "WS-3908188.2020.4.26.test"
                                     }
                                 },
                                 "raw": worldview_data['body'],
