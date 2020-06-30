@@ -373,3 +373,90 @@ def test_identity_number_for_other_countries_are_not_sent(client):
         }
     }
     assert worldview_request_data == output_data
+
+def test_identity_with_consent_for_same_country(client):
+    input_data = {
+        'input_data': {
+            'personal_details': {
+                'name': {
+                    'given_names': ['Todd']
+                }
+            },
+            'address_history':[
+                {
+                    "address": {
+                        "country": "CAN",
+                        "postal_code": "12345",
+                        "subpremise": "10",
+                        "type": "STRUCTURED"
+                    }
+                }
+            ]
+        },
+        'credentials': {
+            'consent_account_numbers': {
+                'CAN': 'D1234'
+            }
+        }
+    }
+    worldview_request_data = passfort_to_worldview_data(input_data)
+    output_data = {
+        'identity': {
+            'givenfullname': 'Todd',
+            'codes': {
+                'messages': [
+                    {
+                        'code': 'ACCOUNT_NUMBER',
+                        'value': 'D1234'
+                    },
+                    {
+                        'code': 'CONSENT',
+                        'value': 'YES'
+                    }
+                ]
+            }
+        },
+        'address': {
+            'houseNumber': '10',
+            'postalCode': '12345',
+            'countryCode': 'CA',
+        }
+    }
+    assert worldview_request_data == output_data
+
+
+def test_identity_with_consent_for_another_country(client):
+    input_data = {
+        'input_data': {
+            'personal_details': {
+                'name': {
+                    'given_names': ['Todd']
+                }
+            },
+            'address_history':[
+                {
+                    "address": {
+                        "country": "GBR",
+                        "postal_code": "12345",
+                        "subpremise": "10",
+                        "type": "STRUCTURED"
+                    }
+                }
+            ]
+        },
+        'credentials': {
+            'consent_account_numbers': {
+                'CAN': 'D1234'
+            }
+        }
+    }
+    worldview_request_data = passfort_to_worldview_data(input_data)
+    output_data = {
+        'identity': {'givenfullname': 'Todd'},
+        'address': {
+            'houseNumber': '10',
+            'postalCode': '12345',
+            'countryCode': 'GB',
+        }
+    }
+    assert worldview_request_data == output_data

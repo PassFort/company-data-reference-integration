@@ -3,7 +3,25 @@ import json
 from datetime import datetime
 
 
-def identity_details(input_data, id_country):
+def consent_data_to_messages(consent_data, country):
+    if consent_data:
+        consent_account_numbers = consent_data.get('consent_account_numbers')
+        country_account = consent_account_numbers.get(country)
+        if country_account is not None:
+            return [
+                {
+                    "code": "ACCOUNT_NUMBER",
+                    "value": country_account
+                },
+                {
+                    "code": "CONSENT",
+                    "value": "YES"
+                }
+            ]
+    return []
+
+
+def identity_details(input_data, consent_data, id_country):
     # check personal details
     personal_details = input_data.get('personal_details')
     identity = {}
@@ -56,6 +74,12 @@ def identity_details(input_data, id_country):
 
         if gender:
             identity['gender'] = gender
+
+    consent_messages = consent_data_to_messages(consent_data, id_country)
+    if len(consent_messages):
+        identity['codes'] = {
+            'messages': consent_messages
+        }
     return identity
 
 
@@ -63,6 +87,7 @@ def passfort_to_worldview_data(passfort_data):
     worldview_pkg = {}
 
     input_data = passfort_data.get('input_data')
+    consent_data = passfort_data.get('credentials', {})
 
     if input_data:
             
@@ -131,7 +156,7 @@ def passfort_to_worldview_data(passfort_data):
 
                 worldview_pkg['address'] = address
         # Use the address country to decide which national identity number to send
-        identity = identity_details(input_data, id_country=address_country)
+        identity = identity_details(input_data, consent_data, id_country=address_country)
         if identity:
             worldview_pkg['identity'] = identity
         contact_details = input_data.get('contact_details')
