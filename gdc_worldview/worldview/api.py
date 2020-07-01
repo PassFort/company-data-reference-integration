@@ -56,4 +56,3 @@ def verify(request_body, credentials):
         'status': response.status_code, 
         'body': response.json() if response.status_code == 200 else response.text 
     }
-    
