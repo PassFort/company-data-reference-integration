@@ -64,6 +64,9 @@ parameters:
   gdc_worldview:
     type: boolean
     default: false
+  capita:
+    type: boolean
+    default: false
 
 executors:
   python-builder:
@@ -959,6 +962,38 @@ workflows:
           to: production
           requires:
             - unit_gdc_worldview
+          filters:
+            branches:
+              only:
+                - master
+
+  capita:
+    when: << pipeline.parameters.capita >>
+    jobs:
+      - build:
+          name: build_capita
+          package: capita
+      - unit:
+          name: unit_capita
+          package: capita
+          requires:
+            - build_capita
+      - deploy_common:
+          name: deploy_capita_staging
+          package: capita
+          to: staging
+          requires:
+            - unit_capita
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy_common:
+          name: deploy_capita_production
+          package: capita
+          to: production
+          requires:
+            - unit_capita
           filters:
             branches:
               only:
