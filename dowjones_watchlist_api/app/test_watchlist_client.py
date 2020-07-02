@@ -269,3 +269,20 @@ class TestInputDataParams(unittest.TestCase):
                 }
             }))
             self.assertEqual(params['filter-region'], 'NOTK,JAMA')
+
+        with self.subTest("Can add country of residence as DJII region code to `filter-region`"):
+            client = DemoClient(
+                WatchlistAPIConfig(DEFAULT_CONFIG),
+                WatchlistAPICredentials()
+            )
+            params = client.search_params(InputData({
+                'entity_type': 'INDIVIDUAL',
+                'personal_details': {
+                    'name': {
+                        'given_names': ['David'],
+                        'family_name': 'Cameron'
+                    },
+                },
+                'address_history': [{'address': {'country': 'GBR'}}]
+            }))
+            self.assertEqual(params['filter-region'], 'NOTK,UK')

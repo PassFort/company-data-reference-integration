@@ -111,11 +111,19 @@ class APIClient():
 
         if input_data.personal_details.dob is not None:
             params['date-of-birth'] = input_data.personal_details.dowjones_dob
-        if input_data.personal_details.nationality is not None:
-            params['filter-region'] = ','.join([
-                WATCHLIST_NOT_KNOWN_FILTER,
-                DJII_REGION_CODES[input_data.personal_details.nationality]
-            ])
+
+        nationality = input_data.personal_details.nationality
+        dated_address = input_data.most_recent_address
+        country_of_residence = dated_address.address.country if dated_address else None
+
+        if nationality is not None or country_of_residence is not None:
+            regions = [WATCHLIST_NOT_KNOWN_FILTER]
+            if nationality is not None:
+                regions.append(DJII_REGION_CODES[nationality])
+            if country_of_residence is not None:
+                regions.append(DJII_REGION_CODES[country_of_residence])
+
+            params['filter-region'] = ','.join(regions)
 
         return params
 
