@@ -77,4 +77,4 @@ class HealthCheck(Resource):
 
 def init_app(api):
     api.add_resource(Ekyc_check, '/ekyc-check')
-    api.add_resource(HealthCheck, '/health-check')
+    api.add_resource(HealthCheck, '/health')

@@ -19,7 +19,7 @@ def test_authentication(client):
 
 
 @patch('api.views.echo_test_request')
-def test_health_check(mock_authentication, client):
+def test_ealth_check(mock_authentication, client):
 
     mock_authentication.return_value = 200
 
@@ -31,7 +31,7 @@ def test_health_check(mock_authentication, client):
             'url': 'dummy_url'}}
 
     response = client.post(
-        '/health-check',
+        '/health',
         data=json.dumps(credentials),
         content_type='application/json'
     )
@@ -41,7 +41,7 @@ def test_health_check(mock_authentication, client):
 
 def test_health_check_empty(client):
     response = client.post(
-        '/health-check',
+        '/health',
         data=json.dumps({}),
         content_type='application/json'
     )
@@ -49,7 +49,7 @@ def test_health_check_empty(client):
     assert response.status_code == 200
 
 def test_health_check_get_method(client):
-    response = client.get('/health-check')
+    response = client.get('/health')
     assert response.status_code == 200
 
 

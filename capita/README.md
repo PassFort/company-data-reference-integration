@@ -46,12 +46,12 @@ $ docker run -p 8001:8001 --name capita_integration Capita:0.1
 # End points
 ```sh
 POST /ekyc-check
-POST /health-check
+POST /health
 ```
 Health check example
 ```sh
 curl --request POST \
-  --url http://127.0.0.1:8001/health-check \
+  --url http://127.0.0.1:8001/health \
   --header ': ' \
   --header 'Content-Type: application/json' \
   --data '{"credentials": {"license_key": "XXXX-XX-XX...", "client_key": "key_xyz", "profile_short_code": "eKYC", "url": "https://api.capita-id.com/api/CIS/Authenticate"}}'
