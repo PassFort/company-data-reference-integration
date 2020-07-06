@@ -273,6 +273,51 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                 "errors": []
                             } 
 
+def test_record_with_one_datasource_with_mortality_match(client):
+    capita_data = {'status': 200, 'body':
+        {
+            "Response": {
+                "Result": [
+                    {
+                        "Name": "Stage1",
+                        "CheckResults": [
+                            {
+                                "CheckName": "Death register",
+                                "Result": 1,
+                                "Error": None,
+                            },
+                        ]
+                    }
+                ],
+                "Error": ""
+            }
+        }
+    }
+
+    response_body = capita_to_passfort_data(capita_data)
+
+    assert response_body == {
+                                "output_data": {
+                                    "decision": "FAIL",
+                                    'electronic_id_check': {
+                                        'matches': [
+                                            {
+                                                'database_name': 'Death register',
+                                                'database_type': 'MORTALITY',
+                                                'matched_fields': [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "DOB"
+                                                ]
+                                            },
+                                        ]
+                                    },
+                                    'entity_type': 'INDIVIDUAL'
+                                },
+                                "raw": capita_data['body'],
+                                "errors": []
+                            }
+
 def test_record_error_bad_request(client):
     capita_data = {'status': 500, 'body':
         'Bad request message'
