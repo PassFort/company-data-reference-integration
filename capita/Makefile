@@ -1,0 +1,4 @@
+unit:
+	./coverage
+
+.PHONY: unit

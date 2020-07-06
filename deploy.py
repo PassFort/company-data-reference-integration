@@ -26,7 +26,8 @@ integrations = {
     'cifas': './cifas',
     'lexisnexis_id': './lexisnexis_id',
     'mastercard_match': './mastercard_match',
-    'gdc_worldview': './gdc_worldview'
+    'gdc_worldview': './gdc_worldview',
+    'capita': './capita'
 }
 
 sentry = {
