@@ -109,8 +109,11 @@ def capita_to_passfort_data(capita_response_data):
     
     if capita_response_data['status'] == 200:
         capita_data = capita_response_data['body']
-        if capita_data and\
-            'Response' in capita_data and\
+        if capita_data:
+            about = capita_data.get('About')
+            if about:
+                response_body['output_data']['electronic_id_check']['provider_reference_number'] = about.get('TransactionReference')
+            if 'Response' in capita_data and\
                 'Result' in capita_data['Response']:
                 
                 results = capita_data['Response']['Result']

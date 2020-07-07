@@ -17,6 +17,9 @@ def test_empty_package(client):
 def test_record_with_empty_datasource_results(client):
     capita_data = {'status': 200, 'body':
         {
+            "About": {
+                "TransactionReference": "EmptyResults",
+            },
             "Response": {
                 "Result": [
                     {
@@ -46,6 +49,7 @@ def test_record_with_empty_datasource_results(client):
                                 "output_data": {
                                     "decision": "FAIL",
                                     'electronic_id_check': {
+                                        'provider_reference_number': 'EmptyResults',
                                         'matches': [
                                             {
                                                 'database_name': 'Electoral Role',
@@ -64,7 +68,7 @@ def test_record_with_empty_datasource_results(client):
                                 "errors": [
                                     {
                                         'code': 303,
-                                        'message': 'Provider Error: UNKNOW ERROR: Matching Address Not Found'
+                                        'message': 'Provider Error: UNKNOWN ERROR: Matching Address Not Found'
                                     }
                                 ]
                             }    
@@ -75,6 +79,9 @@ def test_record_with_empty_datasource_results(client):
 def test_record_with_one_datasource_with_dob_forename_surname_match(client):
     capita_data = {'status': 200, 'body':
         {
+            "About": {
+                "TransactionReference": "SurnameMatch",
+            },
             "Response": {
                 "Result": [
                     {
@@ -99,6 +106,7 @@ def test_record_with_one_datasource_with_dob_forename_surname_match(client):
                                 "output_data": {
                                     "decision": "PASS",
                                     'electronic_id_check': {
+                                        'provider_reference_number': 'SurnameMatch',
                                         'matches': [
                                             {
                                                 'database_name': 'Electoral Role',
@@ -121,6 +129,9 @@ def test_record_with_one_datasource_with_dob_forename_surname_match(client):
 def test_record_with_one_datasource_with_address_forename_surname_match(client):
     capita_data = {'status': 200, 'body':
         {
+            "About": {
+                "TransactionReference": "ForenameMatch",
+            },
             "Response": {
                 "Result": [
                     {
@@ -145,6 +156,7 @@ def test_record_with_one_datasource_with_address_forename_surname_match(client):
                                 "output_data": {
                                     "decision": "PASS",
                                     'electronic_id_check': {
+                                        'provider_reference_number': 'ForenameMatch',
                                         'matches': [
                                             {
                                                 'database_name': 'Electoral Role',
@@ -166,6 +178,9 @@ def test_record_with_one_datasource_with_address_forename_surname_match(client):
 def test_record_with_one_datasource_with_full_match(client):
     capita_data = {'status': 200, 'body':
         {
+            "About": {
+                "TransactionReference": "FullMatch",
+            },
             "Response": {
                 "Result": [
                     {
@@ -195,6 +210,7 @@ def test_record_with_one_datasource_with_full_match(client):
                                 "output_data": {
                                     "decision": "PASS",
                                     'electronic_id_check': {
+                                        'provider_reference_number': 'FullMatch',
                                         'matches': [
                                             {
                                                 'database_name': 'Electoral Role',
@@ -217,6 +233,9 @@ def test_record_with_one_datasource_with_full_match(client):
 def test_record_with_one_datasource_with_full_match_diff_database(client):
     capita_data = {'status': 200, 'body':
         {
+            "About": {
+                "TransactionReference": "FullMatchDiff",
+            },
             "Response": {
                 "Result": [
                     {
@@ -246,6 +265,7 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                 "output_data": {
                                     "decision": "PASS",
                                     'electronic_id_check': {
+                                        'provider_reference_number': 'FullMatchDiff',
                                         'matches': [
                                             {
                                                 'database_name': 'Electoral Role',
@@ -331,7 +351,7 @@ def test_record_error_bad_request(client):
                                     "electronic_id_check": {"matches": []}
                                 },
                                 "raw": capita_data['body'],
-                                "errors": [{'code': 303, 'message': f'Provider Error: UNKNOW ERROR: {capita_data["body"]}'}]
+                                "errors": [{'code': 303, 'message': f'Provider Error: UNKNOWN ERROR: {capita_data["body"]}'}]
                             }
 
 def test_record_error_auth_error(client):
