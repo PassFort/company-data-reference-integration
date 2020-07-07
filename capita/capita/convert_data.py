@@ -103,7 +103,7 @@ def capita_to_passfort_data(capita_response_data):
     if capita_response_data['status'] > 400:          
         response_body['errors'].append({
                 'code': 303, 
-                'message': f"Provider Error: UNKNOW ERROR: {capita_response_data['body']}"})
+                'message': f"Provider Error: UNKNOWN ERROR: {capita_response_data['body']}"})
         response_body['output_data']['decision'] = 'ERROR'
     
     
@@ -206,7 +206,7 @@ def capita_to_passfort_data(capita_response_data):
 
                                 if result['Error']:
                                     #Check to not add twice the same error
-                                    error_message = f"Provider Error: UNKNOW ERROR: {result['Error']}"
+                                    error_message = f"Provider Error: UNKNOWN ERROR: {result['Error']}"
                                     try:
                                         next(filter(lambda error: error['message'] == error_message, 
                                             response_body['errors']))
