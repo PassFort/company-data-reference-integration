@@ -67,6 +67,15 @@ def passfort_to_capita_data(passfort_data):
 
     return capita_pkg
 
+
+def get_database_type(check_name):
+    if 'credit' in check_name:
+        return 'CREDIT'
+    if 'death register' in check_name:
+        return 'MORTALITY'
+    return 'CIVIL'
+
+
 def capita_to_passfort_data(capita_response_data):
     #base response
     response_body = {
@@ -94,14 +103,17 @@ def capita_to_passfort_data(capita_response_data):
     if capita_response_data['status'] > 400:          
         response_body['errors'].append({
                 'code': 303, 
-                'message': f"Provider Error: UNKNOW ERROR: {capita_response_data['body']}"})
+                'message': f"Provider Error: UNKNOWN ERROR: {capita_response_data['body']}"})
         response_body['output_data']['decision'] = 'ERROR'
     
     
     if capita_response_data['status'] == 200:
         capita_data = capita_response_data['body']
-        if capita_data and\
-            'Response' in capita_data and\
+        if capita_data:
+            about = capita_data.get('About')
+            if about:
+                response_body['output_data']['electronic_id_check']['provider_reference_number'] = about.get('TransactionReference')
+            if 'Response' in capita_data and\
                 'Result' in capita_data['Response']:
                 
                 results = capita_data['Response']['Result']
@@ -157,7 +169,7 @@ def capita_to_passfort_data(capita_response_data):
                 else:
                     try:
                         stage_1 = next(filter(lambda x: x['Name'] == 'Stage1', results))
-
+                        has_mortality_match = False
                         if 'CheckResults' in stage_1:
                             for result in stage_1['CheckResults']:
 
@@ -168,21 +180,26 @@ def capita_to_passfort_data(capita_response_data):
                                 except StopIteration:
                                     match = {
                                         'database_name': result['CheckName'].split('(')[0].strip(),
-                                        'database_type': 'CREDIT' if 'credit' in result['CheckName'].lower() else 'CIVIL',
+                                        'database_type': get_database_type(result['CheckName'].lower()),
                                         'matched_fields': []
                                     }
                                     response_body['output_data']['electronic_id_check']['matches'].append(match)
 
                                 if result['Result'] == 1:
-                                    #Update decision
-                                    if response_body['output_data']['decision'] == 'FAIL':
-                                        response_body['output_data']['decision'] = 'PASS'
-                                    
                                     #Default values for match
                                     if 'FORENAME' not in match['matched_fields']:
                                         match['matched_fields'].append('FORENAME')
                                     if 'SURNAME' not in match['matched_fields']:
                                         match['matched_fields'].append('SURNAME')
+
+                                    #Update decision
+                                    if match['database_type'] == 'MORTALITY':
+                                        has_mortality_match = True
+                                        match['matched_fields'].append('DOB')
+
+                                    if not has_mortality_match and \
+                                            response_body['output_data']['decision'] == 'FAIL':
+                                        response_body['output_data']['decision'] = 'PASS'
 
                                     #Database check
                                     if 'Proof of DOB' in result['CheckName']:
@@ -192,7 +209,7 @@ def capita_to_passfort_data(capita_response_data):
 
                                 if result['Error']:
                                     #Check to not add twice the same error
-                                    error_message = f"Provider Error: UNKNOW ERROR: {result['Error']}"
+                                    error_message = f"Provider Error: UNKNOWN ERROR: {result['Error']}"
                                     try:
                                         next(filter(lambda error: error['message'] == error_message, 
                                             response_body['errors']))
@@ -205,17 +222,5 @@ def capita_to_passfort_data(capita_response_data):
                         response_body['errors'].append({
                             'code': 303, 
                             'message': f"Provider Error: Stage 1 section not found"})
-
-
-
-
-
-
-
-
-
-
-
-
 
     return response_body
