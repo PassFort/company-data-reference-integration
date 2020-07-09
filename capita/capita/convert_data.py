@@ -1,12 +1,10 @@
-EU_COUNTRY_CODES = [
-    'AUT', 'BEL', 'BGR', 'HRV',
-    'CYP', 'CZE', 'DNK', 'EST',
-    'FIN', 'FRA', 'DEU', 'GRC',
-    'HUN', 'IRL', 'ITA', 'LVA',
+EU_ID_CARD_COUNTRY_CODES = [
+    'AUT', 'HRV', 'CYP', 'CZE',
+    'EST', 'FIN', 'FRA', 'DEU',
+    'GRC', 'HUN', 'IRL', 'LVA',
     'LTU', 'LUX', 'MLT', 'NLD',
     'POL', 'PRT', 'ROU', 'SVK',
-    'SVN', 'ESP', 'SWE', 'GBR',
-    None
+    'SVN', 'ESP', None
 ]
 
 
@@ -89,7 +87,7 @@ def passfort_to_capita_data(passfort_data):
         id_card = next(
             (doc for doc
              in passfort_data['input_data'].get('documents_metadata', [])
-             if doc['document_type'] == 'STATE_ID' and doc.get('country_code') in EU_COUNTRY_CODES)
+             if doc['document_type'] == 'STATE_ID' and doc.get('country_code') in EU_ID_CARD_COUNTRY_CODES)
             , None
         )
         if id_card and id_card.get('number'):
