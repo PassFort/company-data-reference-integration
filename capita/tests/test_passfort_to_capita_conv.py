@@ -216,7 +216,7 @@ def test_one_complete_address(client):
     assert capita_request_data == output_data
 
 
-def test_driving_licence_without_country_code(client):
+def test_driving_licence_without_country_code_should_be_ignored(client):
     input_data = {
         'input_data': {
             'documents_metadata': [{
@@ -226,10 +226,7 @@ def test_driving_licence_without_country_code(client):
         }
     }
     capita_request_data = passfort_to_capita_data(input_data)
-    output_data = {
-        'DriverLicenceNo': '123456',
-    }
-    assert capita_request_data == output_data
+    assert capita_request_data == {}
 
 
 def test_driving_licence_with_gbr_country_code(client):
@@ -263,7 +260,7 @@ def test_driving_licence_with_country_code(client):
     assert capita_request_data == {}
 
 
-def test_id_card_without_country_code(client):
+def test_id_card_without_country_code_should_be_ignored(client):
     input_data = {
         'input_data': {
             'documents_metadata': [{
@@ -273,10 +270,7 @@ def test_id_card_without_country_code(client):
         }
     }
     capita_request_data = passfort_to_capita_data(input_data)
-    output_data = {
-        'EuropeanIDCardNo': '456789',
-    }
-    assert capita_request_data == output_data
+    assert capita_request_data == {}
 
 
 def test_id_card_eu_country_code(client):

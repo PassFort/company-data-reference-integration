@@ -4,7 +4,7 @@ EU_ID_CARD_COUNTRY_CODES = [
     'GRC', 'HUN', 'IRL', 'LVA',
     'LTU', 'LUX', 'MLT', 'NLD',
     'POL', 'PRT', 'ROU', 'SVK',
-    'SVN', 'ESP', None
+    'SVN', 'ESP'
 ]
 
 
@@ -78,7 +78,7 @@ def passfort_to_capita_data(passfort_data):
         licence = next(
             (doc for doc
              in passfort_data['input_data'].get('documents_metadata', [])
-             if doc['document_type'] == 'DRIVING_LICENCE' and doc.get('country_code') in ('GBR', None))
+             if doc['document_type'] == 'DRIVING_LICENCE' and doc.get('country_code') == 'GBR')
             , None
         )
         if licence and licence.get('number'):
