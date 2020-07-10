@@ -214,3 +214,91 @@ def test_one_complete_address(client):
         ]
     }
     assert capita_request_data == output_data
+
+
+def test_driving_licence_without_country_code_should_be_ignored(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'DRIVING_LICENCE',
+                'number': '123456',
+            }]
+        }
+    }
+    capita_request_data = passfort_to_capita_data(input_data)
+    assert capita_request_data == {}
+
+
+def test_driving_licence_with_gbr_country_code(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'DRIVING_LICENCE',
+                'number': '123456',
+                'country_code': 'GBR',
+            }]
+        }
+    }
+    capita_request_data = passfort_to_capita_data(input_data)
+    output_data = {
+        'DriverLicenceNo': '123456',
+    }
+    assert capita_request_data == output_data
+
+
+def test_driving_licence_with_country_code(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'DRIVING_LICENCE',
+                'number': '123456',
+                'country_code': 'ITA',
+            }]
+        }
+    }
+    capita_request_data = passfort_to_capita_data(input_data)
+    assert capita_request_data == {}
+
+
+def test_id_card_without_country_code_should_be_ignored(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'STATE_ID',
+                'number': '456789',
+            }]
+        }
+    }
+    capita_request_data = passfort_to_capita_data(input_data)
+    assert capita_request_data == {}
+
+
+def test_id_card_eu_country_code(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'STATE_ID',
+                'number': '456789',
+                'country_code': 'DEU',
+            }]
+        }
+    }
+    capita_request_data = passfort_to_capita_data(input_data)
+    output_data = {
+        'EuropeanIDCardNo': '456789',
+    }
+    assert capita_request_data == output_data
+
+
+def test_id_card_non_eu_country_code(client):
+    input_data = {
+        'input_data': {
+            'documents_metadata': [{
+                'document_type': 'STATE_ID',
+                'number': '456789',
+                'country_code': 'BRA',
+            }]
+        }
+    }
+    capita_request_data = passfort_to_capita_data(input_data)
+    assert capita_request_data == {}

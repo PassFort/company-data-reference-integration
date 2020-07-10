@@ -1,3 +1,13 @@
+EU_ID_CARD_COUNTRY_CODES = [
+    'AUT', 'HRV', 'CYP', 'CZE',
+    'EST', 'FIN', 'FRA', 'DEU',
+    'GRC', 'HUN', 'IRL', 'LVA',
+    'LTU', 'LUX', 'MLT', 'NLD',
+    'POL', 'PRT', 'ROU', 'SVK',
+    'SVN', 'ESP'
+]
+
+
 def passfort_to_capita_data(passfort_data):
     
     capita_pkg  = {}
@@ -64,6 +74,24 @@ def passfort_to_capita_data(passfort_data):
                         capita_pkg['Address'] = []
 
                     capita_pkg['Address'].append(address)
+
+        licence = next(
+            (doc for doc
+             in passfort_data['input_data'].get('documents_metadata', [])
+             if doc['document_type'] == 'DRIVING_LICENCE' and doc.get('country_code') == 'GBR')
+            , None
+        )
+        if licence and licence.get('number'):
+            capita_pkg['DriverLicenceNo'] = licence['number']
+
+        id_card = next(
+            (doc for doc
+             in passfort_data['input_data'].get('documents_metadata', [])
+             if doc['document_type'] == 'STATE_ID' and doc.get('country_code') in EU_ID_CARD_COUNTRY_CODES)
+            , None
+        )
+        if id_card and id_card.get('number'):
+            capita_pkg['EuropeanIDCardNo'] = id_card['number']
 
     return capita_pkg
 
