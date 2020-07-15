@@ -26,7 +26,7 @@ def is_full_address(components):
 
 
 def get_national_id_type(country_code, number):
-    if country_code == 'GBP':
+    if country_code == 'GBR':
         return 'Health' if len(number) == 10 else 'SocialService'
     if country_code == 'IND':
         return 'SocialService' if len(number) == 10 else 'NationalID'
