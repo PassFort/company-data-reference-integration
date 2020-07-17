@@ -1,3 +1,48 @@
+def _create_mortality_demo_response(names, matched_fields, databases):
+    demo_response = {
+        "entity_type": "INDIVIDUAL",
+        "decision": 'FAIL',
+        "electronic_id_check": {
+            "matches": [
+                {
+                    "database_name": 'Death register',
+                    "database_type": 'MORTALITY',
+                    "matched_fields": matched_fields,
+                    "count": 1
+                }
+            ]
+        }
+    }
+
+    names_contain = lambda name: any(map(lambda x: name in x, names))
+    if names_contain('mortality1+1'):
+         demo_response['electronic_id_check']['matches'].append(
+            {
+                "database_name": databases[0]['name'],
+                "database_type": databases[0]['type'],
+                "matched_fields": matched_fields,
+                "count": 1
+            }
+        )
+    elif names_contain('mortality2+2'):
+        for database in databases:
+            demo_response['electronic_id_check']['matches'].append(
+                {
+                    "database_name": database['name'],
+                    "database_type": database['type'],
+                    "matched_fields": matched_fields,
+                    "count": 1
+                }
+            )
+
+    response = {
+        "output_data": demo_response,
+        "raw": "Demo response, Generated Automatically",
+        "errors": []
+    }
+    return response
+
+
 def create_demo_response(passfort_data):
     databases = [
         {'name': 'Credit Agency', 'type': 'CREDIT'},
@@ -26,6 +71,9 @@ def create_demo_response(passfort_data):
 
     #Convert all names in lower case to compare
     names = list(map(lambda x: x.lower(), names))
+
+    if any(map(lambda x: 'mortality' in x, names)):
+        return _create_mortality_demo_response(names, matched_fields, databases)
 
     if 'fail' in names:
         #all response will fail
@@ -61,4 +109,3 @@ def create_demo_response(passfort_data):
     }
 
     return response
-        
