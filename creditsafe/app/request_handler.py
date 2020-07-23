@@ -169,7 +169,7 @@ class CreditSafeHandler:
         if response.status_code != 200:
             raise CreditSafeMonitoringError(response)
 
-        portfolio = CreditSafePortfolio(response.json())
+        portfolio = CreditSafePortfolio.from_json(response.json())
         self._configure_events(token, portfolio.id)
         return portfolio
 

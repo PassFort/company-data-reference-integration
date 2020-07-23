@@ -2,13 +2,14 @@ import unittest
 
 from datetime import datetime, timedelta
 from random import randint
+from uuid import UUID
 
 from ..file_utils import get_response_from_file
 from .internal_types import CreditSafeCompanySearchResponse, CreditSafeCompanyReport, CompanyDirectorsReport, \
     build_resolver_id, PersonOfSignificantControl, CreditsafeSingleShareholder
 from .types import SearchInput, Financials, Statement, MonitoringEvent
 from .internal_types import AssociateIdDeduplicator, process_associate_data, ProcessQueuePayload, with_yoy, \
-    CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent
+    CreditSafeNotificationEventsResponse, CreditSafeNotificationEvent, CreditSafePortfolio
 from .event_mappings import MonitoringConfigType
 
 DEMO_PL = {
@@ -1889,3 +1890,45 @@ class TestCreditSafeNotificationEventsResponse(unittest.TestCase):
 
         self.assertIsNone(response)
 
+class TestCreditSafePortfolioResponse(unittest.TestCase):
+
+    def test_expected_from_json(self):
+        res = CreditSafePortfolio.from_json({
+            'portfolioId': 12345678,
+            'name': '2660be31-ceb1-47c5-b622-184a32c9a3ca',
+            'isDefault': True,
+            'correlationId': '527cba6b-da52-47bf-bf15-c4b09169baf5'
+        })
+
+        self.assertIsInstance(res, CreditSafePortfolio)
+        self.assertEqual(res.id, 12345678)
+        self.assertEqual(res.name, '2660be31-ceb1-47c5-b622-184a32c9a3ca')
+        self.assertEqual(res.is_default, True)
+        self.assertEqual(res.correlation_id, UUID('527cba6b-da52-47bf-bf15-c4b09169baf5'))
+
+    def test_from_json_no_correlation_id(self):
+        res = CreditSafePortfolio.from_json({
+            'portfolioId': 12345678,
+            'name': '2660be31-ceb1-47c5-b622-184a32c9a3ca',
+            'isDefault': True,
+        })
+
+        self.assertIsInstance(res, CreditSafePortfolio)
+        self.assertEqual(res.id, 12345678)
+        self.assertEqual(res.name, '2660be31-ceb1-47c5-b622-184a32c9a3ca')
+        self.assertEqual(res.is_default, True)
+
+    def test_from_json_rogue_field(self):
+        res = CreditSafePortfolio.from_json({
+            'portfolioId': 12345678,
+            'name': '2660be31-ceb1-47c5-b622-184a32c9a3ca',
+            'correlationId': '527cba6b-da52-47bf-bf15-c4b09169baf5',
+            'isDefault': True,
+            'rogueField': 'Rogue'
+        })
+
+        self.assertIsInstance(res, CreditSafePortfolio)
+        self.assertEqual(res.id, 12345678)
+        self.assertEqual(res.name, '2660be31-ceb1-47c5-b622-184a32c9a3ca')
+        self.assertEqual(res.is_default, True)
+        self.assertEqual(res.correlation_id, UUID('527cba6b-da52-47bf-bf15-c4b09169baf5'))
