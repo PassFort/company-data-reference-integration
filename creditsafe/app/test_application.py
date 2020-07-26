@@ -728,6 +728,9 @@ class TestGetMonitoringEvents(unittest.TestCase):
         self.app.testing = True
 
         self.date_regex = r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*'
+        crt_time = datetime.now()
+        self.test_start_date = crt_time - timedelta(days=2)
+        self.test_end_date = crt_time - timedelta(days=1)
 
         responses.add(
             responses.POST,
@@ -740,7 +743,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
             monitoring_configs = [{
                 'institution_config_id': uuid.uuid4(),
                 'portfolio_id': 111111111,
-                'last_run_date': datetime.now().isoformat()
+                'last_run_date': self.test_start_date.isoformat()
             }]
 
         return {
@@ -770,7 +773,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": randint(1, 9999999999),
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": rule_code_choices[idx % 3],
                         "ruleName": "Address"
@@ -829,7 +832,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
         configs = [{
             'institution_config_id': institution_config_id,
             'portfolio_id': 123454321,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': self.test_start_date.isoformat()
         }]
 
         monitoring_events_response = self.app.post(
@@ -863,7 +866,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
         configs = [{
             'institution_config_id': institution_config_id,
             'portfolio_id': 589960,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': self.test_start_date.isoformat()
         }]
 
         monitoring_events_response = self.app.post(
@@ -905,7 +908,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
         configs = [{
             'institution_config_id': institution_config_id,
             'portfolio_id': 589960,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': self.test_start_date.isoformat()
         }]
 
         monitoring_events_response = self.app.post(
@@ -947,15 +950,15 @@ class TestGetMonitoringEvents(unittest.TestCase):
         configs = [{
             'institution_config_id': uuid.uuid4(),
             'portfolio_id': 11111111,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': self.test_start_date.isoformat()
         }, {
             'institution_config_id': uuid.uuid4(),
             'portfolio_id': 22222222,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': (self.test_start_date + timedelta(seconds=1)).isoformat()
         }, {
             'institution_config_id': uuid.uuid4(),
             'portfolio_id': 33333333,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': (self.test_start_date + timedelta(seconds=2)).isoformat()
         }]
 
         monitoring_events_response = self.app.post(
@@ -975,7 +978,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
         MonitoringEventsSearch instances."""
 
         self.mock_creditsafe_monitoring_pagination_events_response(10)
-        last_run_date = datetime.now().isoformat()
+        last_run_date = self.test_start_date.isoformat()
         configs = [{
             'portfolio_id': 111111111,
             'institution_config_id': uuid.uuid4(),
@@ -1011,7 +1014,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 12345678,
-                        "eventDate": datetime.now().isoformat(),
+                        "eventDate": self.test_end_date.isoformat(),
                         "notificationEventId": 12345678,
                         "ruleCode": 9001,  # Rule code doesn't exist in the mapping
                         "ruleName": "Unknown rule"
@@ -1031,7 +1034,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
         configs = [{
             'institution_config_id': institution_config_id,
             'portfolio_id': 12321,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': self.test_start_date.isoformat()
         }]
 
         monitoring_events_response = self.app.post(
@@ -1073,7 +1076,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 101010101,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 101,
                         "ruleName": "Address"
@@ -1088,7 +1091,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 202020202,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 105,
                         "ruleName": "Address"
@@ -1103,7 +1106,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 3030303,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 107,
                         "ruleName": "Address"
@@ -1122,7 +1125,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
 
         institution_config_id = uuid.uuid4()
         institution_config_id_2 = uuid.uuid4()
-        last_run_date = datetime.now().isoformat()
+        last_run_date = self.test_start_date.isoformat()
         configs = [{
             'institution_config_id': str(institution_config_id),
             'portfolio_id': 11111111,
@@ -1190,7 +1193,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 101010101,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 101,
                         "ruleName": "Address"
@@ -1205,7 +1208,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 202020202,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 105,
                         "ruleName": "Address"
@@ -1220,7 +1223,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 3030303,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 107,
                         "ruleName": "Address"
@@ -1242,11 +1245,11 @@ class TestGetMonitoringEvents(unittest.TestCase):
         configs = [{
             'institution_config_id': str(institution_config_id),
             'portfolio_id': 11111111,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': self.test_start_date.isoformat()
         }, {
             'institution_config_id': str(institution_config_id_2),
             'portfolio_id': 22222222,
-            'last_run_date': datetime.now().isoformat()
+            'last_run_date': (self.test_start_date + timedelta(seconds=10)).isoformat()
         }]
 
         responses.add(
@@ -1302,7 +1305,7 @@ class TestGetMonitoringEvents(unittest.TestCase):
                             "portfolioName": "Default"
                         },
                         "eventId": 101010101,
-                        "eventDate": (datetime.now() - timedelta(seconds=1)).isoformat(),
+                        "eventDate": (self.test_end_date - timedelta(seconds=1)).isoformat(),
                         "notificationEventId": randint(1, 9999999999),
                         "ruleCode": 101,
                         "ruleName": "Address"
@@ -1388,3 +1391,36 @@ class TestGetMonitoringEvents(unittest.TestCase):
             "Provider Error: 'Unhandled error' while running 'Creditsafe' service.",
             monitoring_events_response.json['errors'][0]['message']
         )
+
+    @mock.patch('app.request_handler.CreditSafeHandler._send_monitoring_callback')
+    @responses.activate
+    def test_last_run_date_too_recent(self, callback_mock):
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/monitoring/notificationEvents',
+            json={},
+            status=200
+        )
+
+        configs = [
+            {
+                'institution_config_id': uuid.uuid4(),
+                'portfolio_id': 1010101010,
+                'last_run_date': (datetime.now() - timedelta(hours=23)).isoformat()
+            },
+            {
+                'institution_config_id': uuid.uuid4(),
+                'portfolio_id': 123454321,
+                'last_run_date': self.test_start_date.isoformat()
+            }]
+
+        monitoring_events_response = self.app.post(
+            '/monitoring_events',
+            json=self.get_mock_request(configs)
+        )
+
+        # Does not check for events if any last run date is too recent
+        self.assertEqual(len(responses.calls), 0)
+        self.assertEqual(callback_mock.call_count, 0)
+
+        self.assertEqual(monitoring_events_response.status_code, 200)

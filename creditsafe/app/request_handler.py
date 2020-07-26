@@ -1,11 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import chain, groupby
-from typing import List
 
-import os
-import json
 import requests
-import pycountry
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -209,12 +205,18 @@ class CreditSafeHandler:
             raise CreditSafeMonitoringError(company_response)
 
     def handle_events(self, request_data: CreditSafeMonitoringEventsRequest):
+        last_run_dates = {config.last_run_date for config in request_data.monitoring_configs}
+
+        # Creditsafe updates events in batches, daily.
+        # Look for events only until the previous day in case they haven't been populated yet
+        end_date = datetime.now() - timedelta(days=1)
+        if any(start_date >= end_date for start_date in last_run_dates):
+            return
+
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
         url = f'{self.base_url}/monitoring/notificationEvents'
 
-        last_run_dates = {config.last_run_date for config in request_data.monitoring_configs}
-        end_date = datetime.now()
         event_groups = []
 
         # For each unique last_run_date in the config list, call the creditsafe endpoint to get
