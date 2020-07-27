@@ -1379,6 +1379,13 @@ class CreditSafePortfolio(Model):
     id = IntType(required=True, serialized_name="portfolioId")
     name = StringType(required=True)
     is_default = BooleanType(serialized_name="isDefault")
+    correlation_id = UUIDType(serialized_name="correlationId")
+
+    @classmethod
+    def from_json(cls, data: dict) -> 'CreditSafePortfolio':
+        model = cls().import_data(data, apply_defaults=True)
+        model.validate()
+        return model
 
 
 class CreditSafeNotificationPaging(Model):
