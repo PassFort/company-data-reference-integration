@@ -17,9 +17,7 @@ def test_empty_package(client):
 def test_record_with_empty_datasource_results(client):
     capita_data = {'status': 200, 'body':
         {
-            "About": {
-                "TransactionReference": "EmptyResults",
-            },
+            "Key": "EmptyResults",
             "Response": {
                 "Result": [
                     {
@@ -54,11 +52,14 @@ def test_record_with_empty_datasource_results(client):
                                             {
                                                 'database_name': 'Electoral Role',
                                                 'database_type': 'CIVIL',
-                                                'matched_fields': []},
+                                                'matched_fields': [],
+                                                'count': 0
+                                            },
                                             {
                                                 'database_name': 'Credit Bureau',
                                                 'database_type': 'CREDIT',
-                                                'matched_fields': []
+                                                'matched_fields': [],
+                                                'count': 0
                                             }
                                         ]
                                     },
@@ -79,9 +80,7 @@ def test_record_with_empty_datasource_results(client):
 def test_record_with_one_datasource_with_dob_forename_surname_match(client):
     capita_data = {'status': 200, 'body':
         {
-            "About": {
-                "TransactionReference": "SurnameMatch",
-            },
+            "Key": "SurnameMatch",
             "Response": {
                 "Result": [
                     {
@@ -115,7 +114,8 @@ def test_record_with_one_datasource_with_dob_forename_surname_match(client):
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB"
-                                                ]
+                                                ],
+                                                'count': 1
                                             }
                                         ]
                                     },
@@ -129,9 +129,7 @@ def test_record_with_one_datasource_with_dob_forename_surname_match(client):
 def test_record_with_one_datasource_with_address_forename_surname_match(client):
     capita_data = {'status': 200, 'body':
         {
-            "About": {
-                "TransactionReference": "ForenameMatch",
-            },
+            "Key": "ForenameMatch",
             "Response": {
                 "Result": [
                     {
@@ -165,7 +163,8 @@ def test_record_with_one_datasource_with_address_forename_surname_match(client):
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "ADDRESS"
-                                                ]
+                                                ],
+                                                'count': 1
                                             }
                                         ]
                                     },
@@ -178,9 +177,7 @@ def test_record_with_one_datasource_with_address_forename_surname_match(client):
 def test_record_with_one_datasource_with_full_match(client):
     capita_data = {'status': 200, 'body':
         {
-            "About": {
-                "TransactionReference": "FullMatch",
-            },
+            "Key": "FullMatch",
             "Response": {
                 "Result": [
                     {
@@ -220,7 +217,8 @@ def test_record_with_one_datasource_with_full_match(client):
                                                     "SURNAME",
                                                     "ADDRESS",
                                                     "DOB"
-                                                ]
+                                                ],
+                                                'count': 1
                                             }
                                         ]
                                     },
@@ -233,9 +231,7 @@ def test_record_with_one_datasource_with_full_match(client):
 def test_record_with_one_datasource_with_full_match_diff_database(client):
     capita_data = {'status': 200, 'body':
         {
-            "About": {
-                "TransactionReference": "FullMatchDiff",
-            },
+            "Key": "FullMatchDiff",
             "Response": {
                 "Result": [
                     {
@@ -274,7 +270,8 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "ADDRESS"
-                                                ]
+                                                ],
+                                                'count': 1
                                             },
                                             {
                                                 'database_name': 'Credit Bureau',
@@ -283,7 +280,8 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB"
-                                                ]
+                                                ],
+                                                'count': 1
                                             }
                                         ]
                                     },
@@ -328,7 +326,8 @@ def test_record_with_one_datasource_with_mortality_match(client):
                                                     "FORENAME",
                                                     "SURNAME",
                                                     "DOB"
-                                                ]
+                                                ],
+                                                'count': 1
                                             },
                                         ]
                                     },
