@@ -121,11 +121,12 @@ def capita_to_passfort_data(capita_response_data):
         "errors": []
     }
 
-    # if capita_response_data['status'] in [401, 403]:
-    #     response_body['errors'].append({
-    #             'code': 302, 
-    #             'message': 'Provider Error: IP address that is not on the white list or invalid credentials'})
-    #     response_body['output_data']['decision'] = 'ERROR'
+    if capita_response_data['status'] in [401, 403]:
+        response_body['errors'].append({
+            'code': 302,
+            'message': 'Provider Error: invalid credentials'})
+        response_body['output_data']['decision'] = 'ERROR'
+        return response_body
 
     # elif capita_response_data['status'] in [408, 504]:
     #     response_body['errors'].append({
@@ -167,12 +168,11 @@ def capita_to_passfort_data(capita_response_data):
                         "10100301": "Transaction has been blocked.",
                         "10100302": "Required credentials are missing for the request.",
                         "10100303": "Profile not valid for Licence used.",
-                        "10100401": "Please validate Applicant Detail, mandatory field missing.",
+                        "10100401": "Please validate Applicant Detail, mandatory field missing "
+                                    "(house number, postal code or date of birth).",
                         "10100400": "Error Validating Client Request.",
                         "10110200": "Please validate Client Key.",
                         "10110100": "Please validate Profile Shortcode.",
-                        "10140101": "Please validate Applicant Detail, mandatory field missing "
-                                    "(house number or postal code)."
                     }
 
                     if error_code in [
@@ -244,17 +244,6 @@ def capita_to_passfort_data(capita_response_data):
 
                                     if len(match['matched_fields']) > 0:
                                         match['count'] = 1
-
-                                if result['Error']:
-                                    #Check to not add twice the same error
-                                    error_message = f"Provider Error: UNKNOWN ERROR: {result['Error']}"
-                                    try:
-                                        next(filter(lambda error: error['message'] == error_message, 
-                                            response_body['errors']))
-                                    except StopIteration: 
-                                        response_body['errors'].append({
-                                            'code': 303, 
-                                            'message': error_message}) 
 
                     except StopIteration:
                         response_body['errors'].append({

@@ -66,15 +66,8 @@ def test_record_with_empty_datasource_results(client):
                                     'entity_type': 'INDIVIDUAL'
                                 },
                                 "raw": capita_data['body'],
-                                "errors": [
-                                    {
-                                        'code': 303,
-                                        'message': 'Provider Error: UNKNOWN ERROR: Matching Address Not Found'
-                                    }
-                                ]
+                                "errors": []
                             }    
-
-
 
 
 def test_record_with_one_datasource_with_dob_forename_surname_match(client):
@@ -393,7 +386,9 @@ def test_record_error_required_fields(client):
                                     "electronic_id_check": {"matches": []}
                                 },
                                 "raw": capita_data['body'],
-                                "errors": [{'code': 101, 'message': f'Provider Error: Please validate Applicant Detail, mandatory field missing.'}]
+                                "errors": [{'code': 101, 'message': f'Provider Error: Please validate Applicant Detail, '
+                                                                    f'mandatory field missing (house number, postal '
+                                                                    f'code or date of birth).'}]
     }
 
 def test_record_generic_error_provider(client):
