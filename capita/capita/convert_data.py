@@ -18,7 +18,7 @@ def passfort_to_capita_data(passfort_data):
         if passfort_data['input_data'].get('personal_details'):
             #Check name
             if passfort_data['input_data']['personal_details'].get('name'):
-                given_names =  passfort_data['input_data']['personal_details']['name'].get('given_names')
+                given_names = passfort_data['input_data']['personal_details']['name'].get('given_names')
                 
                 if given_names:
                     person['Forename'] = given_names[0]
@@ -54,14 +54,19 @@ def passfort_to_capita_data(passfort_data):
                 if address_to_check.get('premise'):
                     address['HouseName'] = address_to_check['premise']
 
+                if address_to_check.get('route'):
+                    address['AddressLine1'] = address_to_check['route']
+
                 if address_to_check.get('subpremise'):
                     address['HouseNumber'] = address_to_check['subpremise']
+                elif address_to_check.get('street_number'):
+                    address['HouseNumber'] = address_to_check['street_number']
 
                 if address_to_check.get('postal_town'):
                     address['PostTown'] = address_to_check['postal_town']
 
                 if address_to_check.get('locality'):
-                    address['District'] = address_to_check['locality']
+                    address['AddressLine2'] = address_to_check['locality']
 
                 if address_to_check.get('county'):
                     address['County'] = address_to_check['county']        
@@ -81,8 +86,8 @@ def passfort_to_capita_data(passfort_data):
              if doc['document_type'] == 'DRIVING_LICENCE' and doc.get('country_code') == 'GBR')
             , None
         )
-        if licence and licence.get('number'):
-            capita_pkg['DriverLicenceNo'] = licence['number']
+        if licence and licence.get('number') and capita_pkg.get('Person') is not None:
+            capita_pkg['Person']['DrivingLicenceNo'] = licence['number']
 
         id_card = next(
             (doc for doc
@@ -116,11 +121,12 @@ def capita_to_passfort_data(capita_response_data):
         "errors": []
     }
 
-    # if capita_response_data['status'] in [401, 403]:
-    #     response_body['errors'].append({
-    #             'code': 302, 
-    #             'message': 'Provider Error: IP address that is not on the white list or invalid credentials'})
-    #     response_body['output_data']['decision'] = 'ERROR'
+    if capita_response_data['status'] in [401, 403]:
+        response_body['errors'].append({
+            'code': 302,
+            'message': 'Provider Error: invalid credentials'})
+        response_body['output_data']['decision'] = 'ERROR'
+        return response_body
 
     # elif capita_response_data['status'] in [408, 504]:
     #     response_body['errors'].append({
@@ -138,14 +144,14 @@ def capita_to_passfort_data(capita_response_data):
     if capita_response_data['status'] == 200:
         capita_data = capita_response_data['body']
         if capita_data:
-            about = capita_data.get('About')
-            if about:
-                response_body['output_data']['electronic_id_check']['provider_reference_number'] = about.get('TransactionReference')
+            transaction_key = capita_data.get('Key')
+            if transaction_key:
+                response_body['output_data']['electronic_id_check']['provider_reference_number'] = transaction_key
             if 'Response' in capita_data and\
                 'Result' in capita_data['Response']:
-                
+
                 results = capita_data['Response']['Result']
-                
+
                 if capita_data['Response'].get('Error'):
                     response_body['output_data']['decision'] = 'ERROR'
                     
@@ -162,11 +168,11 @@ def capita_to_passfort_data(capita_response_data):
                         "10100301": "Transaction has been blocked.",
                         "10100302": "Required credentials are missing for the request.",
                         "10100303": "Profile not valid for Licence used.",
-                        "10100401": "Please validate Applicant Detail, mandatory field missing.",
+                        "10100401": "Please validate Applicant Detail, mandatory field missing "
+                                    "(house number, postal code or date of birth).",
                         "10100400": "Error Validating Client Request.",
                         "10110200": "Please validate Client Key.",
                         "10110100": "Please validate Profile Shortcode.",
-                        "10140101": "Please validate Applicant Detail, mandatory field missing."
                     }
 
                     if error_code in [
@@ -209,7 +215,8 @@ def capita_to_passfort_data(capita_response_data):
                                     match = {
                                         'database_name': result['CheckName'].split('(')[0].strip(),
                                         'database_type': get_database_type(result['CheckName'].lower()),
-                                        'matched_fields': []
+                                        'matched_fields': [],
+                                        'count': 0,
                                     }
                                     response_body['output_data']['electronic_id_check']['matches'].append(match)
 
@@ -235,16 +242,8 @@ def capita_to_passfort_data(capita_response_data):
                                     elif 'Proof of Address' in result['CheckName']:
                                         match['matched_fields'].append('ADDRESS')
 
-                                if result['Error']:
-                                    #Check to not add twice the same error
-                                    error_message = f"Provider Error: UNKNOWN ERROR: {result['Error']}"
-                                    try:
-                                        next(filter(lambda error: error['message'] == error_message, 
-                                            response_body['errors']))
-                                    except StopIteration: 
-                                        response_body['errors'].append({
-                                            'code': 303, 
-                                            'message': error_message}) 
+                                    if len(match['matched_fields']) > 0:
+                                        match['count'] = 1
 
                     except StopIteration:
                         response_body['errors'].append({

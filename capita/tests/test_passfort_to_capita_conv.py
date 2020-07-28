@@ -232,6 +232,11 @@ def test_driving_licence_without_country_code_should_be_ignored(client):
 def test_driving_licence_with_gbr_country_code(client):
     input_data = {
         'input_data': {
+            'personal_details': {
+                'name': {
+                    'family_name': 'Jones'
+                }
+            },
             'documents_metadata': [{
                 'document_type': 'DRIVING_LICENCE',
                 'number': '123456',
@@ -241,7 +246,10 @@ def test_driving_licence_with_gbr_country_code(client):
     }
     capita_request_data = passfort_to_capita_data(input_data)
     output_data = {
-        'DriverLicenceNo': '123456',
+        'Person': {
+            'Surname': 'Jones',
+            'DrivingLicenceNo': '123456'
+        }
     }
     assert capita_request_data == output_data
 
@@ -249,6 +257,11 @@ def test_driving_licence_with_gbr_country_code(client):
 def test_driving_licence_with_country_code(client):
     input_data = {
         'input_data': {
+            'personal_details': {
+                'name': {
+                    'family_name': 'Jones'
+                }
+            },
             'documents_metadata': [{
                 'document_type': 'DRIVING_LICENCE',
                 'number': '123456',
@@ -257,7 +270,11 @@ def test_driving_licence_with_country_code(client):
         }
     }
     capita_request_data = passfort_to_capita_data(input_data)
-    assert capita_request_data == {}
+    assert capita_request_data == {
+        'Person': {
+            'Surname': 'Jones'
+        }
+    }
 
 
 def test_id_card_without_country_code_should_be_ignored(client):
