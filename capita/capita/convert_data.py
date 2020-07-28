@@ -86,7 +86,7 @@ def passfort_to_capita_data(passfort_data):
              if doc['document_type'] == 'DRIVING_LICENCE' and doc.get('country_code') == 'GBR')
             , None
         )
-        if licence and licence.get('number') and capita_pkg['Person']:
+        if licence and licence.get('number') and capita_pkg.get('Person') is not None:
             capita_pkg['Person']['DrivingLicenceNo'] = licence['number']
 
         id_card = next(
