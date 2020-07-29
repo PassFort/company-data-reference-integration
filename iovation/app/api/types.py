@@ -9,7 +9,7 @@ from functools import wraps
 from schematics import Model
 from schematics.exceptions import DataError, ValidationError
 from schematics.types.serializable import serializable
-from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType
+from schematics.types import BooleanType, StringType, ModelType, ListType, UUIDType, IntType, DecimalType, DateType, FloatType
 
 # TODO JSONDECODE
 def validate_model(validation_model):
@@ -210,11 +210,14 @@ class IovationIpLocation(Model):
     city = StringType(default=None)
     country_code = StringType(serialized_name="countryCode", default=None)
     region = StringType(default=None)
+    latitude = FloatType(min_value=-90, max_value=90)
+    longitude = FloatType(min_value=-180, max_value=180)
 
 
 class IpDetails(Model):
     address = StringType(default=None)
     ip_location = ModelType(IovationIpLocation, serialized_name="ipLocation", default=None)
+    proxy = StringType(default=None)
 
 
 class DeviceEntity(Model):
@@ -263,12 +266,23 @@ class IovationOutput(Model):
         return response, model
 
 
+class Coordinates(Model):
+    latitude = FloatType(min_value=-90, max_value=90)
+    longitude = FloatType(min_value=-180, max_value=180)
+
 class IPLocation(Model):
     ip_address = StringType()
     country = StringType()
     region = StringType()
     city = StringType()
+    coordinates = ModelType(Coordinates)
+    proxy = StringType()
 
+IOVATION_PROXY_TO_PASSFORT = {
+    # According to Iovation via e-mail ANONYMOUS Proxy
+    # Is the only possible value.
+    'ANONYMOUS PROXY': 'ANONYMOUS',
+}
 
 class DeviceFraudRule(Model):
     name = StringType()
@@ -337,6 +351,13 @@ class IovationCheckResponse(Model):
                         logging.warning(f'Iovation sent unrecognised Real IP Country Code: {real_ip_location.country_code}')
                 ip_location.region = output.details.real_ip.ip_location.region
                 ip_location.city = output.details.real_ip.ip_location.city
+                if real_ip_location.longitude and real_ip_location.latitude:
+                    coords = Coordinates()
+                    coords.longitude = real_ip_location.longitude
+                    coords.latitude = real_ip_location.latitude
+                    ip_location.coordinates = coords
+            if output.details.real_ip.proxy:
+                ip_location.proxy = IOVATION_PROXY_TO_PASSFORT.get(output.details.real_ip.proxy, output.details.real_ip.proxy)
             return cls({
                 'device_metadata': device_metadata,
                 'device_fraud_detection': device_fraud_detection,
