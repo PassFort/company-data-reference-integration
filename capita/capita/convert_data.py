@@ -8,6 +8,9 @@ EU_ID_CARD_COUNTRY_CODES = [
 ]
 
 
+MORTALITY_DATABASE = 'Death Register'
+
+
 def passfort_to_capita_data(passfort_data):
     
     capita_pkg  = {}
@@ -113,7 +116,6 @@ def capita_to_passfort_data(capita_response_data):
     #base response
     response_body = {
         "output_data": {
-            "decision": 'FAIL',
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {"matches": []}
         },
@@ -203,7 +205,6 @@ def capita_to_passfort_data(capita_response_data):
                 else:
                     try:
                         stage_1 = next(filter(lambda x: x['Name'] == 'Stage1', results))
-                        has_mortality_match = False
                         if 'CheckResults' in stage_1:
                             for result in stage_1['CheckResults']:
 
@@ -227,15 +228,6 @@ def capita_to_passfort_data(capita_response_data):
                                     if 'SURNAME' not in match['matched_fields']:
                                         match['matched_fields'].append('SURNAME')
 
-                                    #Update decision
-                                    if match['database_type'] == 'MORTALITY':
-                                        has_mortality_match = True
-                                        match['matched_fields'].append('DOB')
-
-                                    if not has_mortality_match and \
-                                            response_body['output_data']['decision'] == 'FAIL':
-                                        response_body['output_data']['decision'] = 'PASS'
-
                                     #Database check
                                     if 'Proof of DOB' in result['CheckName']:
                                         match['matched_fields'].append('DOB')
@@ -249,5 +241,31 @@ def capita_to_passfort_data(capita_response_data):
                         response_body['errors'].append({
                             'code': 303, 
                             'message': f"Provider Error: Stage 1 section not found"})
+
+                    # check mortality
+                    stage_2 = next((x for x in results if x['Name'] == 'Stage2'), None)
+                    if stage_2 and stage_2.get('CheckResults'):
+
+                        mortality_check = next((c for c in stage_2['CheckResults']
+                                                if c.get('CheckName').lower() == MORTALITY_DATABASE.lower()),
+                                               None)
+                        if mortality_check:
+                            check_name = mortality_check['CheckName']
+                            # We can't tell from the response, so just go with the minimum information possible.
+                            # (We also didn't manage to get a proper example off capita to see
+                            # if the fields are returned somehow)
+
+                            possible_field_matches = ['FORENAME', 'SURNAME', 'ADDRESS']
+
+                            result_code = mortality_check.get('Result')
+                            if result_code in [1, 3]:
+                                has_mortality_match = (result_code == 3)
+                                response_body['output_data']['electronic_id_check']['matches'].append({
+                                    'database_name': check_name,
+                                    'database_type': get_database_type(check_name.lower()),
+                                    'matched_fields': possible_field_matches if has_mortality_match else [],
+                                    'count': 1 if has_mortality_match else 0,
+                                })
+
 
     return response_body

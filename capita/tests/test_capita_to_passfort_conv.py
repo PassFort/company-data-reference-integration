@@ -6,7 +6,6 @@ def test_empty_package(client):
 
     assert response_body == {
                                 "output_data": {
-                                    "decision": "FAIL",
                                     "entity_type": "INDIVIDUAL",
                                     "electronic_id_check": {"matches": []}
                                 },
@@ -45,7 +44,6 @@ def test_record_with_empty_datasource_results(client):
 
     assert response_body == {
                                 "output_data": {
-                                    "decision": "FAIL",
                                     'electronic_id_check': {
                                         'provider_reference_number': 'EmptyResults',
                                         'matches': [
@@ -96,7 +94,6 @@ def test_record_with_one_datasource_with_dob_forename_surname_match(client):
 
     assert response_body == {
                                 "output_data": {
-                                    "decision": "PASS",
                                     'electronic_id_check': {
                                         'provider_reference_number': 'SurnameMatch',
                                         'matches': [
@@ -145,7 +142,6 @@ def test_record_with_one_datasource_with_address_forename_surname_match(client):
 
     assert response_body == {
                                 "output_data": {
-                                    "decision": "PASS",
                                     'electronic_id_check': {
                                         'provider_reference_number': 'ForenameMatch',
                                         'matches': [
@@ -198,7 +194,6 @@ def test_record_with_one_datasource_with_full_match(client):
 
     assert response_body == {
                                 "output_data": {
-                                    "decision": "PASS",
                                     'electronic_id_check': {
                                         'provider_reference_number': 'FullMatch',
                                         'matches': [
@@ -241,6 +236,119 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                 "Error": None,
                             }
                         ]
+                    },
+                    {
+                        "Name": "Stage2",
+                        "Conditions": [
+                            {
+                                "If": 1,
+                                "Then": 0,
+                                "NextStageIndex": 3
+                            },
+                            {
+                                "If": 2,
+                                "Then": 1,
+                                "NextStageIndex": 3
+                            }
+                        ],
+                        "StageResult": 1,
+                        "CheckResults": [
+                            {
+                                "Rules": [
+                                    {
+                                        "CheckFilters": [
+                                            {
+                                                "RuleId": 2297,
+                                                "CheckFilterId": 10,
+                                                "FilterShortCode": "HaloLevel10",
+                                                "FilterParameter": {
+                                                    "Key": None,
+                                                    "Value": "1"
+                                                }
+                                            }
+                                        ],
+                                        "FilterShortCode": "HaloLevel10",
+                                        "FilterParameter": "1",
+                                        "Comparator": 0,
+                                        "CheckAmount": 0,
+                                        "RuleResult": 2,
+                                        "PotName": "Fail",
+                                        "AlertMessage": None,
+                                        "LastUpdatedDate": "2016-11-22T16:27:08Z"
+                                    },
+                                    {
+                                        "CheckFilters": [
+                                            {
+                                                "RuleId": 2300,
+                                                "CheckFilterId": 10,
+                                                "FilterShortCode": "HaloLevel10",
+                                                "FilterParameter": {
+                                                    "Key": None,
+                                                    "Value": "1"
+                                                }
+                                            }
+                                        ],
+                                        "FilterShortCode": "HaloLevel10",
+                                        "FilterParameter": "1",
+                                        "Comparator": 2,
+                                        "CheckAmount": 0,
+                                        "RuleResult": 1,
+                                        "PotName": "Not Matched",
+                                        "LastUpdatedDate": "2016-11-22T16:27:08Z"
+                                    }
+                                ],
+                                "StageName": "Stage2",
+                                "CheckName": "Death Register",
+                                "Result": 1,
+                                "Error": None,
+                                "RuleResult": [
+                                    {
+                                        "Result": 3,
+                                        "PotName": "Fail",
+                                        "PotAmount": 0,
+                                        "AlertMessage": ""
+                                    },
+                                    {
+                                        "Result": 1,
+                                        "PotName": "Not Matched",
+                                        "PotAmount": 1,
+                                        "AlertMessage": None
+                                    }
+                                ],
+                                "RawResults": "[]",
+                                "FullOutput": [
+                                    {
+                                        "CheckOutput": {
+                                            "id": "VMC",
+                                            "on_halo_level_10": "0",
+                                            "on_halo_level_9": "0",
+                                            "on_halo_level_8": "0",
+                                            "on_halo_level_7": "0",
+                                            "on_halo_level_6": "0",
+                                            "on_halo_level_5": "0",
+                                            "on_halo_level_4": "0",
+                                            "on_halo_level_3": "0",
+                                            "on_halo_level_2": "0",
+                                            "on_halo_level_1": "0",
+                                            "on_halo_level_other": "0",
+                                            "info_found": "0",
+                                            "highest_level_found": "0",
+                                            "lowest_level_found": "0"
+                                        },
+                                        "FilterOutput": [
+                                            {
+                                                "FilterCode": "HaloLevel10",
+                                                "Key": None,
+                                                "Parameter": "1",
+                                                "Matched": {
+                                                    "on_halo_level_10": False
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ],
                 "Error": ""
@@ -252,7 +360,6 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
 
     assert response_body == {
                                 "output_data": {
-                                    "decision": "PASS",
                                     'electronic_id_check': {
                                         'provider_reference_number': 'FullMatchDiff',
                                         'matches': [
@@ -275,6 +382,12 @@ def test_record_with_one_datasource_with_full_match_diff_database(client):
                                                     "DOB"
                                                 ],
                                                 'count': 1
+                                            },
+                                            {
+                                                'database_name': 'Death Register',
+                                                'database_type': 'MORTALITY',
+                                                'matched_fields': [],
+                                                'count': 0
                                             }
                                         ]
                                     },
@@ -293,10 +406,128 @@ def test_record_with_one_datasource_with_mortality_match(client):
                         "Name": "Stage1",
                         "CheckResults": [
                             {
-                                "CheckName": "Death register",
+                                "CheckName": "Electoral Role (Proof of Address)",
                                 "Result": 1,
                                 "Error": None,
                             },
+                            {
+                                "CheckName": "Credit Bureau (Proof of DOB)",
+                                "Result": 1,
+                                "Error": None,
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "Stage2",
+                        "Conditions": [
+                            {
+                                "If": 1,
+                                "Then": 0,
+                                "NextStageIndex": 3
+                            },
+                            {
+                                "If": 2,
+                                "Then": 1,
+                                "NextStageIndex": 3
+                            }
+                        ],
+                        "StageResult": 1,
+                        "CheckResults": [
+                            {
+                                "Rules": [
+                                    {
+                                        "CheckFilters": [
+                                            {
+                                                "RuleId": 2297,
+                                                "CheckFilterId": 10,
+                                                "FilterShortCode": "HaloLevel10",
+                                                "FilterParameter": {
+                                                    "Key": None,
+                                                    "Value": "1"
+                                                }
+                                            }
+                                        ],
+                                        "FilterShortCode": "HaloLevel10",
+                                        "FilterParameter": "1",
+                                        "Comparator": 0,
+                                        "CheckAmount": 0,
+                                        "RuleResult": 2,
+                                        "PotName": "Fail",
+                                        "LastUpdatedDate": "2016-11-22T16:27:08Z"
+                                    },
+                                    {
+                                        "CheckFilters": [
+                                            {
+                                                "RuleId": 2300,
+                                                "CheckFilterId": 10,
+                                                "FilterShortCode": "HaloLevel10",
+                                                "FilterParameter": {
+                                                    "Key": None,
+                                                    "Value": "1"
+                                                }
+                                            }
+                                        ],
+                                        "FilterShortCode": "HaloLevel10",
+                                        "FilterParameter": "1",
+                                        "Comparator": 2,
+                                        "CheckAmount": 0,
+                                        "RuleResult": 1,
+                                        "PotName": "Not Matched",
+                                        "AlertMessage": None,
+                                        "LastUpdatedDate": "2016-11-22T16:27:08Z"
+                                    }
+                                ],
+                                "StageName": "Stage2",
+                                "CheckName": "Death Register",
+                                "Result": 3,
+                                "Error": None,
+                                "RuleResult": [
+                                    {
+                                        "Result": 3,
+                                        "PotName": "Fail",
+                                        "PotAmount": 0,
+                                        "AlertMessage": ""
+                                    },
+                                    {
+                                        "Result": 1,
+                                        "PotName": "Not Matched",
+                                        "PotAmount": 1,
+                                        "AlertMessage": None
+                                    }
+                                ],
+                                "RawResults": "[]",
+                                "FullOutput": [
+                                    {
+                                        "CheckOutput": {
+                                            "id": "VMC",
+                                            "on_halo_level_10": "0",
+                                            "on_halo_level_9": "0",
+                                            "on_halo_level_8": "0",
+                                            "on_halo_level_7": "0",
+                                            "on_halo_level_6": "0",
+                                            "on_halo_level_5": "0",
+                                            "on_halo_level_4": "0",
+                                            "on_halo_level_3": "0",
+                                            "on_halo_level_2": "0",
+                                            "on_halo_level_1": "0",
+                                            "on_halo_level_other": "0",
+                                            "info_found": "0",
+                                            "highest_level_found": "0",
+                                            "lowest_level_found": "0"
+                                        },
+                                        "FilterOutput": [
+                                            {
+                                                "FilterCode": "HaloLevel10",
+                                                "Key": None,
+                                                "Parameter": "1",
+                                                "Matched": {
+                                                    "on_halo_level_10": True
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         ]
                     }
                 ],
@@ -306,15 +537,24 @@ def test_record_with_one_datasource_with_mortality_match(client):
     }
 
     response_body = capita_to_passfort_data(capita_data)
-
+    print(response_body)
     assert response_body == {
                                 "output_data": {
-                                    "decision": "FAIL",
                                     'electronic_id_check': {
                                         'matches': [
                                             {
-                                                'database_name': 'Death register',
-                                                'database_type': 'MORTALITY',
+                                                'database_name': 'Electoral Role',
+                                                'database_type': 'CIVIL',
+                                                'matched_fields': [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "ADDRESS"
+                                                ],
+                                                'count': 1
+                                            },
+                                            {
+                                                'database_name': 'Credit Bureau',
+                                                'database_type': 'CREDIT',
                                                 'matched_fields': [
                                                     "FORENAME",
                                                     "SURNAME",
@@ -322,6 +562,16 @@ def test_record_with_one_datasource_with_mortality_match(client):
                                                 ],
                                                 'count': 1
                                             },
+                                            {
+                                                'database_name': 'Death Register',
+                                                'database_type': 'MORTALITY',
+                                                'matched_fields': [
+                                                    "FORENAME",
+                                                    "SURNAME",
+                                                    "ADDRESS"
+                                                ],
+                                                'count': 1
+                                            }
                                         ]
                                     },
                                     'entity_type': 'INDIVIDUAL'
