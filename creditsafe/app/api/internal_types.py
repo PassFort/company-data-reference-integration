@@ -558,7 +558,7 @@ class ContactAddress(Model):
     @property
     def passfort_address_type(self):
         # TODO request a complete list of address types from CreditSafe
-        supported_types = ['registered_address', 'trading_address', 'contact_address']
+        supported_types = ['registered_address']  #, 'trading_address', 'contact_address']
 
         if self.address_type:
             address_enum = self.address_type.lower().replace(' ', '_')
@@ -1229,6 +1229,7 @@ class CreditSafeCompanyReport(Model):
             addresses.extend([
                 address.as_passfort_address(self.summary.country)
                 for address in self.contact_information.other_addresses
+                if address.passfort_address_type is not None
             ])
 
         metadata = PassFortMetadata({
