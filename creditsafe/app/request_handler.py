@@ -2,8 +2,6 @@ from datetime import datetime, timedelta
 from itertools import chain, groupby
 
 import requests
-import logging
-import time
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -66,15 +64,12 @@ class CreditSafeHandler:
 
         for query in queries:
             url = f'{self.base_url}/companies?{query}&pageSize=100'
-
-            start = time.time()
             response = self.session.get(
                 url,
                 headers={
                     'Content-Type': 'application/json',
                     'Authorization': f'Bearer {token}'
                 })
-            logging.info(f'Request to {url} [{response.status_code}] took {time.time() - start}')
 
             if response.status_code != 200 and len(companies) == 0:
                 # Only raise the error if we didn't find any companies so far
@@ -136,8 +131,6 @@ class CreditSafeHandler:
         url = f'{self.base_url}/companies/{input_data.creditsafe_id}'
         if input_data.country_of_incorporation == 'DEU':
             url = f'{url}?customData=de_reason_code::1'  # 1 is code for Credit Decisioning
-
-        start = time.time()
         response = self.session.get(
             url,
             headers={
@@ -145,7 +138,6 @@ class CreditSafeHandler:
                 'Authorization': f'Bearer {token}'
             }
         )
-        logging.info(f'Request to {url} [{response.status_code}] took {time.time() - start}')
 
         if response.status_code != 200:
             raise CreditSafeReportError(response)
