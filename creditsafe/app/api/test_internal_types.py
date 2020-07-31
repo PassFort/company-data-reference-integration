@@ -204,22 +204,6 @@ class TestCompanyReport(unittest.TestCase):
                         'country': 'GBR'
                     }
                 },
-                {
-                    'type': 'trading_address',
-                    'address': {
-                        'type': 'FREEFORM',
-                        'text': 'The Studio 11 Princelet Street, London, E1 6QH',
-                        'country': 'GBR'
-                    }
-                },
-                {
-                    'type': 'trading_address',
-                    'address': {
-                        'type': 'FREEFORM',
-                        'text': 'Unit 418, The Print Rooms, 164/180 Union Street, London, SE1 0LH',
-                        'country': 'GBR'
-                    }
-                }
             ]
         )
         self.assertEqual(
