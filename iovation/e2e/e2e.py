@@ -60,11 +60,6 @@ class IovationTestExamples(unittest.TestCase):
             },
             "ip_location": {
                 "ip_address": "74.121.28.132",
-                "coordinates": {
-                    "latitude": 45.51815,
-                    "longitude": -122.67416
-                },
-                "proxy": None,
                 "country": "USA",
                 "region": "OREGON",
                 "city": "PORTLAND" }
