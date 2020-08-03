@@ -296,6 +296,7 @@ class DeviceFraudDetection(Model):
     recommendation_reason = StringType()
     total_score = IntType()
     matched_rules = ListType(ModelType(DeviceFraudRule))
+    used_test_environment = BooleanType()
 
 
 IOVATION_RECOMMENDATION_MAPPING = {
@@ -311,7 +312,7 @@ class IovationCheckResponse(Model):
     ip_location = ModelType(IPLocation, serialize_when_none=False)
 
     @classmethod
-    def from_iovation_output(cls, output, input_data):
+    def from_iovation_output(cls, output, input_data, is_test_environment=None):
         device_metadata = DeviceMetadata({
             'token': input_data.token,
             'stated_ip': output.stated_ip,
@@ -326,7 +327,8 @@ class IovationCheckResponse(Model):
         device_fraud_detection = DeviceFraudDetection({
             'provider_reference': output.tracking_number,
             'recommendation': IOVATION_RECOMMENDATION_MAPPING[output.result],
-            'recommendation_reason': output.reason
+            'recommendation_reason': output.reason,
+            'used_test_environment': is_test_environment,
         })
 
         if output.details and output.details.rule_results:

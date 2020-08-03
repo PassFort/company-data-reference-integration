@@ -48,6 +48,7 @@ class IovationTestExamples(unittest.TestCase):
                 "recommendation": "Deny",
                 "recommendation_reason": "Evidence found",
                 "total_score": -150,
+                "used_test_environment": None, # Demo data doesn't make use of test or prod
                 "matched_rules": [{
                     "name": "Evidence Exists",
                     "reason": "Evidence found",
@@ -144,6 +145,7 @@ class IovationTestExamples(unittest.TestCase):
         response_json = json.loads(response.data)
 
         self.assertEqual('Allow', response_json['output_data']['device_fraud_detection']['recommendation'])
+        self.assertEqual(True, response_json['output_data']['device_fraud_detection']['used_test_environment'])
 
     def test_response_without_blackbox(self):
         request = {

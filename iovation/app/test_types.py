@@ -218,7 +218,7 @@ class TestOutputData(unittest.TestCase):
 
         raw_response, response_model = IovationOutput.from_json(test_response)
 
-        output = IovationCheckResponse.from_iovation_output(response_model, input_data)
+        output = IovationCheckResponse.from_iovation_output(response_model, input_data, False)
 
         expected_output = {
             "device_metadata": {
@@ -231,6 +231,7 @@ class TestOutputData(unittest.TestCase):
             },
             "device_fraud_detection": {
                 "provider_reference": "2000040009070100",
+                "used_test_environment": False,
                 "recommendation": "Deny",
                 "recommendation_reason": "Evidence found",
                 "total_score": -150,
@@ -258,7 +259,7 @@ class TestOutputData(unittest.TestCase):
         }
         self.assertEqual(expected_output, output.to_primitive())
 
-    def allow_output(self, proxy_res=None, expected_proxy=None):
+    def allow_output(self, proxy_res=None, expected_proxy=None, use_test_creds=False):
         input_data = DeviceMetadata({
             'token': 'BLACKBOX',
             'stated_ip': '123.12.12.123',
@@ -335,7 +336,7 @@ class TestOutputData(unittest.TestCase):
 
         raw_response, response_model = IovationOutput.from_json(test_response)
 
-        output = IovationCheckResponse.from_iovation_output(response_model, input_data)
+        output = IovationCheckResponse.from_iovation_output(response_model, input_data, use_test_creds)
 
         expected_output = {
             "device_metadata": {
@@ -350,6 +351,7 @@ class TestOutputData(unittest.TestCase):
                 "provider_reference": "2000040009070100",
                 "recommendation": "Allow",
                 "recommendation_reason": "No evidence found",
+                "used_test_environment": use_test_creds,
                 "total_score": -150,
                 "matched_rules": [{
                     "name": "Evidence Exists",
@@ -379,10 +381,10 @@ class TestOutputData(unittest.TestCase):
         self.allow_output()
 
     def test_allow_with_known_proxy(self):
-        self.allow_output(proxy_res="ANONYMOUS PROXY", expected_proxy="ANONYMOUS")
+        self.allow_output(proxy_res="ANONYMOUS PROXY", expected_proxy="ANONYMOUS", use_test_creds=False)
 
     def test_allow_with_unknown_proxy(self):
-        self.allow_output(proxy_res="PROXY", expected_proxy="PROXY")
+        self.allow_output(proxy_res="PROXY", expected_proxy="PROXY", use_test_creds=True)
 
     def test_credentials(self):
         test_credentials = {
