@@ -210,8 +210,8 @@ class IovationIpLocation(Model):
     city = StringType(default=None)
     country_code = StringType(serialized_name="countryCode", default=None)
     region = StringType(default=None)
-    latitude = FloatType(min_value=-90, max_value=90)
-    longitude = FloatType(min_value=-180, max_value=180)
+    latitude = FloatType()
+    longitude = FloatType()
 
 
 class IpDetails(Model):
@@ -267,8 +267,8 @@ class IovationOutput(Model):
 
 
 class Coordinates(Model):
-    latitude = FloatType(min_value=-90, max_value=90)
-    longitude = FloatType(min_value=-180, max_value=180)
+    latitude = FloatType()
+    longitude = FloatType()
 
 class IPLocation(Model):
     ip_address = StringType()
