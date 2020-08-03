@@ -248,12 +248,17 @@ class TestOutputData(unittest.TestCase):
                 "ip_address": "74.121.28.132",
                 "country": "USA",
                 "region": "OREGON",
-                "city": "PORTLAND"
+                "city": "PORTLAND",
+                "proxy": None,
+                "coordinates": {
+                    "latitude": 45.51815,
+                    "longitude": -122.67416,
+                }
             }
         }
         self.assertEqual(expected_output, output.to_primitive())
 
-    def test_allow_output(self):
+    def allow_output(self, proxy_res=None, expected_proxy=None):
         input_data = DeviceMetadata({
             'token': 'BLACKBOX',
             'stated_ip': '123.12.12.123',
@@ -306,8 +311,9 @@ class TestOutputData(unittest.TestCase):
                             "intensity": 1,
                             "score": 9,
                             "lastSeen": "2019-04-09T06:19:18.000Z"
-                            }
                         },
+                    },
+                    "proxy": proxy_res,
                     "parentOrganization": "IOVATION INC.",
                     "source": "iovation"
                 },
@@ -356,6 +362,11 @@ class TestOutputData(unittest.TestCase):
                 }]
             },
             "ip_location": {
+                "proxy": expected_proxy,
+                "coordinates": {
+                    "latitude": 45.51815,
+                    "longitude": -122.67416,
+                },
                 "ip_address": "74.121.28.132",
                 "country": None,
                 "region": "OREGON",
@@ -364,6 +375,14 @@ class TestOutputData(unittest.TestCase):
         }
         self.assertEqual(expected_output, output.to_primitive())
 
+    def test_allow_output(self):
+        self.allow_output()
+
+    def test_allow_with_known_proxy(self):
+        self.allow_output(proxy_res="ANONYMOUS PROXY", expected_proxy="ANONYMOUS")
+
+    def test_allow_with_unknown_proxy(self):
+        self.allow_output(proxy_res="PROXY", expected_proxy="PROXY")
 
     def test_credentials(self):
         test_credentials = {
