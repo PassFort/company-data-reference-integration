@@ -36,6 +36,8 @@ def initialize_datadog():
 def create_app():
     app = Flask(__name__)
 
+    logging.getLogger().setLevel(logging.INFO)
+
     sentry_url = os.environ.get('SENTRY_URL')
     if sentry_url:
         sentry = Sentry(

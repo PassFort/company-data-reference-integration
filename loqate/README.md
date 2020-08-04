@@ -6,7 +6,7 @@
  - Pipenv
  - Pytest
  
-# Instalation
+# Installation
 
 Requeriments: **Python 3.7**
 
