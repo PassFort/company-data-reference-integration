@@ -34,6 +34,9 @@ class IovationHandler:
         self.credentials = credentials
         self.session = requests_retry_session()
 
+    def is_test_environment(self):
+        return self.credentials.get('use_test_environment', False)
+
     def run_check(self, input_data: CheckInput):
         token = self.get_authorization_token()
 
@@ -52,7 +55,7 @@ class IovationHandler:
         response = response.json()
         raw_data, output = IovationOutput.from_json(response)
 
-        return raw_data, IovationCheckResponse.from_iovation_output(output, input_data.device_metadata)
+        return raw_data, IovationCheckResponse.from_iovation_output(output, input_data.device_metadata, self.is_test_environment())
 
     def get_authorization_token(self):
         token = f'{self.credentials["subscriber_id"]}/{self.credentials["subscriber_account"]}:{self.credentials["password"]}'
