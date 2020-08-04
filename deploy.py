@@ -27,7 +27,8 @@ integrations = {
     'lexisnexis_id': './lexisnexis_id',
     'mastercard_match': './mastercard_match',
     'gdc_worldview': './gdc_worldview',
-    'capita': './capita'
+    'capita': './capita',
+    'loqate': './loqate',
 }
 
 sentry = {

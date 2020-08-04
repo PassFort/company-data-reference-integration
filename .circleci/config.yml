@@ -67,6 +67,9 @@ parameters:
   capita:
     type: boolean
     default: false
+  loqate:
+    type: boolean
+    default: false
 
 executors:
   python-builder:
@@ -994,6 +997,37 @@ workflows:
           to: production
           requires:
             - unit_capita
+          filters:
+            branches:
+              only:
+                - master
+  loqate:
+    when: << pipeline.parameters.loqate >>
+    jobs:
+      - build:
+          name: build_loqate
+          package: loqate
+      - unit:
+          name: unit_loqate
+          package: loqate
+          requires:
+            - build_loqate
+      - deploy_common:
+          name: deploy_loqate_staging
+          package: loqate
+          to: staging
+          requires:
+            - unit_loqate
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy_common:
+          name: deploy_loqate_production
+          package: loqate
+          to: production
+          requires:
+            - unit_loqate
           filters:
             branches:
               only:
