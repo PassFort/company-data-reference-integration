@@ -44,6 +44,7 @@ loqate_address = {
     "AdministrativeArea":"Baden-Württemberg",
     "SubAdministrativeArea":"",
     "Locality":"Koln",
+    "ISO3166-3": "DEU",
     "DependentLocality":"",
     "DoubleDependentLocality":"",
     "Thoroughfare":"",
@@ -62,11 +63,13 @@ loqate_address = {
 def test_passfort_to_loqate():
     input = CheckInput().import_data(mock_input)
     expected = {
-        "Country": "GBR",
         "Locality": "Aberdeen",
         "Premise": "Imperial House 12-14",
         "PostalCode": "AB11 6PH",
+        "ISO3166-3": "GBR",
+        "Country": "GBR",
         "SubAdministrativeArea": "Aberdeen City",
+        "Thoroughfare": "Exchange Street"
     }
     actual = LoqateAddress.from_passfort(input.address)
 
@@ -98,6 +101,7 @@ def test_minimal_passfort_to_loqate():
 
     expected = {
         "Country": "GBR",
+        "ISO3166-3": "GBR",
         "Locality": "London",
     }
 
@@ -106,7 +110,7 @@ def test_minimal_passfort_to_loqate():
     assert expected == actual.to_primitive()
 
 def test_minimal_loqate_to_passfort():
-    address = LoqateAddress().from_raw({"Country": "DEU", "Locality": 'Koln'})
+    address = LoqateAddress().from_raw({"Country": "DEU", "ISO3166-3": "DEU", "Locality": 'Koln'})
     expected = {
         "type": "STRUCTURED",
         "country": "DEU",
