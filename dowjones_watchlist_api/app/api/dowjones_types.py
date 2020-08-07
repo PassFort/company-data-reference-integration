@@ -69,7 +69,7 @@ class PersonNameValue(XmlElementModel):
     tag_name = 'person-name-value'
     type_ = XmlAttribute(XmlStringType(), serialized_name='name-type', default=None)
 
-    first_name = XmlChildContent(XmlStringType(), serialized_name='first-name')
+    first_name = XmlChildContent(XmlStringType(), serialized_name='first-name', default=None)
     middle_name = XmlChildContent(XmlStringType(), serialized_name='middle-name', default=None)
     surname = XmlChildContent(XmlStringType())
 
