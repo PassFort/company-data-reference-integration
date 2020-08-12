@@ -241,7 +241,7 @@ def handle_report_error(report_error):
                 Error.provider_unhandled_error(response_content.get('details') or 'Report Unavailable')
             ]
         ), 200  # Clients could potentially change this ID? So surface the error
-    elif response.status_code == 403 and response_content.get('message') == 'Forbidden request':
+    elif response.status_code == 403 and 'Forbidden' in (response_content.get('message') or ''):
         return jsonify(
             raw=response_content,
             errors=[
