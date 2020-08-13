@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.api.formatter import entity_to_passfort_format, get_some_name
+from app.api.formatter import entity_to_passfort_format, get_some_name, entity_to_events
 
 from swagger_client.models import Address, IndividualEntity, OrganisationEntity, Name, NameType, ActionDetail, \
     ProfileActionType, \
@@ -85,6 +85,63 @@ pep_source = ProviderSource(
         ),
         identifier="t_trwc_8",
         name="National Government"
+    )
+)
+
+law_enforcement_one_source = ProviderSource(
+    abbreviation="INTERPOL",
+    creation_date="2013-03-21T13:41:10Z",
+    identifier="b_trwc_134",
+    name="INTERPOL",
+    provider_source_status="ACTIVE",
+    type=ProviderSourceType(
+        category=ProviderSourceTypeCategoryDetail(
+            description="This gives details of persons wanted by the Federal Bureau of Investigation and Interpol "
+                        "in connection with various crimes. Any dealing with these individuals is information that "
+                        "could assist in their apprehension by the authorities.",
+            name="Law Enforcement",
+        ),
+        identifier="t_trwc_3",
+        name="Law"
+    )
+)
+
+law_enforcement_two_source = ProviderSource(
+    abbreviation="RUSCRF",
+    creation_date="2013-03-21T13:41:10Z",
+    identifier="b_trwc_RUSCRF",
+    name="RUSSIAN FEDERATION - RUSCRF - Russian Federal Investigative Committee",
+    provider_source_status="ACTIVE",
+    type=ProviderSourceType(
+        category=ProviderSourceTypeCategoryDetail(
+            description="This gives details of persons wanted by the Federal Bureau of Investigation and Interpol "
+                        "in connection with various crimes. Any dealing with these individuals is information that "
+                        "could assist in their apprehension by the authorities.",
+            name="Law Enforcement",
+        ),
+        identifier="t_trwc_3",
+        name="Law"
+    )
+)
+
+other_bodies_source = ProviderSource(
+    abbreviation="ISIS-WC",
+    creation_date="2013-03-21T13:41:10Z",
+    identifier="b_trwc_ISIS-WC",
+    name="INTERNATIONAL - ISIS-WC - Islamic State - Relevant World-Check Data",
+    provider_source_status="ACTIVE",
+    type=ProviderSourceType(
+        category=ProviderSourceTypeCategoryDetail(
+            description="The bodies detailed here, the Bureau of Industry and Security (BIS) and the World Bank, "
+                        "issue notices if they consider a person or company to be in breach of U.S. export regulations "
+                        "in the case of the BIS, or if they consider the person to have behaved improperly in the World"
+                        " Bank procurement process. Again, although there may be no reason why an action should stop "
+                        "you from dealing with a customer, this knowledge of the customer may be useful in assessing "
+                        "whether you wish to deal with them.",
+            name="Other Bodies",
+        ),
+        identifier="t_trwc_5",
+        name="World-Check other bodies"
     )
 )
 
@@ -317,3 +374,70 @@ class TestEntityFormatter(TestCase):
                     }
                 ]
             )
+
+
+class TestEventsFormatter(TestCase):
+
+    def test_returns_different_labels_for_refer(self):
+        entity = IndividualEntity(
+            entity_id="e_tr_wci_152",
+            entity_type="INDIVIDUAL",
+            names=[
+                Name(full_name="Refer demo", type=NameType.PRIMARY),
+            ],
+            sources=[law_enforcement_one_source, law_enforcement_two_source, other_bodies_source]
+        )
+        formatted_events = entity_to_events(entity)
+
+        self.assertEqual(len(formatted_events), 2)
+        self.assertEqual(
+            formatted_events[0]['match_id'],
+            'e_tr_wci_152'
+        )
+        self.assertEqual(
+            formatted_events[0]['event_type'],
+            'REFER_FLAG'
+        )
+
+        self.assertEqual(
+            formatted_events[1]['match_id'],
+            'e_tr_wci_152'
+        )
+        self.assertEqual(
+            formatted_events[1]['event_type'],
+            'REFER_FLAG'
+        )
+        self.assertEqual(
+            sorted([formatted_events[0]['match_custom_label'], formatted_events[1]['match_custom_label']]),
+            ['Law Enforcement', 'Other Bodies']
+        )
+
+    def test_returns_refer_and_pep_flags(self):
+        entity = IndividualEntity(
+            entity_id="e_tr_wci_152",
+            entity_type="INDIVIDUAL",
+            names=[
+                Name(full_name="Refer demo", type=NameType.PRIMARY),
+            ],
+            sources=[pep_source, law_enforcement_one_source]
+        )
+        formatted_events = entity_to_events(entity)
+
+        self.assertEqual(len(formatted_events), 2)
+        self.assertEqual(
+            formatted_events[0]['match_id'],
+            'e_tr_wci_152'
+        )
+        self.assertEqual(
+            formatted_events[0]['event_type'],
+            'PEP_FLAG'
+        )
+
+        self.assertEqual(
+            formatted_events[1]['match_id'],
+            'e_tr_wci_152'
+        )
+        self.assertEqual(
+            formatted_events[1]['event_type'],
+            'REFER_FLAG'
+        )

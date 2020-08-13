@@ -152,6 +152,7 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
     # Companies can be PEPs in world-check data (if they are State owned entities)
     is_pep = has_pep_source(entity)
     sanctions_or_other_actions = get_actions_if_any(entity)
+    refer_sources = all_refer_sources(entity)
 
     if is_pep:
         pep_event = PEPMatchEvent().import_data({
@@ -169,6 +170,12 @@ def entity_to_events(entity: 'Entity')-> List[MatchEvent]:
             **base_event_data
         })
         events.append(sanctions_event)
+    if refer_sources:
+        for refer_source in refer_sources:
+            events.append(ReferMatchEvent().import_data({
+                "match_custom_label": refer_source,
+                **base_event_data
+            }))
 
     if len(events) == 0:
         events.append(ReferMatchEvent().import_data(base_event_data))
@@ -193,6 +200,11 @@ def get_primary_name(entity: 'Entity'):
 def has_pep_source(entity: 'Entity'):
     return next((True for s in entity.sources or [] if s.type and s.type.category and s.type.category.name == "PEP"),
                 False)
+
+
+def all_refer_sources(entity: 'Entity'):
+    return {s.type.category.name for s in entity.sources or [] if s.type and s.type.category
+            and s.type.category.name.lower() not in ["pep", "sanctions"]}
 
 
 def get_gender_if_any(entity: 'IndividualEntity'):
