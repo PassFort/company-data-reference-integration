@@ -6,6 +6,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from app.api.models import GeoCodingCheck, GeoCodingResponse, LoqateAddress, PassFortAddress
 from app.api.error import Error
+from .demo_data import get_demo_result
 
 
 def requests_retry_session(
@@ -21,7 +22,7 @@ def requests_retry_session(
     return session
 
 
-def maybe_get_error_response(json_data):
+def maybe_get_error(json_data):
     if not isinstance(json_data, dict):
         return None
 
@@ -46,11 +47,13 @@ class RequestHandler():
         return response.json()
 
     def handle_geocoding_check(self, data: GeoCodingCheck):
+        if data.is_demo:
+            return get_demo_result(data)
         request_body = data.to_request_body()
 
-        raw = self.call_geocoding_api(data)
+        raw = self.call_geocoding_api(request_body)
 
-        maybe_error = maybe_get_error_response(raw)
+        maybe_error = maybe_get_error(raw)
         if maybe_error:
             logging.error(maybe_error)
             return {
