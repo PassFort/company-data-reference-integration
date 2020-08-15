@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from itertools import chain, groupby
 
+import logging
 import requests
 
 from requests.adapters import HTTPAdapter
@@ -143,6 +144,10 @@ class CreditSafeHandler:
             raise CreditSafeReportError(response)
 
         raw = response.json()
+        if raw.get['report'] is None:
+            logging.error(f'Report not found: {raw}')
+            raise CreditSafeReportError(response)
+
         return raw, CreditSafeCompanyReport.from_json(raw['report']).as_passfort_format_41(self)
 
     def create_portfolio(self, name):

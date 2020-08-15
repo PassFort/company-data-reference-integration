@@ -219,14 +219,15 @@ def handle_search_error(search_error):
             ]
         ), 200
     else:
+        logging.error(f'Creditsafe search error {response.status_code}: {response_content}')
         return jsonify(
             raw=response_content,
             errors=[
                 # Yes, messages come from different fields
                 # (messages, details, or error)
-                Error.provider_unhandled_error(response_content.get('error'))
+                Error.provider_unhandled_error(response_content.get('error') or 'Unknown error')
             ]
-        ), 500
+        ), 200
 
 
 @app.errorhandler(CreditSafeReportError)
@@ -250,14 +251,15 @@ def handle_report_error(report_error):
             ]
         ), 200
     else:
+        logging.error(f'Creditsafe report error {response.status_code}: {response_content}')
         return jsonify(
             raw=response_content,
             errors=[
                 # Yes, messages come from different fields
                 # (messages, details, or error)
-                Error.provider_unhandled_error(response_content.get('error'))
+                Error.provider_unhandled_error(response_content.get('error') or 'Unknown error')
             ]
-        ), 500
+        ), 200
 
 
 @app.errorhandler(CreditSafeMonitoringError)
