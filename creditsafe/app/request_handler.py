@@ -144,7 +144,7 @@ class CreditSafeHandler:
             raise CreditSafeReportError(response)
 
         raw = response.json()
-        if raw.get['report'] is None:
+        if raw.get('report') is None:
             logging.error(f'Report not found: {raw}')
             raise CreditSafeReportError(response)
 
