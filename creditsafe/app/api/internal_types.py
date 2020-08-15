@@ -1102,7 +1102,7 @@ class CreditsafeLocalFinancialStatement(CreditsafeFinancialStatement):
 class CreditSafeCompanyReport(Model):
     creditsafe_id = StringType(required=True, serialized_name="companyId")
     summary = ModelType(CompanySummary, required=True, serialized_name="companySummary")
-    identification = ModelType(CompanyIdentification, required=True, serialized_name="companyIdentification")
+    identification = ModelType(CompanyIdentification, default=None, serialized_name="companyIdentification")
     contact_information = ModelType(ContactInformation, default=None, serialized_name="contactInformation")
     directors = ModelType(CompanyDirectorsReport, default=None)
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
@@ -1231,16 +1231,16 @@ class CreditSafeCompanyReport(Model):
                 for address in self.contact_information.other_addresses
                 if address.passfort_address_type is not None
             ])
-
+        company_name = self.identification.basic_info.name if self.identification else self.summary.business_name
         metadata = PassFortMetadata({
-            'name': self.identification.basic_info.name,
+            'name': company_name,
             'number': self.summary.number,
             'addresses': addresses,
             'country_of_incorporation': self.summary.country_code,
             'is_active': self.summary.is_active,
-            'incorporation_date': self.identification.incorporation_date,
-            'company_type': self.identification.raw_company_type,
-            'structured_company_type': self.identification.structured_company_type,
+            'incorporation_date': self.identification and self.identification.incorporation_date,
+            'company_type': self.identification and self.identification.raw_company_type,
+            'structured_company_type': self.identification and self.identification.structured_company_type,
         })
 
         unique_shareholders = sorted(

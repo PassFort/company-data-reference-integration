@@ -470,7 +470,7 @@ class TestCompanyReport(unittest.TestCase):
             )
 
 
-    def test_handles_missing_data(self):
+    def test_handles_missing_data_with_identification(self):
         report = CreditSafeCompanyReport.from_json({
             'companyId': 'GB001-0-09565115',
             'companySummary': {
@@ -499,6 +499,27 @@ class TestCompanyReport(unittest.TestCase):
                 'name': 'PASSFORT LIMITED',
                 'number': '09565115',
                 'company_type': 'Unknown',
+                'country_of_incorporation': 'GBR'
+            }
+        )
+
+    def test_handles_missing_data(self):
+        report = CreditSafeCompanyReport.from_json({
+            'companyId': 'GB001-0-09565115',
+            'companySummary': {
+                'businessName': 'PASSFORT LIMITED',
+                'country': 'GB',
+                'companyNumber': 'UK13646576',
+                'companyRegistrationNumber': '09565115',
+                'companyStatus': {}
+            }
+        })
+
+        self.assertDictEqual(
+            report.as_passfort_format_41()['metadata'],
+            {
+                'name': 'PASSFORT LIMITED',
+                'number': '09565115',
                 'country_of_incorporation': 'GBR'
             }
         )
