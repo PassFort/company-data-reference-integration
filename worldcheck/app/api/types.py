@@ -375,6 +375,7 @@ class SanctionsMatchEvent(MatchEvent):
 
 class ReferMatchEvent(MatchEvent):
     event_type = StringType(required=True, choices=['REFER_FLAG'], default='REFER_FLAG')
+    match_custom_label = StringType(default=None)
 
     @classmethod
     def _claim_polymorphic(cls, data):
