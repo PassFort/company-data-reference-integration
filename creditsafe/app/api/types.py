@@ -120,7 +120,28 @@ class CreditSafeCredentials(Model):
 
 # These countries cause creditsafe to error with error (" exact")
 # when doing an exact search
-NO_EXACT_SEARCH_COUNTRIES = ['US', 'JP', 'RO', 'NZ', 'SG', 'BG', 'HK', 'ZA', 'AU', 'HU', 'PT', 'RU', 'SI', 'CN', 'SE', 'EE']
+NO_EXACT_SEARCH_COUNTRIES = [
+    'AE',
+    'AU',
+    'BG',
+    'CN',
+    'CZ',
+    'EE',
+    'HK',
+    'HU',
+    'IN',
+    'JP',
+    'KZ'
+    'NZ',
+    'PT',
+    'RO',
+    'RU',
+    'SE',
+    'SG',
+    'SI',
+    'US',
+    'ZA',
+]
 
 
 class SearchInput(Model):
