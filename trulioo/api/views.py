@@ -25,14 +25,16 @@ def interpret_http_error(error, country_code):
             )
             return error, raw
     except JSONDecodeError:
-        error = make_error(
-            code=303,
-            message='Unknown provider error',
-            info={
-                'original_error': raw,
-            },
-        )
-        return error, raw
+        pass
+
+    error = make_error(
+        code=303,
+        message='Unknown provider error',
+        info={
+            'original_error': raw,
+        },
+    )
+    return error, raw
 
 
 class Ekyc_check(Resource):
@@ -105,8 +107,6 @@ class Ekyc_check(Resource):
                     'raw': raw,
                     'errors': [error],
                 }
-
-
 
         return response
 
