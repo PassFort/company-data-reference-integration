@@ -276,6 +276,10 @@ def trulioo_to_passfort_data(trulioo_request, trulioo_data):
         response_body['output_data']["electronic_id_check"] = {
             "matches": matches}
 
+    transaction_id = trulioo_data.get('TransactionID')
+    if transaction_id:
+        response_body['output_data'].setdefault('electronic_id_check', {})['provider_reference_number'] = transaction_id
+
     return response_body
 
 

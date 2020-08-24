@@ -45,6 +45,7 @@ def test_full_valid_package(client):
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
+                "provider_reference_number": "demo_provider_reference",
                 "matches": [
                     {
                         "database_name": 'Credit Agency',
@@ -90,6 +91,7 @@ def test_1_plus_1_valid_package(client):
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
+                "provider_reference_number": "demo_provider_reference",
                 "matches": [
                     {
                         "database_name": 'Credit Agency',
