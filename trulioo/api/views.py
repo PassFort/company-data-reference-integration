@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask import request
+from json import JSONDecodeError
 from requests.exceptions import HTTPError, ConnectTimeout
 
 from api.demo_response import create_demo_response
@@ -7,6 +8,31 @@ from api.demo_response import create_demo_response
 from trulioo.api import validate_authentication
 from trulioo.api import verify
 from trulioo.convert_data import passfort_to_trulioo_data, trulioo_to_passfort_data, make_error
+
+
+def interpret_http_error(error, country_code):
+    raw = error.response.text
+    try:
+        json = error.response.json()
+        if json.get('Message') == 'Account not configured for this country':
+            error = make_error(
+                code=106,
+                message=f"Country '{country_code}' is not supported by the provider for this stage",
+                info={
+                    'country': country_code,
+                    'original_error': raw,
+                },
+            )
+            return error, raw
+    except JSONDecodeError:
+        error = make_error(
+            code=303,
+            message='Unknown provider error',
+            info={
+                'original_error': raw,
+            },
+        )
+        return error, raw
 
 
 class Ekyc_check(Resource):
@@ -71,20 +97,16 @@ class Ekyc_check(Resource):
                         },
                     )],
                 }
-            except HTTPError as error:
-                raw = error.response.text
+            except HTTPError as exception:
+                error, raw = interpret_http_error(exception, country_code)
                 return {
                     'decision': 'ERROR',
                     'output_data': {},
                     'raw': raw,
-                    'errors': [make_error(
-                        code=303,
-                        message='Unknown provider error',
-                        info={
-                            'original_error': raw,
-                        },
-                    )],
+                    'errors': [error],
                 }
+
+
 
         return response
 
