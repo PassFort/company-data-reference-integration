@@ -24,7 +24,7 @@ def interpret_http_error(error, country_code):
                 },
             )
             return error, raw
-    except JSONDecodeError:
+    except (AttributeError, JSONDecodeError):
         pass
 
     error = make_error(
