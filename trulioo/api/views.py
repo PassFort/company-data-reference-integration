@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 from json import JSONDecodeError
 from requests.exceptions import HTTPError, ConnectTimeout
+import pycountry
 
 from api.demo_response import create_demo_response
 
@@ -17,11 +18,12 @@ def interpret_http_error(error, country_code):
     try:
         json = error.response.json()
         if json == UNSUPPORTED_COUNTRY_MSG or json.get('Message') == UNSUPPORTED_COUNTRY_MSG:
+            alpha_3 = pycountry.countries.get(alpha_2=country_code).alpha_3
             error = make_error(
                 code=106,
-                message=f"Country '{country_code}' is not supported by the provider for this stage",
+                message=f"Country '{alpha_3}' is not supported by the provider for this stage",
                 info={
-                    'country': country_code,
+                    'country': alpha_3,
                     'original_error': raw,
                 },
             )
