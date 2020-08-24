@@ -9,12 +9,14 @@ from trulioo.api import validate_authentication
 from trulioo.api import verify
 from trulioo.convert_data import passfort_to_trulioo_data, trulioo_to_passfort_data, make_error
 
+UNSUPPORTED_COUNTRY_MSG = 'Account not configured for this country'
+
 
 def interpret_http_error(error, country_code):
     raw = error.response.text
     try:
         json = error.response.json()
-        if json.get('Message') == 'Account not configured for this country':
+        if json == UNSUPPORTED_COUNTRY_MSG or json.get('Message') == UNSUPPORTED_COUNTRY_MSG:
             error = make_error(
                 code=106,
                 message=f"Country '{country_code}' is not supported by the provider for this stage",
