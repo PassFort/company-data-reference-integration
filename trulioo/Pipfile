@@ -11,7 +11,7 @@ pycountry = "*"
 gunicorn = "*"
 pytest = "*"
 coverage = "*"
-codecov = "*"
+codecov = "==2.1.9"
 
 [requires]
 python_version = "3.7"
