@@ -24,7 +24,7 @@ def echo_test_request(credentials):
 
 def verify(request_body, credentials):
     headers = {'Content-Type': 'application/json'}
-    url = credentials['url'] + "/WsIdentity/InstantID"
+    url = credentials['url'] + "/WsIdentity/InstantID?ver_=2.6"
 
     response = requests.post(
         url=url,
