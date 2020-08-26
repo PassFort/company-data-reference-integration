@@ -5,11 +5,17 @@ from lexisnexis.convert_data import passfort_to_lexisnexis_data
 BASE_REQUEST = {
     'InstantIDRequest': {
         'Options': {
+            'PoBoxCompliance': True,
             'DOBMatch': {
                 'MatchType': 'FuzzyCCYYMMDD'
             },
             'IncludeModels': {
                 'FraudPointModel': {'IncludeRiskIndices': True}
+            },
+            "RequireExactMatch": {
+                "LastName": True,
+                "FirstName": True,
+                "SSN": True,
             },
             'NameInputOrder': 'Unknown'
         },

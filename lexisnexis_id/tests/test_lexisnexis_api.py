@@ -64,7 +64,7 @@ def test_verify_request(mock_post_verify, client):
     dummy_body = {'pkg': 'test'}
 
     headers = {'Content-Type': 'application/json'}
-    url = credentials['url'] + "/WsIdentity/InstantID"
+    url = credentials['url'] + "/WsIdentity/InstantID?ver_=2.6"
 
     auth = (credentials['username'], credentials['password'])
     verify(dummy_body, credentials)

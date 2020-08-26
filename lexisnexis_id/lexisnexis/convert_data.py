@@ -6,6 +6,7 @@ def passfort_to_lexisnexis_data(passfort_data):
                 "DLPurpose": "3"
             },
             "Options": {
+                "PoBoxCompliance": True,
                 "IncludeModels": {
                     "FraudPointModel": {
                         "IncludeRiskIndices": True
@@ -13,6 +14,11 @@ def passfort_to_lexisnexis_data(passfort_data):
                 },
                 "DOBMatch": {
                     "MatchType": "FuzzyCCYYMMDD"
+                },
+                "RequireExactMatch": {
+                    "LastName": True,
+                    "FirstName": True,
+                    "SSN": True,
                 },
                 "NameInputOrder": "Unknown"
             },
