@@ -55,6 +55,8 @@ def create_demo_response(passfort_data):
                 }
             )
 
+    if 'fail' not in names:
+        demo_response['electronic_id_check']['provider_reference_number']= 'demo_provider_reference'
     response = {
         "decision": 'FAIL' if 'fail' in names else 'PASS',
         "output_data": demo_response,

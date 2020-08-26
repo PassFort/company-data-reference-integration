@@ -121,6 +121,7 @@ def test_ekyc_check_with_raw_data(client):
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
+                "provider_reference_number": "eeaf7fd3-a35d-4df2-ae4c-adaec46630a0",
                 "matches": [
                     {
                         "database_name": "Credit Agency",
@@ -202,6 +203,7 @@ def test_ekyc_check_demo_1_valid_data(client):
         "output_data": {
             "entity_type": "INDIVIDUAL",
             "electronic_id_check": {
+                "provider_reference_number": "demo_provider_reference",
                 "matches": [
                     {
                         "database_name": 'Credit Agency',
