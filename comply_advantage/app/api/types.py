@@ -73,6 +73,10 @@ class Error:
         internal_error_code = ErrorCode.MISCONFIGURATION_ERROR.value if code == 401 \
             else ErrorCode.PROVIDER_UNKNOWN_ERROR.value
 
+        search_profile_error = errors.get('search_profile')
+        if search_profile_error:
+            internal_error_code = ErrorCode.MISCONFIGURATION_ERROR.value
+            message = "Bad request submitted to provider: 'search_profile: {search_profile_error}'"
         return {
             'code': internal_error_code,
             'source': 'PROVIDER',
@@ -121,6 +125,7 @@ class ComplyAdvantageConfig(Model):
     fuzziness = FloatType(min_value=0.0, max_value=1.0, default=0.5)
     enable_ongoing_monitoring = BooleanType(default=False)
     include_adverse_media = BooleanType(default=False)
+    search_profile = StringType(default=None)
 
 
 class FullName(Model):

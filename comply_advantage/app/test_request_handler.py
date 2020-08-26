@@ -118,6 +118,27 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         self.assertEqual(result['errors'][0]['code'], ErrorCode.PROVIDER_UNKNOWN_ERROR.value)
         self.assertEqual(result['errors'][0]['info'], {'a': 'b'})
 
+    @responses.activate
+    def test_search_profile_missconfiguration_error(self):
+        credentials = ComplyAdvantageCredentials({
+            'api_key': 'TEST'
+        })
+
+        responses.add(
+            responses.POST,
+            SEARCH_REQUEST_URL,
+            json={'message': 'Test bad request', 'errors': {'search_profile': 'is disabled for your account'}},
+            status=400)
+
+        result = comply_advantage_search_request(
+            SEARCH_REQUEST_URL,
+            ComplyAdvantageSearchRequest.from_input_data(TEST_SCREENING_DATA, ComplyAdvantageConfig()),
+            ComplyAdvantageConfig(),
+            credentials)
+
+        self.assertEqual(result['errors'][0]['code'], ErrorCode.MISCONFIGURATION_ERROR.value)
+        self.assertEqual(result['errors'][0]['info'], {'search_profile': 'is disabled for your account'})
+
 
 def paginated_request_callback(request):
     payload = json.loads(request.body)
