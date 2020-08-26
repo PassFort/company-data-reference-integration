@@ -1,8 +1,6 @@
-import logging
-import os
-from flask import request
 from app.api.models import validate_model, GeoCodingCheck
 from loqate_international_batch_cleanse.api import RequestHandler
+
 
 def init_app(app):
     @app.route("/health", methods=['GET'])

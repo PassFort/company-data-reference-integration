@@ -8,6 +8,7 @@ from functools import wraps
 
 from .error import Error
 
+
 def validate_model(validation_model):
     '''
     Creates a Schematics Model from the request data and validates it.
@@ -58,14 +59,10 @@ class PassFortAddress(Model):
 
     @classmethod
     def from_loqate(cls, loqate_address: 'LoqateAddress'):
-        state = getattr(loqate_address, 'administrative_area', None) \
-            if loqate_address.country in ['USA', 'CAN'] \
-            else None
         premise = getattr(loqate_address, 'premise', None) or getattr(loqate_address, 'building', None)
         data = {
             "type": "STRUCTURED",
-            "country": loqate_address.country_iso3,
-            "state": state,
+            "country": getattr(loqate_address, 'country_iso3', None),
             "premise": premise,
             "route": getattr(loqate_address, 'thoroughfare', None),
             "postal_code": getattr(loqate_address, 'postal_code', None),
@@ -81,11 +78,11 @@ class PassFortAddress(Model):
 
 
 class LoqateAddress(Model):
-    country_iso3 = StringType(serialized_name="ISO3166-3")
-    country = StringType(required=True, serialized_name="Country")
+    country_iso3 = StringType(default=None, serialized_name="ISO3166-3")
+    country = StringType(default=None, serialized_name="Country")
     premise = StringType(default=None, serialized_name="Premise")
     locality = StringType(default=None, serialized_name="Locality")
-    building = StringType(default=None, serialized_name='Building')
+    building = StringType(default=None, serialized_name="Building")
     postal_code = StringType(default=None, serialized_name="PostalCode")
     administrative_area = StringType(default=None, serialized_name="AdministrativeArea")
     sub_administrative_area = StringType(default=None, serialized_name="SubAdministrativeArea")
@@ -114,20 +111,24 @@ class LoqateAddress(Model):
 
     @classmethod
     def from_raw(cls, raw_data: dict) -> 'LoqateAddress':
-        clean_data = {k:v for k,v in raw_data.items() if v is not ""}
+        clean_data = {k: v for k, v in raw_data.items() if v != ""}
 
         address = cls().import_data(clean_data)
         address.validate()
         return address
 
+
 class Config(Model):
     use_certified_dataset = BooleanType(default=False)
+
 
 class Credentials(Model):
     apikey: str = StringType(required=True)
 
+
 class CheckInput(Model):
     address: PassFortAddress = ModelType(PassFortAddress, required=True)
+
 
 class GeoCodingCheck(Model):
     config: Config = ModelType(Config, default={})
@@ -146,6 +147,7 @@ class GeoCodingCheck(Model):
             'Certify': self.config.use_certified_dataset,
         }
 
+
 geo_accuracy_statuses = {
     'P': 'POINT',
     'I': 'INTERPOLATED',
@@ -161,6 +163,7 @@ geo_accuracy_levels = {
     '1': 'ADMINISTRATIVE_AREA',
 }
 
+
 class GeoCodingMatch(LoqateAddress):
     geo_accuracy: str = StringType(serialized_name="GeoAccuracy")
 
@@ -175,6 +178,7 @@ class GeoCodingMatch(LoqateAddress):
             return {
                 'status': 'FAILED'
             }
+
 
 class GeoCodingResponse(Model):
     input_address: LoqateAddress = ModelType(LoqateAddress, required=True)
