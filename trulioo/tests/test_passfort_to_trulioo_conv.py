@@ -4,18 +4,18 @@ from trulioo.convert_data import passfort_to_trulioo_data
 
 
 def test_empty_package(client):
-    trulioo_request_data, country_code = passfort_to_trulioo_data({})
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data({})
 
     assert trulioo_request_data == {}
-    assert country_code == 'GB'
+    assert country_code is None
 
 
 def test_empty_input_data(client):
-    trulioo_request_data, country_code = passfort_to_trulioo_data(
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(
         {'input_data': None})
 
     assert trulioo_request_data == {}
-    assert country_code == 'GB'
+    assert country_code is None
 
 
 def test_single_name_without_surname(client):
@@ -28,7 +28,7 @@ def test_single_name_without_surname(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             "FirstGivenName": 'Todd'
@@ -47,7 +47,7 @@ def test_two_names_without_surname(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'FirstGivenName': 'Todd',
@@ -67,7 +67,7 @@ def test_many_names_without_surname(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'FirstGivenName': 'Todd',
@@ -87,7 +87,7 @@ def test_just_surname(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'FirstSurName': 'Stark'
@@ -104,7 +104,7 @@ def test_dob_complete(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'YearOfBirth': 2019,
@@ -123,7 +123,7 @@ def test_dob_year_month(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'YearOfBirth': 2019,
@@ -141,7 +141,7 @@ def test_dob_year(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'YearOfBirth': 2019
@@ -158,7 +158,7 @@ def test_gender(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'PersonInfo': {
             'Gender': 'M'
@@ -173,7 +173,7 @@ def test_empty_address_history(client):
             'address_history': []
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {}
     assert trulioo_request_data == output_data
 
@@ -193,7 +193,7 @@ def test_one_simple_address(client):
             ]
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, fields = passfort_to_trulioo_data(input_data)
     output_data = {
         'Location': {
             'BuildingNumber': '10',
@@ -201,6 +201,7 @@ def test_one_simple_address(client):
         }
     }
     assert trulioo_request_data == output_data
+    assert fields == {'BuildingNumber', 'PostalCode'}
 
 
 def test_one_simple_address_diff_country(client):
@@ -212,21 +213,56 @@ def test_one_simple_address_diff_country(client):
                         "country": "BRA",
                         "postal_code": "SW1A 2AA",
                         "street_number": "10",
+                        "route": "Avenida Atlantica",
                         "type": "STRUCTURED"
                     },
                 },
             ]
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, fields = passfort_to_trulioo_data(input_data)
     output_data = {
         'Location': {
-            'BuildingNumber': '10',
+            'AdditionalFields': {
+                'Address1': 'Avenida Atlantica, 10',
+            },
             'PostalCode': 'SW1A 2AA'
         }
     }
     assert trulioo_request_data == output_data
     assert country_code == 'BR'
+    assert fields == {'Address1', 'PostalCode'}
+
+def test_full_info_address_diff_country(client):
+    input_data = {
+        'input_data': {
+            'address_history': [
+                {
+                    'address': {
+                        "country": "BRA",
+                        "postal_code": "SW1A 2AA",
+                        "street_number": "10",
+                        "premise": "Some building",
+                        "subpremise": "unit 123",
+                        "route": "Avenida Atlantica",
+                        "type": "STRUCTURED"
+                    },
+                },
+            ]
+        }
+    }
+    trulioo_request_data, country_code, fields = passfort_to_trulioo_data(input_data)
+    output_data = {
+        'Location': {
+            'AdditionalFields': {
+                'Address1': 'Avenida Atlantica, 10, Some building, unit 123',
+            },
+            'PostalCode': 'SW1A 2AA'
+        }
+    }
+    assert trulioo_request_data == output_data
+    assert country_code == 'BR'
+    assert fields == {'Address1', 'PostalCode'}
 
 
 def test_one_complete_address(client):
@@ -251,7 +287,7 @@ def test_one_complete_address(client):
             ],
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, fields = passfort_to_trulioo_data(input_data)
     output_data = {
         'Location': {
             'BuildingNumber': '10',
@@ -266,6 +302,7 @@ def test_one_complete_address(client):
         }
     }
     assert trulioo_request_data == output_data
+    assert fields == set(output_data['Location'].keys())
 
 
 def test_communication_with_empty_values(client):
@@ -274,7 +311,7 @@ def test_communication_with_empty_values(client):
             'contact_details': {}
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {}
     assert trulioo_request_data == output_data
 
@@ -287,7 +324,7 @@ def test_communication_with_email(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'Communication': {
             'EmailAddress': 'test@test.com'
@@ -304,7 +341,7 @@ def test_communication_with_telephone(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'Communication': {
             'Telephone': '+44 7911 123456'
@@ -322,7 +359,7 @@ def test_communication_with_full_values(client):
             }
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'Communication': {
             'EmailAddress': 'test@test.com',
@@ -351,7 +388,7 @@ def test_driving_licence_with_full_values(client):
             }]
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {
         'DriverLicence': {
             'Number': '123456',
@@ -373,6 +410,6 @@ def test_driving_licence_with_wrong_country(client):
             }]
         }
     }
-    trulioo_request_data, country_code = passfort_to_trulioo_data(input_data)
+    trulioo_request_data, country_code, _ = passfort_to_trulioo_data(input_data)
     output_data = {}
     assert trulioo_request_data == output_data

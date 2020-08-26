@@ -48,7 +48,7 @@ TRULIOO_RESPONSE_DATA = {
 }
 
 
-@patch('api.views.passfort_to_trulioo_data', Mock(return_value=({}, 'GB')))
+@patch('api.views.passfort_to_trulioo_data', Mock(return_value=({}, 'GB', {})))
 @patch('api.views.verify', Mock(return_value={'Record': {'DatasourceResults': []}}))
 def test_ekyc_check(client):
     response = client.post(
@@ -103,7 +103,7 @@ def test_ekyc_check_wrong_method(client):
     assert response.headers['Content-Type'] == 'application/json'
 
 
-@patch('api.views.passfort_to_trulioo_data', Mock(return_value=({}, 'GB')))
+@patch('api.views.passfort_to_trulioo_data', Mock(return_value=({}, 'GB', {})))
 @patch('api.views.verify', Mock(return_value=TRULIOO_RESPONSE_DATA))
 def test_ekyc_check_with_raw_data(client):
     response = client.post(
