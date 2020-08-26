@@ -162,7 +162,7 @@ def events_from_match(client, match):
         Location({
             'type': 'BIRTH',
             'region': birth_place.region,
-            'country': birth_place.country.iso3_country_code,
+            'country': birth_place.country.iso3_country_code if birth_place.country else None,
             'city': birth_place.place_name,
         })
         for birth_place in record.person.birth_place_details.values
@@ -221,6 +221,26 @@ def run_check(request_data: ScreeningRequest):
         client = APIClient(request_data.config, request_data.credentials)
 
     search_results = client.run_search(request_data.input_data)
+
+    # Note: The number of matches here does not correspond to the number of events, but
+    # it is a best guess and the lower limit. The check has to be done here as well as the monolith,
+    # as if it is not done here the request will time out.
+    number_of_matches = len(search_results.body.matches)
+    limit = request_data.limit
+    if number_of_matches > limit:
+        return jsonify(ScreeningResponse({
+            "errors": [{
+                "code": 108,
+                "message": (
+                    "The check has returned {count} matches. A maximum of {limit} matches can be processed. "
+                    "Please log into your provider portal to see the matches. "
+                    "Contact us to see if it's possible to increase the match strength "
+                    "to reduce the number of matches."
+                ).format(count=number_of_matches, limit=limit),
+                "info": {"count": number_of_matches, "limit": limit},
+                "source": "ENGINE",
+            }],
+        }).to_primitive())
 
     events = [
         event
