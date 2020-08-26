@@ -84,13 +84,13 @@ class Ekyc_check(Resource):
             passfort_to_trulioo_data(request_json)
             response = create_demo_response(request_json)
         else:
-            trulioo_request_data, country_code = passfort_to_trulioo_data(
+            trulioo_request_data, country_code, address_fields = passfort_to_trulioo_data(
                 request_json)
             try:
                 trulioo_response_data = verify(
                     username, password, country_code, trulioo_request_data)
                 response = trulioo_to_passfort_data(
-                    trulioo_request_data, trulioo_response_data)
+                    address_fields, trulioo_response_data)
             except ConnectTimeout:
                 return {
                     'decision': 'ERROR',

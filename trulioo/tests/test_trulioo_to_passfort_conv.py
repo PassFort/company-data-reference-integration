@@ -431,13 +431,7 @@ def test_record_with_one_datasource_with_address_match(client):
         'Errors': []
     }
 
-    response_body = trulioo_to_passfort_data({
-        'Location': {
-            'BuildingNumber': '10',
-            'StreetName': 'Wellbeing street',
-            'PostalCode': 'PPC CCC',
-        },
-    }, trulioo_data)
+    response_body = trulioo_to_passfort_data({'BuildingNumber', 'StreetName', 'PostalCode'}, trulioo_data)
 
     assert response_body == {
         "decision": "FAIL",
@@ -512,19 +506,18 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
         'Errors': []
     }
 
-    response_body = trulioo_to_passfort_data({
-        'Location': {
-            'BuildingNumber': '10',
-            'BuildingName': 'My building',
-            'UnitNumber': '248',
-            'StreetName': 'Mandoline street',
-            'City': 'Aloco',
-            'Suburb': 'Deuce',
-            'County': 'Alibobo',
-            'StateProvinceCode': 'ZZZ',
-            'PostalCode': 'EPP MMM',
-        }
-    }, trulioo_data)
+    fields = set({
+        'BuildingNumber': '10',
+        'BuildingName': 'My building',
+        'UnitNumber': '248',
+        'StreetName': 'Mandoline street',
+        'City': 'Aloco',
+        'Suburb': 'Deuce',
+        'County': 'Alibobo',
+        'StateProvinceCode': 'ZZZ',
+        'PostalCode': 'EPP MMM',
+    }.keys())
+    response_body = trulioo_to_passfort_data(fields, trulioo_data)
 
     assert response_body == {
         "decision": "FAIL",
