@@ -71,7 +71,7 @@ class PersonNameValue(XmlElementModel):
 
     first_name = XmlChildContent(XmlStringType(), serialized_name='first-name', default=None)
     middle_name = XmlChildContent(XmlStringType(), serialized_name='middle-name', default=None)
-    surname = XmlChildContent(XmlStringType())
+    surname = XmlChildContent(XmlStringType(), default=None)
 
     def join(self):
         return ' '.join(name for name in [
