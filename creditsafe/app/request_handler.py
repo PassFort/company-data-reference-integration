@@ -223,11 +223,12 @@ class CreditSafeHandler:
         url = f'{self.base_url}/monitoring/notificationEvents'
 
         event_groups = []
-
+        formatted_end_date = end_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         # For each unique last_run_date in the config list, call the creditsafe endpoint to get
         # the all the events in that time period, and group the events by portfolio ID.
         for start_date in last_run_dates:
-            raw_events = self._get_events_by_last_run_date(token, url, start_date, end_date)
+            raw_events = self._get_events_by_last_run_date(
+                token, url, start_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), formatted_end_date)
 
             sorted_events = sorted(raw_events, key=lambda e: e.company.portfolio_id)
             for portfolio_id, events_iter in groupby(sorted_events, key=lambda e: e.company.portfolio_id):
@@ -265,7 +266,7 @@ class CreditSafeHandler:
             })
         response.raise_for_status()
 
-    def _get_events_by_last_run_date(self, token: str, url: str, last_run_date: datetime, end_date: datetime):
+    def _get_events_by_last_run_date(self, token: str, url: str, last_run_date: str, end_date: str):
         events = []
         has_more_events = True
         current_page = 0
