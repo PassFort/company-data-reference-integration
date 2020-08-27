@@ -5,6 +5,7 @@ import traceback
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
+from pycountry import pycountry
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
     CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest, \
@@ -194,14 +195,18 @@ def handle_auth_error(auth_error):
             ]
         ), 200
     else:
+        error_details = response_content.get('details')
+        logging.error(
+            f"Creditsafe unknown authentication error {response.status_code}: {error_details}",
+        )
         return jsonify(
             raw=response_content,
             errors=[
                 # Yes, messages come from different fields
                 # (messages, details, or error)
-                Error.provider_unhandled_error(response_content.get('details'))
+                Error.provider_unhandled_error(error_details)
             ]
-        ), 500
+        ), 200
 
 
 @app.errorhandler(CreditSafeSearchError)
@@ -210,13 +215,23 @@ def handle_search_error(search_error):
     response_content = response.json()
 
     if response.status_code == 400:
+        error_details = response_content.get('details')
+
+        if (
+            "shorter than the required minimum" in error_details
+                or "longer than the required maximum" in error_details):
+            error = Error.provider_invalid_input(error_details)
+        elif "is not a supported country" in error_details:
+            alpha2_country = error_details[:2]
+            country = pycountry.countries.get(alpha_2=alpha2_country)
+            error = Error.provider_unsupported_country(
+                country.name if country else alpha2_country
+            )
+        else:
+            error = Error.provider_unhandled_error(error_details)
         return jsonify(
             raw=response_content,
-            errors=[
-                # Yes, messages come from different fields
-                # (messages, details, or error)
-                Error.provider_unhandled_error(response_content.get('details'))
-            ]
+            errors=[error]
         ), 200
     else:
         logging.error(f'Creditsafe search error {response.status_code}: {response_content}')
@@ -279,16 +294,21 @@ def handle_monitoring_error(monitoring_error):
             raw=response_content,
             errors=[
                 Error.provider_misconfiguration_error(
-                    f"The request could not be authorised: Access forbidden")
+                    "The request could not be authorised: Access forbidden"
+                )
             ]
         )
     else:
+        error_message = response_content.get('message')
+        logging.error(
+            f"Creditsafe unknown monitoring error {response.status_code}: {error_message}"
+        )
         return jsonify(
             raw=response_content,
             errors=[
-                Error.provider_unhandled_error(response_content.get('message'))
+                Error.provider_unhandled_error(error_message)
             ]
-        ), 500
+        ), 200
 
 
 @app.errorhandler(ConnectionError)

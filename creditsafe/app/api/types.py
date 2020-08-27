@@ -66,6 +66,8 @@ class CreditSafeMonitoringError(CreditSafeError):
 
 @unique
 class ErrorCode(Enum):
+    COUNTRY_NOT_SUPPORTED = 106
+
     INVALID_INPUT_DATA = 201
     MISCONFIGURATION_ERROR = 205
 
@@ -87,11 +89,29 @@ class Error:
         }
 
     @staticmethod
+    def provider_invalid_input(e):
+        return {
+            'code': ErrorCode.INVALID_INPUT_DATA.value,
+            'source': 'API',
+            'message': 'Bad API request',
+            'info': e,
+        }
+
+    @staticmethod
+    def provider_unsupported_country(country):
+        return {
+            'code': ErrorCode.COUNTRY_NOT_SUPPORTED.value,
+            'message': "Country '{}' is not supported by the provider".format(country),
+            'info': {'country': country}
+        }
+
+    @staticmethod
     def provider_unhandled_error(provider_message: str):
         return {
             'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
             'source': 'PROVIDER',
-            'message': "Provider Error: {!r} while running 'Creditsafe' service.".format(provider_message),
+            'message': f"The provider returned an error when running this check: '{provider_message}'"
+                       + " while running 'Creditsafe' service. Please get in touch for more information",
             'info': {
                 'provider': 'Creditsafe',
                 'original_error': provider_message,
