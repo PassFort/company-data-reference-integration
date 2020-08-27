@@ -341,6 +341,7 @@ class ScreeningRequest(Model):
     credentials = ModelType(WatchlistAPICredentials, required=True)
     input_data = ModelType(InputData, required=True)
     is_demo = BooleanType(default=False)
+    limit = IntType(default=100)
 
 
 @unique
