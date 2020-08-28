@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: integrations-bvd-v4
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  selector:
+    matchLabels:
+      passfort: integrations-bvd-v4
+  progressDeadlineSeconds: 240
+  template:
+    metadata:
+      name: integrations-bvd-v4
+      labels:
+        passfort: integrations-bvd-v4
+    spec:
+      containers:
+      - name: integrations-bvd-v4
+        image: {container_uri}
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "128Mi"
+        ports:
+        - containerPort: 8001
+        env:
+        - name: CLUSTER
+          value: {cluster}
+        - name: SENTRY_URL
+          value: {sentry_url}
+        readinessProbe:
+          httpGet:
+            path: '/health'
+            port: 8001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: integrations-bvd-v4
+spec:
+  ports:
+    - name: http
+      port: 8001
+  selector:
+    passfort: integrations-bvd-v4
