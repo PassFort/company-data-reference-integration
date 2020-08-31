@@ -286,13 +286,13 @@ class ComplyAdvantageSearchRequest:
         self.search_format = search_format
 
     @classmethod
-    def build_request(cls, search_term, fuzziness, type_filter, birth_year=None, nationality=None):
+    def build_request(cls, search_term, fuzziness, type_filter, birth_year=None, nationality=None, search_profile=None):
         base_format = {
             "search_term": search_term,
             "fuzziness": fuzziness,
             "filters": {
                 "types": type_filter
-            },
+            } if not search_profile else {},
             "share_url": True,
         }
         if birth_year:
@@ -303,6 +303,9 @@ class ComplyAdvantageSearchRequest:
                 base_format['filters']['country_codes'] = [country.alpha_2]
             else:
                 logger.warning('Can not understand nationality: {nationality}')
+        if search_profile:
+            base_format['search_profile'] = search_profile
+
         return cls(base_format)
 
     @classmethod
@@ -322,7 +325,14 @@ class ComplyAdvantageSearchRequest:
             if input_data.personal_details.nationality:
                 nationality = input_data.personal_details.nationality
 
-        return cls.build_request(input_data.search_term, config.fuzziness, type_filter, birth_year, nationality)
+        return cls.build_request(
+            input_data.search_term,
+            config.fuzziness,
+            type_filter,
+            birth_year,
+            nationality,
+            config.search_profile
+        )
 
     def paginate(self, offset, limit):
         self.search_format['offset'] = offset
