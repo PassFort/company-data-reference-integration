@@ -212,6 +212,54 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn('Parameters not supported', result.json['errors'][0]['message'])
 
+    @responses.activate
+    def test_search_returns_invalid_input_from_creditsafe(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=100',
+            json={'details': 'shorter than the required minimum lenght of'},
+            status=400)
+
+        result = self.app.post(
+            '/search',
+            json=TEST_SEARCH_REQUEST
+        )
+
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json['errors'][0]['code'], 201)  # invalid input
+
+    @responses.activate
+    def test_search_returns_unsupported_country(self):
+        responses.add(
+            responses.POST,
+            'https://connect.creditsafe.com/v1/authenticate',
+            json={'token': 'test'},
+            status=200)
+
+        responses.add(
+            responses.GET,
+            'https://connect.creditsafe.com/v1/companies?name=test&countries=GB&pageSize=100',
+            json={'details': 'ZA is not a supported country'},
+            status=400)
+
+        result = self.app.post(
+            '/search',
+            json=TEST_SEARCH_REQUEST
+        )
+        print(result)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json['errors'][0]['code'], 106)
+        self.assertEqual(
+            result.json['errors'][0]['message'],
+            "Country 'South Africa' is not supported by the provider"
+        )
+
 
 class TestReport(unittest.TestCase):
     def setUp(self):
@@ -248,7 +296,7 @@ class TestReport(unittest.TestCase):
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertIn('Provider Error', result.json['errors'][0]['message'])
+        self.assertIn('The provider returned an error when running this check: ', result.json['errors'][0]['message'])
 
     @responses.activate
     def test_no_access_to_reports(self):
@@ -609,8 +657,11 @@ class TestMonitoring(unittest.TestCase):
             json=TEST_PORTFOLIO_REQUEST
         )
 
-        self.assertEqual(portfolio_response.status_code, 500)
-        self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", portfolio_response.json['errors'][0]['message'])
+        self.assertEqual(portfolio_response.status_code, 200)
+        self.assertIn(
+            "The provider returned an error when running this check: 'Unhandled error' while running 'Creditsafe' service. Please get in touch for more information",
+            portfolio_response.json['errors'][0]['message']
+        )
 
     @responses.activate
     def test_enable_monitoring_existing_company(self):
@@ -646,9 +697,9 @@ class TestMonitoring(unittest.TestCase):
             json=TEST_MONITORING_REQUEST
         )
 
-        self.assertEqual(monitoring_response.status_code, 500)
-        self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", monitoring_response.json['errors'][0]['message'])
-
+        self.assertEqual(monitoring_response.status_code, 200)
+        self.assertIn("The provider returned an error when running this check: 'Unhandled error' while running 'Creditsafe' service. Please get in touch for more information",
+            monitoring_response.json['errors'][0]['message'])
 
     @responses.activate
     def test_enabled_monitoring_unhandled_error(self):
@@ -662,8 +713,11 @@ class TestMonitoring(unittest.TestCase):
             json=TEST_MONITORING_REQUEST
         )
 
-        self.assertEqual(monitoring_response.status_code, 500)
-        self.assertIn("Provider Error: 'Unhandled error' while running 'Creditsafe' service.", monitoring_response.json['errors'][0]['message'])
+        self.assertEqual(monitoring_response.status_code, 200)
+        self.assertIn(
+            "The provider returned an error when running this check: 'Unhandled error' while running 'Creditsafe' service. Please get in touch for more information",
+            monitoring_response.json['errors'][0]['message']
+        )
 
     @responses.activate
     def test_get_company_bad_request(self):
@@ -754,7 +808,6 @@ class TestGetMonitoringEvents(unittest.TestCase):
             'monitoring_configs': monitoring_configs,
             'callback_url': 'http://flask:9090/creditsafe/ongoing_monitoring'
         }
-
 
     def mock_creditsafe_monitoring_pagination_events_response(self, num_events):
         num_of_pages = math.ceil(num_events / 1000)
@@ -1386,9 +1439,9 @@ class TestGetMonitoringEvents(unittest.TestCase):
             json=self.get_mock_request()
         )
 
-        self.assertEqual(monitoring_events_response.status_code, 500)
+        self.assertEqual(monitoring_events_response.status_code, 200)
         self.assertIn(
-            "Provider Error: 'Unhandled error' while running 'Creditsafe' service.",
+            "The provider returned an error when running this check: 'Unhandled error' while running 'Creditsafe' service. Please get in touch for more information",
             monitoring_events_response.json['errors'][0]['message']
         )
 
