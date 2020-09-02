@@ -1,9 +1,13 @@
 import os
 import logging
-from flask import Flask, request
-from raven.contrib.flask import Sentry
+import traceback
 
+from flask import Flask, request, jsonify
+from raven.contrib.flask import Sentry
+from requests.exceptions import ConnectionError, Timeout
 from app.api import routes
+from app.api.error import Error
+
 
 class DataDogWrapper:
     def __init__(self, mock=True):
@@ -30,7 +34,6 @@ def initialize_datadog():
         return DataDogWrapper(mock=False)
     except Exception:
         return DataDogWrapper(mock=True)
-
 
 
 def create_app():
@@ -61,5 +64,14 @@ def create_app():
         app.dd.increment('passfort.services.loqate.api_call', tags=tags)
         return response
 
+    @app.errorhandler(Timeout)
+    def timeout_error(error):
+        logging.error(traceback.format_exc())
+        return jsonify(errors=[Error.provider_connection_error(error)]), 200
+
+    @app.errorhandler(ConnectionError)
+    def connection_error(error):
+        logging.error(traceback.format_exc())
+        return jsonify(errors=[Error.provider_connection_error(error)]), 200
 
     return app
