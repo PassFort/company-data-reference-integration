@@ -6,13 +6,14 @@ verify_ssl = true
 mypy = "==0.511"
 
 [packages]
-gunicorn = "==19.5.0"
-flask = "==0.12.5"
-requests = "*"
-raven = {extras = ["flask"]}
-python-json-logger = "*"
-mock = "*"
-python-dateutil = "*"
-pycountry = "*"
 coverage = "*"
 codecov = "*"
+flask = "==0.12.5"
+gunicorn = "==19.5.0"
+mock = "*"
+python-json-logger = "*"
+python-dateutil = "*"
+pycountry = "*"
+requests = "*"
+raven = {extras = ["flask"]}
+schematics = "==2.1.0'
