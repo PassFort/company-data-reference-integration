@@ -19,6 +19,7 @@ integrations = {
     'vsure': './vsure',
     'iovation': './iovation',
     'bvd': './bvd',
+    'bvd_v4': './bvd_v4',
     'worldcheck': './worldcheck',
     'trulioo': './trulioo',
     'equifax_au': './equifax_au',

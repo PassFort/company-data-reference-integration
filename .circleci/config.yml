@@ -34,6 +34,9 @@ parameters:
   bvd:
     type: boolean
     default: false
+  bvd_v4:
+    type: boolean
+    default: false
   worldcheck:
     type: boolean
     default: false
@@ -597,6 +600,45 @@ workflows:
           requires:
             - e2e_bvd
             - unit_bvd
+          filters:
+              branches:
+                  only:
+                    - master
+
+  bvd_v4:
+    when: << pipeline.parameters.bvd_v4 >>
+    jobs:
+      - build:
+          name: build_bvd_v4
+          package: bvd_v4
+      - unit:
+          name: unit_bvd_v4
+          package: bvd_v4
+          requires:
+            - build_bvd_v4
+      - e2e:
+          name: e2e_bvd_v4
+          package: bvd_v4
+          requires:
+            - build_bvd_v4
+      - deploy_common:
+          name: deploy_bvd_v4_staging
+          package: bvd_v4
+          to: staging
+          requires:
+            - e2e_bvd_v4
+            - unit_bvd_v4
+          filters:
+              branches:
+                only:
+                  - staging
+      - deploy_common:
+          name: deploy_bvd_v4_production
+          package: bvd_v4
+          to: production
+          requires:
+            - e2e_bvd_v4
+            - unit_bvd_v4
           filters:
               branches:
                   only:
