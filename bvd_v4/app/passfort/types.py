@@ -1,5 +1,6 @@
 from enum import Enum
 
+from pycountry import countries
 from schematics import Model
 from schematics.types import (
     FloatType,
@@ -16,6 +17,10 @@ from schematics.types import (
 class BaseModel(Model):
     class Options:
         serialize_when_none = False
+
+
+class Error(BaseModel):
+    pass
 
 
 class TaxIdType(Enum):
@@ -157,15 +162,52 @@ class CompanyData(BaseModel):
         )
 
 
-class Credentials(Model):
+class Credentials(BaseModel):
     key = StringType(required=True)
 
 
-class RegistryInput(Model):
+class RegistryInput(BaseModel):
     country_of_incorporation = StringType(min_length=3, max_length=3, required=True)
     number = StringType(required=True)
 
 
-class RegistryCheckRequest(Model):
-    input_data = ModelType(RegistryInput)
-    credentials = ModelType(Credentials)
+class SearchInput(BaseModel):
+    country = StringType(min_length=3, max_length=3, required=True)
+    name = StringType(required=True)
+    state = StringType()
+    number = StringType()
+
+
+class SearchRequest(BaseModel):
+    credentials = ModelType(Credentials, required=True)
+    input_data = ModelType(SearchInput, required=True)
+
+
+class RegistryCheckRequest(BaseModel):
+    credentials = ModelType(Credentials, required=True)
+    input_data = ModelType(RegistryInput, required=True)
+
+
+class Candidate(BaseModel):
+    bvd_id = StringType()
+    # TODO: how do we get bvd9 from match endpoint
+    bvd9 = StringType()
+    name = StringType()
+    number = StringType()
+    country = StringType(min_length=3, max_length=3)
+    # TODO: how do we get status from match endpoint
+    status = StringType()
+
+    def from_bvd(search_data):
+        match_data = search_data.match.zero
+        return Candidate({
+            'bvd_id': search_data.bvd_id,
+            'name': match_data.name,
+            'number': match_data.national_id,
+            'country': countries.get(alpha_2=match_data.country).alpha_3
+        })
+
+
+class SearchResponse(BaseModel):
+    output_data = ListType(ModelType(Candidate))
+    errors = ListType(ModelType(Error))

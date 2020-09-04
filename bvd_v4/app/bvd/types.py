@@ -89,6 +89,29 @@ class Data(Model):
         )
 
 
+class Match(Model):
+    name = StringType(serialized_name="NAME", required=True)
+    name_international = StringType(serialized_name="NAME_INTERNATIONAL")
+    address_type = StringType(serialized_name="ADDRESS_TYPE")
+    address = StringType(serialized_name="ADDRESS", required=True)
+    postcode = StringType(serialized_name="POSTCODE", required=True)
+    city = StringType(serialized_name="CITY", required=True)
+    country = StringType(serialized_name="COUNTRY", required=True)
+    state = StringType(serialized_name='STATE')
+    national_id = StringType(serialized_name="NATIONAL_ID")
+    hint = StringType(serialized_name="HINT")
+    score = FloatType(serialized_name="SCORE")
+
+
+class WrappedMatch(Model):
+    zero = ModelType(Match, serialized_name="0", required=True)
+
+
+class SearchData(Model):
+    bvd_id = StringType(serialized_name="BVDID", required=True)
+    match = ModelType(WrappedMatch, serialized_name="MATCH", required=True)
+
+
 class DatabaseInfo(Model):
     version_number = StringType(serialized_name="VersionNumber")
     update_date = StringType(serialized_name="UpdateDate")
@@ -103,6 +126,11 @@ class SearchSummary(Model):
     total_records_found = IntType(serialized_name="TotalRecordsFound", required=True)
 
 
-class SearchResult(Model):
+class DataResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = ListType(ModelType(Data), serialized_name="Data")
+
+
+class SearchResult(Model):
+    search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
+    data = ListType(ModelType(SearchData), serialized_name="Data")

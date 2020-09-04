@@ -1,10 +1,13 @@
 import json
 import requests
+
+from pycountry import countries
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 from app.bvd.datasets import DataSet
-from app.bvd.types import SearchResult
+from app.bvd.types import DataResult, SearchResult
+from app.validation import response_model
 
 
 def requests_retry_session(
@@ -26,21 +29,52 @@ class Client:
         self.session = requests_retry_session()
         self.base_url = "https://Orbis.bvdinfo.com/api/orbis/"
 
-    def fetch_data(self, bvd_id, dataset=DataSet.ALL):
-        field_set = dataset.fields
-
-        response = self.session.get(
+    @response_model(SearchResult)
+    def search(self, name, country, state=None, company_number=None):
+        return self.session.get(
             f"{self.base_url}/Companies/data",
-            headers={
-                "Content-Type": "application/json",
-                "ApiToken": self.token,
-            },
+            headers={"Content-Type": "application/json", "ApiToken": self.token},
             params={
-                "QUERY": json.dumps({
-                    "WHERE": [{"BvDID": bvd_id}],
-                    "SELECT": field_set
-                })
-            }
+                "QUERY": json.dumps(
+                    {
+                        "WHERE": [
+                            {
+                                "MATCH": {
+                                    "Criteria": {
+                                        "Name": name,
+                                        "Country": countries.get(
+                                            alpha_3=country
+                                        ).alpha_2,
+                                    }
+                                }
+                            }
+                        ],
+                        "SELECT": [
+                            "BVDID",
+                            "MATCH.NAME",
+                            "MATCH.NAME_INTERNATIONAL",
+                            "MATCH.ADDRESS",
+                            "MATCH.POSTCODE",
+                            "MATCH.CITY",
+                            "MATCH.COUNTRY",
+                            "MATCH.NATIONAL_ID",
+                            "MATCH.STATE",
+                            "MATCH.ADDRESS_TYPE",
+                            "MATCH.HINT",
+                            "MATCH.SCORE",
+                        ],
+                    }
+                )
+            },
         )
-        json_data = response.json()
-        return SearchResult().import_data(json_data)
+
+    @response_model(DataResult)
+    def fetch_data(self, bvd_id, data_set=DataSet.ALL):
+        return self.session.get(
+            f"{self.base_url}/Companies/data",
+            headers={"Content-Type": "application/json", "ApiToken": self.token},
+            params={
+                "QUERY": json.dumps({"WHERE": [{"BvDID": bvd_id}], "SELECT": data_set.fields})
+            },
+        )
+
