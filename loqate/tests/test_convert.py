@@ -16,7 +16,7 @@ mock_input = {
             "premise": "Imperial House 12-14",
             "route": "Exchange Street",
             "state_province": "",
-            "street_number": "",
+            "street_number": "50",
             "subpremise": "2"
         },
         "postal_code": "AB11 6PH",
@@ -24,7 +24,7 @@ mock_input = {
         "premise": "Imperial House 12-14",
         "route": "Exchange Street",
         "state_province": "",
-        "street_number": "",
+        "street_number": "50",
         "subpremise": "2"
     }
 }
@@ -69,7 +69,7 @@ def test_passfort_to_loqate():
         "ISO3166-3": "GBR",
         "Country": "GBR",
         "SubAdministrativeArea": "Aberdeen City",
-        "Thoroughfare": "Exchange Street"
+        "Thoroughfare": "50 Exchange Street"
     }
     actual = LoqateAddress.from_passfort(input.address)
 

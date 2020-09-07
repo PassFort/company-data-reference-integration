@@ -50,6 +50,7 @@ class PassFortAddress(Model):
     route = StringType(default=None)
     locality = StringType(default=None)
     postal_code = StringType(default=None)
+    street_number = StringType(default=None)
     county = StringType(default=None)
     latitude = FloatType(default=None)
     longitude = FloatType(default=None)
@@ -95,6 +96,13 @@ class LoqateAddress(Model):
 
     @classmethod
     def from_passfort(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
+        thoroughfare = ' '.join(
+            filter(None, [
+                getattr(passfort_address, 'street_number', None),
+                getattr(passfort_address, 'route', None)
+            ])
+        )
+
         data = {
             "ISO3166-3": passfort_address.country,
             "Country": passfort_address.country,
@@ -103,7 +111,8 @@ class LoqateAddress(Model):
             "PostalCode": getattr(passfort_address, 'postal_code', None),
             "AdministrativeArea": getattr(passfort_address, 'state', None),
             "SubAdministrativeArea": getattr(passfort_address, 'county', None),
-            "Thoroughfare": getattr(passfort_address, 'route', None),
+            "Thoroughfare": thoroughfare or None,
+
         }
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
