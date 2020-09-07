@@ -1,4 +1,5 @@
 from schematics import Model
+from schematics.exceptions import ValidationError
 from schematics.types import (
     FloatType,
     StringType,
@@ -14,13 +15,13 @@ from schematics.types import (
 class Data(Model):
     # Idenification
     bvd_id = StringType(serialized_name="BVD_ID_NUMBER", required=True)
-    trade_register_number = StringType(serialized_name="TRADE_REGISTER_NUMBER")
+    trade_register_number = ListType(StringType(), serialized_name="TRADE_REGISTER_NUMBER")
     bvd9 = StringType(serialized_name="BVD9", required=True)
-    name = StringType(serialized_name="NAME")
+    name = StringType(serialized_name="NAME", default=None)
     previous_names = ListType(StringType(), serialized_name="PREVIOUS_NAME", required=True)
     previous_dates = ListType(DateTimeType(), serialized_name="PREVIOUS_NAME_DATE", required=True)
     isin = StringType(serialized_name="ISIN")
-    lei = StringType(serialized_name="LEI", required=True)
+    lei = StringType(serialized_name="LEI")
     vat = StringType(serialized_name="VAT")
     eurovat = StringType(serialized_name="EUROVAT")
     irs = StringType(serialized_name="IRS")
@@ -133,4 +134,4 @@ class DataResult(Model):
 
 class SearchResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
-    data = ListType(ModelType(SearchData), serialized_name="Data")
+    data = ListType(ModelType(SearchData), serialized_name="Data", required=True)

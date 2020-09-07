@@ -6,6 +6,7 @@ from schematics.types import (
     FloatType,
     StringType,
     DateTimeType,
+    DictType,
     ListType,
     IntType,
     BaseType,
@@ -19,8 +20,24 @@ class BaseModel(Model):
         serialize_when_none = False
 
 
+class ErrorCode(Enum):
+    PROVIDER_UNKNOWN_ERROR = 303
+
+
 class Error(BaseModel):
-    pass
+    source = StringType()
+    code = IntType()
+    message = StringType()
+    info = BaseType()
+
+    # TODO: What does this look like in other integrations
+    def bad_response(cause):
+        return Error({
+            "source": 'PROVIDER',
+            "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+            "message": "Provider returned data in an unexpected format",
+            "info": cause,
+        })
 
 
 class TaxIdType(Enum):
@@ -75,15 +92,15 @@ class ContactDetails(BaseModel):
 
     def from_bvd(bvd_data):
         return ContactDetails({
-            'url': next(iter(bvd_data.website), None),
-            'phone_number': next(iter(bvd_data.phone_number), None),
-            'email': next(iter(bvd_data.email), None),
+            'url': next(iter(bvd_data.website or []), None),
+            'phone_number': next(iter(bvd_data.phone_number or []), None),
+            'email': next(iter(bvd_data.email or []), None),
         })
 
 
 class CompanyMetadata(BaseModel):
     bvd_id = StringType(required=True)
-    number = StringType(required=True)
+    number = ListType(StringType(), required=True)
     bvd9 = StringType(required=True)
     isin = StringType()
     lei = StringType(required=True)
@@ -166,16 +183,18 @@ class Credentials(BaseModel):
     key = StringType(required=True)
 
 
+# TODO: ensure one of bvd_id and number is present
 class RegistryInput(BaseModel):
     country_of_incorporation = StringType(min_length=3, max_length=3, required=True)
-    number = StringType(required=True)
+    bvd_id = StringType(default=None)
+    number = StringType(default=None)
 
 
 class SearchInput(BaseModel):
     country = StringType(min_length=3, max_length=3, required=True)
     name = StringType(required=True)
-    state = StringType()
-    number = StringType()
+    state = StringType(default=None)
+    number = StringType(default=None)
 
 
 class SearchRequest(BaseModel):
@@ -211,3 +230,11 @@ class Candidate(BaseModel):
 class SearchResponse(BaseModel):
     output_data = ListType(ModelType(Candidate))
     errors = ListType(ModelType(Error))
+
+
+# TODO: surface raw response
+class CheckResponse(BaseModel):
+    output_data = ModelType(CompanyData, serialize_when_none=True)
+    errors = ListType(ModelType(Error), serialize_when_none=True, default=list)
+    price = IntType()
+    raw = BaseType()
