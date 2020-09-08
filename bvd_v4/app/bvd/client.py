@@ -81,7 +81,9 @@ class Client:
                         ],
                         "SELECT": [
                             "BVDID",
+                            "MATCH.BVD9",
                             "MATCH.NAME",
+                            "MATCH.STATUS",
                             "MATCH.NAME_INTERNATIONAL",
                             "MATCH.ADDRESS",
                             "MATCH.POSTCODE",

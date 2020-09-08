@@ -209,27 +209,28 @@ class RegistryCheckRequest(BaseModel):
 
 class Candidate(BaseModel):
     bvd_id = StringType()
-    # TODO: how do we get bvd9 from match endpoint
     bvd9 = StringType()
     name = StringType()
     number = StringType()
     country = StringType(min_length=3, max_length=3)
-    # TODO: how do we get status from match endpoint
     status = StringType()
 
     def from_bvd(search_data):
         match_data = search_data.match.zero
         return Candidate({
             'bvd_id': search_data.bvd_id,
+            'bvd9': match_data.bvd9,
             'name': match_data.name,
             'number': match_data.national_id,
-            'country': countries.get(alpha_2=match_data.country).alpha_3
+            'country': countries.get(alpha_2=match_data.country).alpha_3,
+            'status': match_data.status,
         })
 
 
 class SearchResponse(BaseModel):
     output_data = ListType(ModelType(Candidate))
     errors = ListType(ModelType(Error))
+    raw = BaseType()
 
 
 # TODO: surface raw response

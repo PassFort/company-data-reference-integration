@@ -66,8 +66,8 @@ def registry_check(request):
             {
                 "output_data": data,
                 "errors": client.errors,
-                "price": 0,  # TODO: can we remove this?
                 "raw": client.raw_responses,
+                "price": 0,  # TODO: can we remove this?
             }
         ).to_primitive()
     )
@@ -98,6 +98,7 @@ def company_search(request):
                     key=lambda hit: hit.match.zero.score,
                 )
             ] if search_results else [],
-            "errors": client.errors
+            "errors": client.errors,
+            "raw": client.raw_responses,
         }).to_primitive()
     )
