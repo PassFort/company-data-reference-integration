@@ -12,35 +12,34 @@ MORTALITY_DATABASE = 'Death Register'
 
 
 def passfort_to_capita_data(passfort_data):
-    
+
     capita_pkg  = {}
 
     if passfort_data.get('input_data'):
         person = {}
-        #Check Personal details 
+        #Check Personal details
         if passfort_data['input_data'].get('personal_details'):
             #Check name
             if passfort_data['input_data']['personal_details'].get('name'):
                 given_names = passfort_data['input_data']['personal_details']['name'].get('given_names')
-                
+
                 if given_names:
                     person['Forename'] = given_names[0]
                     if given_names[1:]:
                         person['Secondname'] = ' '.join(given_names[1:])
                 if passfort_data['input_data']['personal_details']['name'].get('family_name'):
                     person['Surname'] = passfort_data['input_data']['personal_details']['name']['family_name']
-                
+
             #Check date of birthday
             if passfort_data['input_data']['personal_details'].get('dob'):
                 date_of_birth = passfort_data['input_data']['personal_details']['dob']
-                    
+
                 person['Date_Of_Birth'] = date_of_birth
-        
+
             # Check Personal Number
-            if passfort_data['input_data']['personal_details'].get('national_identity_number'):
-                personal_number = passfort_data['input_data']['personal_details']['national_identity_number']
-                person['PersonalNumber'] = personal_number
-            
+            if passfort_data['input_data']['personal_details'].get('national_identity_number', {}).get("GBR", None):
+                person['PersonalNumber'] = passfort_data['input_data']['personal_details']['national_identity_number']['GBR']
+
             #Check gender
             if passfort_data['input_data']['personal_details'].get('gender'):
                 person['Gender'] = passfort_data['input_data']['personal_details']['gender'].upper()
@@ -72,7 +71,7 @@ def passfort_to_capita_data(passfort_data):
                     address['AddressLine2'] = address_to_check['locality']
 
                 if address_to_check.get('county'):
-                    address['County'] = address_to_check['county']        
+                    address['County'] = address_to_check['county']
 
                 if address_to_check.get('postal_code'):
                     address['PostCode'] = address_to_check['postal_code']
@@ -132,17 +131,17 @@ def capita_to_passfort_data(capita_response_data):
 
     # elif capita_response_data['status'] in [408, 504]:
     #     response_body['errors'].append({
-    #         'code': 403, 
+    #         'code': 403,
     #         'message': 'Provider Error: TIMEOUT'})
     #     response_body['output_data']['decision'] = 'ERROR'
 
-    if capita_response_data['status'] > 400:          
+    if capita_response_data['status'] > 400:
         response_body['errors'].append({
-                'code': 303, 
+                'code': 303,
                 'message': f"Provider Error: UNKNOWN ERROR: {capita_response_data['body']}"})
         response_body['output_data']['decision'] = 'ERROR'
-    
-    
+
+
     if capita_response_data['status'] == 200:
         capita_data = capita_response_data['body']
         if capita_data:
@@ -156,7 +155,7 @@ def capita_to_passfort_data(capita_response_data):
 
                 if capita_data['Response'].get('Error'):
                     response_body['output_data']['decision'] = 'ERROR'
-                    
+
                     error_code = capita_data['Response']['Error']
 
                     error_list  = {
@@ -186,7 +185,7 @@ def capita_to_passfort_data(capita_response_data):
                             "10110100"
                         ]:
                         response_body['errors'].append({
-                                'code': 302, 
+                                'code': 302,
                                 'message': f'Provider Error: {error_list[error_code]}'})
 
                     elif error_code in [
@@ -194,12 +193,12 @@ def capita_to_passfort_data(capita_response_data):
                             "10140101"
                         ]:
                         response_body['errors'].append({
-                            'code': 101, 
+                            'code': 101,
                             'message': f'Provider Error: {error_list[error_code]}'})
 
-                    elif error_list.get(error_code):          
+                    elif error_list.get(error_code):
                         response_body['errors'].append({
-                                'code': 303, 
+                                'code': 303,
                                 'message': f'Provider Error: {error_list[error_code]}'})
 
                 else:
@@ -210,7 +209,7 @@ def capita_to_passfort_data(capita_response_data):
 
                                 database_name = result['CheckName'].split('(')[0].strip()
                                 try:
-                                    match = next(filter(lambda m: m['database_name'] == database_name, 
+                                    match = next(filter(lambda m: m['database_name'] == database_name,
                                             response_body['output_data']['electronic_id_check']['matches']))
                                 except StopIteration:
                                     match = {
@@ -239,7 +238,7 @@ def capita_to_passfort_data(capita_response_data):
 
                     except StopIteration:
                         response_body['errors'].append({
-                            'code': 303, 
+                            'code': 303,
                             'message': f"Provider Error: Stage 1 section not found"})
 
                     # check mortality
