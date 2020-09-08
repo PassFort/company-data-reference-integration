@@ -20,6 +20,8 @@ app = Flask(__name__)
 sentry_url = os.environ.get("SENTRY_URL")
 if sentry_url:
     sentry = Sentry(app, logging=True, level=logging.ERROR, dsn=sentry_url)
+else:
+    logging.warning("SENTRY_URL not provided")
 
 
 @app.route("/health")
