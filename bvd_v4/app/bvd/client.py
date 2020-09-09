@@ -27,6 +27,25 @@ def requests_retry_session(
     return session
 
 
+def prune_nones(value):
+    if isinstance(value, dict):
+        return {
+            k: prune_nones(v)
+            for k, v
+            in value.items()
+            if v is not None
+        }
+    if isinstance(value, list):
+        return [
+            prune_nones(v)
+            for v
+            in value
+            if v is not None
+        ]
+    else:
+        return value
+
+
 class Client:
     def __init__(self, token):
         self.token = token
@@ -40,7 +59,8 @@ class Client:
         response = self.session.get(*args, **kwargs)
         self.raw_responses.append(response.json())
         try:
-            model = response_model().import_data(response.json(), apply_defaults=True)
+            data = prune_nones(response.json())
+            model = response_model().import_data(data, apply_defaults=True)
             model.validate()
             return model
         except DataError as e:

@@ -92,9 +92,9 @@ class ContactDetails(BaseModel):
 
     def from_bvd(bvd_data):
         return ContactDetails({
-            'url': next(iter(bvd_data.website or []), None),
-            'phone_number': next(iter(bvd_data.phone_number or []), None),
-            'email': next(iter(bvd_data.email or []), None),
+            'url': next(iter(bvd_data.website), None),
+            'phone_number': next(iter(bvd_data.phone_number), None),
+            'email': next(iter(bvd_data.email), None),
         })
 
 
@@ -120,6 +120,8 @@ class CompanyMetadata(BaseModel):
     description = StringType()
 
     def from_bvd(bvd_data):
+        print(bvd_data.previous_names)
+        print(bvd_data.previous_dates)
         return CompanyMetadata(
             {
                 "bvd_id": bvd_data.bvd_id,
