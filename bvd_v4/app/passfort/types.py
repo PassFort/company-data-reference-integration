@@ -1,3 +1,4 @@
+import logging
 from enum import Enum
 
 from pycountry import countries
@@ -13,6 +14,14 @@ from schematics.types import (
     ModelType,
     BooleanType,
 )
+
+
+def country_alpha_2_to_3(alpha_2):
+    try:
+        return countries.get(alpha_2=alpha_2).alpha_3
+    except (LookupError, AttributeError):
+        logging.error(f"BvdD returned unrecognised alpha 2 country code {alpha_2}")
+        return None
 
 
 class BaseModel(Model):
@@ -120,8 +129,6 @@ class CompanyMetadata(BaseModel):
     description = StringType()
 
     def from_bvd(bvd_data):
-        print(bvd_data.previous_names)
-        print(bvd_data.previous_dates)
         return CompanyMetadata(
             {
                 "bvd_id": bvd_data.bvd_id,
@@ -224,7 +231,7 @@ class Candidate(BaseModel):
             'bvd9': match_data.bvd9,
             'name': match_data.name,
             'number': match_data.national_id,
-            'country': countries.get(alpha_2=match_data.country).alpha_3,
+            'country': country_alpha_2_to_3(match_data.country),
             'status': match_data.status,
         })
 

@@ -14,17 +14,12 @@ from app.bvd.types import DataResult, SearchResult
 from app.passfort.types import Error
 
 
-def requests_retry_session(
-    retries=3, backoff_factor=0.3, session=None,
-):
-    session = session or requests.Session()
-    retry = Retry(
-        total=retries, read=retries, connect=retries, backoff_factor=backoff_factor
-    )
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount("https://", adapter)
-    session.timeout = 10
-    return session
+def country_alpha_3_to_2(alpha_3):
+    try:
+        return countries.get(alpha_3=alpha_3).alpha_2
+    except (LookupError, AttributeError):
+        logging.error(f"Received invalid alpha 3 code from PassFort {alpha_3}")
+        return None
 
 
 def prune_nones(value):
@@ -44,6 +39,19 @@ def prune_nones(value):
         ]
     else:
         return value
+
+
+def requests_retry_session(
+    retries=3, backoff_factor=0.3, session=None,
+):
+    session = session or requests.Session()
+    retry = Retry(
+        total=retries, read=retries, connect=retries, backoff_factor=backoff_factor
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    session.timeout = 10
+    return session
 
 
 class Client:
@@ -89,9 +97,7 @@ class Client:
                                         for key, value in {
                                             "Name": name,
                                             "NationalId": company_number,
-                                            "Country": countries.get(
-                                                alpha_3=country
-                                            ).alpha_2,
+                                            "Country": country_alpha_3_to_2(country),
                                             "State": state,
                                         }.items()
                                         if value is not None
