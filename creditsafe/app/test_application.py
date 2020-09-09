@@ -259,6 +259,7 @@ class TestHandleSearchRequestErrors(unittest.TestCase):
             result.json['errors'][0]['message'],
             "Country 'South Africa' is not supported by the provider"
         )
+        self.assertEqual(result.json['errors'][0]['info']['country'], 'ZAF')
 
 
 class TestReport(unittest.TestCase):

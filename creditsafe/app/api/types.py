@@ -98,11 +98,14 @@ class Error:
         }
 
     @staticmethod
-    def provider_unsupported_country(country):
+    def provider_unsupported_country(country_alpha_2):
+        country = pycountry.countries.get(alpha_2=country_alpha_2)
+        alpha_3 = country.alpha_3 if country else None
+        country_name = country.name if country else None
         return {
             'code': ErrorCode.COUNTRY_NOT_SUPPORTED.value,
-            'message': "Country '{}' is not supported by the provider".format(country),
-            'info': {'country': country}
+            'message': "Country '{}' is not supported by the provider".format(country_name),
+            'info': {'country': alpha_3}
         }
 
     @staticmethod
