@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 from copy import deepcopy
 from capita.convert_data import passfort_to_capita_data
 
@@ -6,7 +6,7 @@ def test_empty_package(client):
     capita_request_data = passfort_to_capita_data({})
 
     assert capita_request_data == {}
-    
+
 def test_empty_input_data(client):
     capita_request_data = passfort_to_capita_data({'input_data':None})
     assert capita_request_data == {}
@@ -165,7 +165,7 @@ def test_one_simple_address(client):
         'input_data': {
             'address_history':[
                 {
-                    "address": {    
+                    "address": {
                         "postal_code": "12345",
                         "subpremise": "10",
                         "type": "STRUCTURED"
