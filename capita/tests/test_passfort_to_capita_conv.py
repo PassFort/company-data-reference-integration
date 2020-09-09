@@ -319,36 +319,3 @@ def test_id_card_non_eu_country_code(client):
     }
     capita_request_data = passfort_to_capita_data(input_data)
     assert capita_request_data == {}
-
-
-def test_national_id_number(client):
-    check_data = {
-        'input_data': {
-            'personal_details': {
-                'national_identity_number': {
-                    "GBR": "123456"
-                }
-            }
-        }
-    }
-    capita_request_data = passfort_to_capita_data(check_data)
-    expected = {
-        'Person': {
-            'PersonalNumber': '123456'
-        }
-    }
-    assert capita_request_data == expected
-
-
-def test_other_national_id_number(client):
-    check_data = {
-        'input_data': {
-            'personal_details': {
-                'national_identity_number': {
-                    "USA": "123456"
-                }
-            }
-        }
-    }
-    capita_request_data = passfort_to_capita_data(check_data)
-    assert capita_request_data == {"Person": {}}

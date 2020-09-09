@@ -36,10 +36,6 @@ def passfort_to_capita_data(passfort_data):
 
                 person['Date_Of_Birth'] = date_of_birth
 
-            # Check Personal Number
-            if passfort_data['input_data']['personal_details'].get('national_identity_number', {}).get("GBR", None):
-                person['PersonalNumber'] = passfort_data['input_data']['personal_details']['national_identity_number']['GBR']
-
             #Check gender
             if passfort_data['input_data']['personal_details'].get('gender'):
                 person['Gender'] = passfort_data['input_data']['personal_details']['gender'].upper()
