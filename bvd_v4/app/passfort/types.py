@@ -1,10 +1,13 @@
+import logging
 from enum import Enum
 
+from pycountry import countries
 from schematics import Model
 from schematics.types import (
     FloatType,
     StringType,
     DateTimeType,
+    DictType,
     ListType,
     IntType,
     BaseType,
@@ -13,9 +16,37 @@ from schematics.types import (
 )
 
 
+def country_alpha_2_to_3(alpha_2):
+    try:
+        return countries.get(alpha_2=alpha_2).alpha_3
+    except (LookupError, AttributeError):
+        logging.error(f"BvdD returned unrecognised alpha 2 country code {alpha_2}")
+        return None
+
+
 class BaseModel(Model):
     class Options:
         serialize_when_none = False
+
+
+class ErrorCode(Enum):
+    PROVIDER_UNKNOWN_ERROR = 303
+
+
+class Error(BaseModel):
+    source = StringType()
+    code = IntType()
+    message = StringType()
+    info = BaseType()
+
+    # TODO: What does this look like in other integrations
+    def bad_response(cause):
+        return Error({
+            "source": 'PROVIDER',
+            "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+            "message": "Provider returned data in an unexpected format",
+            "info": cause,
+        })
 
 
 class TaxIdType(Enum):
@@ -78,7 +109,7 @@ class ContactDetails(BaseModel):
 
 class CompanyMetadata(BaseModel):
     bvd_id = StringType(required=True)
-    number = StringType(required=True)
+    number = ListType(StringType(), required=True)
     bvd9 = StringType(required=True)
     isin = StringType()
     lei = StringType(required=True)
@@ -157,15 +188,63 @@ class CompanyData(BaseModel):
         )
 
 
-class Credentials(Model):
+class Credentials(BaseModel):
     key = StringType(required=True)
 
 
-class RegistryInput(Model):
+# TODO: ensure one of bvd_id and number is present
+class RegistryInput(BaseModel):
     country_of_incorporation = StringType(min_length=3, max_length=3, required=True)
-    number = StringType(required=True)
+    bvd_id = StringType(default=None)
+    number = StringType(default=None)
 
 
-class RegistryCheckRequest(Model):
-    input_data = ModelType(RegistryInput)
-    credentials = ModelType(Credentials)
+class SearchInput(BaseModel):
+    country = StringType(min_length=3, max_length=3, required=True)
+    name = StringType(required=True)
+    state = StringType(default=None)
+    number = StringType(default=None)
+
+
+class SearchRequest(BaseModel):
+    credentials = ModelType(Credentials, required=True)
+    input_data = ModelType(SearchInput, required=True)
+
+
+class RegistryCheckRequest(BaseModel):
+    credentials = ModelType(Credentials, required=True)
+    input_data = ModelType(RegistryInput, required=True)
+
+
+class Candidate(BaseModel):
+    bvd_id = StringType()
+    bvd9 = StringType()
+    name = StringType()
+    number = StringType()
+    country = StringType(min_length=3, max_length=3)
+    status = StringType()
+
+    def from_bvd(search_data):
+        match_data = search_data.match.zero
+        return Candidate({
+            'bvd_id': search_data.bvd_id,
+            'bvd9': match_data.bvd9,
+            'name': match_data.name,
+            'number': match_data.national_id,
+            'country': country_alpha_2_to_3(match_data.country),
+            'status': match_data.status,
+        })
+
+
+class SearchResponse(BaseModel):
+    output_data = ListType(ModelType(Candidate))
+    errors = ListType(ModelType(Error))
+    raw = BaseType()
+
+
+# TODO: surface raw response
+class CheckResponse(BaseModel):
+    output_data = ModelType(CompanyData, serialize_when_none=True)
+    errors = ListType(ModelType(Error), serialize_when_none=True, default=list)
+    price = IntType()
+    raw = BaseType()
