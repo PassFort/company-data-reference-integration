@@ -25,12 +25,13 @@ valid_address_combinations = [
 USE_ADDRESS1_COUNTRIES = ['BRA']
 
 
-def is_full_address(components):
+def get_address_subsets_to_check(components):
     components_as_set = set(components)
-    return any((
-        components_as_set.issuperset(valid_combination)
+    return [
+        valid_combination
         for valid_combination in valid_address_combinations
-    ))
+        if components_as_set.issuperset(valid_combination)
+    ]
 
 
 def get_national_id_type(country_code, number):
@@ -274,10 +275,17 @@ def trulioo_to_passfort_data(fields_sent, trulioo_data):
                 field['FieldName']: field['Status']
                 for field in address_fields
             }
-            if is_full_address(fields_sent) and all((
-                address_matches.get(field_sent) == 'match' for field_sent in fields_sent
-            )):
-                match['matched_fields'].append('ADDRESS')
+            address_subsets_to_check = get_address_subsets_to_check(fields_sent)
+            def check_subset(components):
+                return all((
+                    address_matches.get(field_sent) == 'match' for field_sent in components
+                ))
+
+            if not any((x for x in fields_sent if address_matches.get(x) == 'nomatch')):
+                if address_subsets_to_check and any((
+                    check_subset(subset) for subset in address_subsets_to_check
+                )):
+                    match['matched_fields'].append('ADDRESS')
 
             # check national id
             national_id_field = next((field for field in datasource['DatasourceFields'] if field['FieldName'].lower() in [
