@@ -93,6 +93,22 @@ class Data(Model):
         )
 
 
+class OwnershipData(Model):
+    shareholder_entity_type = ListType(StringType(), serialized_name="SH_ENTITY_TYPE", default=list, required=True)
+    shareholder_bvd_id = ListType(StringType(), serialized_name="SH_BVD_ID_NUMBER", default=list, required=True)
+    shareholder_bvd9 = ListType(StringType(), serialized_name="SH_BVD9", default=list)
+    shareholder_uci = ListType(StringType(), serialized_name="SH_UCI", default=list)
+    shareholder_lei = ListType(StringType(), serialized_name="SH_LEI", default=list)
+
+    shareholder_country_code = ListType(StringType(), serialized_name="SH_COUNTRY_ISO_CODE", default=list)
+    shareholder_state_province = ListType(StringType(), serialized_name="SH_STATE_PROVINCE", default=list)
+    shareholder_state_province = ListType(StringType(), serialized_name="SH_STATE_PROVINCE", default=list)
+    shareholder_first_name = ListType(StringType(), serialized_name="SH_FIRST_NAME", default=list)
+    shareholder_last_name = ListType(StringType(), serialized_name="SH_LAST_NAME", default=list)
+
+    shareholder_direct_percentage = ListType(StringType(), serialized_name="SH_DIRECT_PCT", default=list)
+
+
 class Match(Model):
     name = StringType(serialized_name="NAME", required=True)
     name_international = StringType(serialized_name="NAME_INTERNATIONAL", default=None)
@@ -135,6 +151,11 @@ class SearchSummary(Model):
 class DataResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = MaybeListType(ModelType(Data), serialized_name="Data")
+
+
+class OwnershipResult(Model):
+    search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
+    data = ListType(ModelType(OwnershipData), serialized_name="Data")
 
 
 class SearchResult(Model):

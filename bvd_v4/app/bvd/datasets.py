@@ -41,6 +41,28 @@ REGISTRY_FIELDS = [
     "INDUSTRY_SECONDARY_LABEL",
 ]
 
+OWNERSHIP_FIELDS = [
+    # Shareholders
+    "SH_ENTITY_TYPE",
+    "SH_BVD_ID_NUMBER",
+    "SH_BVD9",
+    "SH_UCI",
+    "SH_LEI",
+    "SH_COUNTRY_ISO_CODE",
+    "SH_STATE_PROVINCE",
+    "SH_FIRST_NAME",
+    "SH_LAST_NAME",
+    "SH_DIRECT_PCT",
+
+    # Beneficial Owners
+    "BO_BVD_ID_NUMBER",
+    "BO_UCI",
+    "BO_ENTITY_TYPE",
+    "BO_FIRST_NAME",
+    "BO_LAST_NAME",
+    "BO_BIRTHDATE",
+]
+
 
 class DataSet(Enum):
     ALL = "ALL"
@@ -59,4 +81,4 @@ class DataSet(Enum):
         elif self == DataSet.REGISTRY:
             return REGISTRY_FIELDS
         elif self == DataSet.OWNERSHIP:
-            return []
+            return OWNERSHIP_FIELDS

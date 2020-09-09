@@ -10,7 +10,7 @@ from schematics.exceptions import (
 )
 
 from app.bvd.datasets import DataSet
-from app.bvd.types import DataResult, SearchResult
+from app.bvd.types import DataResult, OwnershipResult, SearchResult
 from app.passfort.types import Error
 
 
@@ -35,7 +35,6 @@ def prune_nones(value):
             prune_nones(v)
             for v
             in value
-            if v is not None
         ]
     else:
         return value
@@ -126,9 +125,9 @@ class Client:
             },
         )
 
-    def fetch_data(self, bvd_id, data_set=DataSet.ALL):
+    def _fetch_data(self, response_model, bvd_id, data_set=DataSet.ALL):
         return self.get(
-            DataResult,
+            response_model,
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
             params={
@@ -137,3 +136,9 @@ class Client:
                 )
             },
         )
+
+    def fetch_registry_data(self, bvd_id):
+        return self._fetch_data(DataResult, bvd_id, DataSet.REGISTRY)
+
+    def fetch_ownership_data(self, bvd_id):
+        return self._fetch_data(OwnershipResult, bvd_id, DataSet.OWNERSHIP)

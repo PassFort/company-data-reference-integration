@@ -41,12 +41,19 @@ class Error(BaseModel):
 
     # TODO: What does this look like in other integrations
     def bad_response(cause):
-        return Error({
-            "source": 'PROVIDER',
-            "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
-            "message": "Provider returned data in an unexpected format",
-            "info": cause,
-        })
+        return Error(
+            {
+                "source": "PROVIDER",
+                "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                "message": "Provider returned data in an unexpected format",
+                "info": cause,
+            }
+        )
+
+
+class EntityType(Enum):
+    INDIVIDUAL = "INDIVIDUAL"
+    COMPANY = "COMPANY"
 
 
 class TaxIdType(Enum):
@@ -88,10 +95,7 @@ class SICCode(BaseModel):
     description = StringType(required=True)
 
     def from_bvd(primary_code, primary_label):
-        return SICCode({
-            'code': primary_code,
-            'description': primary_label,
-        })
+        return SICCode({"code": primary_code, "description": primary_label,})
 
 
 class ContactDetails(BaseModel):
@@ -105,6 +109,18 @@ class ContactDetails(BaseModel):
             'phone_number': next(iter(bvd_data.phone_number), None),
             'email': next(iter(bvd_data.email), None),
         })
+
+
+class Shareholding(BaseModel):
+    percentage = FloatType()
+
+    def from_bvd(direct_percentage):
+        try:
+            return Shareholding({
+                'percentage': float(direct_percentage) / 100
+            })
+        except ValueError:
+            return None
 
 
 class CompanyMetadata(BaseModel):
@@ -151,39 +167,118 @@ class CompanyMetadata(BaseModel):
                     # TODO: deeper SIC code support
                     SICCode.from_bvd(primary_code, primary_label)
                     for primary_code, primary_label in zip(
-                        bvd_data.industry_primary_code,
-                        bvd_data.industry_primary_label,
+                        bvd_data.industry_primary_code, bvd_data.industry_primary_label,
                     )
                 ],
                 "contact_information": ContactDetails.from_bvd(bvd_data),
                 "freeform_address": bvd_data.freeform_address,
-                "is_active": next((
-                    status.lower().startswith('active')
-                    for status
-                    in bvd_data.status
-                ), None),
+                "is_active": next(
+                    (status.lower().startswith("active") for status in bvd_data.status),
+                    None,
+                ),
                 "is_active_details": next(iter(bvd_data.status), None),
-                "trade_description": bvd_data.trade_description_english or bvd_data.trade_description_original_lang,
+                "trade_description": (
+                    bvd_data.trade_description_english or bvd_data.trade_description_original_lang
+                ),
                 "description": bvd_data.products_services,
             }
         )
 
 
-class EntityType(Enum):
-    INDIVIDUAL = "INDIVIDUAL"
-    COMPANY = "COMPANY"
+class Shareholder(BaseModel):
+    type = StringType(required=True, choices=[ty for ty in EntityType])
+    bvd_id = StringType()
+    bvd9 = StringType()
+    bvd_uci = StringType()
+    lei = StringType()
+    country_of_incorporation = StringType(min_length=3, max_length=3)
+    state_of_incorporation = StringType()
+    first_names = StringType()
+    last_name = StringType()
+    shareholdings = ListType(ModelType(Shareholding))
+
+    def from_bvd(index, bvd_data):
+        return Shareholder(
+            {
+                "bvd_id": bvd_data.shareholder_bvd_id[index],
+                "bvd9": bvd_data.shareholder_bvd9[index]
+                if bvd_data.shareholder_bvd9
+                else None,
+                "bvd_uci": bvd_data.shareholder_uci[index]
+                if bvd_data.shareholder_uci
+                else None,
+                "lei": bvd_data.shareholder_lei[index]
+                if bvd_data.shareholder_lei
+                else None,
+                "country_of_incorporation": country_alpha_2_to_3(bvd_data.shareholder_country_code[index])
+                if bvd_data.shareholder_country_code
+                else None,
+                "state_of_incorporation": bvd_data.shareholder_state_province[index]
+                if bvd_data.shareholder_state_province
+                else None,
+                "first_names": bvd_data.shareholder_first_name[index]
+                if bvd_data.shareholder_first_name
+                else None,
+                "last_name": bvd_data.shareholder_last_name[index]
+                if bvd_data.shareholder_last_name
+                else None,
+                "shareholdings": [
+                    Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
+                ]
+                if bvd_data.shareholder_direct_percentage and bvd_data.shareholder_direct_percentage[index]
+                else None,
+            }
+        )
 
 
-class CompanyData(BaseModel):
-    entity_type = StringType(required=True, choices=[ty for ty in EntityType])
-    metadata = ModelType(CompanyMetadata, required=True)
-    #    officers: Officers
+class BeneficialOwner(BaseModel):
+    type = StringType(required=True, choices=[ty for ty in EntityType])
+    bvd_id = StringType()
+    bvd_uci = StringType()
+    first_names = StringType()
+    last_names = DateTimeType()
+
+
+class OwnershipStructure(BaseModel):
+    shareholders = ListType(ModelType(Shareholder), required=True, default=list)
+    beneficial_owners = ListType(
+        ModelType(BeneficialOwner), required=True, default=list
+    )
 
     def from_bvd(bvd_data):
-        return CompanyData(
+        return OwnershipStructure(
+            {
+                "shareholders": [
+                    Shareholder.from_bvd(i, bvd_data)
+                    for i in range(0, len(bvd_data.shareholder_bvd_id))
+                ],
+                "beneficial_owners": [],
+            }
+        )
+
+
+class RegistryCompanyData(BaseModel):
+    entity_type = StringType(required=True, choices=[ty for ty in EntityType])
+    metadata = ModelType(CompanyMetadata, required=True)
+
+    def from_bvd(bvd_data):
+        return RegistryCompanyData(
             {
                 "entity_type": EntityType.COMPANY.value,
                 "metadata": CompanyMetadata.from_bvd(bvd_data),
+            }
+        )
+
+
+class OwnershipCompanyData(BaseModel):
+    entity_type = StringType(required=True, choices=[ty for ty in EntityType])
+    ownership_structure = ModelType(OwnershipStructure, required=True)
+
+    def from_bvd(bvd_data):
+        return OwnershipCompanyData(
+            {
+                "entity_type": EntityType.COMPANY.value,
+                "ownership_structure": OwnershipStructure.from_bvd(bvd_data),
             }
         )
 
@@ -194,6 +289,13 @@ class Credentials(BaseModel):
 
 # TODO: ensure one of bvd_id and number is present
 class RegistryInput(BaseModel):
+    country_of_incorporation = StringType(min_length=3, max_length=3, required=True)
+    bvd_id = StringType(default=None)
+    number = StringType(default=None)
+
+
+# TODO: ensure one of bvd_id and number is present
+class OwnershipInput(BaseModel):
     country_of_incorporation = StringType(min_length=3, max_length=3, required=True)
     bvd_id = StringType(default=None)
     number = StringType(default=None)
@@ -214,6 +316,11 @@ class SearchRequest(BaseModel):
 class RegistryCheckRequest(BaseModel):
     credentials = ModelType(Credentials, required=True)
     input_data = ModelType(RegistryInput, required=True)
+
+
+class OwnershipCheckRequest(BaseModel):
+    credentials = ModelType(Credentials, required=True)
+    input_data = ModelType(OwnershipInput, required=True)
 
 
 class Candidate(BaseModel):
@@ -242,9 +349,15 @@ class SearchResponse(BaseModel):
     raw = BaseType()
 
 
-# TODO: surface raw response
-class CheckResponse(BaseModel):
-    output_data = ModelType(CompanyData, serialize_when_none=True)
+class RegistryCheckResponse(BaseModel):
+    output_data = ModelType(RegistryCompanyData, serialize_when_none=True)
+    errors = ListType(ModelType(Error), serialize_when_none=True, default=list)
+    price = IntType()
+    raw = BaseType()
+
+
+class OwnershipCheckResponse(BaseModel):
+    output_data = ModelType(OwnershipCompanyData, serialize_when_none=True)
     errors = ListType(ModelType(Error), serialize_when_none=True, default=list)
     price = IntType()
     raw = BaseType()
