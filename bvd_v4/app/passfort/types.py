@@ -1,5 +1,6 @@
 import logging
 from enum import Enum
+import re
 
 from pycountry import countries
 from schematics import Model
@@ -15,18 +16,45 @@ from schematics.types import (
     BooleanType,
 )
 
+from app.passfort.base_model import BaseModel
+from app.passfort.structured_company_type import StructuredCompanyType
+
 
 def country_alpha_2_to_3(alpha_2):
     try:
         return countries.get(alpha_2=alpha_2).alpha_3
     except (LookupError, AttributeError):
-        logging.error(f"BvdD returned unrecognised alpha 2 country code {alpha_2}")
+        if alpha_2 != 'n.a.':
+            logging.error(f"BvdD returned unrecognised alpha 2 country code {alpha_2}")
         return None
 
 
-class BaseModel(Model):
-    class Options:
-        serialize_when_none = False
+def name_strip(name: str) -> str:
+    '''Clean names from useless garbage text'''
+    garbage = ['via its funds']
+    for string in garbage:
+        if string in name:
+            name = re.sub(string, '', name)
+    return name
+
+
+def format_names(first, last, full, entity_type):
+    if first or last:
+        return (
+            name_strip(first) if first else '',
+            name_strip(last) if last else ''
+        )
+
+    if full:
+        full = name_strip(full)
+        if entity_type == EntityType.INDIVIDUAL:
+            names = full.split(' ')
+            # First element is the title
+            return ' '.join(names[1:-1]), names[-1]
+        else:
+            return '', full
+    else:
+        return '', ''
 
 
 class ErrorCode(Enum):
@@ -63,7 +91,7 @@ class TaxIdType(Enum):
 
 
 class TaxId(BaseModel):
-    tax_id_type = StringType(required=True, choices=[ty for ty in TaxIdType])
+    tax_id_type = StringType(required=True, choices=list(TaxIdType))
     value = StringType(required=True)
 
 
@@ -74,12 +102,6 @@ class OwnershipType(Enum):
     SOLE_PROPRIETORSHIP = "SOLE_PROPRIETORSHIP"
     TRUST = "TRUST"
     OTHER = "OTHER"
-
-
-class StructuredCompanyType(BaseModel):
-    ownership_type = StringType(choices=[ty for ty in OwnershipType])
-    is_public = BooleanType()
-    is_limit = BooleanType()
 
 
 class PreviousName(BaseModel):
@@ -154,7 +176,7 @@ class CompanyMetadata(BaseModel):
                 "lei": bvd_data.lei,
                 "name": bvd_data.name,
                 "company_type": bvd_data.standardised_legal_form,
-                "structured_company_type": None,
+                "structured_company_type": StructuredCompanyType.from_bvd(bvd_data.standardised_legal_form),
                 "country_of_incorporation": None,
                 "incorporation_date": None,
                 "previous_names": [
@@ -186,7 +208,7 @@ class CompanyMetadata(BaseModel):
 
 
 class Shareholder(BaseModel):
-    type = StringType(required=True, choices=[ty for ty in EntityType])
+    type = StringType(required=True, choices=list(EntityType))
     bvd_id = StringType()
     bvd9 = StringType()
     bvd_uci = StringType()
@@ -198,30 +220,27 @@ class Shareholder(BaseModel):
     shareholdings = ListType(ModelType(Shareholding))
 
     def from_bvd(index, bvd_data):
+        entity_type = EntityType.INDIVIDUAL if bvd_data.shareholder_is_individual(index) else EntityType.COMPANY
+        first_names, last_name = format_names(
+            bvd_data.shareholder_first_name[index],
+            bvd_data.shareholder_last_name[index],
+            bvd_data.shareholder_name[index],
+            entity_type,
+        )
+
         return Shareholder(
             {
+                "type": entity_type.value,
                 "bvd_id": bvd_data.shareholder_bvd_id[index],
                 "bvd9": bvd_data.shareholder_bvd9[index]
                 if bvd_data.shareholder_bvd9
                 else None,
-                "bvd_uci": bvd_data.shareholder_uci[index]
-                if bvd_data.shareholder_uci
-                else None,
-                "lei": bvd_data.shareholder_lei[index]
-                if bvd_data.shareholder_lei
-                else None,
-                "country_of_incorporation": country_alpha_2_to_3(bvd_data.shareholder_country_code[index])
-                if bvd_data.shareholder_country_code
-                else None,
-                "state_of_incorporation": bvd_data.shareholder_state_province[index]
-                if bvd_data.shareholder_state_province
-                else None,
-                "first_names": bvd_data.shareholder_first_name[index]
-                if bvd_data.shareholder_first_name
-                else None,
-                "last_name": bvd_data.shareholder_last_name[index]
-                if bvd_data.shareholder_last_name
-                else None,
+                "bvd_uci": bvd_data.shareholder_uci[index],
+                "lei": bvd_data.shareholder_lei[index],
+                "country_of_incorporation": country_alpha_2_to_3(bvd_data.shareholder_country_code[index]),
+                "state_of_incorporation": bvd_data.shareholder_state_province[index],
+                "first_names": first_names,
+                "last_name": last_name,
                 "shareholdings": [
                     Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
                 ]
@@ -232,11 +251,31 @@ class Shareholder(BaseModel):
 
 
 class BeneficialOwner(BaseModel):
-    type = StringType(required=True, choices=[ty for ty in EntityType])
-    bvd_id = StringType()
-    bvd_uci = StringType()
+    type = StringType(required=True, choices=list(EntityType))
+    bvd_id = StringType(required=True)
+    bvd_uci = StringType(required=True)
     first_names = StringType()
-    last_names = DateTimeType()
+    last_name = StringType()
+    dob = DateTimeType()
+
+    def from_bvd(index, bvd_data):
+        uci = bvd_data.beneficial_owner_uci[index] if bvd_data.beneficial_owner_uci else None
+        entity_type = EntityType.INDIVIDUAL if bvd_data.beneficial_owner_is_individual(index) else EntityType.COMPANY
+        first_names, last_names = format_names(
+            bvd_data.beneficial_owner_first_name[index],
+            bvd_data.beneficial_owner_last_name[index],
+            bvd_data.beneficial_owner_name[index],
+            entity_type,
+        )
+        return BeneficialOwner({
+            "type": entity_type.value,
+            "bvd_id": bvd_data.beneficial_owner_bvd_id[index],
+            "bvd_uci": uci,
+            "first_names": first_names,
+            "last_name": last_names,
+            "dob": bvd_data.beneficial_owner_birth_date[index] if bvd_data.beneficial_owner_birth_date else None,
+        })
+
 
 
 class OwnershipStructure(BaseModel):
@@ -252,13 +291,16 @@ class OwnershipStructure(BaseModel):
                     Shareholder.from_bvd(i, bvd_data)
                     for i in range(0, len(bvd_data.shareholder_bvd_id))
                 ],
-                "beneficial_owners": [],
+                "beneficial_owners": [
+                    BeneficialOwner.from_bvd(i, bvd_data)
+                    for i in range(0, len(bvd_data.beneficial_owner_bvd_id))
+                ],
             }
         )
 
 
 class RegistryCompanyData(BaseModel):
-    entity_type = StringType(required=True, choices=[ty for ty in EntityType])
+    entity_type = StringType(required=True, choices=list(EntityType))
     metadata = ModelType(CompanyMetadata, required=True)
 
     def from_bvd(bvd_data):
@@ -270,14 +312,29 @@ class RegistryCompanyData(BaseModel):
         )
 
 
+class OwnershipMetadata(BaseModel):
+    company_type = StringType(required=True)
+    structured_company_type = ModelType(StructuredCompanyType)
+
+    def from_bvd(bvd_data):
+        return OwnershipMetadata(
+            {
+                "company_type": bvd_data.standardised_legal_form,
+                "structured_company_type": StructuredCompanyType.from_bvd(bvd_data.standardised_legal_form),
+            }
+        )
+
+
 class OwnershipCompanyData(BaseModel):
-    entity_type = StringType(required=True, choices=[ty for ty in EntityType])
+    entity_type = StringType(choices=list(EntityType), required=True)
+    metadata = ModelType(OwnershipMetadata, required=True)
     ownership_structure = ModelType(OwnershipStructure, required=True)
 
     def from_bvd(bvd_data):
         return OwnershipCompanyData(
             {
                 "entity_type": EntityType.COMPANY.value,
+                "metadata": OwnershipMetadata.from_bvd(bvd_data),
                 "ownership_structure": OwnershipStructure.from_bvd(bvd_data),
             }
         )

@@ -94,6 +94,8 @@ class Data(Model):
 
 
 class OwnershipData(Model):
+    standardised_legal_form = StringType(serialized_name="STANDARDISED_LEGAL_FORM", default=None)
+
     shareholder_entity_type = ListType(StringType(), serialized_name="SH_ENTITY_TYPE", default=list, required=True)
     shareholder_bvd_id = ListType(StringType(), serialized_name="SH_BVD_ID_NUMBER", default=list, required=True)
     shareholder_bvd9 = ListType(StringType(), serialized_name="SH_BVD9", default=list)
@@ -103,10 +105,25 @@ class OwnershipData(Model):
     shareholder_country_code = ListType(StringType(), serialized_name="SH_COUNTRY_ISO_CODE", default=list)
     shareholder_state_province = ListType(StringType(), serialized_name="SH_STATE_PROVINCE", default=list)
     shareholder_state_province = ListType(StringType(), serialized_name="SH_STATE_PROVINCE", default=list)
+    shareholder_name = ListType(StringType(), serialized_name="SH_NAME", default=list)
     shareholder_first_name = ListType(StringType(), serialized_name="SH_FIRST_NAME", default=list)
     shareholder_last_name = ListType(StringType(), serialized_name="SH_LAST_NAME", default=list)
 
     shareholder_direct_percentage = ListType(StringType(), serialized_name="SH_DIRECT_PCT", default=list)
+
+    beneficial_owner_bvd_id = ListType(StringType(), serialized_name="BO_BVD_ID_NUMBER", default=list)
+    beneficial_owner_uci = ListType(StringType(), serialized_name="BO_UCI", default=list)
+    beneficial_owner_entity_type = ListType(StringType(), serialized_name="BO_ENTITY_TYPE", default=list)
+    beneficial_owner_name = ListType(StringType(), serialized_name="BO_NAME", default=list)
+    beneficial_owner_first_name = ListType(StringType(), serialized_name="BO_FIRST_NAME", default=list)
+    beneficial_owner_last_name = ListType(StringType(), serialized_name="BO_LAST_NAME", default=list)
+    beneficial_owner_birth_date = ListType(DateTimeType(), serialized_name="BO_BIRTHDATE", default=list)
+
+    def shareholder_is_individual(self, index):
+        return self.shareholder_entity_type[index] == 'One or more named individuals or families'
+
+    def beneficial_owner_is_individual(self, index):
+        return self.beneficial_owner_entity_type[index] == 'One or more named individuals or families'
 
 
 class Match(Model):

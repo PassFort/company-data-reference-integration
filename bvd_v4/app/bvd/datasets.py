@@ -42,6 +42,9 @@ REGISTRY_FIELDS = [
 ]
 
 OWNERSHIP_FIELDS = [
+    # Metadata
+    "STANDARDISED_LEGAL_FORM",
+
     # Shareholders
     "SH_ENTITY_TYPE",
     "SH_BVD_ID_NUMBER",
@@ -50,6 +53,7 @@ OWNERSHIP_FIELDS = [
     "SH_LEI",
     "SH_COUNTRY_ISO_CODE",
     "SH_STATE_PROVINCE",
+    "SH_NAME",
     "SH_FIRST_NAME",
     "SH_LAST_NAME",
     "SH_DIRECT_PCT",
@@ -58,6 +62,7 @@ OWNERSHIP_FIELDS = [
     "BO_BVD_ID_NUMBER",
     "BO_UCI",
     "BO_ENTITY_TYPE",
+    "BO_NAME",
     "BO_FIRST_NAME",
     "BO_LAST_NAME",
     "BO_BIRTHDATE",
