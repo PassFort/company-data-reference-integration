@@ -249,6 +249,20 @@ class TestGetResults(unittest.TestCase):
             self.assertEqual(result['errors'], [])
             self.assertEqual(len(result['events']), 9)
 
+        with self.subTest('with adverse media from search profile'):
+            result = get_result_by_search_ids(
+                ComplyAdvantageConfig({
+                    'search_profile': 'X'
+                }),
+                ComplyAdvantageCredentials({
+                    'api_key': 'TEST'
+                }),
+                search_ids
+            )
+
+            self.assertEqual(result['errors'], [])
+            self.assertEqual(len(result['events']), 9)
+
 
 class TestFieldDefaultValue(unittest.TestCase):
 

@@ -149,7 +149,7 @@ class ComplyAdvantageMatchData(Model):
         sources_from_source_notes = [
             s.as_source() for k, s in self.source_notes.items()
             if not s.is_sanction() and (
-                config.include_adverse_media or (not s.is_adverse_media() and k != 'complyadvantage-adverse-media')
+                config.should_extract_adverse_media or (not s.is_adverse_media() and k != 'complyadvantage-adverse-media')
             )
         ]
         sources_from_fields = [s.as_source() for s in self.ca_fields if s.is_related_url()]
@@ -186,7 +186,7 @@ class ComplyAdvantageMatchData(Model):
                 **base_data
             })
             events.append(sanction_result)
-        if config.include_adverse_media and has_adverse_media:
+        if config.should_extract_adverse_media and has_adverse_media:
             adverse_media_result = AdverseMediaMatchEvent().import_data({
                 "media": [m.as_media_article() for m in self.media],
                 **base_data
