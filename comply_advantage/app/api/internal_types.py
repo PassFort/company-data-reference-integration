@@ -149,7 +149,7 @@ class ComplyAdvantageMatchData(Model):
         sources_from_source_notes = [
             s.as_source() for k, s in self.source_notes.items()
             if not s.is_sanction() and (
-                config.include_adverse_media or (not s.is_adverse_media() and k != 'complyadvantage-adverse-media')
+                (not config.passfort_adverse_media_filtering) or (not s.is_adverse_media() and k != 'complyadvantage-adverse-media')
             )
         ]
         sources_from_fields = [s.as_source() for s in self.ca_fields if s.is_related_url()]
@@ -186,7 +186,7 @@ class ComplyAdvantageMatchData(Model):
                 **base_data
             })
             events.append(sanction_result)
-        if config.include_adverse_media and has_adverse_media:
+        if has_adverse_media and not config.passfort_adverse_media_filtering:
             adverse_media_result = AdverseMediaMatchEvent().import_data({
                 "media": [m.as_media_article() for m in self.media],
                 **base_data
@@ -312,7 +312,7 @@ class ComplyAdvantageSearchRequest:
     def from_input_data(cls, input_data: 'ScreeningRequestData', config: ComplyAdvantageConfig):
         type_filter = ["pep", "sanction"]
 
-        if config.include_adverse_media:
+        if not config.passfort_adverse_media_filtering:
             type_filter = type_filter + ["adverse-media", "warning", "fitness-probity"]
 
         birth_year = None

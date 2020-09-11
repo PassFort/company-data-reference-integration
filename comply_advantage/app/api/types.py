@@ -127,6 +127,10 @@ class ComplyAdvantageConfig(Model):
     include_adverse_media = BooleanType(default=False)
     search_profile = StringType(default=None)
 
+    @property
+    def passfort_adverse_media_filtering(self):
+        return not (self.include_adverse_media or self.search_profile)
+
 
 class FullName(Model):
     given_names = ListType(StringType, required=True)
@@ -292,7 +296,7 @@ class AdverseMediaMatchEvent(MatchEvent):
 
     @classmethod
     def _claim_polymorphic(cls, data):
-        return data.get('event_type') == 'SANCTION_FLAG'
+        return data.get('event_type') == 'ADVERSE_MEDIA_FLAG'
 
     class Options:
         serialize_when_none = False

@@ -257,3 +257,55 @@ class TestEvents(unittest.TestCase):
                     ]
                 )
 
+    def test_on_peps_sanctions_and_media_with_search_profile(self):
+        response = requests.post(
+            f'{API_URL}/screening_request',
+            json={
+                "credentials": {"api_key": "test"},
+                "config": {
+                    "search_profile": 'X'
+                },
+                "input_data": {
+                    "entity_type": "INDIVIDUAL",
+                    "personal_details": {
+                        "name": {
+                            "family_name": "Assad",
+                            "given_names": ["Bashar"]
+                        }
+                    }
+                },
+                "is_demo": True
+            })
+
+        result = response.json()
+        self.assertEqual(result["errors"], [])
+        self.assertEqual(response.status_code, 200)
+
+        with self.subTest("Also returns media"):
+            self.assertEqual(len(result["events"]), 3)
+            pep_event = result["events"][0]
+            sanction_event = result["events"][1]
+            media_event = result["events"][2]
+
+            self.assertEqual(pep_event["event_type"], "PEP_FLAG")
+            self.assertEqual(sanction_event["event_type"], "SANCTION_FLAG")
+            self.assertEqual(media_event["event_type"], "ADVERSE_MEDIA_FLAG")
+
+            with self.subTest("returns media"):
+                self.assertEqual(len(media_event["media"]), 30)
+
+            with self.subTest('returns adverse media in sources'):
+                source_names = sorted(s['name'] for s in pep_event['sources'])
+                self.assertEqual(
+                    source_names,
+                    [
+                        'Adverse Media',
+                        'ComplyAdvantage Adverse Media',
+                        'ComplyAdvantage PEP Data',
+                        'Related Url',
+                        'Related Url',
+                        'Related Url',
+                        'US System for Award Management Exclusions',
+                        'company AM'
+                    ]
+                )
