@@ -312,7 +312,7 @@ class ComplyAdvantageSearchRequest:
     def from_input_data(cls, input_data: 'ScreeningRequestData', config: ComplyAdvantageConfig):
         type_filter = ["pep", "sanction"]
 
-        if config.include_adverse_media:
+        if config.include_adverse_media and config.search_profile is None:
             type_filter = type_filter + ["adverse-media", "warning", "fitness-probity"]
 
         birth_year = None
