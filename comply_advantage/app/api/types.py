@@ -128,8 +128,8 @@ class ComplyAdvantageConfig(Model):
     search_profile = StringType(default=None)
 
     @property
-    def should_extract_adverse_media(self):
-        return self.include_adverse_media or self.search_profile
+    def passfort_adverse_media_filtering(self):
+        return not (self.include_adverse_media or self.search_profile)
 
 
 class FullName(Model):
