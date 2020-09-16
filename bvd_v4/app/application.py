@@ -5,12 +5,16 @@ from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
 
 from app.validation import request_model
+from app.bvd.datasets import DataSet
 from app.bvd.client import Client
 from app.passfort.types import (
     Candidate,
-    CompanyData,
     RegistryCheckRequest,
-    CheckResponse,
+    RegistryCheckResponse,
+    RegistryCompanyData,
+    OwnershipCheckRequest,
+    OwnershipCheckResponse,
+    OwnershipCompanyData,
     SearchRequest,
     SearchResponse,
 )
@@ -54,17 +58,17 @@ def registry_check(request):
     )
 
     if bvd_id:
-        search_results = client.fetch_data(bvd_id)
+        search_results = client.fetch_registry_data(bvd_id)
     else:
         search_results = None
 
     if search_results:
-        data = CompanyData.from_bvd(search_results.data[0])
+        data = RegistryCompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
 
     return jsonify(
-        CheckResponse(
+        RegistryCheckResponse(
             {
                 "output_data": data,
                 "errors": client.errors,
@@ -76,8 +80,37 @@ def registry_check(request):
 
 
 @app.route("/ownership-check", methods=["POST"])
-def ownership_check():
-    abort(501)
+@request_model(OwnershipCheckRequest)
+def ownership_check(request):
+    client = Client(request.credentials.key)
+
+    bvd_id = get_bvd_id(
+        client,
+        request.input_data.country_of_incorporation,
+        request.input_data.bvd_id,
+        request.input_data.number,
+    )
+
+    if bvd_id:
+        search_results = client.fetch_ownership_data(bvd_id)
+    else:
+        search_results = None
+
+    if search_results:
+        data = OwnershipCompanyData.from_bvd(search_results.data[0])
+    else:
+        data = {}
+
+    return jsonify(
+        OwnershipCheckResponse(
+            {
+                "output_data": data,
+                "errors": client.errors,
+                "raw": client.raw_responses,
+                "price": 0,  # TODO: can we remove this?
+            }
+        ).to_primitive()
+    )
 
 
 @app.route("/search", methods=["POST"])
