@@ -306,7 +306,7 @@ def to_passfort_datetime_format(utc):
 
 
 class Rating(Model):
-    value = StringType(required=True)
+    value = StringType(default=None)
     description = StringType(default=None)
 
     class Options:
