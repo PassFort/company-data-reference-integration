@@ -421,6 +421,10 @@ def test_record_with_one_datasource_with_address_match(client):
                             'FieldName': 'PostalCode',
                             'Status': 'match'
                         },
+                        {
+                            'FieldName': 'UnitNumber',
+                            'Status': 'missing',
+                        }
                     ],
                     'Errors': [],
                     'FieldGroups': []
@@ -431,7 +435,12 @@ def test_record_with_one_datasource_with_address_match(client):
         'Errors': []
     }
 
-    response_body = trulioo_to_passfort_data({'BuildingNumber', 'StreetName', 'PostalCode'}, trulioo_data)
+    response_body = trulioo_to_passfort_data({
+        'BuildingNumber',
+        'StreetName',
+        'PostalCode',
+        'UnitNumber',
+    }, trulioo_data)
 
     assert response_body == {
         "decision": "FAIL",
@@ -446,6 +455,316 @@ def test_record_with_one_datasource_with_address_match(client):
                         'count': 1,
                     }
                 ]
+            }
+        },
+        "raw": trulioo_data,
+        "errors": []
+    }
+
+
+def test_record_with_address_match_multiple_options(client):
+    # 1. (BuildingNumber, PostalCode, StreetName)-NO
+    # 2. (BuildingName, PostalCode, StreetName)-YES
+    trulioo_data = {
+        'Record': {
+            'DatasourceResults': [
+                {
+                    'DatasourceName': 'Credit Agency',
+                    'DatasourceFields': [
+                        {
+                            'FieldName': 'BuildingNumber',
+                            'Status': 'missing'
+                        },
+                        {
+                            'FieldName': 'BuildingName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'StreetName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'PostalCode',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'UnitNumber',
+                            'Status': 'missing',
+                        }
+                    ],
+                    'Errors': [],
+                    'FieldGroups': []
+                },
+            ],
+            'Errors': []
+        },
+        'Errors': []
+    }
+
+    response_body = trulioo_to_passfort_data({
+        'BuildingNumber',
+        'BuildingName',
+        'StreetName',
+        'PostalCode',
+        'UnitNumber',
+    }, trulioo_data)
+
+    assert response_body == {
+        "decision": "FAIL",
+        "output_data": {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [
+                    {
+                        'database_name': 'Credit Agency',
+                        'database_type': 'CREDIT',
+                        'matched_fields': ['ADDRESS'],
+                        'count': 1,
+                    }
+                ]
+            }
+        },
+        "raw": trulioo_data,
+        "errors": []
+    }
+
+
+def test_record_with_no_address_match_multiple_options(client):
+    # 1. (BuildingNumber, PostalCode, StreetName)-NO
+    # 2. (BuildingName, PostalCode, StreetName)-NO
+    trulioo_data = {
+        'Record': {
+            'DatasourceResults': [
+                {
+                    'DatasourceName': 'Credit Agency',
+                    'DatasourceFields': [
+                        {
+                            'FieldName': 'BuildingNumber',
+                            'Status': 'missing'
+                        },
+                        {
+                            'FieldName': 'BuildingName',
+                            'Status': 'missing'
+                        },
+                        {
+                            'FieldName': 'StreetName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'PostalCode',
+                            'Status': 'match'
+                        },
+                    ],
+                    'Errors': [],
+                    'FieldGroups': []
+                },
+            ],
+            'Errors': []
+        },
+        'Errors': []
+    }
+
+    response_body = trulioo_to_passfort_data({
+        'BuildingNumber',
+        'BuildingName',
+        'StreetName',
+        'PostalCode',
+        'UnitNumber',
+    }, trulioo_data)
+
+    assert response_body == {
+        "decision": "FAIL",
+        "output_data": {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [
+                    {
+                        'database_name': 'Credit Agency',
+                        'database_type': 'CREDIT',
+                        'matched_fields': [],
+                    }
+                ]
+            }
+        },
+        "raw": trulioo_data,
+        "errors": []
+    }
+
+
+def test_record_with_address_match_multiple_matches(client):
+    # 1. (BuildingNumber, PostalCode, StreetName)-YES
+    # 2. (BuildingName, PostalCode, StreetName)-YES
+    trulioo_data = {
+        'Record': {
+            'DatasourceResults': [
+                {
+                    'DatasourceName': 'Credit Agency',
+                    'DatasourceFields': [
+                        {
+                            'FieldName': 'BuildingNumber',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'BuildingName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'StreetName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'PostalCode',
+                            'Status': 'match'
+                        },
+                    ],
+                    'Errors': [],
+                    'FieldGroups': []
+                },
+            ],
+            'Errors': []
+        },
+        'Errors': []
+    }
+
+    response_body = trulioo_to_passfort_data({
+        'BuildingNumber',
+        'BuildingName',
+        'StreetName',
+        'PostalCode',
+        'UnitNumber',
+    }, trulioo_data)
+
+    assert response_body == {
+        "decision": "FAIL",
+        "output_data": {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [
+                    {
+                        'database_name': 'Credit Agency',
+                        'database_type': 'CREDIT',
+                        'matched_fields': ['ADDRESS'],
+                        'count': 1,
+                    }
+                ]
+            }
+        },
+        "raw": trulioo_data,
+        "errors": []
+    }
+
+
+def test_record_with_address_multiple_options_one_no_match(client):
+    # Fails even though BuildingName,StreetName,PostalCode is match
+    # Because a the valid subset with BuildingNumber is a nomatch
+    trulioo_data = {
+        'Record': {
+            'DatasourceResults': [
+                {
+                    'DatasourceName': 'Credit Agency',
+                    'DatasourceFields': [
+                        {
+                            'FieldName': 'BuildingNumber',
+                            'Status': 'nomatch'
+                        },
+                        {
+                            'FieldName': 'BuildingName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'StreetName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'PostalCode',
+                            'Status': 'match'
+                        },
+                    ],
+                    'Errors': [],
+                    'FieldGroups': []
+                },
+            ],
+            'Errors': []
+        },
+        'Errors': []
+    }
+
+    response_body = trulioo_to_passfort_data({
+        'BuildingNumber',
+        'BuildingName',
+        'StreetName',
+        'PostalCode',
+        'UnitNumber',
+    }, trulioo_data)
+
+    assert response_body == {
+        "decision": "FAIL",
+        "output_data": {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [{
+                    'database_name': 'Credit Agency',
+                    'database_type': 'CREDIT',
+                    'matched_fields': [],
+                }]
+            }
+        },
+        "raw": trulioo_data,
+        "errors": []
+    }
+
+
+def test_record_with_address_matches_with_not_sent_field(client):
+    trulioo_data = {
+        'Record': {
+            'DatasourceResults': [
+                {
+                    'DatasourceName': 'Credit Agency',
+                    'DatasourceFields': [
+                        {
+                            'FieldName': 'BuildingNumber',
+                            'Status': 'nomatch'
+                        },
+                        {
+                            'FieldName': 'BuildingName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'StreetName',
+                            'Status': 'match'
+                        },
+                        {
+                            'FieldName': 'PostalCode',
+                            'Status': 'match'
+                        },
+                    ],
+                    'Errors': [],
+                    'FieldGroups': []
+                },
+            ],
+            'Errors': []
+        },
+        'Errors': []
+    }
+
+    response_body = trulioo_to_passfort_data({
+        'BuildingName',
+        'StreetName',
+        'PostalCode',
+        'UnitNumber',
+    }, trulioo_data)
+
+    assert response_body == {
+        "decision": "FAIL",
+        "output_data": {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [{
+                    'database_name': 'Credit Agency',
+                    'database_type': 'CREDIT',
+                    'matched_fields': ['ADDRESS'],
+                    'count': 1,
+                }]
             }
         },
         "raw": trulioo_data,
