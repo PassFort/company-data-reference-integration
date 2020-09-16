@@ -154,7 +154,8 @@ NO_EXACT_SEARCH_COUNTRIES = [
     'HU',
     'IN',
     'JP',
-    'KZ'
+    'KZ',
+    'MA',
     'NZ',
     'PT',
     'RO',
