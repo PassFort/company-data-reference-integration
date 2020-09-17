@@ -16,7 +16,7 @@ class OwnershipType(Enum):
 
 
 class StructuredCompanyType(BaseModel):
-    ownership_type = StringType(choices=list(OwnershipType))
+    ownership_type = StringType(choices=[ty.value for ty in OwnershipType])
     is_public = BooleanType()
     is_limited = BooleanType()
 

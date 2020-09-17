@@ -10,7 +10,7 @@ from schematics.exceptions import (
 )
 
 from app.bvd.datasets import DataSet
-from app.bvd.types import DataResult, OwnershipResult, SearchResult
+from app.bvd.types import DataResult, OwnershipResult, RegistryResult, SearchResult
 from app.passfort.types import Error
 
 
@@ -137,8 +137,11 @@ class Client:
             },
         )
 
+    def fetch_company_data(self, bvd_id):
+        return self._fetch_data(DataResult, bvd_id, DataSet.ALL)
+
     def fetch_registry_data(self, bvd_id):
-        return self._fetch_data(DataResult, bvd_id, DataSet.REGISTRY)
+        return self._fetch_data(RegistryResult, bvd_id, DataSet.REGISTRY)
 
     def fetch_ownership_data(self, bvd_id):
         return self._fetch_data(OwnershipResult, bvd_id, DataSet.OWNERSHIP)
