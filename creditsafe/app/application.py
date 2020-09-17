@@ -5,7 +5,6 @@ import traceback
 from flask import Flask, jsonify
 from raven.contrib.flask import Sentry
 from requests.exceptions import ConnectionError, Timeout
-from pycountry import pycountry
 
 from .api.types import validate_model, CreditSafeSearchRequest, CreditSafeAuthenticationError, \
     CreditSafeSearchError, CreditSafeReportError, ErrorCode, Error, CreditSafeCompanyReportRequest, \
@@ -222,11 +221,7 @@ def handle_search_error(search_error):
                 or "longer than the required maximum" in error_details):
             error = Error.provider_invalid_input(error_details)
         elif "is not a supported country" in error_details:
-            alpha2_country = error_details[:2]
-            country = pycountry.countries.get(alpha_2=alpha2_country)
-            error = Error.provider_unsupported_country(
-                country.name if country else alpha2_country
-            )
+            error = Error.provider_unsupported_country(error_details[:2])
         else:
             error = Error.provider_unhandled_error(error_details)
         return jsonify(
