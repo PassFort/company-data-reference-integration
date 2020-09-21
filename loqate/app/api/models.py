@@ -8,6 +8,11 @@ from functools import wraps
 
 from .error import Error
 
+COUNTRY_MAPPING = {
+    # Loqate still thinks that Kosovo is part of Serbia...
+    'UNK': 'SRB'
+}
+
 
 def validate_model(validation_model):
     '''
@@ -27,9 +32,11 @@ def validate_model(validation_model):
             except DataError as e:
                 errors = e.to_primitive()
                 if errors.get('credentials') is not None:
-                    response = jsonify(Error.provider_misconfiguration_error('Credentials is required'))
+                    response = jsonify(Error.provider_misconfiguration_error(
+                        'Credentials is required'))
                     if(isinstance(errors['credentials'], dict)):
-                       response = jsonify(Error.provider_misconfiguration_error('Apikey is required'))
+                        response = jsonify(
+                            Error.provider_misconfiguration_error('Apikey is required'))
                 else:
                     response = jsonify(Error.bad_api_request(e))
                 response.status_code = 400
@@ -59,8 +66,9 @@ class PassFortAddress(Model):
         export_level = NOT_NONE
 
     @classmethod
-    def from_loqate(cls, loqate_address: 'LoqateAddress'):
-        premise = getattr(loqate_address, 'premise', None) or getattr(loqate_address, 'building', None)
+    def from_loqate(cls, loqate_address: 'LoqateAddress') -> Optional['PassFortAddress']:
+        premise = getattr(loqate_address, 'premise', None) or getattr(
+            loqate_address, 'building', None)
         data = {
             "type": "STRUCTURED",
             "country": getattr(loqate_address, 'country_iso3', None),
@@ -85,8 +93,10 @@ class LoqateAddress(Model):
     locality = StringType(default=None, serialized_name="Locality")
     building = StringType(default=None, serialized_name="Building")
     postal_code = StringType(default=None, serialized_name="PostalCode")
-    administrative_area = StringType(default=None, serialized_name="AdministrativeArea")
-    sub_administrative_area = StringType(default=None, serialized_name="SubAdministrativeArea")
+    administrative_area = StringType(
+        default=None, serialized_name="AdministrativeArea")
+    sub_administrative_area = StringType(
+        default=None, serialized_name="SubAdministrativeArea")
     thoroughfare = StringType(default=None, serialized_name="Thoroughfare")
     latitude = FloatType(default=None, serialized_name="Latitude")
     longitude = FloatType(default=None, serialized_name="Longitude")
@@ -103,9 +113,12 @@ class LoqateAddress(Model):
             ])
         )
 
+        mapped_country = COUNTRY_MAPPING.get(
+            passfort_address.country, passfort_address.country)
+
         data = {
-            "ISO3166-3": passfort_address.country,
-            "Country": passfort_address.country,
+            "ISO3166-3": mapped_country,
+            "Country": mapped_country,
             "Premise": getattr(passfort_address, 'premise', None),
             "Locality": getattr(passfort_address, 'locality', None),
             "PostalCode": getattr(passfort_address, 'postal_code', None),
