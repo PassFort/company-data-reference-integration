@@ -11,12 +11,48 @@ import errno
 from app.utils import create_response_from_file
 
 
+WORLDCHECK_SUPPORTED_COUNTRIES = {
+    'ABW', 'AFG', 'AGO', 'AIA', 'ALA', 'ALB', 'AND', 'ARE', 'ARG', 'ARM',
+    'ASM', 'ATA', 'ATF', 'ATG', 'AUS', 'AUT', 'AZE', 'BDI', 'BEL', 'BEN',
+    'BES', 'BFA', 'BGD', 'BGR', 'BHR', 'BHS', 'BIH', 'BLM', 'BLR', 'BLZ',
+    'BMU', 'BOL', 'BRA', 'BRB', 'BRN', 'BTN', 'BVT', 'BWA', 'CAF', 'CAN',
+    'CCK', 'CHE', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL',
+    'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CXR', 'CYM', 'CYP', 'CZE', 'DEU',
+    'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESH', 'ESP',
+    'EST', 'ETH', 'FIN', 'FJI', 'FLK', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR',
+    'GEO', 'GGY', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC',
+    'GRD', 'GRL', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HMD', 'HND', 'HRV',
+    'HTI', 'HUN', 'IDN', 'IMN', 'IND', 'IOT', 'IRL', 'IRN', 'IRQ', 'ISL',
+    'ISR', 'ITA', 'JAM', 'JEY', 'JOR', 'JPN', 'KAZ', 'KEN', 'KGZ', 'KHM',
+    'KIR', 'KNA', 'KOR', 'KWT', 'LAO', 'LBN', 'LBR', 'LBY', 'LCA', 'LIE',
+    'LKA', 'LSO', 'LTU', 'LUX', 'LVA', 'MAC', 'MAF', 'MAR', 'MCO', 'MDA',
+    'MDG', 'MDV', 'MEX', 'MHL', 'MKD', 'MLI', 'MLT', 'MMR', 'MNE', 'MNG',
+    'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MWI', 'MYS', 'MYT', 'NAM',
+    'NCL', 'NER', 'NFK', 'NGA', 'NIC', 'NIU', 'NLD', 'NOR', 'NPL', 'NRU',
+    'NZL', 'OMN', 'PAK', 'PAN', 'PCN', 'PER', 'PHL', 'PLW', 'PNG', 'POL',
+    'PRI', 'PRK', 'PRT', 'PRY', 'PSE', 'PYF', 'QAT', 'REU', 'ROU', 'RUS',
+    'RWA', 'SAU', 'SDN', 'SEN', 'SGP', 'SGS', 'SHN', 'SJM', 'SLB', 'SLE',
+    'SLV', 'SMR', 'SOM', 'SPM', 'SRB', 'SSD', 'STP', 'SUR', 'SVK', 'SVN',
+    'SWE', 'SWZ', 'SXM', 'SYC', 'SYR', 'TCA', 'TCD', 'TGO', 'THA', 'TJK',
+    'TKL', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA',
+    'UGA', 'UKR', 'UMI', 'URY', 'USA', 'UZB', 'VAT', 'VCT', 'VEN', 'VGB',
+    'VIR', 'VNM', 'VUT', 'WLF', 'WSM', 'YEM', 'ZAF', 'ZMB', 'ZWE', 'ZZZ',
+}
+
+
 class WorldCheckConnectionError(Exception):
     pass
 
 
 class WorldCheckPendingError(Exception):
     pass
+
+
+def map_country(country):
+    if country in WORLDCHECK_SUPPORTED_COUNTRIES:
+        return country
+    else:
+        return 'ZZZ'
 
 
 def record_result_count(count, is_demo, provider_fp_reduction, group_id):
@@ -180,17 +216,17 @@ class CaseHandler:
             if input_data.address_history:
                 first_address = next((address for address in input_data.address_history), None)
                 if first_address:
-                    fields.append(Field(type_id="SFCT_3", value=first_address.address.country))
+                    fields.append(Field(type_id="SFCT_3", value=map_country(first_address.address.country)))
             if input_data.personal_details.nationality and input_data.personal_details.nationality.v:
                 fields.append(
                     Field(type_id="SFCT_5",
-                          value=input_data.personal_details.nationality.v))
+                          value=map_country(input_data.personal_details.nationality.v)))
         else:
             if input_data.metadata.country_of_incorporation and \
                     input_data.metadata.country_of_incorporation.v:
                 fields.append(
                     Field(type_id="SFCT_6",
-                          value=input_data.metadata.country_of_incorporation.v))
+                          value=map_country(input_data.metadata.country_of_incorporation.v)))
         return fields
 
 
