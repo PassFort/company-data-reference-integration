@@ -75,6 +75,8 @@ def passfort_to_trulioo_data(passfort_data):
     country = None
     address_fields_sent = []
 
+    national_ids = []
+
     if passfort_data.get('input_data'):
         # Check Personal details
         personal_details = passfort_data['input_data'].get('personal_details')
@@ -83,12 +85,11 @@ def passfort_to_trulioo_data(passfort_data):
 
             national_id = personal_details.get('national_identity_number')
             if national_id:
-                trulioo_pkg['NationalIds'] = [
-                    {
+                for country_code, number in national_id.items():
+                    national_ids.append({
                         'Type': get_national_id_type(country_code, number),
                         'Number': number,
-                    } for country_code, number in national_id.items()
-                ]
+                    })
 
             # Check name
             if personal_details.get('name'):
@@ -189,18 +190,37 @@ def passfort_to_trulioo_data(passfort_data):
             if passfort_data['input_data']['contact_details'].get('phone_number'):
                 trulioo_pkg['Communication']['Telephone'] = passfort_data['input_data']['contact_details']['phone_number']
 
-        # Driving licence
+        # Documents metadata
         if country:
-            licence = next(
-                (doc for doc
-                 in passfort_data['input_data'].get('documents_metadata', [])
-                 if doc['document_type'] == 'DRIVING_LICENCE' and doc['country_code'] == country.alpha_3)
-                , None
-            )
-            if licence and licence['number']:
-                trulioo_pkg['DriverLicence'] = {'Number': licence['number']}
-                if licence['issuing_state']:
-                    trulioo_pkg['DriverLicence']['State'] = licence['issuing_state']
+            country_specific = {}
+
+            documents_metadata = passfort_data['input_data'].get(
+                'documents_metadata') or []
+            for doc in documents_metadata:
+                # Skip documents from other countries
+                if doc.get('country_code') != country.alpha_3:
+                    continue
+
+                if not doc.get('number'):
+                    continue
+
+                # Driving licence
+                if doc['document_type'] == 'DRIVING_LICENCE':
+                    trulioo_pkg['DriverLicence'] = {'Number': doc['number']}
+                    if doc['issuing_state']:
+                        trulioo_pkg['DriverLicence']['State'] = doc['issuing_state']
+
+                # Voter ID
+                elif doc['document_type'] == 'VOTER_ID':
+                    country_specific['VoterID'] = doc['number']
+
+            if country_specific:
+                trulioo_pkg['CountrySpecific'] = {
+                    country.alpha_2: country_specific
+                }
+
+    if national_ids:
+        trulioo_pkg['NationalIds'] = national_ids
 
     return trulioo_pkg, country and country.alpha_2, set(address_fields_sent)
 
@@ -275,7 +295,9 @@ def trulioo_to_passfort_data(fields_sent, trulioo_data):
                 field['FieldName']: field['Status']
                 for field in address_fields
             }
-            address_subsets_to_check = get_address_subsets_to_check(fields_sent)
+            address_subsets_to_check = get_address_subsets_to_check(
+                fields_sent)
+
             def check_subset(components):
                 return all((
                     address_matches.get(field_sent) == 'match' for field_sent in components
@@ -310,7 +332,8 @@ def trulioo_to_passfort_data(fields_sent, trulioo_data):
 
     transaction_id = trulioo_data.get('TransactionID')
     if transaction_id:
-        response_body['output_data'].setdefault('electronic_id_check', {})['provider_reference_number'] = transaction_id
+        response_body['output_data'].setdefault('electronic_id_check', {})[
+            'provider_reference_number'] = transaction_id
 
     return response_body
 
