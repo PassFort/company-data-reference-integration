@@ -152,8 +152,7 @@ class Shareholding(BaseModel):
 
 class CompanyMetadata(BaseModel):
     bvd_id = StringType(required=True)
-    # TODO: This shouldn't be a list?
-    number = ListType(StringType(), required=True)
+    number = StringType(required=True)
     bvd9 = StringType(required=True)
     isin = StringType()
     lei = StringType(required=True)
@@ -176,7 +175,7 @@ class CompanyMetadata(BaseModel):
         return CompanyMetadata(
             {
                 "bvd_id": bvd_data.bvd_id,
-                "number": bvd_data.trade_register_number,
+                "number": bvd_data.trade_register_number[0] if bvd_data.trade_register_number else None,
                 "bvd9": bvd_data.bvd9,
                 "isin": bvd_data.isin,
                 "lei": bvd_data.lei,
