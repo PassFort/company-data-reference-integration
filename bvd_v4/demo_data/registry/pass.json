@@ -1,0 +1,78 @@
+{
+    "Data": [
+        {
+            "ADDRESS_LINE1": "MEZZANINE FLOOR 24 CORNHILL",
+            "ADDRESS_LINE2": null,
+            "ADDRESS_LINE3": null,
+            "ADDRESS_LINE4": null,
+            "ADDRESS_TYPE": "Registered address / Incorporation address / Legal address",
+            "BVD9": "230418860",
+            "BVD_ID_NUMBER": "pass",
+            "CITY": "LONDON",
+            "COUNTRY": "United Kingdom",
+            "COUNTRY_ISO_CODE": "GB",
+            "COUNTRY_REGION": [
+                "England",
+                "London Inner",
+                "London (EC)",
+                "London EC3V"
+            ],
+            "EMAIL": [
+                "info@passfort.com"
+            ],
+            "INDUSTRY_CLASSIFICATION": "UK SIC (2007)",
+            "INDUSTRY_PRIMARY_CODE": [
+                "62012"
+            ],
+            "INDUSTRY_PRIMARY_LABEL": [
+                "Business and domestic software development"
+            ],
+            "INDUSTRY_SECONDARY_CODE": null,
+            "INDUSTRY_SECONDARY_LABEL": null,
+            "ISIN": null,
+            "LATITUDE": null,
+            "LEI": null,
+            "LONGITUDE": null,
+            "NAME": "PASSFORT LIMITED",
+            "PHONE_NUMBER": [
+                "+44 20 3633 1761"
+            ],
+            "POSTCODE": "EC3V 3ND",
+            "PREVIOUS_NAME": [
+                "BLOCKOPS LIMITED"
+            ],
+            "PREVIOUS_NAME_DATE": [
+                "2015-07-31T00:00:00"
+            ],
+            "PRODUCTS_SERVICES": null,
+            "STANDARDISED_LEGAL_FORM": "Private limited companies",
+            "STATUS": [
+                "Active"
+            ],
+            "TRADE_DESCRIPTION_EN": "Business and domestic software development",
+            "TRADE_DESCRIPTION_ORIGINAL": null,
+            "TRADE_REGISTER_NUMBER": [
+                "09565115"
+            ],
+            "US_STATE": null,
+            "WEBSITE": [
+                "www.passfort.com"
+            ]
+        }
+    ],
+    "SearchSummary": {
+        "DatabaseInfo": {
+            "ReleaseNumber": "200",
+            "UpdateDate": "2020-09-18T00:00:00",
+            "UpdateNumber": "200005",
+            "VersionNumber": "129.00"
+        },
+        "Offset": 0,
+        "RecordsReturned": 1,
+        "Sort": {
+            "DESC": "OPRE"
+        },
+        "TotalRecordsFound": 1
+    }
+}
+

@@ -1,6 +1,7 @@
 from schematics import Model
 from schematics.exceptions import BaseError, ValidationError, ConversionError, CompoundError
 from schematics.types import (
+    DictType,
     FloatType,
     StringType,
     DateTimeType,
@@ -17,7 +18,7 @@ from app.bvd.maybe_list import MaybeListType
 class RegistryData(Model):
     # Idenification
     bvd_id = StringType(serialized_name="BVD_ID_NUMBER", required=True)
-    trade_register_number = MaybeListType(StringType(), serialized_name="TRADE_REGISTER_NUMBER")
+    trade_register_number = MaybeListType(StringType(), serialized_name="TRADE_REGISTER_NUMBER", default=None)
     bvd9 = StringType(serialized_name="BVD9", required=True)
     name = StringType(serialized_name="NAME", default=None)
     previous_names = MaybeListType(StringType(), serialized_name="PREVIOUS_NAME", default=list, required=True)
@@ -30,8 +31,8 @@ class RegistryData(Model):
 
     # Contact Details
     website = MaybeListType(StringType(), serialized_name="WEBSITE", default=list)
-    phone_number = MaybeListType(StringType(), serialized_name="PHONE_NUMBER")
-    email = MaybeListType(StringType(), serialized_name="EMAIL")
+    phone_number = MaybeListType(StringType(), serialized_name="PHONE_NUMBER", default=list)
+    email = MaybeListType(StringType(), serialized_name="EMAIL", default=list)
 
     # Address
     address_type = StringType(serialized_name="ADDRESS_TYPE")
@@ -160,6 +161,7 @@ class DatabaseInfo(Model):
 
 
 class SearchSummary(Model):
+    sort = DictType(StringType(), serialized_name="Sort")
     database_info = ModelType(DatabaseInfo, serialized_name="DatabaseInfo")
     records_returned = IntType(serialized_name="RecordsReturned", required=True)
     offset = IntType(serialized_name="Offset", required=True)

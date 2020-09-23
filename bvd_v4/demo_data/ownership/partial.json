@@ -1,0 +1,779 @@
+{
+  "errors": [],
+  "output_data": {
+    "entity_type": "COMPANY",
+    "metadata": {
+      "company_type": "Private limited companies",
+      "structured_company_type": {
+        "is_limited": true,
+        "is_public": false,
+        "ownership_type": "COMPANY"
+      }
+    },
+    "ownership_structure": {
+      "beneficial_owners": [
+        {
+          "bvd_id": "GB*110178010269",
+          "bvd_uci": "P344359962",
+          "dob": "1992-05-31T00:00:00.000000",
+          "first_names": "DONALD",
+          "last_name": "GILLIES",
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "GB*110178010270",
+          "bvd_uci": "P249742963",
+          "dob": "1991-08-31T00:00:00.000000",
+          "first_names": "HENRY",
+          "last_name": "IRISH",
+          "type": "INDIVIDUAL"
+        }
+      ],
+      "shareholders": [
+        {
+          "bvd9": "476327505",
+          "bvd_id": "YY*110299317061",
+          "first_names": "",
+          "last_name": "EPISODE (GP) LTD (NO 08383439)",
+          "shareholdings": [
+            {
+              "percentage": "0.2108",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "COMPANY"
+        },
+        {
+          "bvd_id": "GB*110178010270",
+          "bvd_uci": "P249742963",
+          "country_of_incorporation": "GBR",
+          "first_names": "HENRY",
+          "last_name": "IRISH",
+          "shareholdings": [
+            {
+              "percentage": "0.2064",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "GB*110178010269",
+          "bvd_uci": "P344359962",
+          "country_of_incorporation": "GBR",
+          "first_names": "DONALD",
+          "last_name": "GILLIES",
+          "shareholdings": [
+            {
+              "percentage": "0.20629999999999998",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd9": "476327508",
+          "bvd_id": "YY*110299317069",
+          "first_names": "",
+          "last_name": "OPEN OCEAN FUND KY",
+          "shareholdings": [
+            {
+              "percentage": "0.1977",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "COMPANY"
+        },
+        {
+          "bvd9": "300097608",
+          "bvd_id": "GBLP016464",
+          "country_of_incorporation": "GBR",
+          "first_names": "",
+          "last_name": "ENTREPRENEUR FIRST L.P.",
+          "shareholdings": [
+            {
+              "percentage": "0.0403",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "COMPANY"
+        },
+        {
+          "bvd9": "476327507",
+          "bvd_id": "YY*110299317063",
+          "first_names": "",
+          "last_name": "ENTREPRENEUR FIRST NEXT STAGE L.P.",
+          "shareholdings": [
+            {
+              "percentage": "0.0392",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "COMPANY"
+        },
+        {
+          "bvd_id": "WW*110140181223",
+          "bvd_uci": "P356952879",
+          "first_names": "WENDY",
+          "last_name": "WHITE",
+          "shareholdings": [
+            {
+              "percentage": "0.015600000000000001",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110140181220",
+          "bvd_uci": "P349669004",
+          "first_names": "ALANWILLIAM",
+          "last_name": "MORGAN",
+          "shareholdings": [
+            {
+              "percentage": "0.0149",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd9": "476327504",
+          "bvd_id": "YY*110299317060",
+          "first_names": "",
+          "last_name": "WORLDPAY (UK) LIMITED",
+          "shareholdings": [
+            {
+              "percentage": "0.0097",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "COMPANY"
+        },
+        {
+          "bvd_id": "WW*110229990300",
+          "bvd_uci": "P503560377",
+          "first_names": "MATTHEW",
+          "last_name": "WILLE",
+          "shareholdings": [
+            {
+              "percentage": "0.0066",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110229990294",
+          "bvd_uci": "P503560382",
+          "first_names": "ANDREW",
+          "last_name": "MACKAY",
+          "shareholdings": [
+            {
+              "percentage": "0.0055000000000000005",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110299317064",
+          "bvd_uci": "P046261825",
+          "first_names": "CHARLES",
+          "last_name": "SONGHURST",
+          "shareholdings": [
+            {
+              "percentage": "0.0053",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110140181222",
+          "bvd_uci": "P514603681",
+          "first_names": "JOE",
+          "last_name": "WHITE",
+          "shareholdings": [
+            {
+              "percentage": "0.0051",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd9": "476327506",
+          "bvd_id": "YY*110299317062",
+          "first_names": "",
+          "last_name": "SEEDCAMP III LP",
+          "shareholdings": [
+            {
+              "percentage": "0.0049",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "COMPANY"
+        },
+        {
+          "bvd_id": "WW*110140181219",
+          "bvd_uci": "P415712476",
+          "first_names": "CHRISTOPHER",
+          "last_name": "MAIRS",
+          "shareholdings": [
+            {
+              "percentage": "0.0044",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110140181218",
+          "bvd_uci": "P046024145",
+          "first_names": "JOHNWILFRED",
+          "last_name": "LAZAR",
+          "shareholdings": [
+            {
+              "percentage": "0.004",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110140181221",
+          "bvd_uci": "P444923638",
+          "first_names": "NADAV",
+          "last_name": "ROSENBERG",
+          "shareholdings": [
+            {
+              "percentage": "0.0034000000000000002",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110299317067",
+          "bvd_uci": "P646195067",
+          "first_names": "ROMAIN",
+          "last_name": "FAU",
+          "shareholdings": [
+            {
+              "percentage": "0.0033",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110229990295",
+          "bvd_uci": "P503560381",
+          "first_names": "ANDREW",
+          "last_name": "PEARCE",
+          "shareholdings": [
+            {
+              "percentage": "0.0027",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110229990296",
+          "bvd_uci": "P503560380",
+          "first_names": "ANTHONY",
+          "last_name": "GUTMAN",
+          "shareholdings": [
+            {
+              "percentage": "0.0027",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110229990299",
+          "bvd_uci": "P503560378",
+          "first_names": "GLENN",
+          "last_name": "LEIGHTON",
+          "shareholdings": [
+            {
+              "percentage": "0.0027",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110299317068",
+          "bvd_uci": "P646195066",
+          "first_names": "WILLIAM",
+          "last_name": "MONK",
+          "shareholdings": [
+            {
+              "percentage": "0.0026",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110229990298",
+          "bvd_uci": "P503560379",
+          "first_names": "EREZ",
+          "last_name": "MATHAN",
+          "shareholdings": [
+            {
+              "percentage": "0.0022",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110299317066",
+          "bvd_uci": "P646195068",
+          "first_names": "LAWRENCE",
+          "last_name": "DUBIR-ALAI",
+          "shareholdings": [
+            {
+              "percentage": "0.0014000000000000002",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110229990301",
+          "bvd_uci": "P503560376",
+          "first_names": "WILL",
+          "last_name": "ARMITAGE",
+          "shareholdings": [
+            {
+              "percentage": "0.0013",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        },
+        {
+          "bvd_id": "WW*110299317065",
+          "bvd_uci": "P646195069",
+          "first_names": "GEORGI",
+          "last_name": "ZLATKOV",
+          "shareholdings": [
+            {
+              "percentage": "0.001",
+              "provider_name": "BvD Orbis"
+            }
+          ],
+          "type": "INDIVIDUAL"
+        }
+      ]
+    }
+  },
+  "price": 0,
+  "raw": [
+    {
+      "Data": [
+        {
+          "BVDID": "GB09565115",
+          "MATCH": {
+            "0": {
+              "ADDRESS": "MEZZANINE FLOOR 24 CORNHILL",
+              "ADDRESS_TYPE": "Priority address: Registered address / Incorporation address / Legal address",
+              "BVD9": "230418860",
+              "CITY": "LONDON",
+              "COUNTRY": "GB",
+              "HINT": "Selected",
+              "NAME": "PASSFORT PARTIAL LIMITED",
+              "NAME_INTERNATIONAL": null,
+              "NATIONAL_ID": "09565115",
+              "POSTCODE": "EC3V 3ND",
+              "SCORE": 1.0,
+              "STATE": null,
+              "STATUS": "Active"
+            }
+          }
+        }
+      ],
+      "SearchSummary": {
+        "DatabaseInfo": {
+          "ReleaseNumber": "200",
+          "UpdateDate": "2020-09-20T00:00:00",
+          "UpdateNumber": "200005",
+          "VersionNumber": "129.00"
+        },
+        "Offset": 0,
+        "RecordsReturned": 1,
+        "Sort": {
+          "DESC": "OPRE"
+        },
+        "TotalRecordsFound": 1
+      }
+    },
+    {
+      "Data": [
+        {
+          "BO_BIRTHDATE": [
+            "1992-05-31T00:00:00",
+            "1991-08-31T00:00:00"
+          ],
+          "BO_BVD_ID_NUMBER": [
+            "GB*110178010269",
+            "GB*110178010270"
+          ],
+          "BO_COUNTRY_ISO_CODE": [
+            "GB",
+            "GB"
+          ],
+          "BO_ENTITY_TYPE": [
+            "One or more named individuals or families",
+            "One or more named individuals or families"
+          ],
+          "BO_FIRST_NAME": [
+            "DONALD",
+            "HENRY"
+          ],
+          "BO_LAST_NAME": [
+            "GILLIES",
+            "IRISH"
+          ],
+          "BO_NAME": [
+            "MR DONALD GILLIES",
+            "MR HENRY IRISH"
+          ],
+          "BO_UCI": [
+            "P344359962",
+            "P249742963"
+          ],
+          "SH_BVD9": [
+            "476327505",
+            null,
+            null,
+            "476327508",
+            "300097608",
+            "476327507",
+            null,
+            null,
+            "476327504",
+            null,
+            null,
+            null,
+            null,
+            "476327506",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "SH_BVD_ID_NUMBER": [
+            "YY*110299317061",
+            "GB*110178010270",
+            "GB*110178010269",
+            "YY*110299317069",
+            "GBLP016464",
+            "YY*110299317063",
+            "WW*110140181223",
+            "WW*110140181220",
+            "YY*110299317060",
+            "WW*110229990300",
+            "WW*110229990294",
+            "WW*110299317064",
+            "WW*110140181222",
+            "YY*110299317062",
+            "WW*110140181219",
+            "WW*110140181218",
+            "WW*110140181221",
+            "WW*110299317067",
+            "WW*110229990295",
+            "WW*110229990296",
+            "WW*110229990299",
+            "WW*110299317068",
+            "WW*110229990298",
+            "WW*110299317066",
+            "WW*110229990301",
+            "WW*110299317065"
+          ],
+          "SH_COUNTRY_ISO_CODE": [
+            "n.a.",
+            "GB",
+            "GB",
+            "n.a.",
+            "GB",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a.",
+            "n.a."
+          ],
+          "SH_DIRECT_PCT": [
+            "21.08",
+            "20.64",
+            "20.63",
+            "19.77",
+            "4.03",
+            "3.92",
+            "1.56",
+            "1.49",
+            "0.97",
+            "0.66",
+            "0.55",
+            "0.53",
+            "0.51",
+            "0.49",
+            "0.44",
+            "0.40",
+            "0.34",
+            "0.33",
+            "0.27",
+            "0.27",
+            "0.27",
+            "0.26",
+            "0.22",
+            "0.14",
+            "0.13",
+            "0.10"
+          ],
+          "SH_ENTITY_TYPE": [
+            "Corporate",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "Mutual and pension fund, nominee, trust, trustee",
+            "Corporate",
+            "Corporate",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "Corporate",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "Corporate",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families",
+            "One or more named individuals or families"
+          ],
+          "SH_FIRST_NAME": [
+            null,
+            "HENRY",
+            "DONALD",
+            null,
+            null,
+            null,
+            "WENDY",
+            "ALAN WILLIAM",
+            null,
+            "MATTHEW",
+            "ANDREW",
+            "CHARLES",
+            "JOE",
+            null,
+            "CHRISTOPHER",
+            "JOHN WILFRED",
+            "NADAV",
+            "ROMAIN",
+            "ANDREW",
+            "ANTHONY",
+            "GLENN",
+            "WILLIAM",
+            "EREZ",
+            "LAWRENCE",
+            "WILL",
+            "GEORGI"
+          ],
+          "SH_LAST_NAME": [
+            null,
+            "IRISH",
+            "GILLIES",
+            null,
+            null,
+            null,
+            "WHITE",
+            "MORGAN",
+            null,
+            "WILLE",
+            "MACKAY",
+            "SONGHURST",
+            "WHITE",
+            null,
+            "MAIRS",
+            "LAZAR",
+            "ROSENBERG",
+            "FAU",
+            "PEARCE",
+            "GUTMAN",
+            "LEIGHTON",
+            "MONK",
+            "MATHAN",
+            "DUBIR-ALAI",
+            "ARMITAGE",
+            "ZLATKOV"
+          ],
+          "SH_LEI": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "SH_NAME": [
+            "EPISODE (GP) LTD (NO 08383439)",
+            "MR HENRY IRISH",
+            "MR DONALD GILLIES",
+            "OPEN OCEAN FUND KY",
+            "ENTREPRENEUR FIRST L.P.",
+            "ENTREPRENEUR FIRST NEXT STAGE L.P.",
+            "MS WENDY WHITE",
+            "MR ALAN WILLIAM MORGAN",
+            "WORLDPAY (UK) LIMITED",
+            "MR MATTHEW WILLE",
+            "MR ANDREW MACKAY",
+            "MR CHARLES SONGHURST",
+            "MR JOE WHITE",
+            "SEEDCAMP III LP",
+            "MR CHRISTOPHER MAIRS",
+            "MR JOHN WILFRED LAZAR",
+            "MR NADAV ROSENBERG",
+            "MR ROMAIN FAU",
+            "MR ANDREW PEARCE",
+            "MR ANTHONY GUTMAN",
+            "MR GLENN LEIGHTON",
+            "MR WILLIAM MONK",
+            "MR EREZ MATHAN",
+            "MR LAWRENCE DUBIR-ALAI",
+            "MR WILL ARMITAGE",
+            "MR GEORGI ZLATKOV"
+          ],
+          "SH_STATE_PROVINCE": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "SH_UCI": [
+            null,
+            "P249742963",
+            "P344359962",
+            null,
+            null,
+            null,
+            "P356952879",
+            "P349669004",
+            null,
+            "P503560377",
+            "P503560382",
+            "P046261825",
+            "P514603681",
+            null,
+            "P415712476",
+            "P046024145",
+            "P444923638",
+            "P646195067",
+            "P503560381",
+            "P503560380",
+            "P503560378",
+            "P646195066",
+            "P503560379",
+            "P646195068",
+            "P503560376",
+            "P646195069"
+          ],
+          "STANDARDISED_LEGAL_FORM": "Private limited companies"
+        }
+      ],
+      "SearchSummary": {
+        "DatabaseInfo": {
+          "ReleaseNumber": "200",
+          "UpdateDate": "2020-09-20T00:00:00",
+          "UpdateNumber": "200005",
+          "VersionNumber": "129.00"
+        },
+        "Offset": 0,
+        "RecordsReturned": 1,
+        "Sort": {
+          "DESC": "OPRE"
+        },
+        "TotalRecordsFound": 1
+      }
+    }
+  ]
+}

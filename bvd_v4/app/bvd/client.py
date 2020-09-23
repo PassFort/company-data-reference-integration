@@ -14,6 +14,25 @@ from app.bvd.types import DataResult, OwnershipResult, RegistryResult, SearchRes
 from app.passfort.types import Error
 
 
+def search_demo(name=None, country=None, state=None, company_number=None):
+    search_query = (name or '').lower()
+    if 'fail' in search_query:
+        return "./demo_data/search/fail.json"
+    elif 'partial' in search_query:
+        return f"./demo_data/search/partial.json"
+    else:
+        return f"./demo_data/search/pass.json"
+
+
+def demo_path(check_type, bvd_id):
+    if bvd_id == 'fail':
+        return f"./demo_data/{check_type}/fail.json"
+    elif bvd_id == 'partial':
+        return f"./demo_data/{check_type}/partial.json"
+    else:
+        return f"./demo_data/{check_type}/pass.json"
+
+
 def country_alpha_3_to_2(alpha_3):
     try:
         return countries.get(alpha_3=alpha_3).alpha_2
@@ -54,19 +73,26 @@ def requests_retry_session(
 
 
 class Client:
-    def __init__(self, token):
+    def __init__(self, token, demo):
         self.token = token
+        self.demo = demo
         self.session = requests_retry_session()
         self.base_url = "https://Orbis.bvdinfo.com/api/orbis/"
         self.raw_responses = []
         self.errors = []
 
-    def get(self, response_model, *args, **kwargs):
-        # TODO: capture http errors
-        response = self.session.get(*args, **kwargs)
-        self.raw_responses.append(response.json())
+    def get(self, response_model, get_demo_data, *args, **kwargs):
+        if self.demo:
+            with open(get_demo_data()) as demo_data:
+                response = json.load(demo_data)
+        else:
+            # TODO: capture http errors
+            response = self.session.get(*args, **kwargs).json()
+
+        self.raw_responses.append(response)
+
         try:
-            data = prune_nones(response.json())
+            data = prune_nones(response)
             model = response_model().import_data(data, apply_defaults=True)
             model.validate()
             return model
@@ -74,7 +100,7 @@ class Client:
             logging.error({
                 "message": "provider response did not match expectation",
                 "cause": e.to_primitive(),
-                "response": response.json()
+                "response": response
             })
             self.errors.append(Error.bad_response(e.to_primitive()))
 
@@ -83,6 +109,7 @@ class Client:
     def search(self, name=None, country=None, state=None, company_number=None):
         return self.get(
             SearchResult,
+            lambda: search_demo(name, country, state, company_number),
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
             params={
@@ -125,9 +152,10 @@ class Client:
             },
         )
 
-    def _fetch_data(self, response_model, bvd_id, data_set=DataSet.ALL):
+    def _fetch_data(self, response_model, get_demo_data, bvd_id, data_set=DataSet.ALL):
         return self.get(
             response_model,
+            get_demo_data,
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
             params={
@@ -138,10 +166,25 @@ class Client:
         )
 
     def fetch_company_data(self, bvd_id):
-        return self._fetch_data(DataResult, bvd_id, DataSet.ALL)
+        return self._fetch_data(
+            DataResult,
+            lambda: demo_path("company_data", bvd_id),
+            bvd_id,
+            DataSet.ALL,
+        )
 
     def fetch_registry_data(self, bvd_id):
-        return self._fetch_data(RegistryResult, bvd_id, DataSet.REGISTRY)
+        return self._fetch_data(
+            RegistryResult,
+            lambda: demo_path("registry", bvd_id),
+            bvd_id,
+            DataSet.REGISTRY
+        )
 
     def fetch_ownership_data(self, bvd_id):
-        return self._fetch_data(OwnershipResult, bvd_id, DataSet.OWNERSHIP)
+        return self._fetch_data(
+            OwnershipResult,
+            lambda: demo_path("ownership", bvd_id),
+            bvd_id,
+            DataSet.OWNERSHIP
+        )

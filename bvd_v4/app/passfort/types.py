@@ -370,18 +370,20 @@ class SearchInput(BaseModel):
     number = StringType(default=None)
 
 
-class SearchRequest(BaseModel):
+class Request(BaseModel):
     credentials = ModelType(Credentials, required=True)
+    is_demo = BooleanType(default=False)
+
+
+class SearchRequest(Request):
     input_data = ModelType(SearchInput, required=True)
 
 
-class RegistryCheckRequest(BaseModel):
-    credentials = ModelType(Credentials, required=True)
+class RegistryCheckRequest(Request):
     input_data = ModelType(RegistryInput, required=True)
 
 
-class OwnershipCheckRequest(BaseModel):
-    credentials = ModelType(Credentials, required=True)
+class OwnershipCheckRequest(Request):
     input_data = ModelType(OwnershipInput, required=True)
 
 

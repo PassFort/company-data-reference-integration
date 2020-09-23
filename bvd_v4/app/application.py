@@ -49,7 +49,10 @@ def get_bvd_id(client, country, bvd_id, company_number):
 def company_data_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(request.credentials.key)
+    client = Client(
+        request.credentials.key,
+        request.is_demo,
+    )
 
     bvd_id = get_bvd_id(
         client,
@@ -63,7 +66,7 @@ def company_data_check(request):
     else:
         search_results = None
 
-    if search_results:
+    if search_results and search_results.data:
         data = CompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
@@ -84,7 +87,10 @@ def company_data_check(request):
 def registry_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(request.credentials.key)
+    client = Client(
+        request.credentials.key,
+        request.is_demo,
+    )
 
     bvd_id = get_bvd_id(
         client,
@@ -98,7 +104,7 @@ def registry_check(request):
     else:
         search_results = None
 
-    if search_results:
+    if search_results and search_results.data:
         data = RegistryCompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
@@ -118,7 +124,10 @@ def registry_check(request):
 @app.route("/ownership-check", methods=["POST"])
 @request_model(OwnershipCheckRequest)
 def ownership_check(request):
-    client = Client(request.credentials.key)
+    client = Client(
+        request.credentials.key,
+        request.is_demo,
+    )
 
     bvd_id = get_bvd_id(
         client,
@@ -132,7 +141,7 @@ def ownership_check(request):
     else:
         search_results = None
 
-    if search_results:
+    if search_results and search_results.data:
         data = OwnershipCompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
@@ -152,10 +161,13 @@ def ownership_check(request):
 @app.route("/search", methods=["POST"])
 @request_model(SearchRequest)
 def company_search(request):
-    client = Client(request.credentials.key)
+    client = Client(
+        request.credentials.key,
+        request.is_demo,
+    )
     search_results = client.search(
         request.input_data.name,
-        request.input_data.country,
+        country=request.input_data.country,
         state=request.input_data.state,
         company_number=request.input_data.number,
     )
