@@ -28,6 +28,7 @@ COPY main.py /src
 COPY coverage /src
 COPY app /src/app
 COPY e2e /src/e2e
+COPY demo_data /src/demo_data
 
 # Ports.
 EXPOSE 8001

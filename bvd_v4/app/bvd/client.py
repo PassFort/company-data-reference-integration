@@ -17,20 +17,20 @@ from app.passfort.types import Error
 def search_demo(name=None, country=None, state=None, company_number=None):
     search_query = (name or '').lower()
     if 'fail' in search_query:
-        return "./demo_data/search/fail.json"
+        return "demo_data/search/fail.json"
     elif 'partial' in search_query:
-        return f"./demo_data/search/partial.json"
+        return f"demo_data/search/partial.json"
     else:
-        return f"./demo_data/search/pass.json"
+        return f"demo_data/search/pass.json"
 
 
 def demo_path(check_type, bvd_id):
     if bvd_id == 'fail':
-        return f"./demo_data/{check_type}/fail.json"
+        return f"demo_data/{check_type}/fail.json"
     elif bvd_id == 'partial':
-        return f"./demo_data/{check_type}/partial.json"
+        return f"demo_data/{check_type}/partial.json"
     else:
-        return f"./demo_data/{check_type}/pass.json"
+        return f"demo_data/{check_type}/pass.json"
 
 
 def country_alpha_3_to_2(alpha_3):
