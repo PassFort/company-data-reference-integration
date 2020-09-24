@@ -322,6 +322,8 @@ def trulioo_to_passfort_data(fields_sent, trulioo_data):
             # if have matches add
             if match['matched_fields']:
                 match['count'] = 1
+            else:
+                match['count'] = 0
 
             matches.append(match)
 
