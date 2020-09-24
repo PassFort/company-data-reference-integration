@@ -126,12 +126,14 @@ def test_ekyc_check_with_raw_data(client):
                     {
                         "database_name": "Credit Agency",
                         "database_type": "CREDIT",
-                        "matched_fields": []
+                        "matched_fields": [],
+                        "count": 0,
                     },
                     {
                         "database_name": "Credit Agency 3",
                         "database_type": "CREDIT",
-                        "matched_fields": []
+                        "matched_fields": [],
+                        "count": 0,
                     }
                 ]
             }

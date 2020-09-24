@@ -7,11 +7,11 @@ def test_empty_package(client):
     response_body = trulioo_to_passfort_data({}, {})
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
         },
-        "raw": {},
-        "errors": []
+        'raw': {},
+        'errors': []
     }
 
 
@@ -27,11 +27,11 @@ def test_record_with_empty_datasource_results(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -59,21 +59,22 @@ def test_record_with_one_datasource_without_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
-            "entity_type": "INDIVIDUAL",
-            "electronic_id_check": {
-                "matches": [
+        'decision': 'FAIL',
+        'output_data': {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [
                     {
-                        "database_name": "Credit Agency",
-                        "database_type": "CREDIT",
-                        "matched_fields": []
+                        'database_name': 'Credit Agency',
+                        'database_type': 'CREDIT',
+                        'matched_fields': [],
+                        'count': 0
                     },
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -101,8 +102,8 @@ def test_record_with_one_datasource_with_surname_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -115,8 +116,8 @@ def test_record_with_one_datasource_with_surname_match(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -144,8 +145,8 @@ def test_record_with_one_datasource_with_forename_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -158,8 +159,8 @@ def test_record_with_one_datasource_with_forename_match(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -195,8 +196,8 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -209,8 +210,8 @@ def test_record_with_one_datasource_with_dob_complete_match(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -242,8 +243,8 @@ def test_record_with_one_datasource_with_dob_year_month_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -256,8 +257,8 @@ def test_record_with_one_datasource_with_dob_year_month_match(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -285,8 +286,8 @@ def test_record_with_one_datasource_with_dob_year_match(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -299,8 +300,8 @@ def test_record_with_one_datasource_with_dob_year_match(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -336,21 +337,22 @@ def test_record_with_one_datasource_with_dob_day_nomatch(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
-            "entity_type": "INDIVIDUAL",
-            "electronic_id_check": {
-                "matches": [
+        'decision': 'FAIL',
+        'output_data': {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [
                     {
-                        "database_name": "Credit Agency",
-                        "database_type": "CREDIT",
-                        "matched_fields": []
+                        'database_name': 'Credit Agency',
+                        'database_type': 'CREDIT',
+                        'matched_fields': [],
+                        'count': 0
                     },
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -384,21 +386,22 @@ def test_partial_address_match(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
-            "entity_type": "INDIVIDUAL",
-            "electronic_id_check": {
-                "matches": [
+        'decision': 'FAIL',
+        'output_data': {
+            'entity_type': 'INDIVIDUAL',
+            'electronic_id_check': {
+                'matches': [
                     {
-                        "database_name": "Credit Agency",
-                        "database_type": "CREDIT",
-                        "matched_fields": []
+                        'database_name': 'Credit Agency',
+                        'database_type': 'CREDIT',
+                        'matched_fields': [],
+                        'count': 0
                     },
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -443,8 +446,8 @@ def test_record_with_one_datasource_with_address_match(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -457,8 +460,8 @@ def test_record_with_one_datasource_with_address_match(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -510,8 +513,8 @@ def test_record_with_address_match_multiple_options(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -524,8 +527,8 @@ def test_record_with_address_match_multiple_options(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -573,8 +576,8 @@ def test_record_with_no_address_match_multiple_options(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -582,12 +585,13 @@ def test_record_with_no_address_match_multiple_options(client):
                         'database_name': 'Credit Agency',
                         'database_type': 'CREDIT',
                         'matched_fields': [],
+                        'count': 0
                     }
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -635,8 +639,8 @@ def test_record_with_address_match_multiple_matches(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -649,8 +653,8 @@ def test_record_with_address_match_multiple_matches(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -698,19 +702,20 @@ def test_record_with_address_multiple_options_one_no_match(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [{
                     'database_name': 'Credit Agency',
                     'database_type': 'CREDIT',
                     'matched_fields': [],
+                    'count': 0
                 }]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -755,8 +760,8 @@ def test_record_with_address_matches_with_not_sent_field(client):
     }, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [{
@@ -767,8 +772,8 @@ def test_record_with_address_matches_with_not_sent_field(client):
                 }]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -839,8 +844,8 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
     response_body = trulioo_to_passfort_data(fields, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -853,8 +858,8 @@ def test_record_with_one_datasource_with_address_match_full_fields(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -918,8 +923,8 @@ def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(clien
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -932,8 +937,8 @@ def test_record_with_one_datasource_with_address_nomatch_by_partial_fields(clien
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -961,8 +966,8 @@ def test_record_with_one_datasource_with_database_type_credit(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -975,8 +980,8 @@ def test_record_with_one_datasource_with_database_type_credit(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -1004,8 +1009,8 @@ def test_record_with_one_datasource_with_database_type_civil(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -1018,8 +1023,8 @@ def test_record_with_one_datasource_with_database_type_civil(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -1058,8 +1063,8 @@ def test_record_with_two_datasource_with_diff_database_type(client):
     response_body = trulioo_to_passfort_data({}, trulioo_data)
 
     assert response_body == {
-        "decision": "FAIL",
-        "output_data": {
+        'decision': 'FAIL',
+        'output_data': {
             'entity_type': 'INDIVIDUAL',
             'electronic_id_check': {
                 'matches': [
@@ -1078,8 +1083,8 @@ def test_record_with_two_datasource_with_diff_database_type(client):
                 ]
             }
         },
-        "raw": trulioo_data,
-        "errors": []
+        'raw': trulioo_data,
+        'errors': []
     }
 
 
@@ -1117,8 +1122,8 @@ def test_record_with_national_id_match(client):
         response_body = trulioo_to_passfort_data({}, trulioo_data)
 
         assert response_body == {
-            "decision": "FAIL",
-            "output_data": {
+            'decision': 'FAIL',
+            'output_data': {
                 'entity_type': 'INDIVIDUAL',
                 'electronic_id_check': {
                     'matches': [
@@ -1131,8 +1136,8 @@ def test_record_with_national_id_match(client):
                     ]
                 }
             },
-            "raw": trulioo_data,
-            "errors": []
+            'raw': trulioo_data,
+            'errors': []
         }
 
 
@@ -1141,10 +1146,10 @@ def test_record_error_missing_required_fields_generic(client):
         {'Code': '1001', 'Message': 'Missing required field: unsupported field name'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1162,10 +1167,10 @@ def test_record_error_missing_required_fields_1001(client):
         {'Code': '1001', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1184,10 +1189,10 @@ def test_record_error_missing_required_fields_4001(client):
         {'Code': '4001', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1206,10 +1211,10 @@ def test_record_error_missing_required_fields_3005(client):
         {'Code': '3005', 'Message': 'Missing required field: BuildingName'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1228,10 +1233,10 @@ def test_record_error_missing_required_fields_concatened(client):
                                {'Code': '4001'}, {'Code': '3005'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 101,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1246,10 +1251,10 @@ def test_record_error_unknown_error(client):
     trulioo_data = {'Errors': [{'Code': '2000'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 303,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1257,7 +1262,7 @@ def test_record_error_unknown_error(client):
                     'Code': '2000',
                 },
             }),
-            'message': "Provider Error: Unknown error while running 'Trulioo' service",
+            'message': 'Provider Error: Unknown error while running \'Trulioo\' service',
         }],
     }
 
@@ -1266,10 +1271,10 @@ def test_record_error_invalid_input_data_1006(client):
     trulioo_data = {'Errors': [{'Code': '1006'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 201,
             'info': PartialComparator({
                 'provider': 'Trulioo',
@@ -1286,10 +1291,10 @@ def test_record_error_invalid_input_data_1008(client):
     trulioo_data = {'Errors': [{'Code': '1008'}]}
     response_body = trulioo_to_passfort_data({}, trulioo_data)
     assert response_body == {
-        "decision": "ERROR",
-        "output_data": {},
-        "raw": trulioo_data,
-        "errors": [{
+        'decision': 'ERROR',
+        'output_data': {},
+        'raw': trulioo_data,
+        'errors': [{
             'code': 201,
             'info': PartialComparator({
                 'provider': 'Trulioo',
