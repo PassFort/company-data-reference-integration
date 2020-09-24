@@ -5,7 +5,7 @@ import re
 from pycountry import countries
 from schematics import Model
 from schematics.types import (
-    FloatType,
+    DecimalType,
     StringType,
     DateTimeType,
     DictType,
@@ -15,7 +15,9 @@ from schematics.types import (
     ModelType,
     BooleanType,
 )
+from schematics.types.serializable import serializable
 
+from app.constants import PROVIDER_NAME
 from app.passfort.base_model import BaseModel
 from app.passfort.structured_company_type import StructuredCompanyType
 
@@ -39,22 +41,22 @@ def name_strip(name: str) -> str:
 
 
 def format_names(first, last, full, entity_type):
-    if first or last:
-        return (
-            name_strip(first) if first else '',
-            name_strip(last) if last else ''
-        )
-
     if full:
         full = name_strip(full)
         if entity_type == EntityType.INDIVIDUAL:
             names = full.split(' ')
             # First element is the title
-            return ' '.join(names[1:-1]), names[-1]
+            return names[0], names[1:-1], names[-1]
         else:
-            return '', full
+            return None, [], full
+    elif first or last:
+        return (
+            None,
+            name_strip(first) if first else [],
+            name_strip(last) if last else ''
+        )
     else:
-        return '', ''
+        return None, [], ''
 
 
 class ErrorCode(Enum):
@@ -91,7 +93,7 @@ class TaxIdType(Enum):
 
 
 class TaxId(BaseModel):
-    tax_id_type = StringType(required=True, choices=list(TaxIdType))
+    tax_id_type = StringType(required=True, choices=[ty.value for ty in TaxIdType])
     value = StringType(required=True)
 
 
@@ -134,20 +136,23 @@ class ContactDetails(BaseModel):
 
 
 class Shareholding(BaseModel):
-    percentage = FloatType()
+    percentage = DecimalType()
+
+    @serializable
+    def provider_name(self):
+        return PROVIDER_NAME
 
     def from_bvd(direct_percentage):
-        try:
-            return Shareholding({
-                'percentage': float(direct_percentage) / 100
-            })
-        except ValueError:
+        if direct_percentage is None:
             return None
+        return Shareholding({
+            'percentage': float(direct_percentage) / 100
+        })
 
 
 class CompanyMetadata(BaseModel):
     bvd_id = StringType(required=True)
-    number = ListType(StringType(), required=True)
+    number = StringType(required=True)
     bvd9 = StringType(required=True)
     isin = StringType()
     lei = StringType(required=True)
@@ -170,7 +175,7 @@ class CompanyMetadata(BaseModel):
         return CompanyMetadata(
             {
                 "bvd_id": bvd_data.bvd_id,
-                "number": bvd_data.trade_register_number,
+                "number": bvd_data.trade_register_number[0] if bvd_data.trade_register_number else None,
                 "bvd9": bvd_data.bvd9,
                 "isin": bvd_data.isin,
                 "lei": bvd_data.lei,
@@ -208,7 +213,7 @@ class CompanyMetadata(BaseModel):
 
 
 class Shareholder(BaseModel):
-    type = StringType(required=True, choices=list(EntityType))
+    type = StringType(required=True, choices=[ty.value for ty in EntityType])
     bvd_id = StringType()
     bvd9 = StringType()
     bvd_uci = StringType()
@@ -221,7 +226,7 @@ class Shareholder(BaseModel):
 
     def from_bvd(index, bvd_data):
         entity_type = EntityType.INDIVIDUAL if bvd_data.shareholder_is_individual(index) else EntityType.COMPANY
-        first_names, last_name = format_names(
+        title, first_names, last_name = format_names(
             bvd_data.shareholder_first_name[index],
             bvd_data.shareholder_last_name[index],
             bvd_data.shareholder_name[index],
@@ -239,7 +244,7 @@ class Shareholder(BaseModel):
                 "lei": bvd_data.shareholder_lei[index],
                 "country_of_incorporation": country_alpha_2_to_3(bvd_data.shareholder_country_code[index]),
                 "state_of_incorporation": bvd_data.shareholder_state_province[index],
-                "first_names": first_names,
+                "first_names": "".join(first_names),
                 "last_name": last_name,
                 "shareholdings": [
                     Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
@@ -251,7 +256,7 @@ class Shareholder(BaseModel):
 
 
 class BeneficialOwner(BaseModel):
-    type = StringType(required=True, choices=list(EntityType))
+    type = StringType(required=True, choices=[ty.value for ty in EntityType])
     bvd_id = StringType(required=True)
     bvd_uci = StringType(required=True)
     first_names = StringType()
@@ -261,7 +266,7 @@ class BeneficialOwner(BaseModel):
     def from_bvd(index, bvd_data):
         uci = bvd_data.beneficial_owner_uci[index] if bvd_data.beneficial_owner_uci else None
         entity_type = EntityType.INDIVIDUAL if bvd_data.beneficial_owner_is_individual(index) else EntityType.COMPANY
-        first_names, last_names = format_names(
+        title, first_names, last_names = format_names(
             bvd_data.beneficial_owner_first_name[index],
             bvd_data.beneficial_owner_last_name[index],
             bvd_data.beneficial_owner_name[index],
@@ -271,7 +276,7 @@ class BeneficialOwner(BaseModel):
             "type": entity_type.value,
             "bvd_id": bvd_data.beneficial_owner_bvd_id[index],
             "bvd_uci": uci,
-            "first_names": first_names,
+            "first_names": "".join(first_names),
             "last_name": last_names,
             "dob": bvd_data.beneficial_owner_birth_date[index] if bvd_data.beneficial_owner_birth_date else None,
         })
@@ -300,7 +305,7 @@ class OwnershipStructure(BaseModel):
 
 
 class RegistryCompanyData(BaseModel):
-    entity_type = StringType(required=True, choices=list(EntityType))
+    entity_type = StringType(required=True, choices=[ty.value for ty in EntityType])
     metadata = ModelType(CompanyMetadata, required=True)
 
     def from_bvd(bvd_data):
@@ -326,7 +331,7 @@ class OwnershipMetadata(BaseModel):
 
 
 class OwnershipCompanyData(BaseModel):
-    entity_type = StringType(choices=list(EntityType), required=True)
+    entity_type = StringType(choices=[ty.value for ty in EntityType], required=True)
     metadata = ModelType(OwnershipMetadata, required=True)
     ownership_structure = ModelType(OwnershipStructure, required=True)
 

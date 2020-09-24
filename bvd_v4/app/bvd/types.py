@@ -14,7 +14,7 @@ from schematics.types import (
 from app.bvd.maybe_list import MaybeListType
 
 
-class Data(Model):
+class RegistryData(Model):
     # Idenification
     bvd_id = StringType(serialized_name="BVD_ID_NUMBER", required=True)
     trade_register_number = MaybeListType(StringType(), serialized_name="TRADE_REGISTER_NUMBER")
@@ -114,6 +114,7 @@ class OwnershipData(Model):
     beneficial_owner_bvd_id = ListType(StringType(), serialized_name="BO_BVD_ID_NUMBER", default=list)
     beneficial_owner_uci = ListType(StringType(), serialized_name="BO_UCI", default=list)
     beneficial_owner_entity_type = ListType(StringType(), serialized_name="BO_ENTITY_TYPE", default=list)
+    beneficial_owner_country_code = ListType(StringType(), serialized_name="BO_COUNTRY_ISO_CODE", default=list)
     beneficial_owner_name = ListType(StringType(), serialized_name="BO_NAME", default=list)
     beneficial_owner_first_name = ListType(StringType(), serialized_name="BO_FIRST_NAME", default=list)
     beneficial_owner_last_name = ListType(StringType(), serialized_name="BO_LAST_NAME", default=list)
@@ -165,9 +166,18 @@ class SearchSummary(Model):
     total_records_found = IntType(serialized_name="TotalRecordsFound", required=True)
 
 
+class Data(RegistryData, OwnershipData):
+    pass
+
+
 class DataResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = MaybeListType(ModelType(Data), serialized_name="Data")
+
+
+class RegistryResult(Model):
+    search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
+    data = MaybeListType(ModelType(RegistryData), serialized_name="Data")
 
 
 class OwnershipResult(Model):

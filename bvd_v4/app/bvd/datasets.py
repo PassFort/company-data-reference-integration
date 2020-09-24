@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-REGISTRY_FIELDS = [
+REGISTRY_FIELDS = {
     "BVD_ID_NUMBER",
     "BVD9",
     "LEI",
@@ -39,9 +39,9 @@ REGISTRY_FIELDS = [
     "INDUSTRY_PRIMARY_LABEL",
     "INDUSTRY_SECONDARY_CODE",
     "INDUSTRY_SECONDARY_LABEL",
-]
+}
 
-OWNERSHIP_FIELDS = [
+OWNERSHIP_FIELDS = {
     # Metadata
     "STANDARDISED_LEGAL_FORM",
 
@@ -60,13 +60,14 @@ OWNERSHIP_FIELDS = [
 
     # Beneficial Owners
     "BO_BVD_ID_NUMBER",
+    "BO_COUNTRY_ISO_CODE",
     "BO_UCI",
     "BO_ENTITY_TYPE",
     "BO_NAME",
     "BO_FIRST_NAME",
     "BO_LAST_NAME",
     "BO_BIRTHDATE",
-]
+}
 
 
 class DataSet(Enum):
@@ -77,13 +78,13 @@ class DataSet(Enum):
     @property
     def fields(self):
         if self == DataSet.ALL:
-            return [
+            return list({
                 field
                 for data_set in DataSet
                 if data_set != DataSet.ALL
                 for field in data_set.fields
-            ]
+            })
         elif self == DataSet.REGISTRY:
-            return REGISTRY_FIELDS
+            return list(REGISTRY_FIELDS)
         elif self == DataSet.OWNERSHIP:
-            return OWNERSHIP_FIELDS
+            return list(OWNERSHIP_FIELDS)

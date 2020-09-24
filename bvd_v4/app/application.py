@@ -7,6 +7,7 @@ from raven.contrib.flask import Sentry
 from app.validation import request_model
 from app.bvd.datasets import DataSet
 from app.bvd.client import Client
+from app.passfort.company_data import CompanyData, CompanyDataCheckResponse
 from app.passfort.types import (
     Candidate,
     RegistryCheckRequest,
@@ -41,6 +42,41 @@ def get_bvd_id(client, country, bvd_id, company_number):
         return result.data[0].bvd_id
     else:
         return None
+
+
+@app.route("/company-data-check", methods=["POST"])
+@request_model(RegistryCheckRequest)
+def company_data_check(request):
+    # Assuming we always have either a BvD ID or a company number
+
+    client = Client(request.credentials.key)
+
+    bvd_id = get_bvd_id(
+        client,
+        request.input_data.country_of_incorporation,
+        request.input_data.bvd_id,
+        request.input_data.number,
+    )
+
+    if bvd_id:
+        search_results = client.fetch_company_data(bvd_id)
+    else:
+        search_results = None
+
+    if search_results:
+        data = CompanyData.from_bvd(search_results.data[0])
+    else:
+        data = {}
+
+    return jsonify(
+        CompanyDataCheckResponse(
+            {
+                "output_data": data,
+                "errors": client.errors,
+                "raw": client.raw_responses,
+            }
+        ).to_primitive()
+    )
 
 
 @app.route("/registry-check", methods=["POST"])
