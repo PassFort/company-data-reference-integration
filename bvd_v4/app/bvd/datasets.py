@@ -1,6 +1,27 @@
 from enum import Enum
 
 
+OFFICERS_FIELDS = {
+    "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred",
+    "CPYCONTACTS_MEMBERSHIP_BoardMnemonic",
+    "CPYCONTACTS_HEADER_BvdId",  # bvd_ids
+    "CPYCONTACTS_HEADER_IdDirector",  # officer_ucis
+    "CPYCONTACTS_MEMBERSHIP_CurrentPrevious",
+    "CPYCONTACTS_MEMBERSHIP_Function",
+    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate",  # appointment date
+    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate",  # Resignation date
+    "CPYCONTACTS_HEADER_Type",
+    "CPYCONTACTS_HEADER_BareTitle",
+    "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred",
+    "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred",
+    "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred",
+    "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred",
+    "CPYCONTACTS_HEADER_NationalityCountryLabel",
+    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate",
+    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate",
+    "CPYCONTACTS_HEADER_Birthdate",
+}
+
 REGISTRY_FIELDS = {
     "BVD_ID_NUMBER",
     "BVD9",
@@ -39,7 +60,9 @@ REGISTRY_FIELDS = {
     "INDUSTRY_PRIMARY_LABEL",
     "INDUSTRY_SECONDARY_CODE",
     "INDUSTRY_SECONDARY_LABEL",
+    *OFFICERS_FIELDS,
 }
+
 
 OWNERSHIP_FIELDS = {
     # Metadata

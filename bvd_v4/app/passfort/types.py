@@ -28,7 +28,18 @@ def country_alpha_2_to_3(alpha_2):
         return countries.get(alpha_2=alpha_2).alpha_3
     except (LookupError, AttributeError):
         if alpha_2 != 'n.a.':
-            logging.error(f"BvdD returned unrecognised alpha 2 country code {alpha_2}")
+            logging.error(f"BvD returned unrecognised alpha 2 country code {alpha_2}")
+        return None
+
+
+def country_names_to_alpha_3(country_name):
+    if country_name is None:
+        return None
+
+    try:
+        return countries.get(name=country_name.split(";")[0]).alpha_3
+    except (LookupError, AttributeError):
+        logging.error(f"BvD returned unrecognised country name {country_name}")
         return None
 
 
@@ -86,6 +97,15 @@ class EntityType(Enum):
     INDIVIDUAL = "INDIVIDUAL"
     COMPANY = "COMPANY"
 
+    def from_bvd_officer(index, bvd_data):
+        bvd_type = bvd_data.officer_entity_type[index]
+        if 'Individual' == bvd_type:
+            return EntityType.INDIVIDUAL
+        elif 'Company' == bvd_type:
+            return EntityType.COMPANY
+        else:
+            return None
+
 
 class TaxIdType(Enum):
     EUROVAT = "EUROVAT"
@@ -120,7 +140,7 @@ class SICCode(BaseModel):
     description = StringType(required=True)
 
     def from_bvd(primary_code, primary_label):
-        return SICCode({"code": primary_code, "description": primary_label,})
+        return SICCode({"code": primary_code, "description": primary_label})
 
 
 class ContactDetails(BaseModel):
@@ -225,7 +245,7 @@ class Shareholder(BaseModel):
     last_name = StringType()
     shareholdings = ListType(ModelType(Shareholding))
 
-    def from_bvd(index, bvd_data):
+    def from_bvd_shareholder(index, bvd_data):
         entity_type = EntityType.INDIVIDUAL if bvd_data.shareholder_is_individual(index) else EntityType.COMPANY
         title, first_names, last_name = format_names(
             bvd_data.shareholder_first_name[index],
@@ -264,7 +284,7 @@ class BeneficialOwner(BaseModel):
     last_name = StringType()
     dob = DateTimeType()
 
-    def from_bvd(index, bvd_data):
+    def from_bvd_beneficial_owner(index, bvd_data):
         uci = bvd_data.beneficial_owner_uci[index] if bvd_data.beneficial_owner_uci else None
         entity_type = EntityType.INDIVIDUAL if bvd_data.beneficial_owner_is_individual(index) else EntityType.COMPANY
         title, first_names, last_names = format_names(
@@ -283,7 +303,6 @@ class BeneficialOwner(BaseModel):
         })
 
 
-
 class OwnershipStructure(BaseModel):
     shareholders = ListType(ModelType(Shareholder), required=True, default=list)
     beneficial_owners = ListType(
@@ -294,26 +313,150 @@ class OwnershipStructure(BaseModel):
         return OwnershipStructure(
             {
                 "shareholders": [
-                    Shareholder.from_bvd(i, bvd_data)
+                    Shareholder.from_bvd_shareholder(i, bvd_data)
                     for i in range(0, len(bvd_data.shareholder_bvd_id))
                 ],
                 "beneficial_owners": [
-                    BeneficialOwner.from_bvd(i, bvd_data)
+                    BeneficialOwner.from_bvd_beneficial_owner(i, bvd_data)
                     for i in range(0, len(bvd_data.beneficial_owner_bvd_id))
                 ],
             }
         )
 
 
+class OfficerRole(Enum):
+    INDIVIDUAL_DIRECTOR = 'INDIVIDUAL_DIRECTOR'
+    INDIVIDUAL_COMPANY_SECRETARY = 'INDIVIDUAL_COMPANY_SECRETARY'
+    INDIVIDUAL_OTHER = 'INDIVIDUAL_OTHER'
+    COMPANY_DIRECTOR = 'COMPANY_DIRECTOR'
+    COMPANY_COMPANY_SECRETARY = 'COMPANY_COMPANY_SECRETARY'
+    COMPANY_OTHER = 'COMPANY_OTHER'
+
+    def director(entity_type):
+        if entity_type is EntityType.INDIVIDUAL:
+            return OfficerRole.INDIVIDUAL_DIRECTOR
+        else:
+            return OfficerRole.COMPANY_DIRECTOR
+
+    def secretary(entity_type):
+        if entity_type is EntityType.INDIVIDUAL:
+            return OfficerRole.INDIVIDUAL_COMPANY_SECRETARY
+        else:
+            return OfficerRole.COMPANY_COMPANY_SECRETARY
+
+    def other(entity_type):
+        if entity_type is EntityType.INDIVIDUAL:
+            return OfficerRole.INDIVIDUAL_OTHER
+        else:
+            return OfficerRole.COMPANY_OTHER
+
+    def from_bvd_officer(index, bvd_data):
+        original_role_lower = bvd_data.officer_role[index].lower()
+        entity_type = EntityType.from_bvd_officer(index, bvd_data)
+
+        if 'director' in original_role_lower:
+            return OfficerRole.director(entity_type)
+        elif 'secretary' in original_role_lower:
+            return OfficerRole.secretary(entity_type)
+        else:
+            return OfficerRole.other(entity_type)
+
+
+class Officer(BaseModel):
+    bvd_id = StringType()
+    bvd_uci = StringType()
+    type = StringType(required=True, choices=[ty.value for ty in EntityType])
+    role = StringType(required=True, choices=[role.value for role in OfficerRole])
+    original_role = StringType()
+    first_names = StringType()
+    last_name = StringType()
+    nationality = StringType(min_length=3, max_length=3)
+    resigned = BooleanType()
+    resigned_on = DateTimeType()
+    appointed_on = DateTimeType()
+    dob = DateTimeType()
+
+    def from_bvd_officer(index, bvd_data):
+        entity_type = EntityType.from_bvd_officer(index, bvd_data)
+        officer_role = OfficerRole.from_bvd_officer(index, bvd_data)
+
+        _, first_names, last_name = format_names(
+            ' '.join([
+                bvd_data.officer_first_name[index] or '',
+                bvd_data.officer_middle_name[index] or '',
+            ]),
+            bvd_data.officer_last_name[index],
+            bvd_data.officer_name[index],
+            entity_type,
+        )
+
+        return Officer({
+            "bvd_id": bvd_data.officer_bvd_id[index],
+            "bvd_uci": bvd_data.officer_uci[index],
+            "type": entity_type.value if entity_type else None,
+            "role": officer_role.value if officer_role else None,
+            "original_role": bvd_data.officer_role[index],
+            "first_names": ' '.join(first_names),
+            "last_name": last_name,
+            "nationality": country_names_to_alpha_3(bvd_data.officer_nationality[index]),
+            "resigned": bvd_data.officer_resignation_date[index] is not None,
+            "resigned_on": bvd_data.officer_resignation_date[index],
+            "appointed_on": bvd_data.officer_appointment_date[index],
+            "dob": bvd_data.officer_date_of_birth[index],
+        })
+
+    @property
+    def is_director(self):
+        return "DIRECTOR" in self.role
+
+    @property
+    def is_secretary(self):
+        return "SECRETARY" in self.role
+
+
+class Officers(BaseModel):
+    directors = ListType(ModelType(Officer), default=list, required=True)
+    secretaries = ListType(ModelType(Officer), default=list, required=True)
+    resigned = ListType(ModelType(Officer), default=list, required=True)
+    others = ListType(ModelType(Officer), default=list, required=True)
+
+    def from_bvd(bvd_data):
+        officers = [
+            Officer.from_bvd_officer(index, bvd_data)
+            for index
+            in range(0, len(bvd_data.officer_bvd_id))
+        ]
+        return Officers({
+            "directors": [
+                officer for officer in officers
+                if officer.is_director and not officer.resigned
+            ],
+            "secretaries": [
+                officer for officer in officers
+                if officer.is_secretary and not officer.resigned
+            ],
+            "resigned": [
+                officer for officer in officers
+                if officer.resigned
+            ],
+            "others": [
+                officer for officer in officers
+                if not any([officer.is_director, officer.is_secretary, officer.resigned])
+            ],
+        })
+
+
 class RegistryCompanyData(BaseModel):
     entity_type = StringType(required=True, choices=[ty.value for ty in EntityType])
     metadata = ModelType(CompanyMetadata, required=True)
+    officers = ModelType(Officers, required=True)
 
     def from_bvd(bvd_data):
         return RegistryCompanyData(
             {
                 "entity_type": EntityType.COMPANY.value,
                 "metadata": CompanyMetadata.from_bvd(bvd_data),
+                "officers": Officers.from_bvd(bvd_data)
             }
         )
 

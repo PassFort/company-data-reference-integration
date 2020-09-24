@@ -20,6 +20,7 @@ from app.constants import PROVIDER_NAME
 from app.passfort.base_model import BaseModel
 from app.passfort.types import (
     country_alpha_2_to_3,
+    country_names_to_alpha_3,
     format_names,
     CompanyMetadata,
     EntityType,
@@ -28,6 +29,7 @@ from app.passfort.types import (
 )
 
 
+# Deterministically creates associate UUID from string
 def build_resolver_id(original_id):
     from uuid import NAMESPACE_X500, uuid3
     return uuid3(NAMESPACE_X500, original_id)
@@ -48,7 +50,13 @@ class AssociateCompanyMetadata(BaseModel):
             'country_of_incorporation': country_alpha_2_to_3(bvd_data.shareholder_country_code[index]),
             'state_of_incorporation': bvd_data.shareholder_state_province[index],
             'lei': bvd_data.shareholder_lei[index],
+        })
 
+    def from_bvd_officer(index, bvd_data):
+        # TODO: Officer metadata & SIC codes
+        return AssociateCompanyMetadata({
+            'bvd_id': bvd_data.officer_bvd_id[index],
+            'name': bvd_data.officer_name[index],
         })
 
     def merge(a, b):
@@ -92,6 +100,19 @@ class FullName(BaseModel):
             "last_name": last_name,
         })
 
+    def from_bvd_officer(index, bvd_data):
+        title_from_full_name, first_names, last_name = format_names(
+            bvd_data.officer_first_name[index],
+            bvd_data.officer_last_name[index],
+            bvd_data.officer_name[index],
+            EntityType.INDIVIDUAL,
+        )
+        return FullName({
+            "title": title_from_full_name or bvd_data.officer_title[index],
+            "first_names": first_names,
+            "last_name": last_name,
+        })
+
     def merge(a, b):
         return FullName({
             "title": a.title or b.title,
@@ -117,6 +138,12 @@ class AssociatePersonalDetails(BaseModel):
             'nationality': country_alpha_2_to_3(bvd_data.beneficial_owner_country_code[index])
         })
 
+    def from_bvd_officer(index, bvd_data):
+        return AssociatePersonalDetails({
+            'name': FullName.from_bvd_officer(index, bvd_data),
+            'nationality': country_names_to_alpha_3(bvd_data.officer_nationality[index])
+        })
+
     def merge(a, b):
         return AssociatePersonalDetails({
             'name': FullName.merge(a.name, b.name),
@@ -136,6 +163,12 @@ class AssociateEntityData(BaseModel):
     def from_bvd_beneficial_owner(index, bvd_data):
         return IndividualAssociateData.from_bvd_beneficial_owner(index, bvd_data)
 
+    def from_bvd_officer(entity_type, index, bvd_data):
+        if entity_type == EntityType.COMPANY:
+            return CompanyAssociateData.from_bvd_officer(index, bvd_data)
+        else:
+            return IndividualAssociateData.from_bvd_officer(index, bvd_data)
+
     def merge(a, b):
         if a.entity_type == EntityType.COMPANY:
             return CompanyAssociateData.merge(a, b)
@@ -154,6 +187,12 @@ class CompanyAssociateData(AssociateEntityData):
         return CompanyAssociateData({
             'entity_type': EntityType.COMPANY.value,
             'metadata': AssociateCompanyMetadata.from_bvd_shareholder(index, bvd_data)
+        })
+
+    def from_bvd_officer(index, bvd_data):
+        return CompanyAssociateData({
+            'entity_type': EntityType.COMPANY.value,
+            'metadata': AssociateCompanyMetadata.from_bvd_officer(index, bvd_data)
         })
 
     def merge(a, b):
@@ -182,6 +221,12 @@ class IndividualAssociateData(AssociateEntityData):
             'personal_details': AssociatePersonalDetails.from_bvd_beneficial_owner(index, bvd_data)
         })
 
+    def from_bvd_officer(index, bvd_data):
+        return IndividualAssociateData({
+            'entity_type': EntityType.INDIVIDUAL.value,
+            'personal_details': AssociatePersonalDetails.from_bvd_officer(index, bvd_data)
+        })
+    
     def merge(a, b):
         return IndividualAssociateData({
             'entity_type': EntityType.INDIVIDUAL.value,
@@ -191,11 +236,30 @@ class IndividualAssociateData(AssociateEntityData):
 
 class RelationshipType(Enum):
     SHAREHOLDER = "SHAREHOLDER"
+    OFFICER = "OFFICER"
 
 
 class AssociatedRole(Enum):
     SHAREHOLDER = "SHAREHOLDER"
     BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
+
+    DIRECTOR = "DIRECTOR"
+    COMPANY_SECRETARY = "COMPANY_SECRETARY"
+    RESIGNED_OFFICER = "RESIGNED_OFFICER"
+    OTHER = "OTHER"
+
+    def from_bvd_officer(index, bvd_data):
+        original_role_lower = bvd_data.officer_role[index].lower()
+        resignation_date = bvd_data.officer_resignation_date[index]
+
+        if resignation_date is not None:
+            return AssociatedRole.RESIGNED_OFFICER
+        elif 'director' in original_role_lower:
+            return AssociatedRole.DIRECTOR
+        elif 'secretary' in original_role_lower:
+            return AssociatedRole.COMPANY_SECRETARY
+        else:
+            return AssociatedRole.OTHER
 
 
 class Relationship(BaseModel):
@@ -209,6 +273,12 @@ class Relationship(BaseModel):
         return Relationship({
             "relationship_type": RelationshipType.SHAREHOLDER.value,
             "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
+        })
+
+    def from_bvd_officer(index, bvd_data):
+        return Relationship({
+            "relationship_type": RelationshipType.OFFICER.value,
+            "associated_role": AssociatedRole.from_bvd_officer(index, bvd_data).value,
         })
 
 
@@ -238,7 +308,7 @@ class Associate(BaseModel):
     def from_bvd_shareholder(index, bvd_data):
         entity_type = EntityType.INDIVIDUAL if bvd_data.shareholder_is_individual(index) else EntityType.COMPANY
         return Associate({
-            'associate_id': build_resolver_id(bvd_data.shareholder_bvd_id[index]),
+            'associate_id': build_resolver_id(bvd_data.shareholder_uci[index] or bvd_data.shareholder_bvd_id[index]),
             'entity_type': entity_type.value,
             'immediate_data': AssociateEntityData.from_bvd_shareholder(entity_type, index, bvd_data),
             'relationships': [Relationship.from_bvd_shareholder(index, bvd_data)],
@@ -246,12 +316,23 @@ class Associate(BaseModel):
 
     def from_bvd_beneficial_owner(index, bvd_data):
         return Associate({
-            'associate_id': build_resolver_id(bvd_data.beneficial_owner_bvd_id[index]),
+            'associate_id': build_resolver_id(bvd_data.beneficial_owner_uci[index] or bvd_data.beneficial_owner_bvd_id[index]),
             # UBOs are always individuals
             'entity_type': EntityType.INDIVIDUAL.value,
             'immediate_data': AssociateEntityData.from_bvd_beneficial_owner(index, bvd_data),
             'relationships': [
                 Relationship.from_bvd_beneficial_owner(index, bvd_data),
+            ],
+        })
+
+    def from_bvd_officer(index, bvd_data):
+        entity_type = EntityType.from_bvd_officer(index, bvd_data)
+        return Associate({
+            'associate_id': build_resolver_id(bvd_data.officer_uci[index] or bvd_data.officer_bvd_id[index]),
+            'entity_type': entity_type.value,
+            'immediate_data': AssociateEntityData.from_bvd_officer(entity_type, index, bvd_data),
+            'relationships': [
+                Relationship.from_bvd_officer(index, bvd_data)
             ],
         })
 
@@ -292,10 +373,15 @@ class CompanyData(BaseModel):
             for index
             in range(0, len(bvd_data.beneficial_owner_bvd_id))
         ]
+        officers = [
+            Associate.from_bvd_officer(index, bvd_data)
+            for index
+            in range(0, len(bvd_data.officer_bvd_id))
+        ]
 
         return CompanyData({
             'metadata': CompanyMetadata.from_bvd(bvd_data),
-            'associated_entities': merge_associates_by_id(shareholders + beneficial_owners),
+            'associated_entities': merge_associates_by_id(shareholders + beneficial_owners + officers),
         })
 
 

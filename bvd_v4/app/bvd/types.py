@@ -73,6 +73,73 @@ class RegistryData(Model):
         StringType(), serialized_name="INDUSTRY_SECONDARY_LABEL", default=list
     )
 
+    # Officers
+    officer_bvd_id = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_BvdId",
+        default=list
+    )
+    officer_uci = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_IdDirector",
+        default=list
+    )
+    officer_entity_type = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_Type",
+        default=list
+    )
+    officer_role = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_MEMBERSHIP_Function",
+        default=list
+    )
+    officer_title = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_BareTitle",
+        default=list,
+    )
+    officer_first_name = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred",
+        default=list,
+    )
+    officer_middle_name = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred",
+        default=list,
+    )
+    officer_last_name = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred",
+        default=list,
+    )
+    officer_name = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred",
+        default=list,
+    )
+    officer_nationality = MaybeListType(
+        StringType(),
+        serialized_name="CPYCONTACTS_HEADER_NationalityCountryLabel",
+        default=list,
+    )
+    officer_resignation_date = MaybeListType(
+        DateTimeType(),
+        serialized_name="CPYCONTACTS_MEMBERSHIP_EndExpirationDate",
+        default=list,
+    )
+    officer_appointment_date = MaybeListType(
+        DateTimeType(),
+        serialized_name="CPYCONTACTS_MEMBERSHIP_BeginningNominationDate",
+        default=list,
+    )
+    officer_date_of_birth = MaybeListType(
+        DateTimeType(),
+        serialized_name="CPYCONTACTS_HEADER_Birthdate",
+        default=list,
+    )
+
     @property
     def address_fields(self):
         return [
