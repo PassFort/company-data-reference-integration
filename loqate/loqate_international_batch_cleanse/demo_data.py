@@ -1,7 +1,9 @@
 from app.api.models import GeoCodingCheck, LoqateAddress
 
+
 def get_demo_result(data: GeoCodingCheck):
-    output_address = LoqateAddress.from_passfort(data.input_data.address).to_primitive()
+    output_address = LoqateAddress.from_passfort_structured(
+        data.input_data.address).to_primitive()
 
     if (getattr(data.input_data.address, 'county', None) or '').upper() == 'FAIL':
         return {
@@ -41,4 +43,3 @@ def get_demo_result(data: GeoCodingCheck):
             'Matches': [{**output_address, "GeoAccuracy": 'P1'}],
         }]
     }
-
