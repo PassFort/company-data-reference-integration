@@ -5,6 +5,7 @@ from schematics.common import NOT_NONE
 from schematics.types import StringType, BooleanType, ModelType, FloatType, ListType
 from schematics.exceptions import DataError, ValidationError
 from functools import wraps
+from datetime import date
 
 from .error import Error
 
@@ -61,6 +62,7 @@ class PassFortAddress(Model):
     county = StringType(default=None)
     latitude = FloatType(default=None)
     longitude = FloatType(default=None)
+    original_freeform_address = StringType(default=None)
 
     class Options:
         export_level = NOT_NONE
@@ -100,12 +102,20 @@ class LoqateAddress(Model):
     thoroughfare = StringType(default=None, serialized_name="Thoroughfare")
     latitude = FloatType(default=None, serialized_name="Latitude")
     longitude = FloatType(default=None, serialized_name="Longitude")
+    address1 = StringType(default=None, serialized_name="Address1")
+    address2 = StringType(default=None, serialized_name="Address2")
+    address3 = StringType(default=None, serialized_name="Address3")
+    address4 = StringType(default=None, serialized_name="Address4")
+    address5 = StringType(default=None, serialized_name="Address5")
+    address6 = StringType(default=None, serialized_name="Address6")
+    address7 = StringType(default=None, serialized_name="Address7")
+    address8 = StringType(default=None, serialized_name="Address8")
 
     class Options:
         export_level = NOT_NONE
 
     @classmethod
-    def from_passfort(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
+    def from_passfort_structured(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
         thoroughfare = ' '.join(
             filter(None, [
                 getattr(passfort_address, 'street_number', None),
@@ -122,7 +132,7 @@ class LoqateAddress(Model):
             "Premise": getattr(passfort_address, 'premise', None),
             "Locality": getattr(passfort_address, 'locality', None),
             "PostalCode": getattr(passfort_address, 'postal_code', None),
-            "AdministrativeArea": getattr(passfort_address, 'state', None),
+            "AdministrativeArea": getattr(passfort_address, 'state_province', None),
             "SubAdministrativeArea": getattr(passfort_address, 'county', None),
             "Thoroughfare": thoroughfare or None,
 
@@ -130,6 +140,41 @@ class LoqateAddress(Model):
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
         return model
+
+    @classmethod
+    def from_passfort_freeform(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
+        mapped_country = COUNTRY_MAPPING.get(
+            passfort_address.country, passfort_address.country)
+
+        data = {
+            "ISO3166-3": mapped_country,
+            "Country": mapped_country,
+            "PostalCode": getattr(passfort_address, 'postal_code', None),
+            "AdministrativeArea": getattr(passfort_address, 'state_province', None),
+        }
+
+        address_lines = passfort_address.original_freeform_address.split(',')
+        index = 1
+        for address_line in address_lines:
+            stripped_line = address_line.strip()
+            if not stripped_line:
+                continue
+
+            data[f"Address{index}"] = stripped_line
+            index += 1
+            if index > 8:
+                break
+
+        model = cls().import_data(data, apply_defaults=True)
+        model.validate()
+        return model
+
+    @classmethod
+    def from_passfort(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
+        if date.today().day % 2 == 0:
+            return cls.from_passfort_freeform(passfort_address)
+        else:
+            return cls.from_passfort_structured(passfort_address)
 
     @classmethod
     def from_raw(cls, raw_data: dict) -> 'LoqateAddress':

@@ -30,31 +30,31 @@ mock_input = {
 }
 
 loqate_address = {
-    "Address":"",
-    "Address1":"Schubartstr. 111",
-    "Address2":"Bietigheim-Bissingen",
-    "Address3":"74321",
-    "Address4":"",
-    "Address5":"",
-    "Address6":"",
-    "Address7":"",
-    "Address8":"",
-    "Country":"DEU",
-    "SuperAdministrativeArea":"",
-    "AdministrativeArea":"Baden-Württemberg",
-    "SubAdministrativeArea":"",
-    "Locality":"Koln",
+    "Address": "",
+    "Address1": "Schubartstr. 111",
+    "Address2": "Bietigheim-Bissingen",
+    "Address3": "74321",
+    "Address4": "",
+    "Address5": "",
+    "Address6": "",
+    "Address7": "",
+    "Address8": "",
+    "Country": "DEU",
+    "SuperAdministrativeArea": "",
+    "AdministrativeArea": "Baden-Württemberg",
+    "SubAdministrativeArea": "",
+    "Locality": "Koln",
     "ISO3166-3": "DEU",
-    "DependentLocality":"",
-    "DoubleDependentLocality":"",
-    "Thoroughfare":"",
-    "DependentThoroughfare":"",
-    "Building":"",
-    "Premise":"Hertscher 25",
-    "SubBuilding":"",
-    "PostalCode":"74321",
-    "Organization":"",
-    "PostBox":"",
+    "DependentLocality": "",
+    "DoubleDependentLocality": "",
+    "Thoroughfare": "",
+    "DependentThoroughfare": "",
+    "Building": "",
+    "Premise": "Hertscher 25",
+    "SubBuilding": "",
+    "PostalCode": "74321",
+    "Organization": "",
+    "PostBox": "",
     "Latitude": "50.940529",
     "Longitude": "6.959910",
 }
@@ -71,9 +71,28 @@ def test_passfort_to_loqate():
         "SubAdministrativeArea": "Aberdeen City",
         "Thoroughfare": "50 Exchange Street"
     }
-    actual = LoqateAddress.from_passfort(input.address)
+    actual = LoqateAddress.from_passfort_structured(input.address)
 
     assert expected == actual.to_primitive()
+
+
+def test_passfort_to_loqate_freeform():
+    input = CheckInput().import_data(mock_input)
+    expected = {
+        "PostalCode": "AB11 6PH",
+        "ISO3166-3": "GBR",
+        "Country": "GBR",
+        "Address1": "2",
+        "Address2": "Imperial House 12-14",
+        "Address3": "Exchange Street",
+        "Address4": "Aberdeen",
+        "Address5": "Aberdeen City",
+        "Address6": "AB11 6PH"
+    }
+    actual = LoqateAddress.from_passfort_freeform(input.address)
+
+    assert expected == actual.to_primitive()
+
 
 def test_loqate_to_passfort():
     address = LoqateAddress().from_raw(loqate_address)
@@ -90,6 +109,7 @@ def test_loqate_to_passfort():
 
     assert expected == actual.to_primitive()
 
+
 def test_minimal_passfort_to_loqate():
     input = CheckInput().import_data({
         "address": {
@@ -105,12 +125,14 @@ def test_minimal_passfort_to_loqate():
         "Locality": "London",
     }
 
-    actual = LoqateAddress.from_passfort(input.address)
+    actual = LoqateAddress.from_passfort_structured(input.address)
 
     assert expected == actual.to_primitive()
 
+
 def test_minimal_loqate_to_passfort():
-    address = LoqateAddress().from_raw({"Country": "DEU", "ISO3166-3": "DEU", "Locality": 'Koln'})
+    address = LoqateAddress().from_raw(
+        {"Country": "DEU", "ISO3166-3": "DEU", "Locality": 'Koln'})
     expected = {
         "type": "STRUCTURED",
         "country": "DEU",
@@ -119,5 +141,3 @@ def test_minimal_loqate_to_passfort():
     actual = PassFortAddress.from_loqate(address)
 
     assert expected == actual.to_primitive()
-
-
