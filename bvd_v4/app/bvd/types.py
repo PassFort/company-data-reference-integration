@@ -25,8 +25,8 @@ class RegistryData(Model):
     previous_dates = MaybeListType(DateTimeType(), serialized_name="PREVIOUS_NAME_DATE", default=list, required=True)
     isin = StringType(serialized_name="ISIN", default=None)
     lei = StringType(serialized_name="LEI", default=None)
-    vat = StringType(serialized_name="VAT", default=None)
-    eurovat = StringType(serialized_name="EUROVAT", default=None)
+    vat = StringType(serialized_name="VAT_NUMBER", default=None)
+    eurovat = StringType(serialized_name="EUROPEAN_VAT_NUMBER", default=None)
     irs = StringType(serialized_name="IRS", default=None)
 
     # Contact Details
@@ -45,6 +45,7 @@ class RegistryData(Model):
     country_region = MaybeListType(StringType(), serialized_name="COUNTRY_REGION", default=list)
     state = StringType(serialized_name="US_STATE", default=None)
     incorporation_state = StringType(serialized_name="INCORPORATION_STATE", default=None)
+    incorporation_date = StringType(serialized_name="INCORPORATION_DATE", default=None)
     country = StringType(serialized_name="COUNTRY", default=None)
     country_code = StringType(serialized_name="COUNTRY_ISO_CODE", default=None)
     longitude = FloatType(serialized_name="LONGITUDE", default=None)
@@ -122,6 +123,11 @@ class RegistryData(Model):
     officer_nationality = MaybeListType(
         StringType(),
         serialized_name="CPYCONTACTS_HEADER_NationalityCountryLabel",
+        default=list,
+    )
+    officer_curent_previous = MaybeListType(
+        StringType(choices=["Current", "Previous"]),
+        serialized_name="CPYCONTACTS_MEMBERSHIP_CurrentPrevious",
         default=list,
     )
     officer_resignation_date = MaybeListType(

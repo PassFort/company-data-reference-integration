@@ -1,6 +1,7 @@
 import json
 import logging
 import requests
+from json import JSONDecodeError
 
 from pycountry import countries
 from requests.adapters import HTTPAdapter
@@ -87,13 +88,20 @@ class Client:
                 response = json.load(demo_data)
         else:
             # TODO: capture http errors
-            response = self.session.get(*args, **kwargs).json()
+            response = self.session.get(
+                *args,
+                **kwargs,
+            )
+            response.raise_for_status()
+            data = response.json()
 
-        self.raw_responses.append(response)
+        self.raw_responses.append(data)
 
         try:
-            data = prune_nones(response)
-            model = response_model().import_data(data, apply_defaults=True)
+            model = response_model().import_data(
+                prune_nones(data),
+                apply_defaults=True
+            )
             model.validate()
             return model
         except DataError as e:

@@ -114,8 +114,24 @@ class TaxIdType(Enum):
 
 
 class TaxId(BaseModel):
-    tax_id_type = StringType(required=True, choices=[ty.value for ty in TaxIdType])
+    tax_id_type = StringType(choices=[ty.value for ty in TaxIdType], required=True)
     value = StringType(required=True)
+
+    def from_bvd_vat(bvd_vat):
+        if bvd_vat is None:
+            return None
+        return TaxId({
+            "tax_id_type": TaxIdType.VAT.value,
+            "value": bvd_vat,
+        })
+
+    def from_bvd_eurovat(bvd_eurovat):
+        if bvd_eurovat is None:
+            return None
+        return TaxId({
+            "tax_id_type": TaxIdType.EUROVAT.value,
+            "value": bvd_eurovat,
+        })
 
 
 class OwnershipType(Enum):
@@ -133,6 +149,29 @@ class PreviousName(BaseModel):
 
     def from_bvd(name, date):
         return PreviousName({"name": name, "end": date})
+
+
+class IndustryClassificationType(Enum):
+    SIC = "SIC"
+    NACE = "NACE"
+    NAICS = "NAICS"
+
+    def from_bvd(bvd_classification):
+        if "SIC" in bvd_classification:
+            return IndustryClassificationType.SIC
+        elif "NACE" in bvd_classification:
+            return IndustryClassificationType.NACE
+        elif "NAICS" in bvd_classification:
+            return IndustryClassificationType.NAICS
+        else:
+            return None
+
+
+class IndustryClassification(BaseModel):
+    classification_type = StringType(choices=[ty.value for ty in IndustryClassificationType], required=True)
+    code = StringType(required=True)
+    classification_version = StringType()
+    description = StringType()
 
 
 class SICCode(BaseModel):
@@ -176,14 +215,15 @@ class CompanyMetadata(BaseModel):
     number = StringType(required=True)
     bvd9 = StringType(required=True)
     isin = StringType()
-    lei = StringType(required=True)
-    tax_ids = ListType(ModelType(TaxId), required=True)
+    lei = StringType()
+    tax_ids = ListType(ModelType(TaxId), default=list, required=True)
     name = StringType()
     company_type = StringType()
     structured_company_type = ModelType(StructuredCompanyType)
     country_of_incorporation = StringType()
     incorporation_date = DateTimeType()
     previous_names = ListType(ModelType(PreviousName), required=True)
+    industry_classifications = ListType(ModelType(IndustryClassification))
     sic_codes = ListType(ModelType(SICCode), required=True)
     contact_information = ModelType(ContactDetails)
     freeform_address = StringType(required=True)
@@ -200,19 +240,37 @@ class CompanyMetadata(BaseModel):
                 "bvd9": bvd_data.bvd9,
                 "isin": bvd_data.isin,
                 "lei": bvd_data.lei,
+                "tax_ids": [
+                    tax_id for tax_id in
+                    (
+                        TaxId.from_bvd_eurovat(bvd_data.eurovat),
+                        TaxId.from_bvd_vat(bvd_data.vat),
+                    ) if tax_id is not None
+                ],
                 "name": bvd_data.name,
                 "company_type": bvd_data.standardised_legal_form,
                 "structured_company_type": StructuredCompanyType.from_bvd(bvd_data.standardised_legal_form),
-                "country_of_incorporation": None,
-                "incorporation_date": None,
+                "country_of_incorporation": country_alpha_2_to_3(bvd_data.country_code),
+                "incorporation_date": bvd_data.incorporation_date,
                 "previous_names": [
                     PreviousName.from_bvd(name, date)
                     for name, date in zip(
                         bvd_data.previous_names, bvd_data.previous_dates
                     )
                 ],
+                "industry_classifications": [
+                    IndustryClassification({
+                        "classification_type": IndustryClassificationType.from_bvd(bvd_data.industry_classification).value,
+                        "classification_version": bvd_data.industry_classification,
+                        "code": primary_code,
+                        "description": primary_label,
+                    })
+                    for primary_code, primary_label in zip(
+                        bvd_data.industry_primary_code,
+                        bvd_data.industry_primary_label,
+                    )
+                ],
                 "sic_codes": [
-                    # TODO: deeper SIC code support
                     SICCode.from_bvd(primary_code, primary_label)
                     for primary_code, primary_label in zip(
                         bvd_data.industry_primary_code, bvd_data.industry_primary_label,
