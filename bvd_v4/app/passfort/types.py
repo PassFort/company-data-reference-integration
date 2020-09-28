@@ -72,6 +72,7 @@ def format_names(first, last, full, entity_type):
 
 
 class ErrorCode(Enum):
+    PROVIDER_CONNECTION_ERROR = 302
     PROVIDER_UNKNOWN_ERROR = 303
 
 
@@ -81,13 +82,22 @@ class Error(BaseModel):
     message = StringType()
     info = BaseType()
 
-    # TODO: What does this look like in other integrations
-    def bad_response(cause):
+    def bad_provider_response(cause):
         return Error(
             {
                 "source": "PROVIDER",
                 "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
                 "message": "Provider returned data in an unexpected format",
+                "info": cause,
+            }
+        )
+
+    def provider_connection(cause):
+        return Error(
+            {
+                "source": "PROVIDER",
+                "code": ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+                "message": "Failed to connect to provider",
                 "info": cause,
             }
         )

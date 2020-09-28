@@ -5,6 +5,7 @@ from json import JSONDecodeError
 
 from pycountry import countries
 from requests.adapters import HTTPAdapter
+from requests.exceptions import ConnectionError, HTTPError
 from requests.packages.urllib3.util.retry import Retry
 from schematics.exceptions import DataError
 
@@ -71,31 +72,45 @@ class Client:
         self.raw_responses = []
         self.errors = []
 
-    def get(self, response_model, get_demo_data, *args, **kwargs):
-        if self.demo:
-            with open(get_demo_data()) as demo_data:
-                data = json.load(demo_data)
-        else:
-            # TODO: capture http errors
-            response = self.session.get(*args, **kwargs,)
-            response.raise_for_status()
-            data = response.json()
+    def _record_error(self, error, **kwargs):
+        self.errors.append(error)
+        logging.error({
+            **error.to_primitive(),
+            **kwargs
+        })
 
-        self.raw_responses.append(data)
+    def get(self, response_model, get_demo_data, *args, **kwargs):
+        try:
+            if self.demo:
+                with open(get_demo_data()) as demo_data:
+                    data = json.load(demo_data)
+            else:
+                response = self.session.get(*args, **kwargs,)
+                response.raise_for_status()
+                data = response.json()
+
+            self.raw_responses.append(data)
+
+        except (ConnectionError, HTTPError) as e:
+            self._record_error(Error.provider_connection(str(e)))
+            data = {}
+        except JSONDecodeError as e:
+            self._record_error(Error.bad_provider_response(str(e)))
+            data = {}
 
         try:
             model = response_model().import_data(prune_nones(data), apply_defaults=True)
             model.validate()
             return model
         except DataError as e:
+            self._record_error(Error.bad_provider_response(e.to_primitive()), json=data)
             logging.error(
                 {
                     "message": "provider response did not match expectation",
                     "cause": e.to_primitive(),
-                    "response": response,
+
                 }
             )
-            self.errors.append(Error.bad_response(e.to_primitive()))
 
         return None
 
