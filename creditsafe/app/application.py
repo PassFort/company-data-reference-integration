@@ -1,5 +1,7 @@
 import os
 import logging
+import time
+from functools import wraps
 import traceback
 
 from flask import Flask, jsonify
@@ -35,6 +37,35 @@ class DataDogWrapper:
             except Exception:
                 logging.error('Statsd error when increment {} was '
                               'called with value {} and tags: {}'.format(metric, value, tags))
+
+    def histogram(self, metric, value, tags=None, sample_rate=1):
+        from datadog import statsd
+
+        if self.mock:
+            logging.info('Histogram {} called with value {} and tags: {}'.format(metric, value, tags))
+        try:
+            statsd.histogram(metric, value, tags, sample_rate)
+        except Exception:
+            logging.error('Statsd error when histogram {} was '
+                          'called with value {} and tags: {}'.format(metric, value, tags))
+
+    def track_time(self, metric):
+        def track_time_decorator(fn):
+            @wraps(fn)
+            def wrapped_fn(*args, **kwargs):
+                start = time.time()
+                try:
+                    result = fn(*args, **kwargs)
+                except Exception as e:
+                    self.histogram(metric + '.error', time.time() - start)
+                    raise e
+
+                self.histogram(metric, time.time() - start)
+                return result
+
+            return wrapped_fn
+
+        return track_time_decorator
 
 
 def initialize_datadog():
@@ -80,6 +111,7 @@ def health():
 
 
 @app.route('/search', methods=['POST'])
+@app.dd.track_time("passfort.services.creditsafe.search")
 @validate_model(CreditSafeSearchRequest)
 def search(request_data: 'CreditSafeSearchRequest'):
     if request_data.is_demo:
@@ -101,6 +133,7 @@ def search(request_data: 'CreditSafeSearchRequest'):
 
 
 @app.route('/company_report', methods=['POST'])
+@app.dd.track_time("passfort.services.creditsafe.report")
 @validate_model(CreditSafeCompanyReportRequest)
 def company_report(request_data: 'CreditSafeCompanyReportRequest'):
     if request_data.is_demo:
@@ -144,6 +177,7 @@ def company_report_41(request_data: 'CreditSafeCompanyReportRequest'):
 
 
 @app.route('/monitoring_portfolio', methods=['POST'])
+@app.dd.track_time("passfort.services.creditsafe.monitoring_portfolio")
 @validate_model(CreditSafePortfolioRequest)
 def monitoring_portfolio(request_data: 'CreditSafePortfolioRequest'):
     handler = CreditSafeHandler(request_data.credentials)
@@ -157,6 +191,7 @@ def monitoring_portfolio(request_data: 'CreditSafePortfolioRequest'):
 
 
 @app.route('/monitoring', methods=['POST'])
+@app.dd.track_time("passfort.services.creditsafe.enable_monitoring")
 @validate_model(CreditSafeMonitoringRequest)
 def monitor_company(request_data: 'CreditSafeMonitoringRequest'):
     handler = CreditSafeHandler(request_data.credentials)
@@ -166,6 +201,7 @@ def monitor_company(request_data: 'CreditSafeMonitoringRequest'):
 
 
 @app.route('/monitoring_events', methods=['POST'])
+@app.dd.track_time("passfort.services.creditsafe.monitoring_events")
 @validate_model(CreditSafeMonitoringEventsRequest)
 def get_monitoring_events(request_data: CreditSafeMonitoringEventsRequest):
     handler = CreditSafeHandler(request_data.credentials)
@@ -276,15 +312,19 @@ def handle_report_error(report_error):
 def handle_monitoring_error(monitoring_error):
     response = monitoring_error.response
     response_content = response.json()
+    logging.error(f"Creditsafe monitoring error {response_content}")
+    error_message = response_content.get('message')
+    error_details = response_content.get('details')
+    provider_error = error_details or error_message
 
     if response.status_code == 400 or response.status_code == 404:
         return jsonify(
             raw=response_content,
             errors=[
-                Error.provider_unhandled_error(response_content.get('message'))
+                Error.provider_unhandled_error(provider_error)
             ]
         ), 200
-    elif response.status_code == 403 and response_content.get('message') == 'Access forbidden':
+    elif response.status_code == 403 and error_message == 'Access forbidden':
         return jsonify(
             raw=response_content,
             errors=[
@@ -294,14 +334,10 @@ def handle_monitoring_error(monitoring_error):
             ]
         )
     else:
-        error_message = response_content.get('message')
-        logging.error(
-            f"Creditsafe unknown monitoring error {response.status_code}: {error_message}"
-        )
         return jsonify(
             raw=response_content,
             errors=[
-                Error.provider_unhandled_error(error_message)
+                Error.provider_unhandled_error(provider_error)
             ]
         ), 200
 
