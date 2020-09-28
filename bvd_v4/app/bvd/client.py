@@ -10,7 +10,14 @@ from requests.packages.urllib3.util.retry import Retry
 from schematics.exceptions import DataError
 
 from app.bvd.datasets import DataSet
-from app.bvd.types import DataResult, OwnershipResult, RegistryResult, SearchResult
+from app.bvd.types import (
+    AddToRecordSetResult,
+    CreateRecordSetResult,
+    DataResult,
+    OwnershipResult,
+    RegistryResult,
+    SearchResult,
+)
 from app.passfort.types import Error
 
 
@@ -24,7 +31,7 @@ def search_demo(name=None, country=None, state=None, company_number=None):
         return f"demo_data/search/pass.json"
 
 
-def demo_path(check_type, bvd_id):
+def demo_path(check_type, bvd_id=None):
     if bvd_id == "fail":
         return f"demo_data/{check_type}/fail.json"
     elif bvd_id == "partial":
@@ -73,23 +80,30 @@ class Client:
         self.errors = []
 
     def _record_error(self, error, **kwargs):
-        self.errors.append(error)
+        self.errors.append(error.to_primitive())
         logging.error({**error.to_primitive(), **kwargs})
 
-    def get(self, response_model, get_demo_data, *args, **kwargs):
+    def _request(self, response_model, get_demo_data, *args, **kwargs):
         try:
             if self.demo:
                 with open(get_demo_data()) as demo_data:
                     data = json.load(demo_data)
             else:
-                response = self.session.get(*args, **kwargs,)
+                response = self.session.request(*args, **kwargs,)
                 response.raise_for_status()
                 data = response.json()
 
             self.raw_responses.append(data)
 
-        except (ConnectionError, HTTPError) as e:
+        except ConnectionError as e:
             self._record_error(Error.provider_connection(str(e)))
+            data = {}
+        except HTTPError as e:
+            if e.response.status_code > 499:
+                self._record_error(Error.provider_connection(str(e)))
+            else:
+                self.raw_responses.append(e.response.json())
+                self._record_error(Error.provider_unknown_error(str(e)))
             data = {}
         except JSONDecodeError as e:
             self._record_error(Error.bad_provider_response(str(e)))
@@ -110,8 +124,17 @@ class Client:
 
         return None
 
+    def _get(self, response_model, get_demo_data, *args, **kwargs):
+        return self._request(response_model, get_demo_data, "GET", *args, **kwargs)
+
+    def _post(self, response_model, get_demo_data, *args, **kwargs):
+        return self._request(response_model, get_demo_data, "POST", *args, **kwargs)
+
+    def _put(self, response_model, get_demo_data, *args, **kwargs):
+        return self._request(response_model, get_demo_data, "PUT", *args, **kwargs)
+
     def search(self, name=None, country=None, state=None, company_number=None):
-        return self.get(
+        return self._get(
             SearchResult,
             lambda: search_demo(name, country, state, company_number),
             f"{self.base_url}/Companies/data",
@@ -157,7 +180,7 @@ class Client:
         )
 
     def _fetch_data(self, response_model, get_demo_data, bvd_id, data_set=DataSet.ALL):
-        return self.get(
+        return self._get(
             response_model,
             get_demo_data,
             f"{self.base_url}/Companies/data",
@@ -188,4 +211,22 @@ class Client:
             lambda: demo_path("ownership", bvd_id),
             bvd_id,
             DataSet.OWNERSHIP,
+        )
+
+    def create_record_set(self, name):
+        return self._post(
+            CreateRecordSetResult,
+            lambda: demo_path("create_record_set"),
+            f"{self.base_url}/Companies/Store/RecordSets",
+            headers={"Content-Type": "application/json", "ApiToken": self.token},
+            json={"Options": {"Name": name}, "WHERE": [{"BvDID": []}]},
+        )
+
+    def add_to_record_set(self, name, bvd_id):
+        return self._put(
+            AddToRecordSetResult,
+            lambda: demo_path("add_to_record_set"),
+            f"{self.base_url}/Companies/Store/RecordSets/Add/{name}",
+            headers={"Content-Type": "application/json", "ApiToken": self.token},
+            json={"WHERE": [{"BvDID": [bvd_id]}]},
         )

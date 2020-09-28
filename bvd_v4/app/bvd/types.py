@@ -6,6 +6,8 @@ from schematics.exceptions import (
     CompoundError,
 )
 from schematics.types import (
+    BaseType,
+    BooleanType,
     DictType,
     FloatType,
     StringType,
@@ -13,8 +15,8 @@ from schematics.types import (
     ListType,
     PolyModelType,
     IntType,
-    BaseType,
     ModelType,
+    UUIDType,
 )
 
 from app.bvd.maybe_list import MaybeListType
@@ -316,3 +318,24 @@ class OwnershipResult(Model):
 class SearchResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
+
+
+class CreateRecordSetResult(Model):
+    comments = StringType(serialized_name="Comments")
+    count = IntType(serialized_name="Count")
+    id = UUIDType(serialized_name="Id")
+    #    last_modified_utc = DateTimeType(serialized_name="LastModifiedUTC")
+    name = StringType(serialized_name="Name")
+    owner = BooleanType(serialized_name="Owner")
+    shared = BooleanType(serialized_name="Shared")
+
+
+class AddToRecordSetResult(Model):
+    comments = StringType(serialized_name="Comments")
+    count = IntType(serialized_name="Count")
+    id = UUIDType(serialized_name="Id")
+    #    last_modified_utc = DateTimeType(serialized_name="LastModifiedUTC")
+    name = StringType(serialized_name="Name")
+    owner = BooleanType(serialized_name="Owner")
+    shared = BooleanType(serialized_name="Shared")
+

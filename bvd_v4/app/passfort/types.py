@@ -6,6 +6,7 @@ import re
 from pycountry import countries
 from schematics import Model
 from schematics.types import (
+    BooleanType,
     DecimalType,
     StringType,
     DateType,
@@ -15,7 +16,7 @@ from schematics.types import (
     IntType,
     BaseType,
     ModelType,
-    BooleanType,
+    UUIDType,
 )
 from schematics.types.serializable import serializable
 
@@ -92,6 +93,16 @@ class Error(BaseModel):
     code = IntType()
     message = StringType()
     info = BaseType()
+
+    def provider_unknown_error(cause):
+        return Error(
+            {
+                "source": "PROVIDER",
+                "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                "message": "Unknown provider error",
+                "info": cause,
+            }
+        )
 
     def bad_provider_response(cause):
         return Error(
@@ -645,6 +656,28 @@ class OwnershipCheckRequest(Request):
     input_data = ModelType(OwnershipInput, required=True)
 
 
+class Portfolio(BaseModel):
+    id = UUIDType(required=True)
+    count = IntType()
+
+
+class PortfolioItem(BaseModel):
+    bvd_id = StringType(required=True)
+    portfolio_id = StringType(required=True)
+
+
+class NewPortfolio(BaseModel):
+    name = StringType()
+
+
+class CreatePortfolioRequest(Request):
+    input_data = ModelType(NewPortfolio, required=True)
+
+
+class AddToPortfolioRequest(Request):
+    input_data = ModelType(PortfolioItem, required=True)
+
+
 class Candidate(BaseModel):
     bvd_id = StringType()
     bvd9 = StringType()
@@ -685,3 +718,11 @@ class OwnershipCheckResponse(BaseModel):
     errors = ListType(ModelType(Error), serialize_when_none=True, default=list)
     price = IntType()
     raw = BaseType()
+
+
+class CreatePortfolioResponse(Request):
+    output_data = ModelType(Portfolio, required=True)
+
+
+class AddToPortfolioResponse(Request):
+    output_data = ModelType(Portfolio, required=True)
