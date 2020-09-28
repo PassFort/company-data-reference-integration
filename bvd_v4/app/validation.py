@@ -5,9 +5,7 @@ from flask import (
     request,
 )
 from functools import wraps
-from schematics.exceptions import (
-    DataError,
-)
+from schematics.exceptions import DataError
 
 
 def request_model(validation_model):
@@ -23,7 +21,9 @@ def request_model(validation_model):
         def wrapped_fn(*args, **kwargs):
             model = None
             try:
-                model = validation_model().import_data(request.json, apply_defaults=True)
+                model = validation_model().import_data(
+                    request.json, apply_defaults=True
+                )
                 model.validate()
             except DataError as e:
                 abort(400, e.to_primitive())

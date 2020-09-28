@@ -49,10 +49,7 @@ def get_bvd_id(client, country, bvd_id, company_number):
 def company_data_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(
-        request.credentials.key,
-        request.is_demo,
-    )
+    client = Client(request.credentials.key, request.is_demo,)
 
     bvd_id = get_bvd_id(
         client,
@@ -73,11 +70,7 @@ def company_data_check(request):
 
     return jsonify(
         CompanyDataCheckResponse(
-            {
-                "output_data": data,
-                "errors": client.errors,
-                "raw": client.raw_responses,
-            }
+            {"output_data": data, "errors": client.errors, "raw": client.raw_responses,}
         ).to_primitive()
     )
 
@@ -87,10 +80,7 @@ def company_data_check(request):
 def registry_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(
-        request.credentials.key,
-        request.is_demo,
-    )
+    client = Client(request.credentials.key, request.is_demo,)
 
     bvd_id = get_bvd_id(
         client,
@@ -124,10 +114,7 @@ def registry_check(request):
 @app.route("/ownership-check", methods=["POST"])
 @request_model(OwnershipCheckRequest)
 def ownership_check(request):
-    client = Client(
-        request.credentials.key,
-        request.is_demo,
-    )
+    client = Client(request.credentials.key, request.is_demo,)
 
     bvd_id = get_bvd_id(
         client,
@@ -161,10 +148,7 @@ def ownership_check(request):
 @app.route("/search", methods=["POST"])
 @request_model(SearchRequest)
 def company_search(request):
-    client = Client(
-        request.credentials.key,
-        request.is_demo,
-    )
+    client = Client(request.credentials.key, request.is_demo,)
     search_results = client.search(
         request.input_data.name,
         country=request.input_data.country,
@@ -172,16 +156,20 @@ def company_search(request):
         company_number=request.input_data.number,
     )
     return jsonify(
-        SearchResponse({
-            "output_data": [
-                Candidate.from_bvd(hit)
-                for hit in sorted(
-                    search_results.data,
-                    reverse=True,
-                    key=lambda hit: hit.match.zero.score,
-                )
-            ] if search_results else [],
-            "errors": client.errors,
-            "raw": client.raw_responses,
-        }).to_primitive()
+        SearchResponse(
+            {
+                "output_data": [
+                    Candidate.from_bvd(hit)
+                    for hit in sorted(
+                        search_results.data,
+                        reverse=True,
+                        key=lambda hit: hit.match.zero.score,
+                    )
+                ]
+                if search_results
+                else [],
+                "errors": client.errors,
+                "raw": client.raw_responses,
+            }
+        ).to_primitive()
     )

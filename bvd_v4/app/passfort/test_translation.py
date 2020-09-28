@@ -2,7 +2,7 @@ import json
 from mock import patch
 from unittest import TestCase
 
-from app.bvd.types import(
+from app.bvd.types import (
     RegistryData,
     RegistryResult,
 )
@@ -35,60 +35,53 @@ class TestMetadata(TestCase):
             # TODO: Should we accept n.a. for Tax IDs?
             self.assertEqual(
                 metadata.tax_ids,
-                [TaxId({
-                    "tax_id_type": TaxIdType.EUROVAT.value,
-                    "value": "n.a."
-                })]
+                [TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": "n.a."})],
+            )
+            self.assertEqual(metadata.name, "PASSFORT LIMITED")
+            self.assertEqual(
+                metadata.contact_information.url, "www.passfort.com",
             )
             self.assertEqual(
-                metadata.name,
-                "PASSFORT LIMITED"
+                metadata.contact_information.email, "info@passfort.com",
             )
             self.assertEqual(
-                metadata.contact_information.url,
-                "www.passfort.com",
-            )
-            self.assertEqual(
-                metadata.contact_information.email,
-                "info@passfort.com",
-            )
-            self.assertEqual(
-                metadata.contact_information.phone_number,
-                "+44 20 3633 1761",
+                metadata.contact_information.phone_number, "+44 20 3633 1761",
             )
             self.assertEqual(
                 metadata.freeform_address,
-                "MEZZANINE FLOOR 24 CORNHILL, EC3V 3ND, LONDON, United Kingdom"
+                "MEZZANINE FLOOR 24 CORNHILL, EC3V 3ND, LONDON, United Kingdom",
             )
             self.assertTrue(metadata.is_active)
             self.assertEqual(metadata.is_active_details, "Active")
-            self.assertEqual(metadata.trade_description, "Business and domestic software development")
+            self.assertEqual(
+                metadata.trade_description, "Business and domestic software development"
+            )
             self.assertIsNone(metadata.description)
 
 
 class TestCompanyType(TestCase):
     def test_company_type(self):
-        bvd_data = RegistryData({
-            "STANDARDISED_LEGAL_FORM": "Private limited companies"
-        })
+        bvd_data = RegistryData(
+            {"STANDARDISED_LEGAL_FORM": "Private limited companies"}
+        )
         metadata = CompanyMetadata.from_bvd(bvd_data)
         self.assertEqual(metadata.company_type, "Private limited companies")
 
     def test_known_structured_company_type(self):
-        bvd_data = RegistryData({
-            "STANDARDISED_LEGAL_FORM": "Private limited companies"
-        })
+        bvd_data = RegistryData(
+            {"STANDARDISED_LEGAL_FORM": "Private limited companies"}
+        )
         metadata = CompanyMetadata.from_bvd(bvd_data)
 
         self.assertFalse(metadata.structured_company_type.is_public)
         self.assertTrue(metadata.structured_company_type.is_limited)
-        self.assertEqual(metadata.structured_company_type.ownership_type, OwnershipType.COMPANY.value)
+        self.assertEqual(
+            metadata.structured_company_type.ownership_type, OwnershipType.COMPANY.value
+        )
 
-    @patch('app.passfort.structured_company_type.logging')
+    @patch("app.passfort.structured_company_type.logging")
     def test_unknown_structured_company_type(self, logging_mock):
-        bvd_data = RegistryData({
-            "STANDARDISED_LEGAL_FORM": "Chocolate factory"
-        })
+        bvd_data = RegistryData({"STANDARDISED_LEGAL_FORM": "Chocolate factory"})
         metadata = CompanyMetadata.from_bvd(bvd_data)
 
         self.assertIsNone(metadata.structured_company_type)
@@ -98,71 +91,70 @@ class TestCompanyType(TestCase):
 
 class TestIndustryClassification(TestCase):
     def test_uk_sic_code(self):
-        bvd_data = RegistryData({
-            "INDUSTRY_CLASSIFICATION": "UK SIC (2007)",
-            "INDUSTRY_PRIMARY_CODE": [
-                "62012"
-            ],
-            "INDUSTRY_PRIMARY_LABEL": [
-                "Business and domestic software development"
-            ],
-        })
+        bvd_data = RegistryData(
+            {
+                "INDUSTRY_CLASSIFICATION": "UK SIC (2007)",
+                "INDUSTRY_PRIMARY_CODE": ["62012"],
+                "INDUSTRY_PRIMARY_LABEL": [
+                    "Business and domestic software development"
+                ],
+            }
+        )
 
         metadata = CompanyMetadata.from_bvd(bvd_data)
 
         self.assertEqual(
             metadata.industry_classifications,
-            [IndustryClassification({
-                "classification_type": IndustryClassificationType.SIC.value,
-                "classification_version": "UK SIC (2007)",
-                "code": "62012",
-                "description": "Business and domestic software development",
-            })]
+            [
+                IndustryClassification(
+                    {
+                        "classification_type": IndustryClassificationType.SIC.value,
+                        "classification_version": "UK SIC (2007)",
+                        "code": "62012",
+                        "description": "Business and domestic software development",
+                    }
+                )
+            ],
         )
 
     def test_us_sic_code(self):
-        bvd_data = RegistryData({
-            "INDUSTRY_CLASSIFICATION": "US SIC",
-            "INDUSTRY_PRIMARY_CODE": [
-                "3674"
-            ],
-            "INDUSTRY_PRIMARY_LABEL": [
-                "Semiconductors and related devices"
-            ],
-        })
+        bvd_data = RegistryData(
+            {
+                "INDUSTRY_CLASSIFICATION": "US SIC",
+                "INDUSTRY_PRIMARY_CODE": ["3674"],
+                "INDUSTRY_PRIMARY_LABEL": ["Semiconductors and related devices"],
+            }
+        )
 
         metadata = CompanyMetadata.from_bvd(bvd_data)
 
         self.assertEqual(
             metadata.industry_classifications,
-            [IndustryClassification({
-                "classification_type": IndustryClassificationType.SIC.value,
-                "classification_version": "US SIC",
-                "code": "3674",
-                "description": "Semiconductors and related devices",
-            })]
+            [
+                IndustryClassification(
+                    {
+                        "classification_type": IndustryClassificationType.SIC.value,
+                        "classification_version": "US SIC",
+                        "code": "3674",
+                        "description": "Semiconductors and related devices",
+                    }
+                )
+            ],
         )
 
 
 class TestCompanyNames(TestCase):
     def test_previous_names(self):
-        bvd_data = RegistryData({
-            "PREVIOUS_NAME": [
-                "BLOCKOPS LIMITED"
-            ],
-            "PREVIOUS_NAME_DATE": [
-                "2015-07-31T00:00:00"
-            ],
-        })
+        bvd_data = RegistryData(
+            {
+                "PREVIOUS_NAME": ["BLOCKOPS LIMITED"],
+                "PREVIOUS_NAME_DATE": ["2015-07-31T00:00:00"],
+            }
+        )
 
         metadata = CompanyMetadata.from_bvd(bvd_data)
 
         self.assertEqual(
             metadata.previous_names,
-            [
-                PreviousName({
-                    "name": "BLOCKOPS LIMITED",
-                    "end": "2015-07-31T00:00:00",
-                })
-            ]
+            [PreviousName({"name": "BLOCKOPS LIMITED", "end": "2015-07-31T00:00:00",})],
         )

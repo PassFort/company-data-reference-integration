@@ -6,9 +6,7 @@ from json import JSONDecodeError
 from pycountry import countries
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from schematics.exceptions import (
-    DataError,
-)
+from schematics.exceptions import DataError
 
 from app.bvd.datasets import DataSet
 from app.bvd.types import DataResult, OwnershipResult, RegistryResult, SearchResult
@@ -16,19 +14,19 @@ from app.passfort.types import Error
 
 
 def search_demo(name=None, country=None, state=None, company_number=None):
-    search_query = (name or '').lower()
-    if 'fail' in search_query:
+    search_query = (name or "").lower()
+    if "fail" in search_query:
         return "demo_data/search/fail.json"
-    elif 'partial' in search_query:
+    elif "partial" in search_query:
         return f"demo_data/search/partial.json"
     else:
         return f"demo_data/search/pass.json"
 
 
 def demo_path(check_type, bvd_id):
-    if bvd_id == 'fail':
+    if bvd_id == "fail":
         return f"demo_data/{check_type}/fail.json"
-    elif bvd_id == 'partial':
+    elif bvd_id == "partial":
         return f"demo_data/{check_type}/partial.json"
     else:
         return f"demo_data/{check_type}/pass.json"
@@ -44,18 +42,9 @@ def country_alpha_3_to_2(alpha_3):
 
 def prune_nones(value):
     if isinstance(value, dict):
-        return {
-            k: prune_nones(v)
-            for k, v
-            in value.items()
-            if v is not None
-        }
+        return {k: prune_nones(v) for k, v in value.items() if v is not None}
     if isinstance(value, list):
-        return [
-            prune_nones(v)
-            for v
-            in value
-        ]
+        return [prune_nones(v) for v in value]
     else:
         return value
 
@@ -85,31 +74,27 @@ class Client:
     def get(self, response_model, get_demo_data, *args, **kwargs):
         if self.demo:
             with open(get_demo_data()) as demo_data:
-                response = json.load(demo_data)
+                data = json.load(demo_data)
         else:
             # TODO: capture http errors
-            response = self.session.get(
-                *args,
-                **kwargs,
-            )
+            response = self.session.get(*args, **kwargs,)
             response.raise_for_status()
             data = response.json()
 
         self.raw_responses.append(data)
 
         try:
-            model = response_model().import_data(
-                prune_nones(data),
-                apply_defaults=True
-            )
+            model = response_model().import_data(prune_nones(data), apply_defaults=True)
             model.validate()
             return model
         except DataError as e:
-            logging.error({
-                "message": "provider response did not match expectation",
-                "cause": e.to_primitive(),
-                "response": response
-            })
+            logging.error(
+                {
+                    "message": "provider response did not match expectation",
+                    "cause": e.to_primitive(),
+                    "response": response,
+                }
+            )
             self.errors.append(Error.bad_response(e.to_primitive()))
 
         return None
@@ -175,10 +160,7 @@ class Client:
 
     def fetch_company_data(self, bvd_id):
         return self._fetch_data(
-            DataResult,
-            lambda: demo_path("company_data", bvd_id),
-            bvd_id,
-            DataSet.ALL,
+            DataResult, lambda: demo_path("company_data", bvd_id), bvd_id, DataSet.ALL,
         )
 
     def fetch_registry_data(self, bvd_id):
@@ -186,7 +168,7 @@ class Client:
             RegistryResult,
             lambda: demo_path("registry", bvd_id),
             bvd_id,
-            DataSet.REGISTRY
+            DataSet.REGISTRY,
         )
 
     def fetch_ownership_data(self, bvd_id):
@@ -194,5 +176,5 @@ class Client:
             OwnershipResult,
             lambda: demo_path("ownership", bvd_id),
             bvd_id,
-            DataSet.OWNERSHIP
+            DataSet.OWNERSHIP,
         )
