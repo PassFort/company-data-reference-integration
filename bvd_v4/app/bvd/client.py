@@ -74,10 +74,7 @@ class Client:
 
     def _record_error(self, error, **kwargs):
         self.errors.append(error)
-        logging.error({
-            **error.to_primitive(),
-            **kwargs
-        })
+        logging.error({**error.to_primitive(), **kwargs})
 
     def get(self, response_model, get_demo_data, *args, **kwargs):
         try:
@@ -108,7 +105,6 @@ class Client:
                 {
                     "message": "provider response did not match expectation",
                     "cause": e.to_primitive(),
-
                 }
             )
 

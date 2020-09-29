@@ -1,4 +1,5 @@
 import logging
+from decimal import Decimal
 from enum import Enum
 import re
 
@@ -27,8 +28,13 @@ def country_alpha_2_to_3(alpha_2):
     try:
         return countries.get(alpha_2=alpha_2).alpha_3
     except (LookupError, AttributeError):
-        if alpha_2 != "n.a.":
-            logging.error(f"BvD returned unrecognised alpha 2 country code {alpha_2}")
+        if alpha_2 != "n.a." and alpha_2 is not None:
+            logging.error(
+                {
+                    "error": "BvD returned unrecognised alpha 2 country code",
+                    "info": {"alpha_2": alpha_2},
+                }
+            )
         return None
 
 
@@ -39,7 +45,12 @@ def country_names_to_alpha_3(country_name):
     try:
         return countries.get(name=country_name.split(";")[0]).alpha_3
     except (LookupError, AttributeError):
-        logging.error(f"BvD returned unrecognised country name {country_name}")
+        logging.error(
+            {
+                "error": "BvD returned unrecognised country name",
+                "info": {"country_name": country_name,},
+            }
+        )
         return None
 
 
@@ -213,13 +224,13 @@ class Shareholding(BaseModel):
     def from_bvd(direct_percentage):
         if direct_percentage is None:
             return None
-        return Shareholding({"percentage": float(direct_percentage) / 100})
+        return Shareholding({"percentage": Decimal(direct_percentage) / 100})
 
 
 class CompanyMetadata(BaseModel):
-    bvd_id = StringType(required=True)
-    number = StringType(required=True)
-    bvd9 = StringType(required=True)
+    bvd_id = StringType()
+    number = StringType()
+    bvd9 = StringType()
     isin = StringType()
     lei = StringType()
     tax_ids = ListType(ModelType(TaxId), default=list, required=True)

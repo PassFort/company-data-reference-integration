@@ -5,6 +5,7 @@ from functools import reduce
 from schematics.types import (
     DecimalType,
     StringType,
+    DateType,
     DateTimeType,
     DictType,
     ListType,
@@ -161,6 +162,7 @@ class AssociatePersonalDetails(BaseModel):
         return AssociatePersonalDetails(
             {
                 "name": FullName.from_bvd_officer(index, bvd_data),
+                "dob": bvd_data.officer_date_of_birth[index],
                 "nationality": country_names_to_alpha_3(
                     bvd_data.officer_nationality[index]
                 ),
@@ -171,6 +173,7 @@ class AssociatePersonalDetails(BaseModel):
         return AssociatePersonalDetails(
             {
                 "name": FullName.merge(a.name, b.name),
+                "dob": a.dob or b.dob,
                 "nationality": a.nationality or b.nationality,
             }
         )
@@ -331,8 +334,22 @@ class Relationship(BaseModel):
         )
 
     def from_bvd_officer(index, bvd_data):
-        return Relationship(
+        return OfficerRelationship.from_bvd_officer(index, bvd_data)
+
+
+class OfficerRelationship(Relationship):
+    original_role = StringType(default=None, serialize_when_none=False)
+    appointed_on = DateType(default=None, serialize_when_none=False)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("relationship_type") == RelationshipType.OFFICER.value
+
+    def from_bvd_officer(index, bvd_data):
+        return OfficerRelationship(
             {
+                "original_role": bvd_data.officer_role[index],
+                "appointed_on": bvd_data.officer_appointment_date[index],
                 "relationship_type": RelationshipType.OFFICER.value,
                 "associated_role": AssociatedRole.from_bvd_officer(
                     index, bvd_data
