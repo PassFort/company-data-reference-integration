@@ -7,6 +7,7 @@ from schematics import Model
 from schematics.types import (
     DecimalType,
     StringType,
+    DateType,
     DateTimeType,
     DictType,
     ListType,
@@ -108,7 +109,7 @@ class OwnershipType(Enum):
 
 class PreviousName(BaseModel):
     name = StringType(required=True)
-    end = DateTimeType()
+    end = DateType()
 
     def from_bvd(name, date):
         return PreviousName({"name": name, "end": date})
