@@ -1,11 +1,14 @@
 from datetime import date, datetime
 from decimal import Decimal
+
 import json
 from mock import patch
 from unittest import TestCase
 
 from app.bvd.types import (
     Data,
+    DataResult,
+    OwnershipResult,
     RegistryData,
     RegistryResult,
 )
@@ -21,6 +24,7 @@ from app.passfort.types import (
     ContactDetails,
     IndustryClassification,
     IndustryClassificationType,
+    OwnershipMetadata,
     PreviousName,
     Shareholding,
     TaxId,
@@ -176,6 +180,7 @@ class TestOfficers(TestCase):
 
         self.assertEqual(officer.immediate_data.entity_type, "INDIVIDUAL")
         self.assertEqual(officer.immediate_data.personal_details.name.title, "Mr")
+
         self.assertEqual(
             officer.immediate_data.personal_details.name.first_names,
             ["Timothy", "Deighton"],
@@ -354,6 +359,44 @@ class TestMergeAssociates(TestCase):
 
 
 class TestMetadata(TestCase):
+    def test_company_data_check(self):
+        with open("./demo_data/company_data/pass.json") as demo_file:
+            bvd_result = DataResult(json.load(demo_file))
+            bvd_result.validate()
+
+            metadata = CompanyMetadata.from_bvd(bvd_result.data[0])
+            metadata.validate()
+
+            self.assertEqual(metadata.bvd_id, "pass")
+            self.assertEqual(metadata.number, "09565115")
+            self.assertEqual(metadata.bvd9, "230418860")
+            self.assertIsNone(metadata.isin)
+            self.assertIsNone(metadata.lei)
+            self.assertEqual(
+                metadata.tax_ids,
+                [TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": "n.a."})],
+            )
+            self.assertEqual(metadata.name, "PASSFORT LIMITED")
+            self.assertEqual(
+                metadata.contact_information.url, "www.passfort.com",
+            )
+            self.assertEqual(
+                metadata.contact_information.email, "info@passfort.com",
+            )
+            self.assertEqual(
+                metadata.contact_information.phone_number, "+44 20 3633 1761",
+            )
+            self.assertEqual(
+                metadata.freeform_address,
+                "MEZZANINE FLOOR 24 CORNHILL, EC3V 3ND, LONDON, United Kingdom",
+            )
+            self.assertTrue(metadata.is_active)
+            self.assertEqual(metadata.is_active_details, "Active")
+            self.assertEqual(
+                metadata.trade_description, "Business and domestic software development"
+            )
+            self.assertIsNone(metadata.description)
+
     def test_registry_check(self):
         with open("./demo_data/registry/pass.json") as demo_file:
             bvd_result = RegistryResult(json.load(demo_file))
@@ -393,6 +436,20 @@ class TestMetadata(TestCase):
             )
             self.assertIsNone(metadata.description)
 
+    def test_ownership_check(self):
+        with open("./demo_data/ownership/pass.json") as demo_file:
+            bvd_result = OwnershipResult(json.load(demo_file))
+            bvd_result.validate()
+
+            metadata = OwnershipMetadata.from_bvd(bvd_result.data[0])
+            metadata.validate()
+            self.assertEqual(metadata.company_type, "Private limited companies")
+            self.assertFalse(metadata.structured_company_type.is_public)
+            self.assertTrue(metadata.structured_company_type.is_limited)
+            self.assertEqual(
+                metadata.structured_company_type.ownership_type, OwnershipType.COMPANY.value
+            )
+
 
 class TestCompanyType(TestCase):
     def test_company_type(self):
@@ -400,6 +457,7 @@ class TestCompanyType(TestCase):
             {"STANDARDISED_LEGAL_FORM": "Private limited companies"}
         )
         metadata = CompanyMetadata.from_bvd(bvd_data)
+
         self.assertEqual(metadata.company_type, "Private limited companies")
 
     def test_known_structured_company_type(self):

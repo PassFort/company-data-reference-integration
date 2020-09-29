@@ -764,6 +764,41 @@
         null,
         null
       ],
+      "NAME": "PASSFORT LIMITED",
+      "SH_DIRECT_PCT": [
+        "21.08",
+        "20.64",
+        "20.63",
+        "19.77",
+        "4.03",
+        "3.92",
+        "1.56",
+        "1.49",
+        "0.97",
+        "0.66",
+        "0.55",
+        "0.53",
+        "0.51",
+        "0.49",
+        "0.44",
+        "0.40",
+        "0.34",
+        "0.33",
+        "0.27",
+        "0.27",
+        "0.27",
+        "0.26",
+        "0.22",
+        "0.14",
+        "0.13",
+        "0.10"
+      ],
+      "LONGITUDE": null,
+      "EMAIL": [
+        "info@passfort.com"
+      ],
+      "EUROPEAN_VAT_NUMBER": "n.a.",
+      "INDUSTRY_CLASSIFICATION": "UK SIC (2007)",
       "SH_NAME": [
         "EPISODE (GP) LTD (NO 08383439)",
         "MR HENRY IRISH",
@@ -866,7 +901,6 @@
   ],
   "SearchSummary": {
     "DatabaseInfo": {
-      "IndexationDate": "2020-09-21T00:00:00",
       "ReleaseNumber": "200",
       "UpdateDate": "2020-09-25T00:00:00",
       "UpdateNumber": "200006",
