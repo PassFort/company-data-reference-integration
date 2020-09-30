@@ -1,19 +1,22 @@
 import logging
+from decimal import Decimal
 from enum import Enum
 import re
 
 from pycountry import countries
 from schematics import Model
 from schematics.types import (
+    BooleanType,
     DecimalType,
     StringType,
+    DateType,
     DateTimeType,
     DictType,
     ListType,
     IntType,
     BaseType,
     ModelType,
-    BooleanType,
+    UUIDType,
 )
 from schematics.types.serializable import serializable
 
@@ -26,17 +29,38 @@ def country_alpha_2_to_3(alpha_2):
     try:
         return countries.get(alpha_2=alpha_2).alpha_3
     except (LookupError, AttributeError):
-        if alpha_2 != 'n.a.':
-            logging.error(f"BvdD returned unrecognised alpha 2 country code {alpha_2}")
+        if alpha_2 != "n.a." and alpha_2 is not None:
+            logging.error(
+                {
+                    "error": "BvD returned unrecognised alpha 2 country code",
+                    "info": {"alpha_2": alpha_2},
+                }
+            )
+        return None
+
+
+def country_names_to_alpha_3(country_name):
+    if country_name is None:
+        return None
+
+    try:
+        return countries.get(name=country_name.split(";")[0]).alpha_3
+    except (LookupError, AttributeError):
+        logging.error(
+            {
+                "error": "BvD returned unrecognised country name",
+                "info": {"country_name": country_name,},
+            }
+        )
         return None
 
 
 def name_strip(name: str) -> str:
-    '''Clean names from useless garbage text'''
-    garbage = ['via its funds']
+    """Clean names from useless garbage text"""
+    garbage = ["via its funds"]
     for string in garbage:
         if string in name:
-            name = re.sub(string, '', name)
+            name = re.sub(string, "", name)
     return name
 
 
@@ -44,7 +68,7 @@ def format_names(first, last, full, entity_type):
     if full:
         full = name_strip(full)
         if entity_type == EntityType.INDIVIDUAL:
-            names = full.split(' ')
+            names = full.split(" ")
             # First element is the title
             return names[0], names[1:-1], names[-1]
         else:
@@ -53,13 +77,14 @@ def format_names(first, last, full, entity_type):
         return (
             None,
             name_strip(first) if first else [],
-            name_strip(last) if last else ''
+            name_strip(last) if last else "",
         )
     else:
-        return None, [], ''
+        return None, [], ""
 
 
 class ErrorCode(Enum):
+    PROVIDER_CONNECTION_ERROR = 302
     PROVIDER_UNKNOWN_ERROR = 303
 
 
@@ -69,8 +94,17 @@ class Error(BaseModel):
     message = StringType()
     info = BaseType()
 
-    # TODO: What does this look like in other integrations
-    def bad_response(cause):
+    def provider_unknown_error(cause):
+        return Error(
+            {
+                "source": "PROVIDER",
+                "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
+                "message": "Unknown provider error",
+                "info": cause,
+            }
+        )
+
+    def bad_provider_response(cause):
         return Error(
             {
                 "source": "PROVIDER",
@@ -80,10 +114,29 @@ class Error(BaseModel):
             }
         )
 
+    def provider_connection(cause):
+        return Error(
+            {
+                "source": "PROVIDER",
+                "code": ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+                "message": "Failed to connect to provider",
+                "info": cause,
+            }
+        )
+
 
 class EntityType(Enum):
     INDIVIDUAL = "INDIVIDUAL"
     COMPANY = "COMPANY"
+
+    def from_bvd_officer(index, bvd_data):
+        bvd_type = bvd_data.officer_entity_type[index]
+        if "Individual" == bvd_type:
+            return EntityType.INDIVIDUAL
+        elif "Company" == bvd_type:
+            return EntityType.COMPANY
+        else:
+            return None
 
 
 class TaxIdType(Enum):
@@ -93,8 +146,18 @@ class TaxIdType(Enum):
 
 
 class TaxId(BaseModel):
-    tax_id_type = StringType(required=True, choices=[ty.value for ty in TaxIdType])
+    tax_id_type = StringType(choices=[ty.value for ty in TaxIdType], required=True)
     value = StringType(required=True)
+
+    def from_bvd_vat(bvd_vat):
+        if bvd_vat is None:
+            return None
+        return TaxId({"tax_id_type": TaxIdType.VAT.value, "value": bvd_vat,})
+
+    def from_bvd_eurovat(bvd_eurovat):
+        if bvd_eurovat is None:
+            return None
+        return TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": bvd_eurovat,})
 
 
 class OwnershipType(Enum):
@@ -108,10 +171,35 @@ class OwnershipType(Enum):
 
 class PreviousName(BaseModel):
     name = StringType(required=True)
-    end = DateTimeType()
+    end = DateType()
 
     def from_bvd(name, date):
         return PreviousName({"name": name, "end": date})
+
+
+class IndustryClassificationType(Enum):
+    SIC = "SIC"
+    NACE = "NACE"
+    NAICS = "NAICS"
+
+    def from_bvd(bvd_classification):
+        if "SIC" in bvd_classification:
+            return IndustryClassificationType.SIC
+        elif "NACE" in bvd_classification:
+            return IndustryClassificationType.NACE
+        elif "NAICS" in bvd_classification:
+            return IndustryClassificationType.NAICS
+        else:
+            return None
+
+
+class IndustryClassification(BaseModel):
+    classification_type = StringType(
+        choices=[ty.value for ty in IndustryClassificationType], required=True
+    )
+    code = StringType(required=True)
+    classification_version = StringType()
+    description = StringType()
 
 
 class SICCode(BaseModel):
@@ -119,7 +207,7 @@ class SICCode(BaseModel):
     description = StringType(required=True)
 
     def from_bvd(primary_code, primary_label):
-        return SICCode({"code": primary_code, "description": primary_label,})
+        return SICCode({"code": primary_code, "description": primary_label})
 
 
 class ContactDetails(BaseModel):
@@ -128,11 +216,13 @@ class ContactDetails(BaseModel):
     email = StringType()
 
     def from_bvd(bvd_data):
-        return ContactDetails({
-            'url': next(iter(bvd_data.website), None),
-            'phone_number': next(iter(bvd_data.phone_number), None),
-            'email': next(iter(bvd_data.email), None),
-        })
+        return ContactDetails(
+            {
+                "url": next(iter(bvd_data.website), None),
+                "phone_number": next(iter(bvd_data.phone_number), None),
+                "email": next(iter(bvd_data.email), None),
+            }
+        )
 
 
 class Shareholding(BaseModel):
@@ -145,24 +235,23 @@ class Shareholding(BaseModel):
     def from_bvd(direct_percentage):
         if direct_percentage is None:
             return None
-        return Shareholding({
-            'percentage': float(direct_percentage) / 100
-        })
+        return Shareholding({"percentage": Decimal(direct_percentage) / 100})
 
 
 class CompanyMetadata(BaseModel):
-    bvd_id = StringType(required=True)
-    number = StringType(required=True)
-    bvd9 = StringType(required=True)
+    bvd_id = StringType()
+    number = StringType()
+    bvd9 = StringType()
     isin = StringType()
-    lei = StringType(required=True)
-    tax_ids = ListType(ModelType(TaxId), required=True)
+    lei = StringType()
+    tax_ids = ListType(ModelType(TaxId), default=list, required=True)
     name = StringType()
     company_type = StringType()
     structured_company_type = ModelType(StructuredCompanyType)
     country_of_incorporation = StringType()
     incorporation_date = DateTimeType()
     previous_names = ListType(ModelType(PreviousName), required=True)
+    industry_classifications = ListType(ModelType(IndustryClassification))
     sic_codes = ListType(ModelType(SICCode), required=True)
     contact_information = ModelType(ContactDetails)
     freeform_address = StringType(required=True)
@@ -175,23 +264,49 @@ class CompanyMetadata(BaseModel):
         return CompanyMetadata(
             {
                 "bvd_id": bvd_data.bvd_id,
-                "number": bvd_data.trade_register_number[0] if bvd_data.trade_register_number else None,
+                "number": bvd_data.trade_register_number[0]
+                if bvd_data.trade_register_number
+                else None,
                 "bvd9": bvd_data.bvd9,
                 "isin": bvd_data.isin,
                 "lei": bvd_data.lei,
+                "tax_ids": [
+                    tax_id
+                    for tax_id in (
+                        TaxId.from_bvd_eurovat(bvd_data.eurovat),
+                        TaxId.from_bvd_vat(bvd_data.vat),
+                    )
+                    if tax_id is not None
+                ],
                 "name": bvd_data.name,
                 "company_type": bvd_data.standardised_legal_form,
-                "structured_company_type": StructuredCompanyType.from_bvd(bvd_data.standardised_legal_form),
-                "country_of_incorporation": None,
-                "incorporation_date": None,
+                "structured_company_type": StructuredCompanyType.from_bvd(
+                    bvd_data.standardised_legal_form
+                ),
+                "country_of_incorporation": country_alpha_2_to_3(bvd_data.country_code),
+                "incorporation_date": bvd_data.incorporation_date,
                 "previous_names": [
                     PreviousName.from_bvd(name, date)
                     for name, date in zip(
                         bvd_data.previous_names, bvd_data.previous_dates
                     )
                 ],
+                "industry_classifications": [
+                    IndustryClassification(
+                        {
+                            "classification_type": IndustryClassificationType.from_bvd(
+                                bvd_data.industry_classification
+                            ).value,
+                            "classification_version": bvd_data.industry_classification,
+                            "code": primary_code,
+                            "description": primary_label,
+                        }
+                    )
+                    for primary_code, primary_label in zip(
+                        bvd_data.industry_primary_code, bvd_data.industry_primary_label,
+                    )
+                ],
                 "sic_codes": [
-                    # TODO: deeper SIC code support
                     SICCode.from_bvd(primary_code, primary_label)
                     for primary_code, primary_label in zip(
                         bvd_data.industry_primary_code, bvd_data.industry_primary_label,
@@ -205,7 +320,8 @@ class CompanyMetadata(BaseModel):
                 ),
                 "is_active_details": next(iter(bvd_data.status), None),
                 "trade_description": (
-                    bvd_data.trade_description_english or bvd_data.trade_description_original_lang
+                    bvd_data.trade_description_english
+                    or bvd_data.trade_description_original_lang
                 ),
                 "description": bvd_data.products_services,
             }
@@ -224,8 +340,12 @@ class Shareholder(BaseModel):
     last_name = StringType()
     shareholdings = ListType(ModelType(Shareholding))
 
-    def from_bvd(index, bvd_data):
-        entity_type = EntityType.INDIVIDUAL if bvd_data.shareholder_is_individual(index) else EntityType.COMPANY
+    def from_bvd_shareholder(index, bvd_data):
+        entity_type = (
+            EntityType.INDIVIDUAL
+            if bvd_data.shareholder_is_individual(index)
+            else EntityType.COMPANY
+        )
         title, first_names, last_name = format_names(
             bvd_data.shareholder_first_name[index],
             bvd_data.shareholder_last_name[index],
@@ -242,14 +362,17 @@ class Shareholder(BaseModel):
                 else None,
                 "bvd_uci": bvd_data.shareholder_uci[index],
                 "lei": bvd_data.shareholder_lei[index],
-                "country_of_incorporation": country_alpha_2_to_3(bvd_data.shareholder_country_code[index]),
+                "country_of_incorporation": country_alpha_2_to_3(
+                    bvd_data.shareholder_country_code[index]
+                ),
                 "state_of_incorporation": bvd_data.shareholder_state_province[index],
                 "first_names": "".join(first_names),
                 "last_name": last_name,
                 "shareholdings": [
                     Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
                 ]
-                if bvd_data.shareholder_direct_percentage and bvd_data.shareholder_direct_percentage[index]
+                if bvd_data.shareholder_direct_percentage
+                and bvd_data.shareholder_direct_percentage[index]
                 else None,
             }
         )
@@ -263,24 +386,35 @@ class BeneficialOwner(BaseModel):
     last_name = StringType()
     dob = DateTimeType()
 
-    def from_bvd(index, bvd_data):
-        uci = bvd_data.beneficial_owner_uci[index] if bvd_data.beneficial_owner_uci else None
-        entity_type = EntityType.INDIVIDUAL if bvd_data.beneficial_owner_is_individual(index) else EntityType.COMPANY
+    def from_bvd_beneficial_owner(index, bvd_data):
+        uci = (
+            bvd_data.beneficial_owner_uci[index]
+            if bvd_data.beneficial_owner_uci
+            else None
+        )
+        entity_type = (
+            EntityType.INDIVIDUAL
+            if bvd_data.beneficial_owner_is_individual(index)
+            else EntityType.COMPANY
+        )
         title, first_names, last_names = format_names(
             bvd_data.beneficial_owner_first_name[index],
             bvd_data.beneficial_owner_last_name[index],
             bvd_data.beneficial_owner_name[index],
             entity_type,
         )
-        return BeneficialOwner({
-            "type": entity_type.value,
-            "bvd_id": bvd_data.beneficial_owner_bvd_id[index],
-            "bvd_uci": uci,
-            "first_names": "".join(first_names),
-            "last_name": last_names,
-            "dob": bvd_data.beneficial_owner_birth_date[index] if bvd_data.beneficial_owner_birth_date else None,
-        })
-
+        return BeneficialOwner(
+            {
+                "type": entity_type.value,
+                "bvd_id": bvd_data.beneficial_owner_bvd_id[index],
+                "bvd_uci": uci,
+                "first_names": "".join(first_names),
+                "last_name": last_names,
+                "dob": bvd_data.beneficial_owner_birth_date[index]
+                if bvd_data.beneficial_owner_birth_date
+                else None,
+            }
+        )
 
 
 class OwnershipStructure(BaseModel):
@@ -293,12 +427,143 @@ class OwnershipStructure(BaseModel):
         return OwnershipStructure(
             {
                 "shareholders": [
-                    Shareholder.from_bvd(i, bvd_data)
+                    Shareholder.from_bvd_shareholder(i, bvd_data)
                     for i in range(0, len(bvd_data.shareholder_bvd_id))
                 ],
                 "beneficial_owners": [
-                    BeneficialOwner.from_bvd(i, bvd_data)
+                    BeneficialOwner.from_bvd_beneficial_owner(i, bvd_data)
                     for i in range(0, len(bvd_data.beneficial_owner_bvd_id))
+                ],
+            }
+        )
+
+
+class OfficerRole(Enum):
+    INDIVIDUAL_DIRECTOR = "INDIVIDUAL_DIRECTOR"
+    INDIVIDUAL_COMPANY_SECRETARY = "INDIVIDUAL_COMPANY_SECRETARY"
+    INDIVIDUAL_OTHER = "INDIVIDUAL_OTHER"
+    COMPANY_DIRECTOR = "COMPANY_DIRECTOR"
+    COMPANY_COMPANY_SECRETARY = "COMPANY_COMPANY_SECRETARY"
+    COMPANY_OTHER = "COMPANY_OTHER"
+
+    def director(entity_type):
+        if entity_type is EntityType.INDIVIDUAL:
+            return OfficerRole.INDIVIDUAL_DIRECTOR
+        else:
+            return OfficerRole.COMPANY_DIRECTOR
+
+    def secretary(entity_type):
+        if entity_type is EntityType.INDIVIDUAL:
+            return OfficerRole.INDIVIDUAL_COMPANY_SECRETARY
+        else:
+            return OfficerRole.COMPANY_COMPANY_SECRETARY
+
+    def other(entity_type):
+        if entity_type is EntityType.INDIVIDUAL:
+            return OfficerRole.INDIVIDUAL_OTHER
+        else:
+            return OfficerRole.COMPANY_OTHER
+
+    def from_bvd_officer(index, bvd_data):
+        original_role_lower = bvd_data.officer_role[index].lower()
+        entity_type = EntityType.from_bvd_officer(index, bvd_data)
+
+        if "director" in original_role_lower:
+            return OfficerRole.director(entity_type)
+        elif "secretary" in original_role_lower:
+            return OfficerRole.secretary(entity_type)
+        else:
+            return OfficerRole.other(entity_type)
+
+
+class Officer(BaseModel):
+    bvd_id = StringType()
+    bvd_uci = StringType()
+    type = StringType(required=True, choices=[ty.value for ty in EntityType])
+    role = StringType(required=True, choices=[role.value for role in OfficerRole])
+    original_role = StringType()
+    first_names = StringType()
+    last_name = StringType()
+    nationality = StringType(min_length=3, max_length=3)
+    resigned = BooleanType()
+    resigned_on = DateTimeType()
+    appointed_on = DateTimeType()
+    dob = DateTimeType()
+
+    def from_bvd_officer(index, bvd_data):
+        entity_type = EntityType.from_bvd_officer(index, bvd_data)
+        officer_role = OfficerRole.from_bvd_officer(index, bvd_data)
+
+        _, first_names, last_name = format_names(
+            " ".join(
+                [
+                    bvd_data.officer_first_name[index] or "",
+                    bvd_data.officer_middle_name[index] or "",
+                ]
+            ),
+            bvd_data.officer_last_name[index],
+            bvd_data.officer_name[index],
+            entity_type,
+        )
+
+        return Officer(
+            {
+                "bvd_id": bvd_data.officer_bvd_id[index],
+                "bvd_uci": bvd_data.officer_uci[index],
+                "type": entity_type.value if entity_type else None,
+                "role": officer_role.value if officer_role else None,
+                "original_role": bvd_data.officer_role[index],
+                "first_names": " ".join(first_names),
+                "last_name": last_name,
+                "nationality": country_names_to_alpha_3(
+                    bvd_data.officer_nationality[index]
+                ),
+                "resigned": bvd_data.officer_resignation_date[index] is not None,
+                "resigned_on": bvd_data.officer_resignation_date[index],
+                "appointed_on": bvd_data.officer_appointment_date[index],
+                "dob": bvd_data.officer_date_of_birth[index],
+            }
+        )
+
+    @property
+    def is_director(self):
+        return "DIRECTOR" in self.role
+
+    @property
+    def is_secretary(self):
+        return "SECRETARY" in self.role
+
+
+class Officers(BaseModel):
+    directors = ListType(ModelType(Officer), default=list, required=True)
+    secretaries = ListType(ModelType(Officer), default=list, required=True)
+    resigned = ListType(ModelType(Officer), default=list, required=True)
+    others = ListType(ModelType(Officer), default=list, required=True)
+
+    def from_bvd(bvd_data):
+        officers = [
+            Officer.from_bvd_officer(index, bvd_data)
+            for index in range(0, len(bvd_data.officer_bvd_id))
+        ]
+        return Officers(
+            {
+                "directors": [
+                    officer
+                    for officer in officers
+                    if officer.is_director and not officer.resigned
+                ],
+                "secretaries": [
+                    officer
+                    for officer in officers
+                    if officer.is_secretary and not officer.resigned
+                ],
+                "resigned": [officer for officer in officers if officer.resigned],
+                "others": [
+                    officer
+                    for officer in officers
+                    if not any(
+                        [officer.is_director, officer.is_secretary, officer.resigned]
+                    )
                 ],
             }
         )
@@ -307,12 +572,14 @@ class OwnershipStructure(BaseModel):
 class RegistryCompanyData(BaseModel):
     entity_type = StringType(required=True, choices=[ty.value for ty in EntityType])
     metadata = ModelType(CompanyMetadata, required=True)
+    officers = ModelType(Officers, required=True)
 
     def from_bvd(bvd_data):
         return RegistryCompanyData(
             {
                 "entity_type": EntityType.COMPANY.value,
                 "metadata": CompanyMetadata.from_bvd(bvd_data),
+                "officers": Officers.from_bvd(bvd_data),
             }
         )
 
@@ -325,7 +592,9 @@ class OwnershipMetadata(BaseModel):
         return OwnershipMetadata(
             {
                 "company_type": bvd_data.standardised_legal_form,
-                "structured_company_type": StructuredCompanyType.from_bvd(bvd_data.standardised_legal_form),
+                "structured_company_type": StructuredCompanyType.from_bvd(
+                    bvd_data.standardised_legal_form
+                ),
             }
         )
 
@@ -370,19 +639,43 @@ class SearchInput(BaseModel):
     number = StringType(default=None)
 
 
-class SearchRequest(BaseModel):
+class Request(BaseModel):
     credentials = ModelType(Credentials, required=True)
+    is_demo = BooleanType(default=False)
+
+
+class SearchRequest(Request):
     input_data = ModelType(SearchInput, required=True)
 
 
-class RegistryCheckRequest(BaseModel):
-    credentials = ModelType(Credentials, required=True)
+class RegistryCheckRequest(Request):
     input_data = ModelType(RegistryInput, required=True)
 
 
-class OwnershipCheckRequest(BaseModel):
-    credentials = ModelType(Credentials, required=True)
+class OwnershipCheckRequest(Request):
     input_data = ModelType(OwnershipInput, required=True)
+
+
+class Portfolio(BaseModel):
+    id = UUIDType(required=True)
+    count = IntType()
+
+
+class PortfolioItem(BaseModel):
+    bvd_id = StringType(required=True)
+    portfolio_id = StringType(required=True)
+
+
+class NewPortfolio(BaseModel):
+    name = StringType()
+
+
+class CreatePortfolioRequest(Request):
+    input_data = ModelType(NewPortfolio, required=True)
+
+
+class AddToPortfolioRequest(Request):
+    input_data = ModelType(PortfolioItem, required=True)
 
 
 class Candidate(BaseModel):
@@ -395,14 +688,16 @@ class Candidate(BaseModel):
 
     def from_bvd(search_data):
         match_data = search_data.match.zero
-        return Candidate({
-            'bvd_id': search_data.bvd_id,
-            'bvd9': match_data.bvd9,
-            'name': match_data.name,
-            'number': match_data.national_id,
-            'country': country_alpha_2_to_3(match_data.country),
-            'status': match_data.status,
-        })
+        return Candidate(
+            {
+                "bvd_id": search_data.bvd_id,
+                "bvd9": match_data.bvd9,
+                "name": match_data.name,
+                "number": match_data.national_id,
+                "country": country_alpha_2_to_3(match_data.country),
+                "status": match_data.status,
+            }
+        )
 
 
 class SearchResponse(BaseModel):
@@ -423,3 +718,11 @@ class OwnershipCheckResponse(BaseModel):
     errors = ListType(ModelType(Error), serialize_when_none=True, default=list)
     price = IntType()
     raw = BaseType()
+
+
+class CreatePortfolioResponse(Request):
+    output_data = ModelType(Portfolio, required=True)
+
+
+class AddToPortfolioResponse(Request):
+    output_data = ModelType(Portfolio, required=True)

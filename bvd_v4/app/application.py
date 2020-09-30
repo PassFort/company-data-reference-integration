@@ -9,13 +9,16 @@ from app.bvd.datasets import DataSet
 from app.bvd.client import Client
 from app.passfort.company_data import CompanyData, CompanyDataCheckResponse
 from app.passfort.types import (
+    AddToPortfolioRequest,
     Candidate,
+    CreatePortfolioRequest,
     RegistryCheckRequest,
     RegistryCheckResponse,
     RegistryCompanyData,
     OwnershipCheckRequest,
     OwnershipCheckResponse,
     OwnershipCompanyData,
+    Portfolio,
     SearchRequest,
     SearchResponse,
 )
@@ -49,7 +52,7 @@ def get_bvd_id(client, country, bvd_id, company_number):
 def company_data_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(request.credentials.key)
+    client = Client(request.credentials.key, request.is_demo)
 
     bvd_id = get_bvd_id(
         client,
@@ -63,18 +66,14 @@ def company_data_check(request):
     else:
         search_results = None
 
-    if search_results:
+    if search_results and search_results.data:
         data = CompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
 
     return jsonify(
         CompanyDataCheckResponse(
-            {
-                "output_data": data,
-                "errors": client.errors,
-                "raw": client.raw_responses,
-            }
+            {"output_data": data, "errors": client.errors, "raw": client.raw_responses}
         ).to_primitive()
     )
 
@@ -84,7 +83,7 @@ def company_data_check(request):
 def registry_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(request.credentials.key)
+    client = Client(request.credentials.key, request.is_demo)
 
     bvd_id = get_bvd_id(
         client,
@@ -98,7 +97,7 @@ def registry_check(request):
     else:
         search_results = None
 
-    if search_results:
+    if search_results and search_results.data:
         data = RegistryCompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
@@ -118,7 +117,7 @@ def registry_check(request):
 @app.route("/ownership-check", methods=["POST"])
 @request_model(OwnershipCheckRequest)
 def ownership_check(request):
-    client = Client(request.credentials.key)
+    client = Client(request.credentials.key, request.is_demo)
 
     bvd_id = get_bvd_id(
         client,
@@ -132,7 +131,7 @@ def ownership_check(request):
     else:
         search_results = None
 
-    if search_results:
+    if search_results and search_results.data:
         data = OwnershipCompanyData.from_bvd(search_results.data[0])
     else:
         data = {}
@@ -152,24 +151,65 @@ def ownership_check(request):
 @app.route("/search", methods=["POST"])
 @request_model(SearchRequest)
 def company_search(request):
-    client = Client(request.credentials.key)
+    client = Client(request.credentials.key, request.is_demo)
     search_results = client.search(
         request.input_data.name,
-        request.input_data.country,
+        country=request.input_data.country,
         state=request.input_data.state,
         company_number=request.input_data.number,
     )
     return jsonify(
-        SearchResponse({
-            "output_data": [
-                Candidate.from_bvd(hit)
-                for hit in sorted(
-                    search_results.data,
-                    reverse=True,
-                    key=lambda hit: hit.match.zero.score,
-                )
-            ] if search_results else [],
+        SearchResponse(
+            {
+                "output_data": [
+                    Candidate.from_bvd(hit)
+                    for hit in sorted(
+                        search_results.data,
+                        reverse=True,
+                        key=lambda hit: hit.match.zero.score,
+                    )
+                ]
+                if search_results
+                else [],
+                "errors": client.errors,
+                "raw": client.raw_responses,
+            }
+        ).to_primitive()
+    )
+
+
+@app.route("/monitoring_portfolio", methods=["POST"])
+@request_model(CreatePortfolioRequest)
+def create_monitoring_portfolio(request):
+    client = Client(request.credentials.key, request.is_demo)
+    result = client.create_record_set(request.input_data.name)
+    return jsonify(
+        {
+            "output_data": Portfolio({
+                "id": result.id,
+                "count": result.count,
+            }).to_primitive(),
             "errors": client.errors,
             "raw": client.raw_responses,
-        }).to_primitive()
+        }
+    )
+
+
+@app.route("/monitoring", methods=["POST"])
+@request_model(AddToPortfolioRequest)
+def add_to_monitoring_portfolio(request):
+    client = Client(request.credentials.key, request.is_demo)
+    result = client.add_to_record_set(
+        request.input_data.portfolio_id,
+        request.input_data.bvd_id,
+    )
+    return jsonify(
+        {
+            "output_data": Portfolio({
+                "id": result.id,
+                "count": result.count,
+            }).to_primitive(),
+            "errors": client.errors,
+            "raw": client.raw_responses,
+        }
     )

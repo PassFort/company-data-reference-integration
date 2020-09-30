@@ -1,8 +1,6 @@
 from collections.abc import Iterable, Sequence, Mapping
 
-from schematics.types import (
-    ListType,
-)
+from schematics.types import ListType
 
 
 class MaybeListType(ListType):

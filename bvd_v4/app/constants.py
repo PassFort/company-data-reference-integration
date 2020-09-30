@@ -1,2 +1,1 @@
-
 PROVIDER_NAME = "BvD Orbis"
