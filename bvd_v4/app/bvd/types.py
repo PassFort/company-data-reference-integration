@@ -140,7 +140,7 @@ class RegistryData(Model):
         serialized_name="CPYCONTACTS_HEADER_NationalityCountryLabel",
         default=list,
     )
-    officer_curent_previous = MaybeListType(
+    officer_current_previous = MaybeListType(
         StringType(choices=["Current", "Previous"]),
         serialized_name="CPYCONTACTS_MEMBERSHIP_CurrentPrevious",
         default=list,

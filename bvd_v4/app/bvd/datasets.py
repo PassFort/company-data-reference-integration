@@ -2,7 +2,6 @@ from enum import Enum
 
 
 OFFICERS_FIELDS = {
-    "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred",
     "CPYCONTACTS_HEADER_BvdId",  # bvd_ids
     "CPYCONTACTS_HEADER_IdDirector",  # officer_ucis
     "CPYCONTACTS_MEMBERSHIP_CurrentPrevious",
@@ -16,9 +15,6 @@ OFFICERS_FIELDS = {
     "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred",
     "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred",
     "CPYCONTACTS_HEADER_NationalityCountryLabel",
-    "CPYCONTACTS_MEMBERSHIP_CurrentPrevious",
-    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate",
-    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate",
     "CPYCONTACTS_HEADER_Birthdate",
 }
 
