@@ -79,6 +79,7 @@ class Ekyc_check(Resource):
 
         username = request_json['credentials']['username']
         password = request_json['credentials']['password']
+        config =  request_json.get('config', {})
 
         if request_json.get('is_demo'):
             passfort_to_trulioo_data(request_json)
@@ -90,7 +91,7 @@ class Ekyc_check(Resource):
                 trulioo_response_data = verify(
                     username, password, country_code, trulioo_request_data)
                 response = trulioo_to_passfort_data(
-                    address_fields, trulioo_response_data)
+                    address_fields, trulioo_response_data, config)
             except ConnectTimeout:
                 return {
                     'decision': 'ERROR',
