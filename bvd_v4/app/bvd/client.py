@@ -14,6 +14,7 @@ from app.bvd.types import (
     AddToRecordSetResult,
     CreateRecordSetResult,
     DataResult,
+    FetchUpdatesResult,
     OwnershipResult,
     RegistryResult,
     SearchResult,
@@ -75,7 +76,7 @@ class Client:
         self.token = token
         self.demo = demo
         self.session = requests_retry_session()
-        self.base_url = "https://Orbis.bvdinfo.com/api/orbis/"
+        self.base_url = "https://Orbis.bvdinfo.com/api/orbis"
         self.raw_responses = []
         self.errors = []
 
@@ -102,7 +103,7 @@ class Client:
             if e.response.status_code > 499:
                 self._record_error(Error.provider_connection(str(e)))
             else:
-                self.raw_responses.append(e.response.json())
+                self.raw_responses.append(e.response.text)
                 self._record_error(Error.provider_unknown_error(str(e)))
             data = {}
         except JSONDecodeError as e:
@@ -229,4 +230,42 @@ class Client:
             f"{self.base_url}/Companies/Store/RecordSets/Add/{name}",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
             json={"WHERE": [{"BvDID": [bvd_id]}]},
+        )
+
+    def fetch_updates(self, record_set_id, from_datetime, to_datetime):
+        return self._get(
+            FetchUpdatesResult,
+            lambda: demo_path("events"),
+            f"{self.base_url}/Companies/data",
+            headers={"Content-Type": "application/json", "ApiToken": self.token},
+            params={
+                "QUERY": json.dumps({
+                    "WHERE": [
+                        {
+                            "UpdatedReport": {
+                                "Period": {
+                                    "Start": str(from_datetime),
+                                    "End": str(to_datetime),
+                                },
+                                "General": [
+                                    "1", "2", "8",
+                                ],
+                                "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
+                                    "COMMON_DIRECTORS_00",
+                                    "COMMON_DIRECTORS_01",
+                                    "COMMON_DIRECTORS_02",
+                                    "COMMON_DIRECTORS_09",
+                                ],
+                                "UpdatedWoco4OwnerShip": [
+                                    "Ownership_bo_w",
+                                    "Ownership_wof",
+                                ]
+                            }
+                        },
+                        {
+                            "AND": [{"RecordSet": str(record_set_id)}]
+                        }],
+                    "SELECT": DataSet.UPDATE.fields
+                })
+            }
         )

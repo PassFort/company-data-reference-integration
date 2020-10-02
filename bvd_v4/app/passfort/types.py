@@ -181,6 +181,7 @@ class IndustryClassificationType(Enum):
     SIC = "SIC"
     NACE = "NACE"
     NAICS = "NAICS"
+    OTHER = "OTHER"
 
     def from_bvd(bvd_classification):
         if "SIC" in bvd_classification:
@@ -190,7 +191,13 @@ class IndustryClassificationType(Enum):
         elif "NAICS" in bvd_classification:
             return IndustryClassificationType.NAICS
         else:
-            return None
+            logging.warning({
+                "error": "Unrecognised industry classification",
+                "info": {
+                    "classification": bvd_classification,
+                }
+            })
+            return IndustryClassificationType.OTHER
 
 
 class IndustryClassification(BaseModel):
@@ -670,12 +677,82 @@ class NewPortfolio(BaseModel):
     name = StringType()
 
 
+class TimeFrame(BaseModel):
+    from_ = DateTimeType(serialized_name="from", required=True)
+    to = DateTimeType(required=True)
+
+
+class EventsInput(BaseModel):
+    callback_url = StringType(required=True)
+    portfolio_name = StringType(required=True)
+    portfolio_id = UUIDType(required=True)
+    timeframe = ModelType(TimeFrame, required=True)
+
+
 class CreatePortfolioRequest(Request):
     input_data = ModelType(NewPortfolio, required=True)
 
 
 class AddToPortfolioRequest(Request):
     input_data = ModelType(PortfolioItem, required=True)
+
+
+class MonitoringEventsRequest(Request):
+    input_data = ModelType(EventsInput, required=True)
+
+
+class EventType(Enum):
+    VERIFY_COMPANY_DETAILS = 'verify_company_details'
+    IDENTIFY_SHAREHOLDERS = 'identify_shareholders'
+    IDENTIFY_OFFICERS = 'identify_officers'
+
+
+class Event(BaseModel):
+    bvd_id = StringType(required=True)
+    event_type = StringType(choices=[ty.value for ty in EventType], required=True)
+
+
+class RegistryEvent(Event):
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("event_type") == EventType.VERIFY_COMPANY_DETAILS.value
+
+    def from_bvd_update(update):
+        return RegistryEvent({
+            "bvd_id": update.bvd_id,
+            "event_type": EventType.VERIFY_COMPANY_DETAILS.value
+        })
+
+
+class ShareholdersEvent(Event):
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("event_type") == EventType.IDENTIFY_SHAREHOLDERS.value
+
+    def from_bvd_update(update):
+        return RegistryEvent({
+            "bvd_id": update.bvd_id,
+            "event_type": EventType.IDENTIFY_SHAREHOLDERS.value
+        })
+
+
+class OfficersEvent(Event):
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("event_type") == EventType.IDENTIFY_OFFICERS.value
+
+    def from_bvd_update(update):
+        return RegistryEvent({
+            "bvd_id": update.bvd_id,
+            "event_type": EventType.IDENTIFY_OFFICERS.value
+        })
+
+
+class EventsCallback(BaseModel):
+    portfolio_id = UUIDType(required=True)
+    portfolio_name = StringType(required=True)
+    events = ListType(ModelType(Event), required=True)
+    raw = BaseType()
 
 
 class Candidate(BaseModel):

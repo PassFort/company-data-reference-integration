@@ -320,6 +320,15 @@ class SearchResult(Model):
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
 
 
+class Update(Model):
+    bvd_id = StringType(serialized_name="BVD_ID_NUMBER", required=True)
+
+
+class FetchUpdatesResult(Model):
+    search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
+    data = MaybeListType(ModelType(Update), serialized_name="Data", required=True)
+
+
 class CreateRecordSetResult(Model):
     comments = StringType(serialized_name="Comments")
     count = IntType(serialized_name="Count")

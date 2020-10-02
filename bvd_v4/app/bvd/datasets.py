@@ -1,5 +1,11 @@
 from enum import Enum
 
+UPDATE_FIELDS = {
+    "BVD_ID_NUMBER",
+    "NAME_UPDATE",
+    "ADDRESS_UPDATE",
+    "STATUS_UPDATE",
+}
 
 OFFICERS_FIELDS = {
     "CPYCONTACTS_HEADER_BvdId",  # bvd_ids
@@ -92,6 +98,7 @@ class DataSet(Enum):
     ALL = "ALL"
     REGISTRY = "REGISTRY"
     OWNERSHIP = "OWNERSHIP"
+    UPDATE = "UPDATE"
 
     @property
     def fields(self):
@@ -108,3 +115,5 @@ class DataSet(Enum):
             return list(REGISTRY_FIELDS)
         elif self == DataSet.OWNERSHIP:
             return list(OWNERSHIP_FIELDS)
+        elif self == DataSet.UPDATE:
+            return list(UPDATE_FIELDS)
