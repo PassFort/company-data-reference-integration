@@ -50,7 +50,10 @@ class EndToEndTests(unittest.TestCase):
             json={
                 "is_demo": True,
                 "credentials": {"key": "NOT_USED_BY_DEMO"},
-                "input_data": {"portfolio_id": "4ed92e40-a501-eb11-90b5-d89d672fa480", "bvd_id": "pass"},
+                "input_data": {
+                    "portfolio_id": "4ed92e40-a501-eb11-90b5-d89d672fa480",
+                    "bvd_id": "pass",
+                },
             },
         )
         self.assertEqual(response.status_code, 200)

@@ -191,12 +191,12 @@ class IndustryClassificationType(Enum):
         elif "NAICS" in bvd_classification:
             return IndustryClassificationType.NAICS
         else:
-            logging.warning({
-                "error": "Unrecognised industry classification",
-                "info": {
-                    "classification": bvd_classification,
+            logging.warning(
+                {
+                    "error": "Unrecognised industry classification",
+                    "info": {"classification": bvd_classification,},
                 }
-            })
+            )
             return IndustryClassificationType.OTHER
 
 
@@ -702,9 +702,9 @@ class MonitoringEventsRequest(Request):
 
 
 class EventType(Enum):
-    VERIFY_COMPANY_DETAILS = 'verify_company_details'
-    IDENTIFY_SHAREHOLDERS = 'identify_shareholders'
-    IDENTIFY_OFFICERS = 'identify_officers'
+    VERIFY_COMPANY_DETAILS = "verify_company_details"
+    IDENTIFY_SHAREHOLDERS = "identify_shareholders"
+    IDENTIFY_OFFICERS = "identify_officers"
 
 
 class Event(BaseModel):
@@ -718,10 +718,12 @@ class RegistryEvent(Event):
         return data.get("event_type") == EventType.VERIFY_COMPANY_DETAILS.value
 
     def from_bvd_update(update):
-        return RegistryEvent({
-            "bvd_id": update.bvd_id,
-            "event_type": EventType.VERIFY_COMPANY_DETAILS.value
-        })
+        return RegistryEvent(
+            {
+                "bvd_id": update.bvd_id,
+                "event_type": EventType.VERIFY_COMPANY_DETAILS.value,
+            }
+        )
 
 
 class ShareholdersEvent(Event):
@@ -730,10 +732,12 @@ class ShareholdersEvent(Event):
         return data.get("event_type") == EventType.IDENTIFY_SHAREHOLDERS.value
 
     def from_bvd_update(update):
-        return RegistryEvent({
-            "bvd_id": update.bvd_id,
-            "event_type": EventType.IDENTIFY_SHAREHOLDERS.value
-        })
+        return RegistryEvent(
+            {
+                "bvd_id": update.bvd_id,
+                "event_type": EventType.IDENTIFY_SHAREHOLDERS.value,
+            }
+        )
 
 
 class OfficersEvent(Event):
@@ -742,10 +746,9 @@ class OfficersEvent(Event):
         return data.get("event_type") == EventType.IDENTIFY_OFFICERS.value
 
     def from_bvd_update(update):
-        return RegistryEvent({
-            "bvd_id": update.bvd_id,
-            "event_type": EventType.IDENTIFY_OFFICERS.value
-        })
+        return RegistryEvent(
+            {"bvd_id": update.bvd_id, "event_type": EventType.IDENTIFY_OFFICERS.value}
+        )
 
 
 class EventsCallback(BaseModel):

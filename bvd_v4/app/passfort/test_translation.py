@@ -447,7 +447,8 @@ class TestMetadata(TestCase):
             self.assertFalse(metadata.structured_company_type.is_public)
             self.assertTrue(metadata.structured_company_type.is_limited)
             self.assertEqual(
-                metadata.structured_company_type.ownership_type, OwnershipType.COMPANY.value
+                metadata.structured_company_type.ownership_type,
+                OwnershipType.COMPANY.value,
             )
 
 

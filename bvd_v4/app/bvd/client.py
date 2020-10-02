@@ -239,33 +239,32 @@ class Client:
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
             params={
-                "QUERY": json.dumps({
-                    "WHERE": [
-                        {
-                            "UpdatedReport": {
-                                "Period": {
-                                    "Start": str(from_datetime),
-                                    "End": str(to_datetime),
-                                },
-                                "General": [
-                                    "1", "2", "8",
-                                ],
-                                "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
-                                    "COMMON_DIRECTORS_00",
-                                    "COMMON_DIRECTORS_01",
-                                    "COMMON_DIRECTORS_02",
-                                    "COMMON_DIRECTORS_09",
-                                ],
-                                "UpdatedWoco4OwnerShip": [
-                                    "Ownership_bo_w",
-                                    "Ownership_wof",
-                                ]
-                            }
-                        },
-                        {
-                            "AND": [{"RecordSet": str(record_set_id)}]
-                        }],
-                    "SELECT": DataSet.UPDATE.fields
-                })
-            }
+                "QUERY": json.dumps(
+                    {
+                        "WHERE": [
+                            {
+                                "UpdatedReport": {
+                                    "Period": {
+                                        "Start": str(from_datetime),
+                                        "End": str(to_datetime),
+                                    },
+                                    "General": ["1", "2", "8",],
+                                    "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
+                                        "COMMON_DIRECTORS_00",
+                                        "COMMON_DIRECTORS_01",
+                                        "COMMON_DIRECTORS_02",
+                                        "COMMON_DIRECTORS_09",
+                                    ],
+                                    "UpdatedWoco4OwnerShip": [
+                                        "Ownership_bo_w",
+                                        "Ownership_wof",
+                                    ],
+                                }
+                            },
+                            {"AND": [{"RecordSet": str(record_set_id)}]},
+                        ],
+                        "SELECT": DataSet.UPDATE.fields,
+                    }
+                )
+            },
         )

@@ -347,4 +347,3 @@ class AddToRecordSetResult(Model):
     name = StringType(serialized_name="Name")
     owner = BooleanType(serialized_name="Owner")
     shared = BooleanType(serialized_name="Shared")
-

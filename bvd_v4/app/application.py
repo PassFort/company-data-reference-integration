@@ -190,10 +190,9 @@ def create_monitoring_portfolio(request):
     result = client.create_record_set(request.input_data.name)
     return jsonify(
         {
-            "output_data": Portfolio({
-                "id": result.id,
-                "count": result.count,
-            }).to_primitive(),
+            "output_data": Portfolio(
+                {"id": result.id, "count": result.count,}
+            ).to_primitive(),
             "errors": client.errors,
             "raw": client.raw_responses,
         }
@@ -205,22 +204,20 @@ def create_monitoring_portfolio(request):
 def add_to_monitoring_portfolio(request):
     client = BvDClient(request.credentials.key, request.is_demo)
     result = client.add_to_record_set(
-        request.input_data.portfolio_id,
-        request.input_data.bvd_id,
+        request.input_data.portfolio_id, request.input_data.bvd_id,
     )
     return jsonify(
         {
-            "output_data": Portfolio({
-                "id": result.id,
-                "count": result.count,
-            }).to_primitive(),
+            "output_data": Portfolio(
+                {"id": result.id, "count": result.count,}
+            ).to_primitive(),
             "errors": client.errors,
             "raw": client.raw_responses,
         }
     )
 
 
-@app.route('/monitoring_events', methods=['POST'])
+@app.route("/monitoring_events", methods=["POST"])
 @request_model(MonitoringEventsRequest)
 def get_monitoring_events(request):
     bvd_client = BvDClient(request.credentials.key, request.is_demo)
@@ -242,19 +239,14 @@ def get_monitoring_events(request):
         request.input_data.timeframe.to,
     )
 
-    events = [
-        RegistryEvent.from_bvd_update(update)
-        for update
-        in registry_result.data
-    ] + [
-        ShareholdersEvent.from_bvd_update(update)
-        for update
-        in ownership_result.data
-    ] + [
-        OfficersEvent.from_bvd_update(update)
-        for update
-        in officers_result.data
-    ]
+    events = (
+        [RegistryEvent.from_bvd_update(update) for update in registry_result.data]
+        + [
+            ShareholdersEvent.from_bvd_update(update)
+            for update in ownership_result.data
+        ]
+        + [OfficersEvent.from_bvd_update(update) for update in officers_result.data]
+    )
 
     passfort_client.send_events(
         request.input_data.portfolio_id,
@@ -263,7 +255,4 @@ def get_monitoring_events(request):
         bvd_client.raw_responses,
     )
 
-    return jsonify({
-        "errors": bvd_client.errors,
-        "raw": bvd_client.raw_responses,
-    })
+    return jsonify({"errors": bvd_client.errors, "raw": bvd_client.raw_responses,})
