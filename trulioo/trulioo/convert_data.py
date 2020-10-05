@@ -1,31 +1,63 @@
 from datetime import datetime
+from dataclasses import dataclass
 import pycountry
+
+
+USE_ADDRESS1_COUNTRIES = ['BRA']
 
 basic_components = {
     'StreetName',
     'PostalCode',
 }
 
-valid_address_combinations = [
-    {
-        *basic_components,
-        'BuildingName',
-    },
-    {
-        *basic_components,
-        'BuildingNumber',
-    },
-    {
-        'Address1',
-        'PostalCode',
-    }
-]
+@dataclass
+class RuleSet:
+    valid_address_combinations: list
+    allow_mismatches: bool = False
 
 
-USE_ADDRESS1_COUNTRIES = ['BRA']
+DEFAULT_RULESET =  RuleSet(
+    valid_address_combinations = [
+        {
+            *basic_components,
+            'BuildingName',
+        },
+        {
+            *basic_components,
+            'BuildingNumber',
+        },
+        {
+            'Address1',
+            'PostalCode',
+        }
+    ]
+)
 
+MATCH_ON_CITY_OR_STATE_RULESET = RuleSet(
+     valid_address_combinations = [
+        {
+            *basic_components,
+            'BuildingName',
+        },
+        {
+            *basic_components,
+            'BuildingNumber',
+        },
+        {
+            'Address1',
+            'PostalCode',
+        },
+        {
+            'StateProvinceCode',
+        },
+        {
+            'City',
+        }
+    ],
+    allow_mismatches=True
+)
 
-def get_address_subsets_to_check(components):
+def get_address_subsets_to_check(components, valid_address_combinations):
     components_as_set = set(components)
     return [
         valid_combination
@@ -225,8 +257,9 @@ def passfort_to_trulioo_data(passfort_data):
     return trulioo_pkg, country and country.alpha_2, set(address_fields_sent)
 
 
-def trulioo_to_passfort_data(fields_sent, trulioo_data):
+def trulioo_to_passfort_data(fields_sent, trulioo_data, config):
     trulioo_record = trulioo_data.get('Record', {})
+    match_on_city_or_state = config.get('match_on_city_or_state', False)
     errors = trulioo_to_passfort_errors(trulioo_data.get('Errors', []))
     if trulioo_record.get('RecordStatus') == 'match':
         decision = 'PASS'
@@ -241,6 +274,11 @@ def trulioo_to_passfort_data(fields_sent, trulioo_data):
         'raw': trulioo_data,
         'errors': errors,
     }
+
+    if match_on_city_or_state:
+        rule_set = MATCH_ON_CITY_OR_STATE_RULESET
+    else:
+        rule_set = DEFAULT_RULESET
 
     matches = []
     for datasource in trulioo_record.get('DatasourceResults', []):
@@ -295,18 +333,17 @@ def trulioo_to_passfort_data(fields_sent, trulioo_data):
                 field['FieldName']: field['Status']
                 for field in address_fields
             }
-            address_subsets_to_check = get_address_subsets_to_check(
-                fields_sent)
+            address_subsets_to_check = get_address_subsets_to_check(fields_sent, rule_set.valid_address_combinations)
 
             def check_subset(components):
                 return all((
                     address_matches.get(field_sent) == 'match' for field_sent in components
                 ))
 
-            if not any((x for x in fields_sent if address_matches.get(x) == 'nomatch')):
-                if address_subsets_to_check and any((
-                    check_subset(subset) for subset in address_subsets_to_check
-                )):
+            if address_subsets_to_check and any(check_subset(subset) for subset in address_subsets_to_check):
+                if rule_set.allow_mismatches:
+                    match['matched_fields'].append('ADDRESS')
+                elif not any(x for x in fields_sent if address_matches.get(x) == 'nomatch'):
                     match['matched_fields'].append('ADDRESS')
 
             # check national id
