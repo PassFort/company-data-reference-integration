@@ -1,5 +1,5 @@
 import logging
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from enum import Enum
 import re
 
@@ -8,9 +8,9 @@ from schematics import Model
 from schematics.types import (
     BooleanType,
     DecimalType,
+    FloatType,
     StringType,
     DateType,
-    DateTimeType,
     DictType,
     ListType,
     IntType,
@@ -150,14 +150,10 @@ class TaxId(BaseModel):
     value = StringType(required=True)
 
     def from_bvd_vat(bvd_vat):
-        if bvd_vat is None:
-            return None
-        return TaxId({"tax_id_type": TaxIdType.VAT.value, "value": bvd_vat,})
+        return TaxId({"tax_id_type": TaxIdType.VAT.value, "value": bvd_vat})
 
     def from_bvd_eurovat(bvd_eurovat):
-        if bvd_eurovat is None:
-            return None
-        return TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": bvd_eurovat,})
+        return TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": bvd_eurovat})
 
 
 class OwnershipType(Enum):
@@ -233,7 +229,7 @@ class ContactDetails(BaseModel):
 
 
 class Shareholding(BaseModel):
-    percentage = DecimalType()
+    percentage = FloatType()
 
     @serializable
     def provider_name(self):
@@ -242,7 +238,15 @@ class Shareholding(BaseModel):
     def from_bvd(direct_percentage):
         if direct_percentage is None:
             return None
-        return Shareholding({"percentage": Decimal(direct_percentage) / 100})
+
+        try:
+            percentage = Decimal(direct_percentage)
+            return Shareholding({"percentage": percentage / 100})
+        except InvalidOperation:
+            logging.warning({
+                "error": "BvD returned invalid share percentage",
+                "info": {"percentage": direct_percentage},
+            })
 
 
 class CompanyMetadata(BaseModel):
@@ -256,7 +260,7 @@ class CompanyMetadata(BaseModel):
     company_type = StringType()
     structured_company_type = ModelType(StructuredCompanyType)
     country_of_incorporation = StringType()
-    incorporation_date = DateTimeType()
+    incorporation_date = DateType()
     previous_names = ListType(ModelType(PreviousName), required=True)
     industry_classifications = ListType(ModelType(IndustryClassification))
     sic_codes = ListType(ModelType(SICCode), required=True)
@@ -278,12 +282,9 @@ class CompanyMetadata(BaseModel):
                 "isin": bvd_data.isin,
                 "lei": bvd_data.lei,
                 "tax_ids": [
-                    tax_id
-                    for tax_id in (
-                        TaxId.from_bvd_eurovat(bvd_data.eurovat),
-                        TaxId.from_bvd_vat(bvd_data.vat),
-                    )
-                    if tax_id is not None
+                    TaxId.from_bvd_eurovat(tax_id) for tax_id in bvd_data.eurovat
+                ] + [
+                    TaxId.from_bvd_vat(tax_id) for tax_id in bvd_data.vat
                 ],
                 "name": bvd_data.name,
                 "company_type": bvd_data.standardised_legal_form,
@@ -391,7 +392,7 @@ class BeneficialOwner(BaseModel):
     bvd_uci = StringType(required=True)
     first_names = StringType()
     last_name = StringType()
-    dob = DateTimeType()
+    dob = DateType()
 
     def from_bvd_beneficial_owner(index, bvd_data):
         uci = (
@@ -493,9 +494,9 @@ class Officer(BaseModel):
     last_name = StringType()
     nationality = StringType(min_length=3, max_length=3)
     resigned = BooleanType()
-    resigned_on = DateTimeType()
-    appointed_on = DateTimeType()
-    dob = DateTimeType()
+    resigned_on = DateType()
+    appointed_on = DateType()
+    dob = DateType()
 
     def from_bvd_officer(index, bvd_data):
         entity_type = EntityType.from_bvd_officer(index, bvd_data)
@@ -525,7 +526,7 @@ class Officer(BaseModel):
                 "nationality": country_names_to_alpha_3(
                     bvd_data.officer_nationality[index]
                 ),
-                "resigned": bvd_data.officer_resignation_date[index] is not None,
+                "resigned": bvd_data.officer_current_previous[index] == "Previous",
                 "resigned_on": bvd_data.officer_resignation_date[index],
                 "appointed_on": bvd_data.officer_appointment_date[index],
                 "dob": bvd_data.officer_date_of_birth[index],
@@ -678,8 +679,8 @@ class NewPortfolio(BaseModel):
 
 
 class TimeFrame(BaseModel):
-    from_ = DateTimeType(serialized_name="from", required=True)
-    to = DateTimeType(required=True)
+    from_ = DateType(serialized_name="from", required=True)
+    to = DateType(required=True)
 
 
 class EventsInput(BaseModel):

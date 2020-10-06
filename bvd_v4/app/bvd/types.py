@@ -41,8 +41,8 @@ class RegistryData(Model):
     )
     isin = StringType(serialized_name="ISIN", default=None)
     lei = StringType(serialized_name="LEI", default=None)
-    vat = StringType(serialized_name="VAT_NUMBER", default=None)
-    eurovat = StringType(serialized_name="EUROPEAN_VAT_NUMBER", default=None)
+    vat = MaybeListType(StringType(), serialized_name="VAT_NUMBER", default=list, required=True)
+    eurovat = MaybeListType(StringType(), serialized_name="EUROPEAN_VAT_NUMBER", default=list, required=True)
     irs = StringType(serialized_name="IRS", default=None)
 
     # Contact Details

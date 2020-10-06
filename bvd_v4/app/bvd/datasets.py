@@ -108,7 +108,7 @@ class DataSet(Enum):
                     field
                     for data_set in DataSet
                     if data_set != DataSet.ALL
-                    for field in data_set.fields
+                    for field in data_set.data_fields
                 }
             )
         elif self == DataSet.REGISTRY:
