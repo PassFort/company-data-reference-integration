@@ -54,7 +54,7 @@ class RegistryData(Model):
 
     # Address
     address_type = StringType(serialized_name="ADDRESS_TYPE")
-    address_line_one = StringType(serialized_name="ADDRESS_LINE1")
+    address_line_one = StringType(serialized_name="ADDRESS_LINE1", default=None)
     address_line_two = StringType(serialized_name="ADDRESS_LINE2", default=None)
     address_line_three = StringType(serialized_name="ADDRESS_LINE3", default=None)
     address_line_four = StringType(serialized_name="ADDRESS_LINE4", default=None)
@@ -171,6 +171,20 @@ class RegistryData(Model):
             "postcode",
             "city",
             "country",
+        ]
+
+    @property
+    def address_lines(self):
+        return [
+            line
+            for line
+            in (
+                self.address_line_one,
+                self.address_line_two,
+                self.address_line_three,
+                self.address_line_four,
+            )
+            if line is not None
         ]
 
     @property

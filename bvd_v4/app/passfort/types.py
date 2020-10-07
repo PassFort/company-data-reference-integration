@@ -249,6 +249,42 @@ class Shareholding(BaseModel):
             })
 
 
+class StructuredAddress(BaseModel):
+    postal_code = StringType()
+    route = StringType()
+    locality = StringType()
+    state_province = StringType()
+    country = StringType(min_length=3, max_length=3)
+    address_lines = ListType(StringType())
+    original_freeform_address = StringType()
+
+    @serializable
+    def type(self):
+        return 'STRUCTURED'
+
+    def from_bvd(bvd_data):
+        return StructuredAddress({
+            "postal_code": bvd_data.postcode,
+            "route": bvd_data.address_line_one,
+            "locality": bvd_data.city,
+            "state_province": bvd_data.state,
+            "country": country_names_to_alpha_3(bvd_data.country),
+            "address_lines": bvd_data.address_lines,
+            "original_freeform_address": bvd_data.freeform_address,
+        })
+
+
+class CompanyAddress(BaseModel):
+    type_ = StringType(choices=["registered_address"], serialized_name="type")
+    address = ModelType(StructuredAddress)
+
+    def from_bvd(bvd_data):
+        return CompanyAddress({
+            "type": "registered_address",
+            "address": StructuredAddress.from_bvd(bvd_data)
+        })
+
+
 class CompanyMetadata(BaseModel):
     bvd_id = StringType()
     number = StringType()
@@ -265,7 +301,7 @@ class CompanyMetadata(BaseModel):
     industry_classifications = ListType(ModelType(IndustryClassification))
     sic_codes = ListType(ModelType(SICCode), required=True)
     contact_information = ModelType(ContactDetails)
-    freeform_address = StringType(required=True)
+    addresses = ListType(ModelType(CompanyAddress), default=list, required=True)
     is_active = BooleanType()
     is_active_details = StringType()
     trade_description = StringType()
@@ -321,7 +357,7 @@ class CompanyMetadata(BaseModel):
                     )
                 ],
                 "contact_information": ContactDetails.from_bvd(bvd_data),
-                "freeform_address": bvd_data.freeform_address,
+                "addresses": [CompanyAddress.from_bvd(bvd_data)],
                 "is_active": next(
                     (status.lower().startswith("active") for status in bvd_data.status),
                     None,
