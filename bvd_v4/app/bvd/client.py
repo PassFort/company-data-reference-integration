@@ -180,22 +180,23 @@ class Client:
             },
         )
 
-    def _fetch_data(self, response_model, get_demo_data, bvd_id, data_set=DataSet.ALL):
+    def _fetch_data(self, response_model, get_demo_data, bvd_id, fields):
         return self._get(
             response_model,
             get_demo_data,
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
             params={
-                "QUERY": json.dumps(
-                    {"WHERE": [{"BvDID": bvd_id}], "SELECT": data_set.fields}
-                )
+                "QUERY": json.dumps({"WHERE": [{"BvDID": bvd_id}], "SELECT": fields})
             },
         )
 
     def fetch_company_data(self, bvd_id):
         return self._fetch_data(
-            DataResult, lambda: demo_path("company_data", bvd_id), bvd_id, DataSet.ALL,
+            DataResult,
+            lambda: demo_path("company_data", bvd_id),
+            bvd_id,
+            DataSet.ALL.data_fields,
         )
 
     def fetch_registry_data(self, bvd_id):
@@ -203,7 +204,7 @@ class Client:
             RegistryResult,
             lambda: demo_path("registry", bvd_id),
             bvd_id,
-            DataSet.REGISTRY,
+            DataSet.REGISTRY.fields + DataSet.OFFICERS.data_fields,
         )
 
     def fetch_ownership_data(self, bvd_id):
@@ -211,7 +212,7 @@ class Client:
             OwnershipResult,
             lambda: demo_path("ownership", bvd_id),
             bvd_id,
-            DataSet.OWNERSHIP,
+            DataSet.OWNERSHIP.data_fields,
         )
 
     def create_record_set(self, name):
@@ -232,7 +233,7 @@ class Client:
             json={"WHERE": [{"BvDID": [bvd_id]}]},
         )
 
-    def fetch_updates(self, record_set_id, from_datetime, to_datetime):
+    def _fetch_updates(self, update_query, record_set_id, from_datetime, to_datetime):
         return self._get(
             FetchUpdatesResult,
             lambda: demo_path("events"),
@@ -248,23 +249,22 @@ class Client:
                                         "Start": str(from_datetime),
                                         "End": str(to_datetime),
                                     },
-                                    "General": ["1", "2", "8",],
-                                    "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
-                                        "COMMON_DIRECTORS_00",
-                                        "COMMON_DIRECTORS_01",
-                                        "COMMON_DIRECTORS_02",
-                                        "COMMON_DIRECTORS_09",
-                                    ],
-                                    "UpdatedWoco4OwnerShip": [
-                                        "Ownership_bo_w",
-                                        "Ownership_wof",
-                                    ],
+                                    **update_query,
                                 }
                             },
                             {"AND": [{"RecordSet": str(record_set_id)}]},
                         ],
-                        "SELECT": DataSet.UPDATE.fields,
+                        "SELECT": DataSet.UPDATE.data_fields,
                     }
                 )
             },
         )
+
+    def fetch_registry_updates(self, *args, **kwargs):
+        return self._fetch_updates(DataSet.REGISTRY.update_query, *args, **kwargs)
+
+    def fetch_ownership_updates(self, *args, **kwargs):
+        return self._fetch_updates(DataSet.OWNERSHIP.update_query, *args, **kwargs)
+
+    def fetch_officers_updates(self, *args, **kwargs):
+        return self._fetch_updates(DataSet.OFFICERS.update_query, *args, **kwargs)

@@ -63,7 +63,6 @@ REGISTRY_FIELDS = {
     "INDUSTRY_PRIMARY_LABEL",
     "INDUSTRY_SECONDARY_CODE",
     "INDUSTRY_SECONDARY_LABEL",
-    *OFFICERS_FIELDS,
 }
 
 
@@ -98,10 +97,11 @@ class DataSet(Enum):
     ALL = "ALL"
     REGISTRY = "REGISTRY"
     OWNERSHIP = "OWNERSHIP"
+    OFFICERS = "OFFICERS"
     UPDATE = "UPDATE"
 
     @property
-    def fields(self):
+    def data_fields(self):
         if self == DataSet.ALL:
             return list(
                 {
@@ -115,5 +115,25 @@ class DataSet(Enum):
             return list(REGISTRY_FIELDS)
         elif self == DataSet.OWNERSHIP:
             return list(OWNERSHIP_FIELDS)
+        elif self == DataSet.OFFICERS:
+            return list(OFFICERS_FIELDS)
         elif self == DataSet.UPDATE:
             return list(UPDATE_FIELDS)
+
+    @property
+    def update_query(self):
+        if self == DataSet.REGISTRY:
+            return {"General": ["1", "2", "8"]}
+        elif self == DataSet.OWNERSHIP:
+            return {
+                "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
+                    "COMMON_DIRECTORS_00",
+                    "COMMON_DIRECTORS_01",
+                    "COMMON_DIRECTORS_02",
+                    "COMMON_DIRECTORS_09",
+                ],
+            }
+        elif self == DataSet.OFFICERS:
+            return {
+                "UpdatedWoco4OwnerShip": ["Ownership_bo_w", "Ownership_wof",],
+            }

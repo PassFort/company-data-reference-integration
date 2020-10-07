@@ -223,17 +223,17 @@ def get_monitoring_events(request):
     bvd_client = BvDClient(request.credentials.key, request.is_demo)
     passfort_client = PassFortClient(request.input_data.callback_url)
 
-    registry_result = bvd_client.fetch_updates(
+    registry_result = bvd_client.fetch_registry_updates(
         request.input_data.portfolio_id,
         request.input_data.timeframe.from_,
         request.input_data.timeframe.to,
     )
-    ownership_result = bvd_client.fetch_updates(
+    ownership_result = bvd_client.fetch_ownership_updates(
         request.input_data.portfolio_id,
         request.input_data.timeframe.from_,
         request.input_data.timeframe.to,
     )
-    officers_result = bvd_client.fetch_updates(
+    officers_result = bvd_client.fetch_officers_updates(
         request.input_data.portfolio_id,
         request.input_data.timeframe.from_,
         request.input_data.timeframe.to,

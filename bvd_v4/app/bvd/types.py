@@ -326,7 +326,9 @@ class Update(Model):
 
 class FetchUpdatesResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
-    data = MaybeListType(ModelType(Update), serialized_name="Data", required=True)
+    data = MaybeListType(
+        ModelType(Update), serialized_name="Data", default=list, required=True
+    )
 
 
 class CreateRecordSetResult(Model):
