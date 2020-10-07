@@ -41,8 +41,8 @@ class RegistryData(Model):
     )
     isin = StringType(serialized_name="ISIN", default=None)
     lei = StringType(serialized_name="LEI", default=None)
-    vat = StringType(serialized_name="VAT_NUMBER", default=None)
-    eurovat = StringType(serialized_name="EUROPEAN_VAT_NUMBER", default=None)
+    vat = MaybeListType(StringType(), serialized_name="VAT_NUMBER", default=list, required=True)
+    eurovat = MaybeListType(StringType(), serialized_name="EUROPEAN_VAT_NUMBER", default=list, required=True)
     irs = StringType(serialized_name="IRS", default=None)
 
     # Contact Details
@@ -320,6 +320,17 @@ class SearchResult(Model):
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
 
 
+class Update(Model):
+    bvd_id = StringType(serialized_name="BVD_ID_NUMBER", required=True)
+
+
+class FetchUpdatesResult(Model):
+    search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
+    data = MaybeListType(
+        ModelType(Update), serialized_name="Data", default=list, required=True
+    )
+
+
 class CreateRecordSetResult(Model):
     comments = StringType(serialized_name="Comments")
     count = IntType(serialized_name="Count")
@@ -338,4 +349,3 @@ class AddToRecordSetResult(Model):
     name = StringType(serialized_name="Name")
     owner = BooleanType(serialized_name="Owner")
     shared = BooleanType(serialized_name="Shared")
-

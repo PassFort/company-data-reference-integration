@@ -1,5 +1,5 @@
 import logging
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from enum import Enum
 import re
 
@@ -8,9 +8,9 @@ from schematics import Model
 from schematics.types import (
     BooleanType,
     DecimalType,
+    FloatType,
     StringType,
     DateType,
-    DateTimeType,
     DictType,
     ListType,
     IntType,
@@ -150,14 +150,10 @@ class TaxId(BaseModel):
     value = StringType(required=True)
 
     def from_bvd_vat(bvd_vat):
-        if bvd_vat is None:
-            return None
-        return TaxId({"tax_id_type": TaxIdType.VAT.value, "value": bvd_vat,})
+        return TaxId({"tax_id_type": TaxIdType.VAT.value, "value": bvd_vat})
 
     def from_bvd_eurovat(bvd_eurovat):
-        if bvd_eurovat is None:
-            return None
-        return TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": bvd_eurovat,})
+        return TaxId({"tax_id_type": TaxIdType.EUROVAT.value, "value": bvd_eurovat})
 
 
 class OwnershipType(Enum):
@@ -181,6 +177,7 @@ class IndustryClassificationType(Enum):
     SIC = "SIC"
     NACE = "NACE"
     NAICS = "NAICS"
+    OTHER = "OTHER"
 
     def from_bvd(bvd_classification):
         if "SIC" in bvd_classification:
@@ -190,7 +187,13 @@ class IndustryClassificationType(Enum):
         elif "NAICS" in bvd_classification:
             return IndustryClassificationType.NAICS
         else:
-            return None
+            logging.warning(
+                {
+                    "error": "Unrecognised industry classification",
+                    "info": {"classification": bvd_classification,},
+                }
+            )
+            return IndustryClassificationType.OTHER
 
 
 class IndustryClassification(BaseModel):
@@ -226,7 +229,7 @@ class ContactDetails(BaseModel):
 
 
 class Shareholding(BaseModel):
-    percentage = DecimalType()
+    percentage = FloatType()
 
     @serializable
     def provider_name(self):
@@ -235,7 +238,15 @@ class Shareholding(BaseModel):
     def from_bvd(direct_percentage):
         if direct_percentage is None:
             return None
-        return Shareholding({"percentage": Decimal(direct_percentage) / 100})
+
+        try:
+            percentage = Decimal(direct_percentage)
+            return Shareholding({"percentage": percentage / 100})
+        except InvalidOperation:
+            logging.warning({
+                "error": "BvD returned invalid share percentage",
+                "info": {"percentage": direct_percentage},
+            })
 
 
 class CompanyMetadata(BaseModel):
@@ -249,7 +260,7 @@ class CompanyMetadata(BaseModel):
     company_type = StringType()
     structured_company_type = ModelType(StructuredCompanyType)
     country_of_incorporation = StringType()
-    incorporation_date = DateTimeType()
+    incorporation_date = DateType()
     previous_names = ListType(ModelType(PreviousName), required=True)
     industry_classifications = ListType(ModelType(IndustryClassification))
     sic_codes = ListType(ModelType(SICCode), required=True)
@@ -271,12 +282,9 @@ class CompanyMetadata(BaseModel):
                 "isin": bvd_data.isin,
                 "lei": bvd_data.lei,
                 "tax_ids": [
-                    tax_id
-                    for tax_id in (
-                        TaxId.from_bvd_eurovat(bvd_data.eurovat),
-                        TaxId.from_bvd_vat(bvd_data.vat),
-                    )
-                    if tax_id is not None
+                    TaxId.from_bvd_eurovat(tax_id) for tax_id in bvd_data.eurovat
+                ] + [
+                    TaxId.from_bvd_vat(tax_id) for tax_id in bvd_data.vat
                 ],
                 "name": bvd_data.name,
                 "company_type": bvd_data.standardised_legal_form,
@@ -384,7 +392,7 @@ class BeneficialOwner(BaseModel):
     bvd_uci = StringType(required=True)
     first_names = StringType()
     last_name = StringType()
-    dob = DateTimeType()
+    dob = DateType()
 
     def from_bvd_beneficial_owner(index, bvd_data):
         uci = (
@@ -486,9 +494,9 @@ class Officer(BaseModel):
     last_name = StringType()
     nationality = StringType(min_length=3, max_length=3)
     resigned = BooleanType()
-    resigned_on = DateTimeType()
-    appointed_on = DateTimeType()
-    dob = DateTimeType()
+    resigned_on = DateType()
+    appointed_on = DateType()
+    dob = DateType()
 
     def from_bvd_officer(index, bvd_data):
         entity_type = EntityType.from_bvd_officer(index, bvd_data)
@@ -518,7 +526,7 @@ class Officer(BaseModel):
                 "nationality": country_names_to_alpha_3(
                     bvd_data.officer_nationality[index]
                 ),
-                "resigned": bvd_data.officer_resignation_date[index] is not None,
+                "resigned": bvd_data.officer_current_previous[index] == "Previous",
                 "resigned_on": bvd_data.officer_resignation_date[index],
                 "appointed_on": bvd_data.officer_appointment_date[index],
                 "dob": bvd_data.officer_date_of_birth[index],
@@ -670,12 +678,85 @@ class NewPortfolio(BaseModel):
     name = StringType()
 
 
+class TimeFrame(BaseModel):
+    from_ = DateType(serialized_name="from", required=True)
+    to = DateType(required=True)
+
+
+class EventsInput(BaseModel):
+    callback_url = StringType(required=True)
+    portfolio_name = StringType(required=True)
+    portfolio_id = UUIDType(required=True)
+    timeframe = ModelType(TimeFrame, required=True)
+
+
 class CreatePortfolioRequest(Request):
     input_data = ModelType(NewPortfolio, required=True)
 
 
 class AddToPortfolioRequest(Request):
     input_data = ModelType(PortfolioItem, required=True)
+
+
+class MonitoringEventsRequest(Request):
+    input_data = ModelType(EventsInput, required=True)
+
+
+class EventType(Enum):
+    VERIFY_COMPANY_DETAILS = "verify_company_details"
+    IDENTIFY_SHAREHOLDERS = "identify_shareholders"
+    IDENTIFY_OFFICERS = "identify_officers"
+
+
+class Event(BaseModel):
+    bvd_id = StringType(required=True)
+    event_type = StringType(choices=[ty.value for ty in EventType], required=True)
+
+
+class RegistryEvent(Event):
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("event_type") == EventType.VERIFY_COMPANY_DETAILS.value
+
+    def from_bvd_update(update):
+        return RegistryEvent(
+            {
+                "bvd_id": update.bvd_id,
+                "event_type": EventType.VERIFY_COMPANY_DETAILS.value,
+            }
+        )
+
+
+class ShareholdersEvent(Event):
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("event_type") == EventType.IDENTIFY_SHAREHOLDERS.value
+
+    def from_bvd_update(update):
+        return ShareholdersEvent(
+            {
+                "bvd_id": update.bvd_id,
+                "event_type": EventType.IDENTIFY_SHAREHOLDERS.value,
+            }
+        )
+
+
+class OfficersEvent(Event):
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("event_type") == EventType.IDENTIFY_OFFICERS.value
+
+    def from_bvd_update(update):
+        return OfficersEvent(
+            {"bvd_id": update.bvd_id, "event_type": EventType.IDENTIFY_OFFICERS.value}
+        )
+
+
+class EventsCallback(BaseModel):
+    portfolio_id = UUIDType(required=True)
+    portfolio_name = StringType(required=True)
+    events = ListType(ModelType(Event), required=True)
+    raw = BaseType()
 
 
 class Candidate(BaseModel):

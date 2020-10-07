@@ -5,6 +5,7 @@ import json
 from mock import patch
 from unittest import TestCase
 
+from app.bvd.client import prune_nones
 from app.bvd.types import (
     Data,
     DataResult,
@@ -80,7 +81,7 @@ class TestShareholders(TestCase):
         )
         self.assertEqual(
             first_shareholder.relationships[0].shareholdings[0].percentage,
-            Decimal("0.225"),
+            0.225,
         )
         second_shareholder = company_data.associated_entities[1]
         self.assertEqual(second_shareholder.immediate_data.entity_type, "INDIVIDUAL")
@@ -103,7 +104,7 @@ class TestShareholders(TestCase):
         )
         self.assertEqual(
             second_shareholder.relationships[0].shareholdings[0].percentage,
-            Decimal("0.1963"),
+            0.1963,
         )
 
 
@@ -130,6 +131,7 @@ class TestOfficers(TestCase):
                     "2018-12-31T00:00:00",
                     None,
                 ],
+                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Current", "Previous", "Current"],
                 "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
                     None,
                     None,
@@ -168,7 +170,7 @@ class TestOfficers(TestCase):
             }
         )
         bvd_data.validate()
-
+        
         company_data = CompanyData.from_bvd(bvd_data)
         company_data.validate()
 
@@ -228,6 +230,7 @@ class TestOfficers(TestCase):
                 "CPYCONTACTS_HEADER_IdDirector": ["C004368396"],
                 "CPYCONTACTS_MEMBERSHIP_Function": ["Company Secretary"],
                 "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": ["2000-02-02T00:00:00"],
+                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Previous"],
                 "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [None],
                 "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [None],
                 "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [None],
@@ -288,7 +291,7 @@ class TestMergeAssociates(TestCase):
                             "associated_role": "SHAREHOLDER",
                             "relationship_type": "SHAREHOLDER",
                             "shareholdings": [
-                                Shareholding({"percentage": Decimal("0.25")})
+                                Shareholding({"percentage": 0.25})
                             ],
                         }
                     )
@@ -347,7 +350,7 @@ class TestMergeAssociates(TestCase):
                         "associated_role": "SHAREHOLDER",
                         "relationship_type": "SHAREHOLDER",
                         "shareholdings": [
-                            Shareholding({"percentage": Decimal("0.25")})
+                            Shareholding({"percentage": 0.25})
                         ],
                     }
                 ),
@@ -361,7 +364,7 @@ class TestMergeAssociates(TestCase):
 class TestMetadata(TestCase):
     def test_company_data_check(self):
         with open("./demo_data/company_data/pass.json") as demo_file:
-            bvd_result = DataResult(json.load(demo_file))
+            bvd_result = DataResult(prune_nones(json.load(demo_file)))
             bvd_result.validate()
 
             metadata = CompanyMetadata.from_bvd(bvd_result.data[0])
@@ -447,7 +450,8 @@ class TestMetadata(TestCase):
             self.assertFalse(metadata.structured_company_type.is_public)
             self.assertTrue(metadata.structured_company_type.is_limited)
             self.assertEqual(
-                metadata.structured_company_type.ownership_type, OwnershipType.COMPANY.value
+                metadata.structured_company_type.ownership_type,
+                OwnershipType.COMPANY.value,
             )
 
 
@@ -548,5 +552,5 @@ class TestCompanyNames(TestCase):
         metadata = CompanyMetadata.from_bvd(bvd_data)
         self.assertEqual(
             metadata.previous_names,
-            [PreviousName({"name": "BLOCKOPS LIMITED", "end": "2015-07-31T00:00:00"})],
+            [PreviousName({"name": "BLOCKOPS LIMITED", "end": "2015-07-31"})],
         )

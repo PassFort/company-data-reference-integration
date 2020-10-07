@@ -83,8 +83,8 @@ class AssociateCompanyMetadata(BaseModel):
 
 class FullName(BaseModel):
     title = StringType()
-    first_names = ListType(StringType(), default=list, required=True)
-    last_name = StringType()
+    given_names = ListType(StringType(), default=list, required=True)
+    family_name = StringType()
 
     def from_bvd_shareholder(index, bvd_data):
         title, first_names, last_name = format_names(
@@ -94,7 +94,7 @@ class FullName(BaseModel):
             EntityType.INDIVIDUAL,
         )
         return FullName(
-            {"title": title, "first_names": first_names, "last_name": last_name,}
+            {"title": title, "given_names": first_names, "family_name": last_name,}
         )
 
     def from_bvd_beneficial_owner(index, bvd_data):
@@ -105,7 +105,7 @@ class FullName(BaseModel):
             EntityType.INDIVIDUAL,
         )
         return FullName(
-            {"title": title, "first_names": first_names, "last_name": last_name,}
+            {"title": title, "given_names": first_names, "family_name": last_name,}
         )
 
     def from_bvd_officer(index, bvd_data):
@@ -118,8 +118,8 @@ class FullName(BaseModel):
         return FullName(
             {
                 "title": title_from_full_name or bvd_data.officer_title[index],
-                "first_names": first_names,
-                "last_name": last_name,
+                "given_names": first_names,
+                "family_name": last_name,
             }
         )
 
@@ -127,15 +127,15 @@ class FullName(BaseModel):
         return FullName(
             {
                 "title": a.title or b.title,
-                "first_names": a.first_names or b.first_names,
-                "last_name": a.last_name or b.last_name,
+                "given_names": a.given_names or b.given_names,
+                "family_name": a.family_name or b.family_name,
             }
         )
 
 
 class AssociatePersonalDetails(BaseModel):
     name = ModelType(FullName, required=True)
-    dob = DateTimeType(default=None)
+    dob = DateType(default=None)
     nationality = StringType(min_length=3, max_length=3, default=None)
 
     def from_bvd_shareholder(index, bvd_data):
@@ -198,7 +198,7 @@ class AssociateEntityData(BaseModel):
             return IndividualAssociateData.from_bvd_officer(index, bvd_data)
 
     def merge(a, b):
-        if a.entity_type == EntityType.COMPANY:
+        if a.entity_type == EntityType.COMPANY.value:
             return CompanyAssociateData.merge(a, b)
         else:
             return IndividualAssociateData.merge(a, b)
@@ -302,9 +302,9 @@ class AssociatedRole(Enum):
 
     def from_bvd_officer(index, bvd_data):
         original_role_lower = bvd_data.officer_role[index].lower()
-        resignation_date = bvd_data.officer_resignation_date[index]
+        current_previous = bvd_data.officer_current_previous[index]
 
-        if resignation_date is not None:
+        if current_previous != "Current":
             return AssociatedRole.RESIGNED_OFFICER
         elif "director" in original_role_lower:
             return AssociatedRole.DIRECTOR

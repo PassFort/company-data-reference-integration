@@ -6,21 +6,26 @@ from raven.contrib.flask import Sentry
 
 from app.validation import request_model
 from app.bvd.datasets import DataSet
-from app.bvd.client import Client
+from app.bvd.client import Client as BvDClient
+from app.passfort.client import Client as PassFortClient
 from app.passfort.company_data import CompanyData, CompanyDataCheckResponse
 from app.passfort.types import (
     AddToPortfolioRequest,
     Candidate,
     CreatePortfolioRequest,
-    RegistryCheckRequest,
-    RegistryCheckResponse,
-    RegistryCompanyData,
+    MonitoringEventsRequest,
     OwnershipCheckRequest,
     OwnershipCheckResponse,
     OwnershipCompanyData,
     Portfolio,
+    RegistryCheckRequest,
+    RegistryCheckResponse,
+    RegistryCompanyData,
+    RegistryEvent,
     SearchRequest,
     SearchResponse,
+    ShareholdersEvent,
+    OfficersEvent,
 )
 
 app = Flask(__name__)
@@ -52,7 +57,7 @@ def get_bvd_id(client, country, bvd_id, company_number):
 def company_data_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(request.credentials.key, request.is_demo)
+    client = BvDClient(request.credentials.key, request.is_demo)
 
     bvd_id = get_bvd_id(
         client,
@@ -83,7 +88,7 @@ def company_data_check(request):
 def registry_check(request):
     # Assuming we always have either a BvD ID or a company number
 
-    client = Client(request.credentials.key, request.is_demo)
+    client = BvDClient(request.credentials.key, request.is_demo)
 
     bvd_id = get_bvd_id(
         client,
@@ -117,7 +122,7 @@ def registry_check(request):
 @app.route("/ownership-check", methods=["POST"])
 @request_model(OwnershipCheckRequest)
 def ownership_check(request):
-    client = Client(request.credentials.key, request.is_demo)
+    client = BvDClient(request.credentials.key, request.is_demo)
 
     bvd_id = get_bvd_id(
         client,
@@ -151,7 +156,7 @@ def ownership_check(request):
 @app.route("/search", methods=["POST"])
 @request_model(SearchRequest)
 def company_search(request):
-    client = Client(request.credentials.key, request.is_demo)
+    client = BvDClient(request.credentials.key, request.is_demo)
     search_results = client.search(
         request.input_data.name,
         country=request.input_data.country,
@@ -181,14 +186,13 @@ def company_search(request):
 @app.route("/monitoring_portfolio", methods=["POST"])
 @request_model(CreatePortfolioRequest)
 def create_monitoring_portfolio(request):
-    client = Client(request.credentials.key, request.is_demo)
+    client = BvDClient(request.credentials.key, request.is_demo)
     result = client.create_record_set(request.input_data.name)
     return jsonify(
         {
-            "output_data": Portfolio({
-                "id": result.id,
-                "count": result.count,
-            }).to_primitive(),
+            "output_data": Portfolio(
+                {"id": result.id, "count": result.count,}
+            ).to_primitive(),
             "errors": client.errors,
             "raw": client.raw_responses,
         }
@@ -198,18 +202,57 @@ def create_monitoring_portfolio(request):
 @app.route("/monitoring", methods=["POST"])
 @request_model(AddToPortfolioRequest)
 def add_to_monitoring_portfolio(request):
-    client = Client(request.credentials.key, request.is_demo)
+    client = BvDClient(request.credentials.key, request.is_demo)
     result = client.add_to_record_set(
-        request.input_data.portfolio_id,
-        request.input_data.bvd_id,
+        request.input_data.portfolio_id, request.input_data.bvd_id,
     )
     return jsonify(
         {
-            "output_data": Portfolio({
-                "id": result.id,
-                "count": result.count,
-            }).to_primitive(),
+            "output_data": Portfolio(
+                {"id": result.id, "count": result.count,}
+            ).to_primitive(),
             "errors": client.errors,
             "raw": client.raw_responses,
         }
     )
+
+
+@app.route("/monitoring_events", methods=["POST"])
+@request_model(MonitoringEventsRequest)
+def get_monitoring_events(request):
+    bvd_client = BvDClient(request.credentials.key, request.is_demo)
+    passfort_client = PassFortClient(request.input_data.callback_url)
+
+    registry_result = bvd_client.fetch_registry_updates(
+        request.input_data.portfolio_id,
+        request.input_data.timeframe.from_,
+        request.input_data.timeframe.to,
+    )
+    ownership_result = bvd_client.fetch_ownership_updates(
+        request.input_data.portfolio_id,
+        request.input_data.timeframe.from_,
+        request.input_data.timeframe.to,
+    )
+    officers_result = bvd_client.fetch_officers_updates(
+        request.input_data.portfolio_id,
+        request.input_data.timeframe.from_,
+        request.input_data.timeframe.to,
+    )
+
+    events = (
+        [RegistryEvent.from_bvd_update(update) for update in registry_result.data]
+        + [
+            ShareholdersEvent.from_bvd_update(update)
+            for update in ownership_result.data
+        ]
+        + [OfficersEvent.from_bvd_update(update) for update in officers_result.data]
+    )
+
+    passfort_client.send_events(
+        request.input_data.portfolio_id,
+        request.input_data.portfolio_name,
+        events,
+        bvd_client.raw_responses,
+    )
+
+    return jsonify({"errors": bvd_client.errors, "raw": bvd_client.raw_responses,})
