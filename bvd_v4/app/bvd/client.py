@@ -181,14 +181,12 @@ class Client:
         )
 
     def _fetch_data(self, response_model, get_demo_data, bvd_id, fields):
-        return self._get(
+        return self._post(
             response_model,
             get_demo_data,
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
-            params={
-                "QUERY": json.dumps({"WHERE": [{"BvDID": bvd_id}], "SELECT": fields})
-            },
+            json={"WHERE": [{"BvDID": bvd_id}], "SELECT": fields},
         )
 
     def fetch_company_data(self, bvd_id):
