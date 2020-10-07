@@ -732,7 +732,7 @@ class ShareholdersEvent(Event):
         return data.get("event_type") == EventType.IDENTIFY_SHAREHOLDERS.value
 
     def from_bvd_update(update):
-        return RegistryEvent(
+        return ShareholdersEvent(
             {
                 "bvd_id": update.bvd_id,
                 "event_type": EventType.IDENTIFY_SHAREHOLDERS.value,
@@ -746,7 +746,7 @@ class OfficersEvent(Event):
         return data.get("event_type") == EventType.IDENTIFY_OFFICERS.value
 
     def from_bvd_update(update):
-        return RegistryEvent(
+        return OfficersEvent(
             {"bvd_id": update.bvd_id, "event_type": EventType.IDENTIFY_OFFICERS.value}
         )
 
