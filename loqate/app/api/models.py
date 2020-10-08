@@ -115,7 +115,7 @@ class LoqateAddress(Model):
         export_level = NOT_NONE
 
     @classmethod
-    def from_passfort_structured(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
+    def from_passfort_structured(cls, passfort_address: PassFortAddress, use_address1=False) -> 'LoqateAddress':
         thoroughfare = ' '.join(
             filter(None, [
                 getattr(passfort_address, 'street_number', None),
@@ -126,6 +126,8 @@ class LoqateAddress(Model):
         mapped_country = COUNTRY_MAPPING.get(
             passfort_address.country, passfort_address.country)
 
+        thoroughfare_key = "Address1" if use_address1 else "Thoroughfare"
+
         data = {
             "ISO3166-3": mapped_country,
             "Country": mapped_country,
@@ -134,8 +136,7 @@ class LoqateAddress(Model):
             "PostalCode": getattr(passfort_address, 'postal_code', None),
             "AdministrativeArea": getattr(passfort_address, 'state_province', None),
             "SubAdministrativeArea": getattr(passfort_address, 'county', None),
-            "Thoroughfare": thoroughfare or None,
-
+            thoroughfare_key: thoroughfare or None,
         }
         model = cls().import_data(data, apply_defaults=True)
         model.validate()
@@ -172,7 +173,7 @@ class LoqateAddress(Model):
     @classmethod
     def from_passfort(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
         if date.today().day % 2 == 0:
-            return cls.from_passfort_freeform(passfort_address)
+            return cls.from_passfort_structured(passfort_address, use_address1=True)
         else:
             return cls.from_passfort_structured(passfort_address)
 
@@ -212,6 +213,12 @@ class GeoCodingCheck(Model):
             'Geocode': True,
             'Addresses': [LoqateAddress.from_passfort(self.input_data.address).to_primitive()],
             'Certify': self.config.use_certified_dataset,
+            'Options': {
+                'ServerOptions': {
+                    'MinimumGeoaccuracyLevel': 1,
+                    'MaximumGeodistance': -1,
+                }
+            }
         }
 
 
