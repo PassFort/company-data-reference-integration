@@ -1,3 +1,4 @@
+import re
 from fuzzywuzzy import fuzz
 
 
@@ -73,7 +74,7 @@ class GenericMatcher:
     def match(self, left, right):
         match_ratio = self.match_ratio(left, right)
         if self.fuzz_factor:
-            return match_ratio > self.fuzz_factor
+            return match_ratio >= self.fuzz_factor
 
         return match_ratio == 100
 
@@ -100,3 +101,44 @@ class CompanyNameMatcher(GenericMatcher):
             case_sensitive=self.CASE_SENSITIVE,
             preprocess=self._strip_trailing_punctuation,
             fuzz_factor=fuzz_factor)
+
+
+class CompanyNumberMatcher(GenericMatcher):
+    FUZZ_FACTOR = 100
+    CASE_SENSITIVE = False
+
+    @staticmethod
+    def _strip_zero_suffix(left, right):
+        """
+        CreditSafe are a bit special and sometimes append '0000' to company
+        numbers under myriad and indeterminable circumstances, thus if one side
+        has such a suffix and the other does not, we should strip it before
+        performing any comparison.
+        """
+        if left.endswith('0000') is not right.endswith('0000'):
+            left = re.sub('0000$', '', left)
+            right = re.sub('0000$', '', right)
+
+        return (left, right)
+
+    @staticmethod
+    def _ignore_spaces(left, right):
+        """
+        Company numbers can contain spaces, but users often enter them without.
+        Since this should make no difference from a comparison point of view,
+        remove any spaces from the numbers to be compared.
+        """
+        return (left.replace(' ', ''), right.replace(' ', ''))
+
+    @staticmethod
+    def _preprocess(left, right):
+        return CompanyNumberMatcher._ignore_spaces(
+            *CompanyNumberMatcher._strip_zero_suffix(left, right)
+        )
+
+    def __init__(self):
+        super().__init__(
+            synonyms=[],
+            case_sensitive=self.CASE_SENSITIVE,
+            preprocess=self._preprocess,
+            fuzz_factor=self.FUZZ_FACTOR)
