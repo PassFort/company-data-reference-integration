@@ -251,6 +251,7 @@ def get_monitoring_events(request):
     passfort_client.send_events(
         request.input_data.portfolio_id,
         request.input_data.portfolio_name,
+        request.input_data.timeframe.to,
         events,
         bvd_client.raw_responses,
     )
