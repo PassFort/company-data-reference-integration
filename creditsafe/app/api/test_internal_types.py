@@ -97,6 +97,39 @@ class TestCompanySearchResponse(unittest.TestCase):
             'number': '09565115',
         }), fuzz_factor=90))
 
+    def test_number_space_response(self):
+        searchResp = CreditSafeCompanySearchResponse.from_json({
+            'creditsafe_id': '1000',
+            'name': 'PASSFORT LIMITED',
+            'regNo': 'GB 09565115',
+        })
+
+        self.assertTrue(searchResp.matches_search(SearchInput({
+            'number': 'GB09565115',
+        }), fuzz_factor=90))
+
+    def test_number_zero_suffix_response(self):
+        searchResp = CreditSafeCompanySearchResponse.from_json({
+            'creditsafe_id': '1000',
+            'name': 'PASSFORT LIMITED',
+            'regNo': '095651150000',
+        })
+
+        self.assertTrue(searchResp.matches_search(SearchInput({
+            'number': '09565115',
+        }), fuzz_factor=90))
+
+    def test_number_not_too_fuzzy(self):
+        searchResp = CreditSafeCompanySearchResponse.from_json({
+            'creditsafe_id': '1000',
+            'name': 'PASSFORT LIMITED',
+            'regNo': '09565115',
+        })
+
+        self.assertFalse(searchResp.matches_search(SearchInput({
+            'number': '08565115',
+        }), fuzz_factor=90))
+
 
 class TestPSC(unittest.TestCase):
     def test_country_of_incorporation(self):

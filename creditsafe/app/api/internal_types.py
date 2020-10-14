@@ -17,7 +17,7 @@ from .types import PassFortShareholding, PassFortMetadata, EntityData, \
     SearchInput, PassFortAssociate, OfficerRelationship, ShareholderRelationship, BeneficialOwnerRelationship, \
     Financials, Statement, StatementEntryBase, MonitoringEvent
 
-from .fuzzy import CompanyNameMatcher
+from .fuzzy import CompanyNameMatcher, CompanyNumberMatcher
 from .event_mappings import get_rule_code_to_monitoring_config
 
 SUPPORTED_CURRENCIES = [c.alpha_3 for c in pycountry.currencies]
@@ -532,7 +532,8 @@ class CreditSafeCompanySearchResponse(Model):
 
     def matches_search(self, search: SearchInput, fuzz_factor) -> bool:
         numbers_present = search.number is not None and self.registration_number is not None
-        matches_number = numbers_present and search.number.lower().strip() == self.registration_number.lower().strip()
+        number_matcher = CompanyNumberMatcher()
+        matches_number = numbers_present and number_matcher.match(search.number.lower(), self.registration_number.lower())
         if numbers_present and not matches_number:
             return False
 
