@@ -1249,9 +1249,8 @@ class CreditSafeCompanyReport(Model):
             key=lambda s: s.total_percentage, reverse=True
         ) if self.share_capital_structure else []
 
-        # Only perform an additional search on the first 50 non-PSC shareholders
-        for sh in unique_shareholders[50:]:
-            sh.should_search = False
+        # Accept a maximum of 50 shareholders in total
+        unique_shareholders = unique_shareholders[:50]
 
         pscs = []
         if self.additional_information and self.additional_information.psc_report:
@@ -1260,6 +1259,9 @@ class CreditSafeCompanyReport(Model):
                 for psc in self.additional_information.psc_report.active_psc
                 if psc.entity_type and psc.name
             ]
+
+        # Accept a maximum of 50 additional PSCs
+        pscs = pscs[:50]
 
         associates = merge_associates(
             self.directors,
