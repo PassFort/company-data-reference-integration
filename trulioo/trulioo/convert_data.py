@@ -239,7 +239,7 @@ def passfort_to_trulioo_data(passfort_data):
                 # Driving licence
                 if doc['document_type'] == 'DRIVING_LICENCE':
                     trulioo_pkg['DriverLicence'] = {'Number': doc['number']}
-                    if doc['issuing_state']:
+                    if doc.get('issuing_state'):
                         trulioo_pkg['DriverLicence']['State'] = doc['issuing_state']
 
                 # Voter ID
