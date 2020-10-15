@@ -141,33 +141,6 @@ class CreditSafeCredentials(Model):
     password = StringType(required=True)
 
 
-# These countries cause creditsafe to error with error (" exact")
-# when doing an exact search
-NO_EXACT_SEARCH_COUNTRIES = [
-    'AE',
-    'AU',
-    'BG',
-    'CN',
-    'CZ',
-    'EE',
-    'HK',
-    'HU',
-    'IN',
-    'JP',
-    'KZ',
-    'MA',
-    'NZ',
-    'PT',
-    'RO',
-    'RU',
-    'SE',
-    'SG',
-    'SI',
-    'US',
-    'ZA',
-]
-
-
 class SearchInput(Model):
     # Name or company number
     query = StringType(default=None)
@@ -203,11 +176,10 @@ class SearchInput(Model):
                 any_queries.append(f'name={quote_plus(self.name)}')
             elif self.query:
                 any_queries.append(f'name={quote_plus(self.query)}')
-        exact_search = '' if country_code in NO_EXACT_SEARCH_COUNTRIES else '&exact=True'
         if self.number:
-            any_queries.append(f'regNo={quote_plus(self.number)}{exact_search}')
+            any_queries.append(f'regNo={quote_plus(self.number)}')
         elif self.query:
-            any_queries.append(f'regNo={quote_plus(self.query)}{exact_search}')
+            any_queries.append(f'regNo={quote_plus(self.query)}')
 
         return ['&'.join(all_queries + [any_query]) for any_query in any_queries]
 
