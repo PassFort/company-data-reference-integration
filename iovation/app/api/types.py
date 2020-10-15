@@ -172,7 +172,10 @@ class DatedAddress(Model):
     def as_iovation_transaction_insight(self):
         country = None
         if self.address.country is not None:
-            country_res = pycountry.countries.get(alpha_3=self.address.country)
+            if self.address.country == 'UNK':
+                country_res = pycountry.countries.get(alpha_3='SRB')
+            else:
+                country_res = pycountry.countries.get(alpha_3=self.address.country)
             if country_res is not None:
                 country = country_res.alpha_2
 
