@@ -667,6 +667,7 @@ class RegistryInput(BaseModel):
     country_of_incorporation = StringType(min_length=3, max_length=3, required=True)
     bvd_id = StringType(default=None)
     number = StringType(default=None)
+    name = StringType(default=None)
 
 
 # TODO: ensure one of bvd_id and number is present
