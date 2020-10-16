@@ -8,6 +8,7 @@ from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError, HTTPError
 from requests.packages.urllib3.util.retry import Retry
 from schematics.exceptions import DataError
+from urllib.parse import quote
 
 from app.bvd.datasets import DataSet
 from app.bvd.types import (
@@ -149,7 +150,7 @@ class Client:
                                     "Criteria": {
                                         key: value
                                         for key, value in {
-                                            "Name": name,
+                                            "Name": quote(name),
                                             "NationalId": company_number,
                                             "Country": country_alpha_3_to_2(country),
                                             "State": state,
