@@ -300,7 +300,7 @@ class AssociatedRole(Enum):
     RESIGNED_OFFICER = "RESIGNED_OFFICER"
     OTHER = "OTHER"
 
-    def from_bvd_officer(index, bvd_data):
+    def from_bvd_contacts_roles(index, bvd_data):
         original_role_lower = bvd_data.officer_role[index].lower()
         current_previous = bvd_data.officer_current_previous[index]
 
@@ -310,8 +310,13 @@ class AssociatedRole(Enum):
             return AssociatedRole.DIRECTOR
         elif "secretary" in original_role_lower:
             return AssociatedRole.COMPANY_SECRETARY
+        elif "shareholder" in original_role_lower:
+            return AssociatedRole.SHAREHOLDER
         else:
             return AssociatedRole.OTHER
+
+    def is_potential_officer(self):
+        return self not in (AssociatedRole.SHAREHOLDER, AssociatedRole.BENEFICIAL_OWNER)
 
 
 class Relationship(BaseModel):
@@ -333,8 +338,26 @@ class Relationship(BaseModel):
             }
         )
 
-    def from_bvd_officer(index, bvd_data):
-        return OfficerRelationship.from_bvd_officer(index, bvd_data)
+    def from_bvd_contacts(index, bvd_data):
+        passfort_role = AssociatedRole.from_bvd_contacts_roles(
+            index, bvd_data
+        )
+        if passfort_role.is_potential_officer():
+            return OfficerRelationship(
+                {
+                    "original_role": bvd_data.officer_role[index],
+                    "appointed_on": bvd_data.officer_appointment_date[index],
+                    "relationship_type": RelationshipType.OFFICER.value,
+                    "associated_role": passfort_role.value,
+                }
+            )
+        else:
+            return Relationship(
+                {
+                    "relationship_type": RelationshipType.SHAREHOLDER.value,
+                    "associated_role": passfort_role.value,
+                }
+            )
 
 
 class OfficerRelationship(Relationship):
@@ -344,18 +367,6 @@ class OfficerRelationship(Relationship):
     @classmethod
     def _claim_polymorphic(cls, data):
         return data.get("relationship_type") == RelationshipType.OFFICER.value
-
-    def from_bvd_officer(index, bvd_data):
-        return OfficerRelationship(
-            {
-                "original_role": bvd_data.officer_role[index],
-                "appointed_on": bvd_data.officer_appointment_date[index],
-                "relationship_type": RelationshipType.OFFICER.value,
-                "associated_role": AssociatedRole.from_bvd_officer(
-                    index, bvd_data
-                ).value,
-            }
-        )
 
 
 class ShareholderRelationship(Relationship):
@@ -421,7 +432,7 @@ class Associate(BaseModel):
             }
         )
 
-    def from_bvd_officer(index, bvd_data):
+    def from_bvd_contacts(index, bvd_data):
         entity_type = EntityType.from_bvd_officer(index, bvd_data)
         return Associate(
             {
@@ -432,7 +443,7 @@ class Associate(BaseModel):
                 "immediate_data": AssociateEntityData.from_bvd_officer(
                     entity_type, index, bvd_data
                 ),
-                "relationships": [Relationship.from_bvd_officer(index, bvd_data)],
+                "relationships": [Relationship.from_bvd_contacts(index, bvd_data)],
             }
         )
 
@@ -444,7 +455,7 @@ class Associate(BaseModel):
                 "immediate_data": AssociateEntityData.merge(
                     a.immediate_data, b.immediate_data
                 ),
-                "relationships": a.relationships + b.relationships,
+                "relationships": a.relationships + b.relationships,  # todo merge relationships
             }
         )
 
@@ -475,7 +486,7 @@ class CompanyData(BaseModel):
             for index in range(0, len(bvd_data.beneficial_owner_bvd_id))
         ]
         officers = [
-            Associate.from_bvd_officer(index, bvd_data)
+            Associate.from_bvd_contacts(index, bvd_data)
             for index in range(0, len(bvd_data.officer_bvd_id))
         ]
 
