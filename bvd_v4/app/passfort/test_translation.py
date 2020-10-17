@@ -66,11 +66,11 @@ class TestShareholders(TestCase):
             first_shareholder.immediate_data.personal_details.name.title, "MR"
         )
         self.assertEqual(
-            first_shareholder.immediate_data.personal_details.name.first_names,
+            first_shareholder.immediate_data.personal_details.name.given_names,
             ["FOO", "BAR"],
         )
         self.assertEqual(
-            first_shareholder.immediate_data.personal_details.name.last_name, "BAZ"
+            first_shareholder.immediate_data.personal_details.name.family_name, "BAZ"
         )
         self.assertEqual(len(first_shareholder.relationships), 1)
         self.assertEqual(
@@ -81,7 +81,7 @@ class TestShareholders(TestCase):
         )
         self.assertEqual(
             first_shareholder.relationships[0].shareholdings[0].percentage,
-            0.225,
+            22.5,
         )
         second_shareholder = company_data.associated_entities[1]
         self.assertEqual(second_shareholder.immediate_data.entity_type, "INDIVIDUAL")
@@ -89,11 +89,11 @@ class TestShareholders(TestCase):
             second_shareholder.immediate_data.personal_details.name.title, "DR"
         )
         self.assertEqual(
-            second_shareholder.immediate_data.personal_details.name.first_names,
+            second_shareholder.immediate_data.personal_details.name.given_names,
             ["JOHN"],
         )
         self.assertEqual(
-            second_shareholder.immediate_data.personal_details.name.last_name, "SMITH"
+            second_shareholder.immediate_data.personal_details.name.family_name, "SMITH"
         )
         self.assertEqual(len(first_shareholder.relationships), 1)
         self.assertEqual(
@@ -104,7 +104,7 @@ class TestShareholders(TestCase):
         )
         self.assertEqual(
             second_shareholder.relationships[0].shareholdings[0].percentage,
-            0.1963,
+            19.63,
         )
 
 
@@ -184,14 +184,14 @@ class TestOfficers(TestCase):
         self.assertEqual(officer.immediate_data.personal_details.name.title, "Mr")
 
         self.assertEqual(
-            officer.immediate_data.personal_details.name.first_names,
+            officer.immediate_data.personal_details.name.given_names,
             ["Timothy", "Deighton"],
         )
         self.assertEqual(
-            officer.immediate_data.personal_details.name.last_name, "Steiner"
+            officer.immediate_data.personal_details.name.family_name, "Steiner"
         )
         self.assertEqual(
-            officer.immediate_data.personal_details.dob, datetime(1969, 12, 9)
+            officer.immediate_data.personal_details.dob, date(1969, 12, 9)
         )
         self.assertEqual(officer.immediate_data.personal_details.nationality, "GBR")
 
@@ -277,8 +277,8 @@ class TestMergeAssociates(TestCase):
                         "entity_type": "INDIVIDUAL",
                         "personal_details": {
                             "name": {
-                                "first_names": ["John"],
-                                "last_name": "Smith",
+                                "given_names": ["John"],
+                                "family_name": "Smith",
                                 "title": "Mr",
                             },
                             "nationality": "GBR",
@@ -291,7 +291,7 @@ class TestMergeAssociates(TestCase):
                             "associated_role": "SHAREHOLDER",
                             "relationship_type": "SHAREHOLDER",
                             "shareholdings": [
-                                Shareholding({"percentage": 0.25})
+                                Shareholding({"percentage": 25})
                             ],
                         }
                     )
@@ -308,8 +308,8 @@ class TestMergeAssociates(TestCase):
                         "entity_type": "INDIVIDUAL",
                         "personal_details": {
                             "name": {
-                                "first_names": ["JOHN"],
-                                "last_name": "SMITH",
+                                "given_names": ["JOHN"],
+                                "family_name": "SMITH",
                                 "title": "Mr",
                             },
                             "nationality": "GBR",
@@ -331,12 +331,12 @@ class TestMergeAssociates(TestCase):
             associate_a.immediate_data.personal_details.name.title,
         )
         self.assertEqual(
-            merged.immediate_data.personal_details.name.first_names,
-            associate_a.immediate_data.personal_details.name.first_names,
+            merged.immediate_data.personal_details.name.given_names,
+            associate_a.immediate_data.personal_details.name.given_names,
         )
         self.assertEqual(
-            merged.immediate_data.personal_details.name.last_name,
-            associate_a.immediate_data.personal_details.name.last_name,
+            merged.immediate_data.personal_details.name.family_name,
+            associate_a.immediate_data.personal_details.name.family_name,
         )
         self.assertEqual(
             merged.immediate_data.personal_details.nationality,
@@ -350,7 +350,7 @@ class TestMergeAssociates(TestCase):
                         "associated_role": "SHAREHOLDER",
                         "relationship_type": "SHAREHOLDER",
                         "shareholdings": [
-                            Shareholding({"percentage": 0.25})
+                            Shareholding({"percentage": 25})
                         ],
                     }
                 ),
@@ -390,7 +390,7 @@ class TestMetadata(TestCase):
                 metadata.contact_information.phone_number, "+44 20 3633 1761",
             )
             self.assertEqual(
-                metadata.freeform_address,
+                metadata.addresses[0].address.original_freeform_address,
                 "MEZZANINE FLOOR 24 CORNHILL, EC3V 3ND, LONDON, United Kingdom",
             )
             self.assertTrue(metadata.is_active)
@@ -429,7 +429,7 @@ class TestMetadata(TestCase):
                 metadata.contact_information.phone_number, "+44 20 3633 1761",
             )
             self.assertEqual(
-                metadata.freeform_address,
+                metadata.addresses[0].address.original_freeform_address,
                 "MEZZANINE FLOOR 24 CORNHILL, EC3V 3ND, LONDON, United Kingdom",
             )
             self.assertTrue(metadata.is_active)
