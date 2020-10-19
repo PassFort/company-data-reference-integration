@@ -241,7 +241,7 @@ class Shareholding(BaseModel):
 
         try:
             percentage = Decimal(direct_percentage)
-            return Shareholding({"percentage": percentage / 100})
+            return Shareholding({"percentage": percentage})
         except InvalidOperation:
             logging.warning({
                 "error": "BvD returned invalid share percentage",
