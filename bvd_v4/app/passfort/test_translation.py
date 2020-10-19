@@ -317,7 +317,7 @@ class TestMergeAssociates(TestCase):
                     }
                 ),
                 "relationships": [
-                    {"associated_role": "DIRECCTOR", "relationship_type": "OFFICER"}
+                    {"associated_role": "DIRECTOR", "relationship_type": "OFFICER"}
                 ],
             }
         )
@@ -355,10 +355,47 @@ class TestMergeAssociates(TestCase):
                     }
                 ),
                 Relationship(
-                    {"associated_role": "DIRECCTOR", "relationship_type": "OFFICER"}
+                    {"associated_role": "DIRECTOR", "relationship_type": "OFFICER"}
                 ),
             ],
         )
+
+    def test_merge_duplicate_relationships(self):
+        """
+        TODO using test data:
+            "relationships": [
+                    {
+                        "associated_role": "SHAREHOLDER",
+                        "relationship_type": "SHAREHOLDER",
+                        "shareholdings": [
+                            {
+                                "percentage": 20.63,
+                                "provider_name": "BvD Orbis"
+                            }
+                        ]
+                    },
+                    {
+                        "associated_role": "BENEFICIAL_OWNER",
+                        "relationship_type": "SHAREHOLDER"
+                    },
+                    {
+                        "appointed_on": "2015-04-28",
+                        "associated_role": "DIRECTOR",
+                        "original_role": "Director",
+                        "relationship_type": "OFFICER"
+                    },
+                    {
+                        "associated_role": "DIRECTOR",
+                        "original_role": "Director - Executive Contact",
+                        "relationship_type": "OFFICER"
+                    },
+                    {
+                        "associated_role": "SHAREHOLDER",
+                        "relationship_type": "SHAREHOLDER"
+                    }
+                ]
+        """
+        pass
 
 
 class TestMetadata(TestCase):
