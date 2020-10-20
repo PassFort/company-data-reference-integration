@@ -265,6 +265,116 @@ class TestOfficers(TestCase):
         self.assertEqual(officer.relationships[0].relationship_type, "OFFICER")
         self.assertEqual(officer.relationships[0].associated_role, "RESIGNED_OFFICER")
 
+    def test_previous_associate(self):
+
+        with self.subTest('previous shareholder relationship is not returned'):
+            bvd_data = Data(
+                {
+                    "BVD_ID_NUMBER": "GB04366849",
+                    "BVD9": "004954174",
+                    "CPYCONTACTS_HEADER_Type": ["Individual"],
+                    "CPYCONTACTS_HEADER_BvdId": [None],
+                    "CPYCONTACTS_HEADER_IdDirector": [
+                        "P045831593",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_Function": [
+                        "Shareholder",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [
+                        None,
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Previous"],
+                    "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
+                        "Mr Charles Harrisson",
+                    ],
+                    "CPYCONTACTS_HEADER_Birthdate": [
+                        "1969-12-09T00:00:00",
+                    ],
+                    "CPYCONTACTS_HEADER_NationalityCountryLabel": [
+                        "United Kingdom",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate": [
+                        None,
+                    ],
+                }
+            )
+            bvd_data.validate()
+
+            company_data = CompanyData.from_bvd(bvd_data)
+            company_data.validate()
+
+            self.assertEqual(len(company_data.associated_entities), 0)
+
+        with self.subTest('previous officer relationship is returned'):
+            bvd_data = Data(
+                {
+                    "BVD_ID_NUMBER": "GB04366849",
+                    "BVD9": "004954174",
+                    "CPYCONTACTS_HEADER_Type": ["Individual", "Individual"],
+                    "CPYCONTACTS_HEADER_BvdId": [None, None],
+                    "CPYCONTACTS_HEADER_IdDirector": [
+                        "P045831593",
+                        "P045831593",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_Function": [
+                        "Shareholder",
+                        "Company secretary",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [
+                        None,
+                        "2009-05-19T00:00:00",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Previous", "Previous"],
+                    "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
+                        None,
+                        None,
+                    ],
+                    "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [
+                        None,
+                        None,
+                    ],
+                    "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [
+                        None,
+                        None,
+                    ],
+                    "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
+                        "Mr Charles Harrisson",
+                        "Mr Charles Harrisson",
+                    ],
+                    "CPYCONTACTS_HEADER_Birthdate": [
+                        "1969-12-09T00:00:00",
+                        "1969-12-09T00:00:00",
+                    ],
+                    "CPYCONTACTS_HEADER_NationalityCountryLabel": [
+                        "United Kingdom",
+                        "United Kingdom",
+                    ],
+                    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate": [
+                        None,
+                        "2005-05-19T00:00:00",
+                    ],
+                }
+            )
+            bvd_data.validate()
+
+            company_data = CompanyData.from_bvd(bvd_data)
+            company_data.validate()
+
+            self.assertEqual(len(company_data.associated_entities), 1)
+            officer = company_data.associated_entities[0]
+            self.assertEqual(officer.entity_type, "INDIVIDUAL")
+            self.assertEqual(len(officer.relationships), 1)
+            self.assertDictEqual(
+                officer.relationships[0].serialize(),
+                {
+                    'relationship_type': 'OFFICER',
+                    'associated_role': 'RESIGNED_OFFICER',
+                    'original_role': 'Company secretary',
+                    'appointed_on': '2005-05-19',
+                    'resigned_on': '2009-05-19'
+                }
+            )
+
 
 class TestMergeAssociates(TestCase):
     def test_merge(self):

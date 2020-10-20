@@ -304,14 +304,17 @@ class AssociatedRole(Enum):
         original_role_lower = bvd_data.officer_role[index].lower()
         current_previous = bvd_data.officer_current_previous[index]
 
-        if current_previous != "Current":
+        if "shareholder" in original_role_lower:
+            # Don't return previous shareholders - our api doesn't fully support them without a ceased on date.
+            if current_previous != "Current":
+                return None
+            return AssociatedRole.SHAREHOLDER
+        elif current_previous != "Current":
             return AssociatedRole.RESIGNED_OFFICER
         elif "director" in original_role_lower:
             return AssociatedRole.DIRECTOR
         elif "secretary" in original_role_lower:
             return AssociatedRole.COMPANY_SECRETARY
-        elif "shareholder" in original_role_lower:
-            return AssociatedRole.SHAREHOLDER
         else:
             return AssociatedRole.OTHER
 
@@ -342,11 +345,18 @@ class Relationship(BaseModel):
         passfort_role = AssociatedRole.from_bvd_contacts_roles(
             index, bvd_data
         )
+        # Sometimes there is no relationship (e.g. previous shareholders)
+        # We might decide to return them, but we'll need to change the data structure to do that
+        # E.g actually send an 'is_active' field from the integration, since we won't always have
+        # ceased_on dates.
+        if passfort_role is None:
+            return None
         if passfort_role.is_potential_officer():
             return OfficerRelationship(
                 {
                     "original_role": bvd_data.officer_role[index],
                     "appointed_on": bvd_data.officer_appointment_date[index],
+                    "resigned_on": bvd_data.officer_resignation_date[index],
                     "relationship_type": RelationshipType.OFFICER.value,
                     "associated_role": passfort_role.value,
                 }
@@ -363,6 +373,7 @@ class Relationship(BaseModel):
 class OfficerRelationship(Relationship):
     original_role = StringType(default=None, serialize_when_none=False)
     appointed_on = DateType(default=None, serialize_when_none=False)
+    resigned_on = DateType(default=None)
 
     @classmethod
     def _claim_polymorphic(cls, data):
@@ -434,6 +445,9 @@ class Associate(BaseModel):
 
     def from_bvd_contacts(index, bvd_data):
         entity_type = EntityType.from_bvd_officer(index, bvd_data)
+        relationship = Relationship.from_bvd_contacts(index, bvd_data)
+        if relationship is None:
+            return None
         return Associate(
             {
                 "associate_id": build_resolver_id(
@@ -443,7 +457,7 @@ class Associate(BaseModel):
                 "immediate_data": AssociateEntityData.from_bvd_officer(
                     entity_type, index, bvd_data
                 ),
-                "relationships": [Relationship.from_bvd_contacts(index, bvd_data)],
+                "relationships": [relationship],
             }
         )
 
@@ -485,10 +499,10 @@ class CompanyData(BaseModel):
             Associate.from_bvd_beneficial_owner(index, bvd_data)
             for index in range(0, len(bvd_data.beneficial_owner_bvd_id))
         ]
-        officers = [
+        officers = [o for o in [
             Associate.from_bvd_contacts(index, bvd_data)
             for index in range(0, len(bvd_data.officer_bvd_id))
-        ]
+        ] if o is not None]
 
         return CompanyData(
             {
