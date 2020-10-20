@@ -11,6 +11,7 @@ from schematics.types import (
     FloatType,
     StringType,
     DateType,
+    DateTimeType,
     DictType,
     ListType,
     IntType,
@@ -716,8 +717,8 @@ class NewPortfolio(BaseModel):
 
 
 class TimeFrame(BaseModel):
-    from_ = DateType(serialized_name="from", required=True)
-    to = DateType(required=True)
+    from_ = DateTimeType(serialized_name="from", required=True)
+    to = DateTimeType(required=True)
 
 
 class EventsInput(BaseModel):
@@ -793,6 +794,7 @@ class EventsCallback(BaseModel):
     portfolio_id = UUIDType(required=True)
     portfolio_name = StringType(required=True)
     events = ListType(ModelType(Event), required=True)
+    end_date = DateTimeType(required=True)
     raw = BaseType()
 
 
