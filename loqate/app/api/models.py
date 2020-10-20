@@ -172,10 +172,7 @@ class LoqateAddress(Model):
 
     @classmethod
     def from_passfort(cls, passfort_address: PassFortAddress) -> 'LoqateAddress':
-        if date.today().day % 2 == 0:
-            return cls.from_passfort_structured(passfort_address, use_address1=True)
-        else:
-            return cls.from_passfort_structured(passfort_address)
+        return cls.from_passfort_structured(passfort_address, use_address1=True)
 
     @classmethod
     def from_raw(cls, raw_data: dict) -> 'LoqateAddress':
