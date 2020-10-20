@@ -52,6 +52,48 @@ class TestInputData(unittest.TestCase):
         self.assertEqual('new_account', iovation_device.type)
         self.assertEqual('REF_ID', iovation_device.account_code)
 
+
+    def test_kosovo_country_code_coercion(self):
+        check_input = CheckInput({
+            'device_metadata': DeviceMetadata({
+                'token': 'BLACKBOX',
+                'stated_ip': '123.12.12.123',
+                'action': 'new_account',
+                'reference_id': 'REF_ID'
+            }),
+            'address_history': [
+                DatedAddress({
+                    'address': Address({
+                        'type': AddressType.STRUCTURED,
+                        'country': 'UNK',
+                        'county': 'Tower Hamlets',
+                        'locality': 'London',
+                        'postal_code': 'E1 6QH',
+                        'postal_town': '',
+                        'premise': 'Passfort Ltd',
+                        'route': 'Princelet Street',
+                        'street_number': '11',
+                        'subpremise': '',
+                        'original_structured_address': StructuredAddress({
+                            'country': 'UNK',
+                            'county': 'Tower Hamlets',
+                            'locality': 'London',
+                            'postal_code': 'E1 6QH',
+                            'postal_town': '',
+                            'premise': 'Passfort Ltd',
+                            'route': 'Princelet Street',
+                            'state_province': '',
+                            'street_number': '11',
+                            'subpremise': ''
+                        }),
+                    }),
+                })
+            ],
+        })
+
+        iovation_device = check_input.as_iovation_device_data()
+        self.assertEqual('RS', iovation_device.transaction_insight.billing_country)
+
     def test_check_input_as_iovation_device_data(self):
         check_input = CheckInput({
             'device_metadata': DeviceMetadata({
