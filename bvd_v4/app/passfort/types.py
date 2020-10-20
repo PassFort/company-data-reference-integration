@@ -131,7 +131,7 @@ class EntityType(Enum):
     COMPANY = "COMPANY"
 
     def from_bvd_officer(index, bvd_data):
-        bvd_type = bvd_data.officer_entity_type[index]
+        bvd_type = bvd_data.contact_entity_type[index]
         if "Individual" == bvd_type:
             return EntityType.INDIVIDUAL
         elif "Company" == bvd_type:
@@ -401,7 +401,7 @@ class Shareholder(BaseModel):
         return Shareholder(
             {
                 "type": entity_type.value,
-                "bvd_id": bvd_data.shareholder_bvd_id[index],
+                "bvd_id": bvd_data.shareholder_bvd_id(index),
                 "bvd9": bvd_data.shareholder_bvd9[index]
                 if bvd_data.shareholder_bvd9
                 else None,
@@ -451,7 +451,7 @@ class BeneficialOwner(BaseModel):
         return BeneficialOwner(
             {
                 "type": entity_type.value,
-                "bvd_id": bvd_data.beneficial_owner_bvd_id[index],
+                "bvd_id": bvd_data.beneficial_owner_bvd_id(index),
                 "bvd_uci": uci,
                 "first_names": "".join(first_names),
                 "last_name": last_names,
@@ -473,7 +473,7 @@ class OwnershipStructure(BaseModel):
             {
                 "shareholders": [
                     Shareholder.from_bvd_shareholder(i, bvd_data)
-                    for i in range(0, len(bvd_data.shareholder_bvd_id))
+                    for i in range(0, bvd_data.num_shareholders)
                 ],
                 "beneficial_owners": [
                     BeneficialOwner.from_bvd_beneficial_owner(i, bvd_data)
@@ -510,7 +510,7 @@ class OfficerRole(Enum):
             return OfficerRole.COMPANY_OTHER
 
     def from_bvd_officer(index, bvd_data):
-        original_role_lower = bvd_data.officer_role[index].lower()
+        original_role_lower = bvd_data.contact_role[index].lower()
         entity_type = EntityType.from_bvd_officer(index, bvd_data)
 
         if "director" in original_role_lower:
@@ -535,38 +535,38 @@ class Officer(BaseModel):
     appointed_on = DateType()
     dob = DateType()
 
-    def from_bvd_officer(index, bvd_data):
+    def from_bvd_contact(index, bvd_data):
         entity_type = EntityType.from_bvd_officer(index, bvd_data)
         officer_role = OfficerRole.from_bvd_officer(index, bvd_data)
 
         _, first_names, last_name = format_names(
             " ".join(
                 [
-                    bvd_data.officer_first_name[index] or "",
-                    bvd_data.officer_middle_name[index] or "",
+                    bvd_data.contact_first_name[index] or "",
+                    bvd_data.contact_middle_name[index] or "",
                 ]
             ),
-            bvd_data.officer_last_name[index],
-            bvd_data.officer_name[index],
+            bvd_data.contact_last_name[index],
+            bvd_data.contact_name[index],
             entity_type,
         )
 
         return Officer(
             {
-                "bvd_id": bvd_data.officer_bvd_id[index],
-                "bvd_uci": bvd_data.officer_uci[index],
+                "bvd_id": bvd_data.contact_bvd_id[index],
+                "bvd_uci": bvd_data.contact_uci[index],
                 "type": entity_type.value if entity_type else None,
                 "role": officer_role.value if officer_role else None,
-                "original_role": bvd_data.officer_role[index],
+                "original_role": bvd_data.contact_role[index],
                 "first_names": " ".join(first_names),
                 "last_name": last_name,
                 "nationality": country_names_to_alpha_3(
-                    bvd_data.officer_nationality[index]
+                    bvd_data.contact_nationality[index]
                 ),
-                "resigned": bvd_data.officer_current_previous[index] == "Previous",
-                "resigned_on": bvd_data.officer_resignation_date[index],
-                "appointed_on": bvd_data.officer_appointment_date[index],
-                "dob": bvd_data.officer_date_of_birth[index],
+                "resigned": bvd_data.contact_current_previous[index] == "Previous",
+                "resigned_on": bvd_data.contact_resignation_date[index],
+                "appointed_on": bvd_data.contact_appointment_date[index],
+                "dob": bvd_data.contact_date_of_birth[index],
             }
         )
 
@@ -579,6 +579,7 @@ class Officer(BaseModel):
         return "SECRETARY" in self.role
 
 
+# TODO: Either remove registry or filter by contact role
 class Officers(BaseModel):
     directors = ListType(ModelType(Officer), default=list, required=True)
     secretaries = ListType(ModelType(Officer), default=list, required=True)
@@ -588,7 +589,7 @@ class Officers(BaseModel):
     def from_bvd(bvd_data):
         officers = [
             Officer.from_bvd_officer(index, bvd_data)
-            for index in range(0, len(bvd_data.officer_bvd_id))
+            for index in range(0, bvd_data.num_contacts_id)
         ]
         return Officers(
             {
