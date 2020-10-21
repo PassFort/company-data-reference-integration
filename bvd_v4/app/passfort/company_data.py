@@ -63,7 +63,8 @@ class AssociateCompanyMetadata(BaseModel):
             }
         )
 
-    def merge(a, b):
+    @classmethod
+    def merge(cls, a, b):
         return AssociateCompanyMetadata(
             {
                 "bvd_id": a.bvd_id or b.bvd_id,
@@ -119,7 +120,8 @@ class FullName(BaseModel):
             }
         )
 
-    def merge(a, b):
+    @classmethod
+    def merge(cls, a, b):
         return FullName(
             {
                 "title": a.title or b.title,
@@ -165,7 +167,8 @@ class AssociatePersonalDetails(BaseModel):
             }
         )
 
-    def merge(a, b):
+    @classmethod
+    def merge(cls, a, b):
         return AssociatePersonalDetails(
             {
                 "name": FullName.merge(a.name, b.name),
@@ -193,7 +196,8 @@ class AssociateEntityData(BaseModel):
         else:
             return IndividualAssociateData.from_bvd_contact(index, bvd_data)
 
-    def merge(a, b):
+    @classmethod
+    def merge(cls, a, b):
         if a.entity_type == EntityType.COMPANY.value:
             return CompanyAssociateData.merge(a, b)
         else:
@@ -225,7 +229,8 @@ class CompanyAssociateData(AssociateEntityData):
             }
         )
 
-    def merge(a, b):
+    @classmethod
+    def merge(cls, a, b):
         return CompanyAssociateData(
             {
                 "entity_type": EntityType.COMPANY.value,
@@ -271,7 +276,8 @@ class IndividualAssociateData(AssociateEntityData):
             }
         )
 
-    def merge(a, b):
+    @classmethod
+    def merge(cls, a, b):
         return IndividualAssociateData(
             {
                 "entity_type": EntityType.INDIVIDUAL.value,
@@ -288,7 +294,6 @@ class RelationshipType(Enum):
 
 
 class AssociatedRole(Enum):
-    SHAREHOLDER = "SHAREHOLDER"
     BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
 
     DIRECTOR = "DIRECTOR"
@@ -304,7 +309,7 @@ class AssociatedRole(Enum):
             # Don't return previous shareholders - our api doesn't fully support them without a ceased on date.
             if current_previous != "Current":
                 return None
-            return AssociatedRole.SHAREHOLDER
+            return AssociatedRole.BENEFICIAL_OWNER
         elif current_previous != "Current":
             return AssociatedRole.RESIGNED_OFFICER
         elif "director" in original_role_lower:
@@ -315,7 +320,10 @@ class AssociatedRole(Enum):
             return AssociatedRole.OTHER
 
     def is_potential_officer(self):
-        return self not in (AssociatedRole.SHAREHOLDER, AssociatedRole.BENEFICIAL_OWNER)
+        return self != AssociatedRole.BENEFICIAL_OWNER
+
+    def is_shareholder(self):
+        return self == AssociatedRole.BENEFICIAL_OWNER
 
 
 class Relationship(BaseModel):
@@ -330,12 +338,7 @@ class Relationship(BaseModel):
         return ShareholderRelationship.from_bvd_shareholder(index, bvd_data)
 
     def from_bvd_beneficial_owner(index, bvd_data):
-        return Relationship(
-            {
-                "relationship_type": RelationshipType.SHAREHOLDER.value,
-                "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
-            }
-        )
+        return ShareholderRelationship.from_bvd_beneficial_owner(index, bvd_data)
 
     def from_bvd_contacts(index, bvd_data):
         passfort_role = AssociatedRole.from_bvd_contacts_roles(
@@ -358,12 +361,45 @@ class Relationship(BaseModel):
                 }
             )
         else:
-            return Relationship(
+            return ShareholderRelationship(
                 {
                     "relationship_type": RelationshipType.SHAREHOLDER.value,
                     "associated_role": passfort_role.value,
                 }
             )
+
+    @classmethod
+    def merge(cls, a, b):
+        assert(a.relationship_type == b.relationship_type)
+        assert(a.associated_role == b.associated_role)
+
+        if AssociatedRole(a.associated_role).is_potential_officer():
+            return OfficerRelationship.merge(a, b)
+        elif AssociatedRole(a.associated_role).is_shareholder():
+            return ShareholderRelationship.merge(a, b)
+        else:
+            return Relationship(
+                {
+                    "relationship_type": a.relationship_type,
+                    "associated_role": a.associated_role,
+                }
+            )
+
+    @classmethod
+    def dedup(cls, relationships):
+        keyed_by_kind = defaultdict(list)
+
+        for relationship in relationships:
+            keyed_by_kind[(
+                relationship.relationship_type,
+                relationship.associated_role,
+                getattr(relationship, 'original_role', None)
+            )].append(relationship)
+
+        return [
+            reduce(Relationship.merge, same_kind)
+            for same_kind in keyed_by_kind.values()
+        ]
 
 
 class OfficerRelationship(Relationship):
@@ -375,22 +411,52 @@ class OfficerRelationship(Relationship):
     def _claim_polymorphic(cls, data):
         return data.get("relationship_type") == RelationshipType.OFFICER.value
 
+    @classmethod
+    def merge(cls, a, b):
+        assert(a.relationship_type == b.relationship_type)
+        assert(a.associated_role == b.associated_role)
+        assert(a.original_role == b.original_role)
+
+        return OfficerRelationship({
+            'relationship_type': a.relationship_type,
+            'associated_role': a.associated_role,
+            'original_role': a.original_role,
+            'appointed_on': a.appointed_on or b.appointed_on,
+        })
+
 
 class ShareholderRelationship(Relationship):
-    shareholdings = ListType(ModelType(Shareholding), required=True)
+    shareholdings = ListType(ModelType(Shareholding), default=list, required=True)
 
     @classmethod
     def _claim_polymorphic(cls, data):
         return data.get("relationship_type") == RelationshipType.SHAREHOLDER.value
 
+    def from_bvd_beneficial_owner(index, bvd_data):
+        return ShareholderRelationship({
+            "relationship_type": RelationshipType.SHAREHOLDER.value,
+            "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
+            "shareholdings": [],
+        })
+
     def from_bvd_shareholder(index, bvd_data):
+        return ShareholderRelationship({
+            "relationship_type": RelationshipType.SHAREHOLDER.value,
+            "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
+            "shareholdings": [
+                Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
+            ],
+        })
+
+    @classmethod
+    def merge(cls, a, b):
+        assert(a.relationship_type == b.relationship_type)
+        assert(a.associated_role == b.associated_role)
         return ShareholderRelationship(
             {
-                "relationship_type": RelationshipType.SHAREHOLDER.value,
-                "associated_role": AssociatedRole.SHAREHOLDER.value,
-                "shareholdings": [
-                    Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
-                ],
+                "relationship_type": a.relationship_type,
+                "associated_role": a.associated_role,
+                "shareholdings": a.shareholdings + b.shareholdings
             }
         )
 
@@ -467,8 +533,8 @@ class Associate(BaseModel):
             }
         )
 
-    def merge(bvd_ids, a, b):
-        print(a.merge_id, b.merge_id)
+    @classmethod
+    def merge(cls, bvd_ids, a, b):
         assert(a.merge_id == b.merge_id)
 
         bvd_id = bvd_ids.get(a.merge_id, None)
@@ -485,7 +551,7 @@ class Associate(BaseModel):
                 "immediate_data": AssociateEntityData.merge(
                     a.immediate_data, b.immediate_data
                 ),
-                "relationships": a.relationships + b.relationships,  # todo merge relationships
+                "relationships": Relationship.dedup(a.relationships + b.relationships),  # todo merge relationships
             }
         )
 
@@ -497,7 +563,11 @@ def merge_associates_by_id(bvd_ids, associates):
         keyed_by_id[associate.merge_id].append(associate)
 
     return [
-        reduce(partial(Associate.merge, bvd_ids), matching_associates)
+        reduce(
+            partial(Associate.merge, bvd_ids),
+            matching_associates,
+            matching_associates[0]
+        )
         for matching_associates in keyed_by_id.values()
     ]
 
