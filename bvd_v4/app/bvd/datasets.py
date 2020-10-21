@@ -124,7 +124,7 @@ class DataSet(Enum):
     def update_query(self):
         if self == DataSet.REGISTRY:
             return {"General": ["1", "2", "8"]}
-        elif self == DataSet.OWNERSHIP:
+        elif self == DataSet.OFFICERS:
             return {
                 "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
                     "COMMON_DIRECTORS_00",
@@ -133,7 +133,7 @@ class DataSet(Enum):
                     "COMMON_DIRECTORS_09",
                 ],
             }
-        elif self == DataSet.OFFICERS:
+        elif self == DataSet.OWNERSHIP:
             return {
                 "UpdatedWoco4OwnerShip": ["Ownership_bo_w", "Ownership_wof",],
             }
