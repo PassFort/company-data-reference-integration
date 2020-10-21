@@ -245,8 +245,8 @@ class Client:
                             {
                                 "UpdatedReport": {
                                     "Period": {
-                                        "Start": from_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                                        "End": to_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                                        "Start": str(from_datetime),
+                                        "End": str(to_datetime),
                                     },
                                     **update_query,
                                 }

@@ -499,10 +499,10 @@ class CompanyData(BaseModel):
             Associate.from_bvd_beneficial_owner(index, bvd_data)
             for index in range(0, len(bvd_data.beneficial_owner_bvd_id))
         ]
-        officers = [o for o in [
+        officers = list(filter(None, [
             Associate.from_bvd_contacts(index, bvd_data)
             for index in range(0, len(bvd_data.officer_bvd_id))
-        ] if o is not None]
+        ]))
 
         return CompanyData(
             {
