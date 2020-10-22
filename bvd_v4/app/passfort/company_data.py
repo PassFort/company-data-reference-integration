@@ -4,6 +4,7 @@ from enum import Enum
 from functools import reduce, partial
 
 from schematics.common import DROP
+from schematics.types.serializable import serializable
 from schematics.types import (
     DecimalType,
     StringType,
@@ -403,8 +404,8 @@ class Relationship(BaseModel):
 
 
 class OfficerRelationship(Relationship):
-    original_role = StringType(default=None, serialize_when_none=False)
-    appointed_on = DateType(default=None, serialize_when_none=False)
+    original_role = StringType(default=None)
+    appointed_on = DateType(default=None)
     resigned_on = DateType(default=None)
 
     @classmethod
@@ -422,11 +423,16 @@ class OfficerRelationship(Relationship):
             'associated_role': a.associated_role,
             'original_role': a.original_role,
             'appointed_on': a.appointed_on or b.appointed_on,
+            'resigned_on': a.resigned_on or b.resigned_on,
         })
 
 
 class ShareholderRelationship(Relationship):
     shareholdings = ListType(ModelType(Shareholding), default=list, required=True)
+
+    @serializable
+    def total_percentage(self):
+        return float(sum(x.percentage for x in self.shareholdings if x.percentage is not None))
 
     @classmethod
     def _claim_polymorphic(cls, data):

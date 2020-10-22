@@ -248,7 +248,6 @@ class TestOfficers(TestCase):
         bvd_data.validate()
 
         company_data = CompanyData.from_bvd(bvd_data)
-        print(company_data.to_primitive())
         company_data.validate()
 
         self.assertEqual(len(company_data.associated_entities), 1)
