@@ -432,7 +432,8 @@ class ShareholderRelationship(Relationship):
 
     @serializable
     def total_percentage(self):
-        return float(sum(x.percentage for x in self.shareholdings if x.percentage is not None))
+        from decimal import Decimal
+        return float(sum(Decimal(x.percentage) for x in self.shareholdings if x.percentage is not None))
 
     @classmethod
     def _claim_polymorphic(cls, data):

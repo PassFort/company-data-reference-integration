@@ -527,39 +527,37 @@ class TestMergeAssociates(TestCase):
         deduped = Relationship.dedup(relationships)
 
         self.assertEqual(len(deduped), 3)
+        self.maxDiff = None
         self.assertEqual(
-            deduped,
+            [rel.to_primitive() for rel in deduped],
             [
-                ShareholderRelationship(
-                    {
-                        "associated_role": "BENEFICIAL_OWNER",
-                        "relationship_type": "SHAREHOLDER",
-                        "shareholdings": [
-                            {
-                                "percentage": 10.63,
-                                "provider_name": "BvD Orbis"
-                            },
-                            {
-                                "percentage": 20.63,
-                                "provider_name": "BvD Orbis"
-                            },
-                        ],
-                    }
-                ),
-                OfficerRelationship({
+                {
+                    "associated_role": "BENEFICIAL_OWNER",
+                    "relationship_type": "SHAREHOLDER",
+                    "shareholdings": [
+                        {
+                            "percentage": 10.63,
+                            "provider_name": "BvD Orbis"
+                        },
+                        {
+                            "percentage": 20.63,
+                            "provider_name": "BvD Orbis"
+                        },
+                    ],
+                    "total_percentage": 31.26
+                },
+                {
                     "appointed_on": "2015-04-28",
                     "associated_role": "DIRECTOR",
                     "original_role": "Director",
                     "relationship_type": "OFFICER",
-                }),
-                OfficerRelationship(
-                    {
-                        "associated_role": "DIRECTOR",
-                        "relationship_type": "OFFICER",
-                        "original_role": "Director - Executive Contact",
-                        "appointed_on": "2018-07-12",
-                    }
-                ),
+                },
+                {
+                    "associated_role": "DIRECTOR",
+                    "relationship_type": "OFFICER",
+                    "original_role": "Director - Executive Contact",
+                    "appointed_on": "2018-07-12",
+                }
             ],
         )
 
