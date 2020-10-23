@@ -18,6 +18,7 @@ from app.passfort.company_data import (
     CompanyData,
     IndividualAssociateData,
     Relationship,
+    OfficerRelationship,
     ShareholderRelationship,
 )
 from app.passfort.types import (
@@ -77,7 +78,7 @@ class TestShareholders(TestCase):
             first_shareholder.relationships[0].relationship_type, "SHAREHOLDER"
         )
         self.assertEqual(
-            first_shareholder.relationships[0].associated_role, "SHAREHOLDER"
+            first_shareholder.relationships[0].associated_role, "BENEFICIAL_OWNER"
         )
         self.assertEqual(
             first_shareholder.relationships[0].shareholdings[0].percentage,
@@ -100,7 +101,7 @@ class TestShareholders(TestCase):
             second_shareholder.relationships[0].relationship_type, "SHAREHOLDER"
         )
         self.assertEqual(
-            second_shareholder.relationships[0].associated_role, "SHAREHOLDER"
+            second_shareholder.relationships[0].associated_role, "BENEFICIAL_OWNER"
         )
         self.assertEqual(
             second_shareholder.relationships[0].shareholdings[0].percentage,
@@ -170,7 +171,7 @@ class TestOfficers(TestCase):
             }
         )
         bvd_data.validate()
-        
+
         company_data = CompanyData.from_bvd(bvd_data)
         company_data.validate()
 
@@ -380,7 +381,7 @@ class TestMergeAssociates(TestCase):
     def test_merge(self):
         associate_a = Associate(
             {
-                "associate_id": "863318d7-3176-3348-95fd-4de0a2fe1ad6",
+                "merge_id": "863318d7-3176-3348-95fd-4de0a2fe1ad6",
                 "entity_type": "INDIVIDUAL",
                 "immediate_data": IndividualAssociateData(
                     {
@@ -398,7 +399,7 @@ class TestMergeAssociates(TestCase):
                 "relationships": [
                     ShareholderRelationship(
                         {
-                            "associated_role": "SHAREHOLDER",
+                            "associated_role": "BENEFICIAL_OWNER",
                             "relationship_type": "SHAREHOLDER",
                             "shareholdings": [
                                 Shareholding({"percentage": 25})
@@ -411,7 +412,7 @@ class TestMergeAssociates(TestCase):
 
         associate_b = Associate(
             {
-                "associate_id": "863318d7-3176-3348-95fd-4de0a2fe1ad6",
+                "merge_id": "863318d7-3176-3348-95fd-4de0a2fe1ad6",
                 "entity_type": "INDIVIDUAL",
                 "immediate_data": IndividualAssociateData(
                     {
@@ -432,9 +433,11 @@ class TestMergeAssociates(TestCase):
             }
         )
 
-        merged = Associate.merge(associate_a, associate_b)
+        bvd_ids = {}
+        merged = Associate.merge(bvd_ids, associate_a, associate_b)
 
-        self.assertEqual(merged.associate_id, associate_a.associate_id)
+        self.assertEqual(bvd_ids, {})
+        self.assertEqual(merged.associate_id, associate_a.merge_id)
         self.assertEqual(merged.entity_type, associate_a.entity_type)
         self.assertEqual(
             merged.immediate_data.personal_details.name.title,
@@ -457,7 +460,7 @@ class TestMergeAssociates(TestCase):
             [
                 ShareholderRelationship(
                     {
-                        "associated_role": "SHAREHOLDER",
+                        "associated_role": "BENEFICIAL_OWNER",
                         "relationship_type": "SHAREHOLDER",
                         "shareholdings": [
                             Shareholding({"percentage": 25})
@@ -471,41 +474,92 @@ class TestMergeAssociates(TestCase):
         )
 
     def test_merge_duplicate_relationships(self):
-        """
-        TODO using test data:
-            "relationships": [
+        relationships = [
+            # All shareholdings should merge
+            ShareholderRelationship({
+                "associated_role": "BENEFICIAL_OWNER",
+                "relationship_type": "SHAREHOLDER"
+            }),
+            ShareholderRelationship({
+                "associated_role": "BENEFICIAL_OWNER",
+                "relationship_type": "SHAREHOLDER",
+                "shareholdings": [
                     {
-                        "associated_role": "SHAREHOLDER",
-                        "relationship_type": "SHAREHOLDER",
-                        "shareholdings": [
-                            {
-                                "percentage": 20.63,
-                                "provider_name": "BvD Orbis"
-                            }
-                        ]
-                    },
-                    {
-                        "associated_role": "BENEFICIAL_OWNER",
-                        "relationship_type": "SHAREHOLDER"
-                    },
-                    {
-                        "appointed_on": "2015-04-28",
-                        "associated_role": "DIRECTOR",
-                        "original_role": "Director",
-                        "relationship_type": "OFFICER"
-                    },
-                    {
-                        "associated_role": "DIRECTOR",
-                        "original_role": "Director - Executive Contact",
-                        "relationship_type": "OFFICER"
-                    },
-                    {
-                        "associated_role": "SHAREHOLDER",
-                        "relationship_type": "SHAREHOLDER"
+                        "percentage": 10.63,
+                        "provider_name": "BvD Orbis"
                     }
                 ]
-        """
-        pass
+            }),
+            ShareholderRelationship({
+                "associated_role": "BENEFICIAL_OWNER",
+                "relationship_type": "SHAREHOLDER",
+                "shareholdings": [
+                    {
+                        "percentage": 20.63,
+                        "provider_name": "BvD Orbis"
+                    }
+                ]
+            }),
+
+            # This role should not be dedupped as the original role is distinct
+            OfficerRelationship({
+                "appointed_on": "2015-04-28",
+                "associated_role": "DIRECTOR",
+                "original_role": "Director",
+                "relationship_type": "OFFICER"
+            }),
+
+
+            # This pair should dedup with and keep the appointed on date
+            OfficerRelationship({
+                "appointed_on": "2018-07-12",
+                "associated_role": "DIRECTOR",
+                "original_role": "Director - Executive Contact",
+                "relationship_type": "OFFICER"
+            }),
+            OfficerRelationship({
+                "associated_role": "DIRECTOR",
+                "original_role": "Director - Executive Contact",
+                "relationship_type": "OFFICER"
+            }),
+        ]
+
+        deduped = Relationship.dedup(relationships)
+
+        self.assertEqual(len(deduped), 3)
+        self.maxDiff = None
+        self.assertEqual(
+            [rel.to_primitive() for rel in deduped],
+            [
+                {
+                    "associated_role": "BENEFICIAL_OWNER",
+                    "relationship_type": "SHAREHOLDER",
+                    "shareholdings": [
+                        {
+                            "percentage": 10.63,
+                            "provider_name": "BvD Orbis"
+                        },
+                        {
+                            "percentage": 20.63,
+                            "provider_name": "BvD Orbis"
+                        },
+                    ],
+                    "total_percentage": 31.26
+                },
+                {
+                    "appointed_on": "2015-04-28",
+                    "associated_role": "DIRECTOR",
+                    "original_role": "Director",
+                    "relationship_type": "OFFICER",
+                },
+                {
+                    "associated_role": "DIRECTOR",
+                    "relationship_type": "OFFICER",
+                    "original_role": "Director - Executive Contact",
+                    "appointed_on": "2018-07-12",
+                }
+            ],
+        )
 
 
 class TestMetadata(TestCase):

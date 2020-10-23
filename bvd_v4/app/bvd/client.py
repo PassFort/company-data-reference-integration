@@ -203,7 +203,7 @@ class Client:
             RegistryResult,
             lambda: demo_path("registry", bvd_id),
             bvd_id,
-            DataSet.REGISTRY.fields + DataSet.OFFICERS.data_fields,
+            DataSet.REGISTRY.data_fields + DataSet.OFFICERS.data_fields,
         )
 
     def fetch_ownership_data(self, bvd_id):

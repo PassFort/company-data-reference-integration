@@ -1,3 +1,5 @@
+import logging
+
 from schematics import Model
 from schematics.exceptions import (
     BaseError,
@@ -20,6 +22,7 @@ from schematics.types import (
 )
 
 from app.bvd.maybe_list import MaybeListType
+from app.common import build_resolver_id
 
 
 class RegistryData(Model):
@@ -102,62 +105,62 @@ class RegistryData(Model):
     )
 
     # Officers
-    officer_bvd_id = MaybeListType(
+    contact_bvd_id = MaybeListType(
         StringType(), serialized_name="CPYCONTACTS_HEADER_BvdId", default=list
     )
-    officer_uci = MaybeListType(
+    contact_uci = MaybeListType(
         StringType(), serialized_name="CPYCONTACTS_HEADER_IdDirector", default=list
     )
-    officer_entity_type = MaybeListType(
+    contact_entity_type = MaybeListType(
         StringType(), serialized_name="CPYCONTACTS_HEADER_Type", default=list
     )
-    officer_role = MaybeListType(
+    contact_role = MaybeListType(
         StringType(), serialized_name="CPYCONTACTS_MEMBERSHIP_Function", default=list
     )
-    officer_title = MaybeListType(
+    contact_title = MaybeListType(
         StringType(), serialized_name="CPYCONTACTS_HEADER_BareTitle", default=list,
     )
-    officer_first_name = MaybeListType(
+    contact_first_name = MaybeListType(
         StringType(),
         serialized_name="CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred",
         default=list,
     )
-    officer_middle_name = MaybeListType(
+    contact_middle_name = MaybeListType(
         StringType(),
         serialized_name="CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred",
         default=list,
     )
-    officer_last_name = MaybeListType(
+    contact_last_name = MaybeListType(
         StringType(),
         serialized_name="CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred",
         default=list,
     )
-    officer_name = MaybeListType(
+    contact_name = MaybeListType(
         StringType(),
         serialized_name="CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred",
         default=list,
     )
-    officer_nationality = MaybeListType(
+    contact_nationality = MaybeListType(
         StringType(),
         serialized_name="CPYCONTACTS_HEADER_NationalityCountryLabel",
         default=list,
     )
-    officer_current_previous = MaybeListType(
+    contact_current_previous = MaybeListType(
         StringType(choices=["Current", "Previous"]),
         serialized_name="CPYCONTACTS_MEMBERSHIP_CurrentPrevious",
         default=list,
     )
-    officer_resignation_date = MaybeListType(
+    contact_resignation_date = MaybeListType(
         DateTimeType(),
         serialized_name="CPYCONTACTS_MEMBERSHIP_EndExpirationDate",
         default=list,
     )
-    officer_appointment_date = MaybeListType(
+    contact_appointment_date = MaybeListType(
         DateTimeType(),
         serialized_name="CPYCONTACTS_MEMBERSHIP_BeginningNominationDate",
         default=list,
     )
-    officer_date_of_birth = MaybeListType(
+    contact_date_of_birth = MaybeListType(
         DateTimeType(), serialized_name="CPYCONTACTS_HEADER_Birthdate", default=list,
     )
 
@@ -194,6 +197,18 @@ class RegistryData(Model):
             for field in self.address_fields
             if getattr(self, field) is not None
         )
+
+    @property
+    def num_contacts(self):
+        return len(self.contact_bvd_id)
+
+    def contact_merge_id(self, index):
+        ''' Generates a UUID to be used for merging contacts
+        '''
+        if self.contact_uci[index]:
+            return build_resolver_id(self.contact_uci[index])
+        else:
+            return build_resolver_id(self.contact_name[index])
 
 
 class OwnershipData(Model):
@@ -257,6 +272,14 @@ class OwnershipData(Model):
         DateTimeType(), serialized_name="BO_BIRTHDATE", default=list
     )
 
+    @property
+    def num_shareholders(self):
+        return len(self.shareholder_bvd_id)
+
+    @property
+    def num_beneficial_owners(self):
+        return len(self.beneficial_owner_bvd_id)
+
     def shareholder_is_individual(self, index):
         return (
             self.shareholder_entity_type[index]
@@ -268,6 +291,22 @@ class OwnershipData(Model):
             self.beneficial_owner_entity_type[index]
             == "One or more named individuals or families"
         )
+
+    def shareholder_merge_id(self, index):
+        ''' Generates a UUID to be used for merging shareholders
+        '''
+        if self.shareholder_uci[index]:
+            return build_resolver_id(self.shareholder_uci[index])
+        else:
+            return build_resolver_id(self.shareholder_name[index])
+
+    def beneficial_owner_merge_id(self, index):
+        ''' Generates a UUID to be used for merging beneficial_owners
+        '''
+        if self.beneficial_owner_uci[index]:
+            return build_resolver_id(self.beneficial_owner_uci[index])
+        else:
+            return build_resolver_id(self.beneficial_owner_name[index])
 
 
 class Match(Model):
