@@ -104,6 +104,7 @@ class Error:
         country_name = country.name if country else None
         return {
             'code': ErrorCode.COUNTRY_NOT_SUPPORTED.value,
+            'source': 'PROVIDER',
             'message': "Country '{}' is not supported by the provider".format(country_name),
             'info': {'country': alpha_3}
         }
