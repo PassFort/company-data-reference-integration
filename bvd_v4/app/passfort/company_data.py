@@ -447,12 +447,11 @@ class ShareholderRelationship(Relationship):
         })
 
     def from_bvd_shareholder(index, bvd_data):
+        shareholding = Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
         return ShareholderRelationship({
             "relationship_type": RelationshipType.SHAREHOLDER.value,
             "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
-            "shareholdings": [
-                Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
-            ],
+            "shareholdings": [shareholding] if shareholding else [],
         })
 
     @classmethod
@@ -474,6 +473,13 @@ class Associate(BaseModel):
     entity_type = StringType(choices=[ty.value for ty in EntityType], required=True)
     immediate_data = ModelType(AssociateEntityData, required=True)
     relationships = ListType(ModelType(Relationship), required=True)
+
+    def set_associate_id(self, bvd_ids):
+        bvd_id = bvd_ids.get(self.merge_id, None)
+        if bvd_id:
+            self.associate_id = build_resolver_id(bvd_id)
+        else:
+            self.associate_id = self.merge_id
 
     def from_bvd_shareholder(index, bvd_data, bvd_ids):
         entity_type = (
@@ -544,15 +550,8 @@ class Associate(BaseModel):
     def merge(cls, bvd_ids, a, b):
         assert(a.merge_id == b.merge_id)
 
-        bvd_id = bvd_ids.get(a.merge_id, None)
-        if bvd_id:
-            associate_id = build_resolver_id(bvd_id)
-        else:
-            associate_id = a.merge_id
-
         return Associate(
             {
-                "associate_id": associate_id,
                 "merge_id": a.merge_id,
                 "entity_type": a.entity_type,
                 "immediate_data": AssociateEntityData.merge(
@@ -569,14 +568,20 @@ def merge_associates_by_id(bvd_ids, associates):
     for associate in associates:
         keyed_by_id[associate.merge_id].append(associate)
 
-    return [
+    # Merge associates by common key fields (BvD ID, UCI, name...)
+    merged = [
         reduce(
             partial(Associate.merge, bvd_ids),
-            matching_associates,
-            matching_associates[0]
+            matching_associates
         )
         for matching_associates in keyed_by_id.values()
     ]
+
+    # Set the merged associates ID
+    for associate in merged:
+        associate.set_associate_id(bvd_ids)
+
+    return merged
 
 
 class CompanyData(BaseModel):
