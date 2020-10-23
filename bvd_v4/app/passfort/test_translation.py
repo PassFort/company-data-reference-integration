@@ -435,6 +435,7 @@ class TestMergeAssociates(TestCase):
 
         bvd_ids = {}
         merged = Associate.merge(bvd_ids, associate_a, associate_b)
+        merged.set_associate_id(bvd_ids)
 
         self.assertEqual(bvd_ids, {})
         self.assertEqual(merged.associate_id, associate_a.merge_id)
