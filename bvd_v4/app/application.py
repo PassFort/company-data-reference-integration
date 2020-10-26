@@ -42,10 +42,10 @@ def health():
     return jsonify("success")
 
 
-def get_bvd_id(client, country, bvd_id, company_number, name):
+def get_bvd_id(client, country, bvd_id, company_number, name, state):
     if bvd_id is not None:
         return bvd_id
-    result = client.search(company_number=company_number, country=country, name=name)
+    result = client.search(company_number=company_number, country=country, name=name, state=state)
     hits = result.sorted_hits()
     if hits:
         return hits[0].bvd_id
@@ -66,6 +66,7 @@ def company_data_check(request):
         request.input_data.bvd_id,
         request.input_data.number,
         request.input_data.name,
+        request.input_data.state_of_incorporation,
     )
 
     if bvd_id:
@@ -98,6 +99,7 @@ def registry_check(request):
         request.input_data.bvd_id,
         request.input_data.number,
         request.input_data.name,
+        request.input_data.state_of_incorporation,
     )
 
     if bvd_id:
@@ -133,6 +135,7 @@ def ownership_check(request):
         request.input_data.bvd_id,
         request.input_data.number,
         request.input_data.name,
+        request.input_data.state_of_incorporation,
     )
 
     if bvd_id:
