@@ -45,9 +45,10 @@ def health():
 def get_bvd_id(client, country, bvd_id, company_number, name):
     if bvd_id is not None:
         return bvd_id
-    result = client.search(company_number=company_number, country=country, name=name,)
-    if result.get('data'):
-        return result.data[0].bvd_id
+    result = client.search(company_number=company_number, country=country, name=name)
+    hits = result.sorted_hits()
+    if hits:
+        return hits[0].bvd_id
     else:
         return None
 
@@ -171,11 +172,8 @@ def company_search(request):
             {
                 "output_data": [
                     Candidate.from_bvd(hit)
-                    for hit in sorted(
-                        search_results.data,
-                        reverse=True,
-                        key=lambda hit: hit.match.zero.score,
-                    )
+                    for hit
+                    in search_results.sorted_hits()
                 ]
                 if search_results
                 else [],
@@ -194,7 +192,7 @@ def create_monitoring_portfolio(request):
     return jsonify(
         {
             "output_data": Portfolio(
-                {"id": result.id, "count": result.count,}
+                {"id": result.id, "count": result.count}
             ).to_primitive(),
             "errors": client.errors,
             "raw": client.raw_responses,
