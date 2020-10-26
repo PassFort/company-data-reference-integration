@@ -333,6 +333,14 @@ class SearchData(Model):
     bvd_id = StringType(serialized_name="BVDID", required=True)
     match = ModelType(WrappedMatch, serialized_name="MATCH", required=True)
 
+    def score(self):
+        if self.match.zero.hint == 'Selected':
+            return self.match.zero.score + 2
+        elif self.match.zero.hint == 'Potential':
+            return self.match.zero.score + 1
+        else:
+            return self.match.zero.score
+
 
 class DatabaseInfo(Model):
     version_number = StringType(serialized_name="VersionNumber")
@@ -371,6 +379,13 @@ class OwnershipResult(Model):
 class SearchResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
+
+    def sorted_hits(self):
+        return sorted(
+            self.data,
+            reverse=True,
+            key=lambda hit: hit.score(),
+        )
 
 
 class Update(Model):
