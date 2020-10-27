@@ -173,12 +173,12 @@ class CreditsafeSingleShareholder(Model):
     def total_percentage(self):
         return float(sum(x.percentage for x in self.shareholdings if x.percentage is not None))
 
-    def to_passfort_shareholder(self, entity_type, associate_id, search_data=None):
+    def to_passfort_shareholder(self, entity_type, associate_id, search_data=None, default_country=None):
         if entity_type == INDIVIDUAL_ENTITY:
             first_names, last_name = split_name(self.name)
             immediate_data = EntityData.as_individual(first_names, last_name, search_data)
         else:
-            immediate_data = EntityData.as_company(self.name, search_data)
+            immediate_data = EntityData.as_company(self.name, search_data, default_country=default_country)
 
         result = PassFortAssociate({
             'associate_id': associate_id,
@@ -245,18 +245,18 @@ class CurrentOfficer(Model):
                 return split_name(self.name, expect_title=True)
         return None, self.name
 
-    def to_immediate_data(self, entity_type, search_data=None):
+    def to_immediate_data(self, entity_type, search_data=None, default_country=None):
         first_names, last_name = self.format_name(entity_type)
         if entity_type == INDIVIDUAL_ENTITY:
             return EntityData.as_individual(first_names, last_name, self.dob)
         else:
-            return EntityData.as_company(last_name, search_data)
+            return EntityData.as_company(last_name, search_data, default_country=default_country)
 
-    def to_associate(self, entity_type, search_data):
+    def to_associate(self, entity_type, search_data, default_country=None):
         result = PassFortAssociate({
             'associate_id': build_resolver_id(self.id),
             'entity_type': entity_type,
-            'immediate_data': self.to_immediate_data(entity_type, search_data),
+            'immediate_data': self.to_immediate_data(entity_type, search_data, default_country),
             'relationships': []
         })
 
@@ -340,7 +340,7 @@ class PersonOfSignificantControl(Model):
 
         return None
 
-    def to_associate(self, associate_id):
+    def to_associate(self, associate_id, default_country=None):
         if self.entity_type == INDIVIDUAL_ENTITY:
             first_names, last_name = split_name(self.name)
             immediate_data = EntityData.as_individual(
@@ -355,7 +355,7 @@ class PersonOfSignificantControl(Model):
                 'name': self.name,
                 'number': self.registration_number,
                 'country_of_incorporation': self.country_of_incorporation,
-            })
+            }, default_country=default_country)
 
         result = PassFortAssociate({
             'associate_id': associate_id,
@@ -677,6 +677,20 @@ class Shareholder(Model):
         }
 
 
+class ExtendedGroupStructure(Model):
+    company_name = StringType(default=None, serialized_name="companyName")
+    country = StringType(default=None)
+
+    @property
+    def country_code(self):
+        if self.country is None:
+            return None
+        country_result = pycountry.countries.get(alpha_2=self.country)
+        if country_result is not None:
+            return country_result.alpha_3
+        return None
+
+
 class ShareholdersReport(Model):
     shareholders = ListType(ModelType(Shareholder), default=[], serialized_name="shareHolders")
 
@@ -706,7 +720,10 @@ class CompanySummary(Model):
 
     @property
     def country_code(self):
-        return pycountry.countries.get(alpha_2=self.country).alpha_3
+        pycountry_result = pycountry.countries.get(alpha_2=self.country)
+        if pycountry_result is not None:
+            return pycountry_result.alpha_3
+        return None
 
     @property
     def is_active(self):
@@ -1107,6 +1124,7 @@ class CreditSafeCompanyReport(Model):
     contact_information = ModelType(ContactInformation, default=None, serialized_name="contactInformation")
     directors = ModelType(CompanyDirectorsReport, default=None)
     share_capital_structure = ModelType(ShareholdersReport, default=None, serialized_name="shareCapitalStructure")
+    extended_group_structure = ListType(ModelType(ExtendedGroupStructure), default=[], serialized_name="extendedGroupStructure")
     additional_information = ModelType(AdditionalInformation, default=None, serialized_name="additionalInformation")
     credit_score = ModelType(CreditScore, serialized_name="creditScore", default=None)
     local_financial_statements = ListType(ModelType(CreditsafeLocalFinancialStatement),
@@ -1268,7 +1286,8 @@ class CreditSafeCompanyReport(Model):
             unique_shareholders,
             pscs,
             self.summary.country_code,
-            request_handler)
+            request_handler,
+            self.extended_group_structure)
 
         return {
             'metadata': metadata.serialize(),
@@ -1277,8 +1296,9 @@ class CreditSafeCompanyReport(Model):
         }
 
 
-def process_associate_data(associate_data: 'ProcessQueuePayload', country, request_handler=None):
+def process_associate_data(associate_data: 'ProcessQueuePayload', parent_country, request_handler=None, extended_groups=[]):
     search_data = None
+    extended_country = None
     default_entity = associate_data.entity_type
     if associate_data.entity_type != INDIVIDUAL_ENTITY:
         default_entity = INDIVIDUAL_ENTITY
@@ -1298,7 +1318,14 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
 
         if request_handler and not associate_data.skip_search():
             # only search if we have to
-            search_data = request_handler.exact_search(name, country)
+            extended = [extended_group for extended_group in extended_groups if associate_data.entity_type != INDIVIDUAL_ENTITY and extended_group.company_name == name]
+            search_country = parent_country
+            if len(extended) > 0:
+                extended_country = extended[0].country_code
+                if extended_country is not None:
+                    search_country = extended_country
+
+            search_data = request_handler.exact_search(name, search_country)
 
     entity_type = COMPANY_ENTITY if search_data else default_entity
     result = None
@@ -1306,11 +1333,12 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
         result = associate_data.shareholder.to_passfort_shareholder(
             entity_type,
             associate_data.associate_id,
-            search_data
+            search_data,
+            extended_country,
         )
 
     if associate_data.officer:
-        officer_associate = associate_data.officer.to_associate(entity_type, search_data)
+        officer_associate = associate_data.officer.to_associate(entity_type, search_data, extended_country)
 
         if result:
             result.merge(officer_associate)
@@ -1318,7 +1346,7 @@ def process_associate_data(associate_data: 'ProcessQueuePayload', country, reque
             result = officer_associate
 
     if associate_data.psc is not None:
-        psc_associate = associate_data.psc.to_associate(associate_data.associate_id)
+        psc_associate = associate_data.psc.to_associate(associate_data.associate_id, extended_country)
         if result:
             result.merge(psc_associate)
         else:
@@ -1333,7 +1361,8 @@ def merge_associates(
         unique_shareholders,
         pscs,
         country_of_incorporation,
-        request_handler):
+        request_handler,
+        extended_group):
     duplicate_resolver = AssociateIdDeduplicator(directors)
     duplicate_resolver.add_shareholders(unique_shareholders)
     duplicate_resolver.add_pscs(pscs)
@@ -1341,7 +1370,7 @@ def merge_associates(
     processing_queue = duplicate_resolver.associates()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        jobs = [executor.submit(process_associate_data, obj, country_of_incorporation, request_handler)
+        jobs = [executor.submit(process_associate_data, obj, country_of_incorporation, request_handler, extended_group)
                 for obj in processing_queue]
         concurrent.futures.wait(jobs, return_when=concurrent.futures.FIRST_EXCEPTION)
         failed_jobs = filter(lambda e: e is not None, map(lambda j: j.exception(), jobs))

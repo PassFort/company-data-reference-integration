@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock
 
 from datetime import datetime, timedelta
 from random import randint
@@ -67,6 +68,11 @@ DEMO_PL = {
         }],
     'statement_type': 'PROFIT_AND_LOSS'
 }
+
+class MockRequestHandler():
+    def exact_search(self, name, country):
+        # Simulate case when no results found
+        return None
 
 
 class TestCompanySearchResponse(unittest.TestCase):
@@ -198,6 +204,9 @@ class TestCompanyReport(unittest.TestCase):
     def setUpClass(cls):
         cls.passfort_report = get_response_from_file('passfort', folder='demo_data/reports')
         cls.report = CreditSafeCompanyReport.from_json(cls.passfort_report['report'])
+
+        cls.extended_report_raw = get_response_from_file('extended_test', folder='demo_data/reports')
+        cls.extended_report = CreditSafeCompanyReport.from_json(cls.extended_report_raw['report'])
 
         cls.formatted_report = cls.report.as_passfort_format_41()
         cls.maxDiff = None
@@ -501,6 +510,92 @@ class TestCompanyReport(unittest.TestCase):
                 263198.0,
                 yoy=0.6043180377432097
             )
+
+
+    def test_extended_group_structure(self):
+        report = CreditSafeCompanyReport.from_json({
+            'companyId': 'GB001-0-09565115',
+            'companySummary': {
+                'businessName': 'PASSFORT LIMITED',
+                'country': 'GB',
+                'companyNumber': 'UK13646576',
+                'companyRegistrationNumber': '09565115',
+                'companyStatus': {}
+            },
+            'companyIdentification': {
+                'basicInformation': {
+                    'registeredCompanyName': 'PASSFORT LIMITED',
+                    'companyRegistrationNumber': '09565115',
+                    'country': 'GB',
+                    'legalForm': {
+                        'description': 'Unknown'
+                    },
+                    'companyStatus': {}
+                }
+            },
+            "extendedGroupStructure": [
+                {
+                    "companyName": "Heineken N.V.",
+                    "country": "NL",
+                    "id": "NL-X-330114330000",
+                    "latestAnnualAccounts": "2017-12-31T00:00:00Z",
+                    "level": 0,
+                    "registeredNumber": "330114330000",
+                    "safeNumber": "NL01943133",
+                    "status": "Active"
+                },
+                {
+                    "companyName": "BLUE STAR PUB CO HOLDINGS (NO 2) LTD",
+                    "country": "JE",
+                    "level": 1,
+                    "status": "Other"
+                },
+                {
+                    "level": 1,
+                    "status": "Other"
+                },
+                {
+                    "companyName": "VersaLife",
+                    "level": 1,
+                    "status": "Other",
+                    "country": "XX"
+                }
+            ]
+        })
+
+        self.assertEqual(report.extended_group_structure[0].company_name, "Heineken N.V.")
+        self.assertEqual(report.extended_group_structure[0].country, "NL")
+
+        self.assertEqual(report.extended_group_structure[1].company_name, "BLUE STAR PUB CO HOLDINGS (NO 2) LTD")
+        self.assertEqual(report.extended_group_structure[1].country, "JE")
+        self.assertEqual(report.extended_group_structure[1].country_code, "JEY")
+
+
+        self.assertEqual(report.extended_group_structure[2].country, None)
+        self.assertEqual(report.extended_group_structure[2].country_code, None)
+
+
+        self.assertEqual(report.extended_group_structure[3].company_name, "VersaLife")
+        self.assertEqual(report.extended_group_structure[3].country, 'XX')
+        self.assertEqual(report.extended_group_structure[3].country_code, None)
+
+
+    def test_handles_country_fallback_search_fail(self):
+        report = self.extended_report
+        req_handler = MockRequestHandler()
+        req_handler.exact_search = MagicMock(name='exact_search', return_value=None)
+        associated_entities = report.as_passfort_format_41(request_handler=req_handler)['associated_entities']
+        sunrise = [entity for entity in associated_entities if entity['entity_type'] == 'COMPANY' and entity['immediate_data']['metadata']['name'] == 'SUNRISE ACQUISITIONS LTD'][0]
+
+        req_handler.exact_search.assert_called_with('SUNRISE ACQUISITIONS LTD', 'JEY')
+
+        self.assertDictEqual(
+            sunrise['immediate_data']['metadata'],
+            {
+                'name': 'SUNRISE ACQUISITIONS LTD',
+                'country_of_incorporation': 'JEY',
+            }
+        )
 
 
     def test_handles_missing_data_with_identification(self):
