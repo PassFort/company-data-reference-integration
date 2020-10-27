@@ -372,7 +372,8 @@ class TestOfficers(TestCase):
                     'associated_role': 'RESIGNED_OFFICER',
                     'original_role': 'Company secretary',
                     'appointed_on': '2005-05-19',
-                    'resigned_on': '2009-05-19'
+                    'resigned_on': '2009-05-19',
+                    'is_resigned': True,
                 }
             )
 

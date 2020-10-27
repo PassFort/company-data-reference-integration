@@ -357,6 +357,7 @@ class Relationship(BaseModel):
                     "original_role": bvd_data.contact_role[index],
                     "appointed_on": bvd_data.contact_appointment_date[index],
                     "resigned_on": bvd_data.contact_resignation_date[index],
+                    "is_resigned": bvd_data.contact_current_previous[index] != "Current",
                     "relationship_type": RelationshipType.OFFICER.value,
                     "associated_role": passfort_role.value,
                 }
@@ -407,6 +408,7 @@ class OfficerRelationship(Relationship):
     original_role = StringType(default=None)
     appointed_on = DateType(default=None)
     resigned_on = DateType(default=None)
+    is_resigned = BooleanType(default=None)
 
     @classmethod
     def _claim_polymorphic(cls, data):
