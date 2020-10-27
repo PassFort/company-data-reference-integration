@@ -452,10 +452,16 @@ class EntityData(Model):
         })
 
     @classmethod
-    def as_company(cls, last_name, search_data):
+    def as_company(cls, last_name, search_data, default_country=None):
         metadata = {}
         if search_data:
             metadata = search_data
+        elif default_country is not None:
+            # Able to extract country from the initial response via extendedGroupStructure,
+            # but there was no search data.
+            # It is likely that credit safe does not support search for that country.
+            # In which case give it the country from the initial response.
+            metadata['country_of_incorporation'] = default_country
         metadata['name'] = last_name
         return cls({
             'metadata': metadata,
