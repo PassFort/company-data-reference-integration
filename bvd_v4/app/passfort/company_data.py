@@ -27,6 +27,7 @@ from app.passfort.types import (
     country_alpha_2_to_3,
     country_names_to_alpha_3,
     format_names,
+    name_strip,
     CompanyMetadata,
     EntityType,
     Error,
@@ -46,7 +47,7 @@ class AssociateCompanyMetadata(BaseModel):
         return AssociateCompanyMetadata(
             {
                 "bvd_id": bvd_data.shareholder_bvd_id[index],
-                "name": bvd_data.shareholder_name[index],
+                "name": name_strip(bvd_data.shareholder_name[index]),
                 "country_of_incorporation": country_alpha_2_to_3(
                     bvd_data.shareholder_country_code[index]
                 ),
