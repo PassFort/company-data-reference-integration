@@ -150,7 +150,7 @@ class Client:
                                     "Criteria": {
                                         key: value
                                         for key, value in {
-                                            "Name": quote(name),
+                                            "Name": quote(name) if name else None,
                                             "NationalId": company_number,
                                             "Country": country_alpha_3_to_2(country),
                                             "State": state,
