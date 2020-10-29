@@ -101,7 +101,11 @@ class APIClient():
             'date-of-birth-strict': WATCHLIST_TRUE if self.config.strict_dob_search else WATCHLIST_FALSE,
         }
 
-        names = input_data.personal_details.name.given_names
+        # DowJones API contains profiles without the middle name, and
+        # if you provide a middle name in the search they do not get returned.
+        # So relax the search by not searching for middle names
+        names = input_data.personal_details.name.given_names[:1]
+
         family_name = input_data.personal_details.name.family_name
         if family_name is not None:
             names.append(family_name)
