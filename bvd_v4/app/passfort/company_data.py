@@ -93,7 +93,7 @@ class FullName(BaseModel):
             EntityType.INDIVIDUAL,
         )
         return FullName(
-            {"title": title, "given_names": first_names, "family_name": last_name,}
+            {"title": title, "given_names": first_names, "family_name": last_name}
         )
 
     def from_bvd_beneficial_owner(index, bvd_data):
@@ -104,19 +104,21 @@ class FullName(BaseModel):
             EntityType.INDIVIDUAL,
         )
         return FullName(
-            {"title": title, "given_names": first_names, "family_name": last_name,}
+            {"title": title, "given_names": first_names, "family_name": last_name}
         )
 
     def from_bvd_contact(index, bvd_data):
+        middle_names = bvd_data.contact_middle_name[index] or ""
+        first_name = bvd_data.contact_first_name[index] or ""
         title_from_full_name, first_names, last_name = format_names(
-            bvd_data.contact_first_name[index],
+            first_name + " " + middle_names if first_name or middle_names else None,
             bvd_data.contact_last_name[index],
             bvd_data.contact_name[index],
             EntityType.INDIVIDUAL,
         )
         return FullName(
             {
-                "title": title_from_full_name or bvd_data.contact_title[index],
+                "title": bvd_data.contact_title[index] or title_from_full_name,
                 "given_names": first_names,
                 "family_name": last_name,
             }

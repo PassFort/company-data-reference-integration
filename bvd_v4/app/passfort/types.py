@@ -66,22 +66,31 @@ def name_strip(name: str) -> str:
 
 
 def format_names(first, last, full, entity_type):
-    if full:
-        full = name_strip(full)
-        if entity_type == EntityType.INDIVIDUAL:
-            names = full.split(" ")
+    if not first and not last:
+        if full:
+            full = name_strip(full)
+            names = full.split(' ')
             # First element is the title
             return names[0], names[1:-1], names[-1]
         else:
-            return None, [], full
-    elif first or last:
-        return (
-            None,
-            name_strip(first) if first else [],
-            name_strip(last) if last else "",
-        )
+            return None, [], ''
     else:
-        return None, [], ""
+        if full:
+            full = name_strip(full)
+            names = full.split(' ')
+            first_names = first.split(' ') if first else []
+            return (
+                names[0],
+                [name_strip(name) for name in first_names if name],
+                name_strip(last) if last else ''
+            )
+        else:
+            first_names = first.split(' ') if first else []
+            return (
+                None,
+                [name_strip(name) for name in first_names if name],
+                name_strip(last) if last else ''
+            )
 
 
 class ErrorCode(Enum):

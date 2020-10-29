@@ -20,6 +20,7 @@ from app.passfort.company_data import (
     Relationship,
     OfficerRelationship,
     ShareholderRelationship,
+    FullName,
 )
 from app.passfort.types import (
     CompanyMetadata,
@@ -133,6 +134,11 @@ class TestOfficers(TestCase):
                     None,
                 ],
                 "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Current", "Previous", "Current"],
+                "CPYCONTACTS_HEADER_BareTitle": [
+                    None,
+                    None,
+                    None,
+                ],
                 "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
                     None,
                     None,
@@ -232,6 +238,7 @@ class TestOfficers(TestCase):
                 "CPYCONTACTS_MEMBERSHIP_Function": ["Company Secretary"],
                 "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": ["2000-02-02T00:00:00"],
                 "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Previous"],
+                "CPYCONTACTS_HEADER_BareTitle": [None],
                 "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [None],
                 "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [None],
                 "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [None],
@@ -326,6 +333,7 @@ class TestOfficers(TestCase):
                         "2009-05-19T00:00:00",
                     ],
                     "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Previous", "Previous"],
+                    "CPYCONTACTS_HEADER_BareTitle": [None, None],
                     "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
                         None,
                         None,
@@ -757,3 +765,50 @@ class TestCompanyNames(TestCase):
             metadata.previous_names,
             [PreviousName({"name": "BLOCKOPS LIMITED", "end": "2015-07-31"})],
         )
+
+
+class TestIndividualNames(TestCase):
+    def test_officer_name(self):
+        bvd_data = Data({
+            "CPYCONTACTS_HEADER_BareTitle": [
+                None,
+                "Sir",
+                "The Rt.hon. Baroness",
+            ],
+            "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
+                "Martin",
+                "Michael",
+                "Baroness",
+            ],
+            "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [
+                "Peter",
+                "Richardson",
+                "Elizabeth Conway",
+            ],
+            "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [
+                "George",
+                "Angus",
+                "Symons",
+            ],
+            "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
+                "Mr Martin Peter George",
+                "Sir Michael Richardson Angus",
+                # This is weird but it is what BvD are returning
+                "The Rt.hon. Baroness Baroness Elizabeth Conway Symons"
+            ],
+        })
+
+        name = FullName.from_bvd_contact(0, bvd_data)
+        self.assertEqual(name.title, "Mr")
+        self.assertEqual(name.given_names, ["Martin", "Peter"])
+        self.assertEqual(name.family_name, "George")
+
+        name = FullName.from_bvd_contact(1, bvd_data)
+        self.assertEqual(name.title, "Sir")
+        self.assertEqual(name.given_names, ["Michael", "Richardson"])
+        self.assertEqual(name.family_name, "Angus")
+
+        name = FullName.from_bvd_contact(2, bvd_data)
+        self.assertEqual(name.title, "The Rt.hon. Baroness")
+        self.assertEqual(name.given_names, ["Baroness", "Elizabeth", "Conway"])
+        self.assertEqual(name.family_name, "Symons")
