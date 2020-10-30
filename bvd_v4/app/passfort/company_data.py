@@ -27,6 +27,7 @@ from app.passfort.types import (
     country_alpha_2_to_3,
     country_names_to_alpha_3,
     format_names,
+    name_strip,
     CompanyMetadata,
     EntityType,
     Error,
@@ -46,7 +47,7 @@ class AssociateCompanyMetadata(BaseModel):
         return AssociateCompanyMetadata(
             {
                 "bvd_id": bvd_data.shareholder_bvd_id[index],
-                "name": bvd_data.shareholder_name[index],
+                "name": name_strip(bvd_data.shareholder_name[index]),
                 "country_of_incorporation": country_alpha_2_to_3(
                     bvd_data.shareholder_country_code[index]
                 ),
@@ -92,7 +93,7 @@ class FullName(BaseModel):
             EntityType.INDIVIDUAL,
         )
         return FullName(
-            {"title": title, "given_names": first_names, "family_name": last_name,}
+            {"title": title, "given_names": first_names, "family_name": last_name}
         )
 
     def from_bvd_beneficial_owner(index, bvd_data):
@@ -103,19 +104,21 @@ class FullName(BaseModel):
             EntityType.INDIVIDUAL,
         )
         return FullName(
-            {"title": title, "given_names": first_names, "family_name": last_name,}
+            {"title": title, "given_names": first_names, "family_name": last_name}
         )
 
     def from_bvd_contact(index, bvd_data):
+        middle_names = bvd_data.contact_middle_name[index] or ""
+        first_name = bvd_data.contact_first_name[index] or ""
         title_from_full_name, first_names, last_name = format_names(
-            bvd_data.contact_first_name[index],
+            first_name + " " + middle_names if first_name or middle_names else None,
             bvd_data.contact_last_name[index],
             bvd_data.contact_name[index],
             EntityType.INDIVIDUAL,
         )
         return FullName(
             {
-                "title": title_from_full_name or bvd_data.contact_title[index],
+                "title": bvd_data.contact_title[index] or title_from_full_name,
                 "given_names": first_names,
                 "family_name": last_name,
             }
@@ -357,6 +360,7 @@ class Relationship(BaseModel):
                     "original_role": bvd_data.contact_role[index],
                     "appointed_on": bvd_data.contact_appointment_date[index],
                     "resigned_on": bvd_data.contact_resignation_date[index],
+                    "is_resigned": bvd_data.contact_current_previous[index] != "Current",
                     "relationship_type": RelationshipType.OFFICER.value,
                     "associated_role": passfort_role.value,
                 }
@@ -407,6 +411,7 @@ class OfficerRelationship(Relationship):
     original_role = StringType(default=None)
     appointed_on = DateType(default=None)
     resigned_on = DateType(default=None)
+    is_resigned = BooleanType(default=None)
 
     @classmethod
     def _claim_polymorphic(cls, data):
