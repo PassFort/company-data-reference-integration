@@ -75,22 +75,13 @@ def format_names(first, last, full, entity_type):
         else:
             return None, [], ''
     else:
-        if full:
-            full = name_strip(full)
-            names_from_full = [name_strip(name) for name in full.split(' ') if name]
-            names_from_first = [name_strip(name) for name in first.split(' ') if name] if first else []
-            return (
-                names_from_full[0] if names_from_full[0] != names_from_first[0] else None,
-                names_from_first,
-                name_strip(last) if last else ''
-            )
-        else:
-            first_names = first.split(' ') if first else []
-            return (
-                None,
-                [name_strip(name) for name in first_names if name],
-                name_strip(last) if last else ''
-            )
+        names_from_full = [name for name in name_strip(full).split(' ') if name] if full else []
+        names_from_first = [name for name in name_strip(first).split(' ') if name] if first else []
+        return (
+            names_from_full[0] if names_from_full and names_from_full[0] != names_from_first[0] else None,
+            names_from_first,
+            name_strip(last) if last else ''
+        )
 
 
 class ErrorCode(Enum):
