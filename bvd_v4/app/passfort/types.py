@@ -77,11 +77,11 @@ def format_names(first, last, full, entity_type):
     else:
         if full:
             full = name_strip(full)
-            names = full.split(' ')
-            first_names = first.split(' ') if first else []
+            names_from_full = [name_strip(name) for name in full.split(' ') if name]
+            names_from_first = [name_strip(name) for name in first.split(' ') if name] if first else []
             return (
-                names[0],
-                [name_strip(name) for name in first_names if name],
+                names_from_full[0] if names_from_full[0] != names_from_first[0] else None,
+                names_from_first,
                 name_strip(last) if last else ''
             )
         else:

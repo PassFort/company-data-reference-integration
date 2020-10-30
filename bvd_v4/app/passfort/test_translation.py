@@ -774,27 +774,32 @@ class TestIndividualNames(TestCase):
                 None,
                 "Sir",
                 "The Rt.hon. Baroness",
+                None,
             ],
             "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
                 "Martin",
                 "Michael",
                 "Baroness",
+                "John",
             ],
             "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [
                 "Peter",
                 "Richardson",
                 "Elizabeth Conway",
+                None,
             ],
             "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [
                 "George",
                 "Angus",
                 "Symons",
+                "Smith"
             ],
             "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
                 "Mr Martin Peter George",
                 "Sir Michael Richardson Angus",
                 # This is weird but it is what BvD are returning
-                "The Rt.hon. Baroness Baroness Elizabeth Conway Symons"
+                "The Rt.hon. Baroness Baroness Elizabeth Conway Symons",
+                "John Smith",
             ],
         })
 
@@ -812,3 +817,8 @@ class TestIndividualNames(TestCase):
         self.assertEqual(name.title, "The Rt.hon. Baroness")
         self.assertEqual(name.given_names, ["Baroness", "Elizabeth", "Conway"])
         self.assertEqual(name.family_name, "Symons")
+
+        name = FullName.from_bvd_contact(3, bvd_data)
+        self.assertEqual(name.title, None)
+        self.assertEqual(name.given_names, ["John"])
+        self.assertEqual(name.family_name, "Smith")
