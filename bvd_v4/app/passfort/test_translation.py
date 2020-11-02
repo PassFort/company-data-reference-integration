@@ -234,6 +234,7 @@ class TestOfficers(TestCase):
                 "BVD9": "004954174",
                 "CPYCONTACTS_HEADER_Type": ["Individual", "Individual", "Individual"],
                 "CPYCONTACTS_HEADER_BvdId": [None, None, None],
+                "CPYCONTACTS_HEADER_BareTitle": [None, None, None],
                 "CPYCONTACTS_HEADER_IdDirector": [
                     "P045831593",
                     "P045812345",
