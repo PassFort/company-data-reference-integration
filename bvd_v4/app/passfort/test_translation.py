@@ -227,6 +227,80 @@ class TestOfficers(TestCase):
         )
         self.assertIsNone(officer.relationships[2].appointed_on)
 
+    def test_individual_associated_entities_nationality(self):
+        bvd_data = Data(
+            {
+                "BVD_ID_NUMBER": "GB09565115",
+                "BVD9": "004954174",
+                "CPYCONTACTS_HEADER_Type": ["Individual", "Individual", "Individual"],
+                "CPYCONTACTS_HEADER_BvdId": [None, None, None],
+                "CPYCONTACTS_HEADER_IdDirector": [
+                    "P045831593",
+                    "P045812345",
+                    "P041346789",
+                ],
+                "CPYCONTACTS_MEMBERSHIP_Function": [
+                    "Director (occupation: Chief Executive)",
+                    "Chief Executive Officer - Executive Contact",
+                    "Manager - General Contact",
+                ],
+                "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [
+                    None,
+                    None,
+                    None,
+                ],
+                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Current", "Current", "Current"],
+                "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
+                    None,
+                    None,
+                    None,
+                ],
+                "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [
+                    None,
+                    None,
+                    None,
+                ],
+                "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [
+                    None,
+                    None,
+                    None,
+                ],
+                "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
+                    "Mr Timothy Deighton Steiner",
+                    "Mr Timothy Deighton Steiner 2",
+                    "Mr Timothy Deighton Steiner 3",
+                ],
+                "CPYCONTACTS_HEADER_Birthdate": [
+                    "1969-12-09T00:00:00",
+                    "1969-12-09T00:00:00",
+                    "1969-12-09T00:00:00",
+                ],
+                "CPYCONTACTS_HEADER_NationalityCountryLabel": [
+                    "Hong Kong, SAR",
+                    "Korea Republic of;United States",
+                    "Random country",
+                ],
+                "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate": [
+                    "2000-04-13T00:00:00",
+                    None,
+                    None,
+                ],
+            }
+        )
+        bvd_data.validate()
+
+        company_data = CompanyData.from_bvd(bvd_data)
+        company_data.validate()
+
+        self.assertEqual(len(company_data.associated_entities), 3)
+
+        officer = company_data.associated_entities[0]
+        self.assertEqual(officer.immediate_data.personal_details.nationality, "HKG")
+        officer = company_data.associated_entities[1]
+        self.assertEqual(officer.immediate_data.personal_details.nationality, "KOR")
+        officer = company_data.associated_entities[2]
+        self.assertEqual(officer.immediate_data.personal_details.nationality, None)
+
     def test_company_associated_entity(self):
         bvd_data = Data(
             {

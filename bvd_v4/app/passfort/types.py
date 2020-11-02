@@ -30,7 +30,7 @@ def country_alpha_2_to_3(alpha_2):
     try:
         return countries.get(alpha_2=alpha_2).alpha_3
     except (LookupError, AttributeError):
-        if alpha_2 != "n.a." and alpha_2 is not None:
+        if alpha_2 != "n.a." and alpha_2 != '-' and alpha_2 is not None:
             logging.error(
                 {
                     "error": "BvD returned unrecognised alpha 2 country code",
@@ -44,16 +44,40 @@ def country_names_to_alpha_3(country_name):
     if country_name is None:
         return None
 
-    try:
-        return countries.get(name=country_name.split(";")[0]).alpha_3
-    except (LookupError, AttributeError):
+    def get_country_code(name):
+        try:
+            country = countries.lookup(name)
+            return country.alpha_3
+        except (LookupError, AttributeError):
+            return None
+
+    def get_possible_names(country_name):
+        # BvD can return names that don't match pycountry fields
+        name_mapping = {
+            'Korea Republic of': 'Korea, Republic of'
+        }
+
+        names = []
+        name = country_name.split(";")[0]
+        names.append(name)
+        names.append(name.split(",")[0])
+        names.append(name_mapping.get(name))
+        return names
+
+    possible_names = get_possible_names(country_name)
+    for n in possible_names:
+        country_code = get_country_code(n)
+        if country_code:
+            break
+
+    if not country_code:
         logging.error(
             {
                 "error": "BvD returned unrecognised country name",
                 "info": {"country_name": country_name,},
             }
         )
-        return None
+    return country_code
 
 
 def name_strip(name: str) -> str:
@@ -279,7 +303,7 @@ class StructuredAddress(BaseModel):
             "route": bvd_data.address_line_one,
             "locality": bvd_data.city,
             "state_province": bvd_data.state,
-            "country": country_names_to_alpha_3(bvd_data.country),
+            "country": country_alpha_2_to_3(bvd_data.country_code),
             "address_lines": bvd_data.address_lines,
             "original_freeform_address": bvd_data.freeform_address,
         })
