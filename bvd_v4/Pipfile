@@ -1,5 +1,6 @@
 [[source]]
-url = "https://pypi.python.org/simple"
+name = "pypi"
+url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
@@ -8,12 +9,13 @@ mypy = "==0.511"
 [packages]
 coverage = "*"
 codecov = "*"
-flask = "==0.12.5"
+flask = "*"
 gunicorn = "==19.5.0"
 mock = "*"
 python-json-logger = "*"
 python-dateutil = "*"
 pycountry = "*"
+responses = "*"
 requests = "*"
 raven = {extras = ["flask"]}
 schematics = "==2.1.0"

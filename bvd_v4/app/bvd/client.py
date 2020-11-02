@@ -99,17 +99,20 @@ class Client:
 
         except ConnectionError as e:
             self._record_error(Error.provider_connection(str(e)))
-            data = {}
+            return None
         except HTTPError as e:
             if e.response.status_code > 499:
                 self._record_error(Error.provider_connection(str(e)))
+            elif e.response.status_code == 429:
+                self.raw_responses.append(e.response.text)
+                self._record_error(Error.provider_rate_limit_exceeded(str(e)))
             else:
                 self.raw_responses.append(e.response.text)
                 self._record_error(Error.provider_unknown_error(str(e)))
-            data = {}
+            return None
         except JSONDecodeError as e:
             self._record_error(Error.bad_provider_response(str(e)))
-            data = {}
+            return None
 
         try:
             model = response_model().import_data(prune_nones(data), apply_defaults=True)

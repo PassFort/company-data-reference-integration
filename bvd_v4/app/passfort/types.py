@@ -125,6 +125,16 @@ class Error(BaseModel):
             }
         )
 
+    def provider_rate_limit_exceeded(cause):
+        return Error(
+            {
+                "source": "PROVIDER",
+                "code": ErrorCode.PROVIDER_CONNECTION_ERROR.value,
+                "message": "Provider rate limit exceeded",
+                "info": cause,
+            }
+        )
+
 
 class EntityType(Enum):
     INDIVIDUAL = "INDIVIDUAL"
