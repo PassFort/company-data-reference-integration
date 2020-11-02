@@ -101,8 +101,10 @@ def format_names(first, last, full, entity_type):
     else:
         names_from_full = [name for name in name_strip(full).split(' ') if name] if full else []
         names_from_first = [name for name in name_strip(first).split(' ') if name] if first else []
+        first_name = names_from_first[0] if names_from_first else None
+        possible_title = names_from_full[0] if names_from_full else None
         return (
-            names_from_full[0] if names_from_full and names_from_full[0] != names_from_first[0] else None,
+            possible_title if possible_title != first_name else None,
             names_from_first,
             name_strip(last) if last else ''
         )
