@@ -2,8 +2,23 @@ from datetime import datetime
 from dataclasses import dataclass
 import pycountry
 
-
-USE_ADDRESS1_COUNTRIES = ['BRA']
+# Discovered via Trulioo's API.
+# May need to be updated if customers start using Trulioo in new jurisdictions.
+USE_ADDRESS1_COUNTRIES = [
+    'BGD',
+    'BRA',
+    'CHL',
+    'COL',
+    'CRI',
+    'ECU',
+    'IND',
+    'MEX',
+    'PER',
+    'SGP',
+    'TUR',
+    'VEN',
+    'ZAF',
+]
 
 basic_components = {
     'StreetName',
