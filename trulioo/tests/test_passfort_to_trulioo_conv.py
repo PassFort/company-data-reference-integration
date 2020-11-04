@@ -462,6 +462,8 @@ def test_voter_id(client):
                 'VoterID': '123456'
             }
         },
-        'Location': {}
+        'Location': {
+            'AdditionalFields': {'Address1': ''}
+        }
     }
     assert trulioo_request_data == output_data
