@@ -18,18 +18,12 @@ from app.passfort.types import (
     Candidate,
     CreatePortfolioRequest,
     MonitoringEventsRequest,
-    OwnershipCheckRequest,
-    OwnershipCheckResponse,
-    OwnershipCompanyData,
     Portfolio,
     RegistryCheckRequest,
-    RegistryCheckResponse,
-    RegistryCompanyData,
     RegistryEvent,
     ShareholdersEvent,
     SearchRequest,
     SearchResponse,
-    ShareholdersEvent,
     OfficersEvent,
 )
 
@@ -155,79 +149,6 @@ def company_data_check(request):
         ).to_primitive()
     )
 
-
-@app.route("/registry-check", methods=["POST"])
-@request_model(RegistryCheckRequest)
-def registry_check(request):
-    # Assuming we always have either a BvD ID or a company number
-
-    client = BvDClient(request.credentials.key, request.is_demo)
-
-    bvd_id = get_bvd_id(
-        client,
-        request.input_data.country_of_incorporation,
-        request.input_data.bvd_id,
-        request.input_data.number,
-        request.input_data.name,
-        request.input_data.state_of_incorporation,
-    )
-
-    if bvd_id:
-        search_results = client.fetch_registry_data(bvd_id)
-    else:
-        search_results = None
-
-    if search_results and search_results.data:
-        data = RegistryCompanyData.from_bvd(search_results.data[0])
-    else:
-        data = {}
-
-    return jsonify(
-        RegistryCheckResponse(
-            {
-                "output_data": data,
-                "errors": client.errors,
-                "raw": client.raw_responses,
-                "price": 0,  # TODO: can we remove this?
-            }
-        ).to_primitive()
-    )
-
-
-@app.route("/ownership-check", methods=["POST"])
-@request_model(OwnershipCheckRequest)
-def ownership_check(request):
-    client = BvDClient(request.credentials.key, request.is_demo)
-
-    bvd_id = get_bvd_id(
-        client,
-        request.input_data.country_of_incorporation,
-        request.input_data.bvd_id,
-        request.input_data.number,
-        request.input_data.name,
-        request.input_data.state_of_incorporation,
-    )
-
-    if bvd_id:
-        search_results = client.fetch_ownership_data(bvd_id)
-    else:
-        search_results = None
-
-    if search_results and search_results.data:
-        data = OwnershipCompanyData.from_bvd(search_results.data[0])
-    else:
-        data = {}
-
-    return jsonify(
-        OwnershipCheckResponse(
-            {
-                "output_data": data,
-                "errors": client.errors,
-                "raw": client.raw_responses,
-                "price": 0,  # TODO: can we remove this?
-            }
-        ).to_primitive()
-    )
 
 @app.route("/search", methods=["POST"])
 @app.dd.track_time("passfort.services.bvd_v4.search")
