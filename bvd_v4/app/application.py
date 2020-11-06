@@ -48,7 +48,7 @@ def get_bvd_id(client, country, bvd_id, company_number, name, state):
     result = client.search(
         company_number=company_number, country=country, name=name, state=state
     )
-    hits = result.sorted_hits()
+    hits = result.sorted_hits() if result else []
     if hits:
         return hits[0].bvd_id
     else:
@@ -172,14 +172,15 @@ def company_search(request):
         state=request.input_data.state,
         company_number=request.input_data.number,
     )
+    hits = search_results.sorted_hits() if search_results else []
     return jsonify(
         SearchResponse(
             {
                 "output_data": [
-                    Candidate.from_bvd(hit) for hit in search_results.sorted_hits()
-                ]
-                if search_results
-                else [],
+                    Candidate.from_bvd(hit)
+                    for hit
+                    in hits
+                ],
                 "errors": client.errors,
                 "raw": client.raw_responses,
             }
