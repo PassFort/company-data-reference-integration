@@ -118,8 +118,8 @@ class TestSearchRequest(unittest.TestCase):
     @responses.activate
     def test_search_returns_rate_limit_error(self):
         responses.add(
-            responses.GET,
-            'https://orbis.bvdinfo.com/api/orbis/Companies/data?QUERY=%7B%22WHERE%22%3A+%5B%7B%22MATCH%22%3A+%7B%22Criteria%22%3A+%7B%22Name%22%3A+%22PassFort%22%2C+%22NationalId%22%3A+%22%22%2C+%22Country%22%3A+%22GB%22%2C+%22State%22%3A+%22%22%7D%7D%7D%5D%2C+%22SELECT%22%3A+%5B%22BVDID%22%2C+%22MATCH.BVD9%22%2C+%22MATCH.NAME%22%2C+%22MATCH.STATUS%22%2C+%22MATCH.NAME_INTERNATIONAL%22%2C+%22MATCH.ADDRESS%22%2C+%22MATCH.POSTCODE%22%2C+%22MATCH.CITY%22%2C+%22MATCH.COUNTRY%22%2C+%22MATCH.NATIONAL_ID%22%2C+%22MATCH.STATE%22%2C+%22MATCH.ADDRESS_TYPE%22%2C+%22MATCH.HINT%22%2C+%22MATCH.SCORE%22%5D%7D',
+            responses.POST,
+            'https://orbis.bvdinfo.com/api/orbis/Companies/data',
             status=429)
 
         result = self.app.post(
@@ -171,8 +171,8 @@ class TestSearchRequest(unittest.TestCase):
     @responses.activate
     def test_bad_provider_response(self):
         responses.add(
-            responses.GET,
-            'https://orbis.bvdinfo.com/api/orbis/Companies/data?QUERY=%7B%22WHERE%22%3A+%5B%7B%22MATCH%22%3A+%7B%22Criteria%22%3A+%7B%22Name%22%3A+%22PassFort%22%2C+%22NationalId%22%3A+%22%22%2C+%22Country%22%3A+%22GB%22%2C+%22State%22%3A+%22%22%7D%7D%7D%5D%2C+%22SELECT%22%3A+%5B%22BVDID%22%2C+%22MATCH.BVD9%22%2C+%22MATCH.NAME%22%2C+%22MATCH.STATUS%22%2C+%22MATCH.NAME_INTERNATIONAL%22%2C+%22MATCH.ADDRESS%22%2C+%22MATCH.POSTCODE%22%2C+%22MATCH.CITY%22%2C+%22MATCH.COUNTRY%22%2C+%22MATCH.NATIONAL_ID%22%2C+%22MATCH.STATE%22%2C+%22MATCH.ADDRESS_TYPE%22%2C+%22MATCH.HINT%22%2C+%22MATCH.SCORE%22%5D%7D',
+            responses.POST,
+            'https://orbis.bvdinfo.com/api/orbis/Companies/data',
             json={'bad': 'response'},
             status=200)
 
@@ -201,8 +201,8 @@ class TestSearchRequest(unittest.TestCase):
     @responses.activate
     def test_bad_provider_response(self):
         responses.add(
-            responses.GET,
-            'https://orbis.bvdinfo.com/api/orbis/Companies/data?QUERY=%7B%22WHERE%22%3A+%5B%7B%22MATCH%22%3A+%7B%22Criteria%22%3A+%7B%22Name%22%3A+%22PassFort%22%2C+%22NationalId%22%3A+%22%22%2C+%22Country%22%3A+%22GB%22%2C+%22State%22%3A+%22%22%7D%7D%7D%5D%2C+%22SELECT%22%3A+%5B%22BVDID%22%2C+%22MATCH.BVD9%22%2C+%22MATCH.NAME%22%2C+%22MATCH.STATUS%22%2C+%22MATCH.NAME_INTERNATIONAL%22%2C+%22MATCH.ADDRESS%22%2C+%22MATCH.POSTCODE%22%2C+%22MATCH.CITY%22%2C+%22MATCH.COUNTRY%22%2C+%22MATCH.NATIONAL_ID%22%2C+%22MATCH.STATE%22%2C+%22MATCH.ADDRESS_TYPE%22%2C+%22MATCH.HINT%22%2C+%22MATCH.SCORE%22%5D%7D',
+            responses.POST,
+            'https://orbis.bvdinfo.com/api/orbis/Companies/data',
             body='not json',
             status=200)
 
