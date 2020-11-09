@@ -660,6 +660,7 @@ class TestMetadata(TestCase):
             )
             self.assertIsNone(metadata.description)
 
+
     def test_registry_check(self):
         with open("./demo_data/registry/pass.json") as demo_file:
             bvd_result = RegistryResult(json.load(demo_file))
@@ -747,14 +748,11 @@ class TestCompanyType(TestCase):
 
 
 class TestIndustryClassification(TestCase):
-    def test_uk_sic_code(self):
+    def test_naics2017_code(self):
         bvd_data = RegistryData(
             {
-                "INDUSTRY_CLASSIFICATION": "UK SIC (2007)",
-                "INDUSTRY_PRIMARY_CODE": ["62012"],
-                "INDUSTRY_PRIMARY_LABEL": [
-                    "Business and domestic software development"
-                ],
+                "NAICS2017_CORE_CODE": ["5415"],
+                "NAICS2017_CORE_LABEL": ["Computer Systems Design and Related Services"],
             }
         )
 
@@ -765,10 +763,34 @@ class TestIndustryClassification(TestCase):
             [
                 IndustryClassification(
                     {
-                        "classification_type": IndustryClassificationType.SIC.value,
-                        "classification_version": "UK SIC (2007)",
-                        "code": "62012",
-                        "description": "Business and domestic software development",
+                        "classification_type": IndustryClassificationType.NAICS.value,
+                        "classification_version": "NAICS 2017",
+                        "code": "5415",
+                        "description": "Computer Systems Design and Related Services",
+                    }
+                )
+            ],
+        )
+
+    def test_nace2_code(self):
+        bvd_data = RegistryData(
+            {
+                "NACE2_CORE_CODE": ["6201"],
+                "NACE2_CORE_LABEL": ["Computer programming activities"],
+            }
+        )
+
+        metadata = CompanyMetadata.from_bvd(bvd_data)
+
+        self.assertEqual(
+            metadata.industry_classifications,
+            [
+                IndustryClassification(
+                    {
+                        "classification_type": IndustryClassificationType.NACE.value,
+                        "classification_version": "NACE Rev. 2",
+                        "code": "6201",
+                        "description": "Computer programming activities",
                     }
                 )
             ],
@@ -777,9 +799,8 @@ class TestIndustryClassification(TestCase):
     def test_us_sic_code(self):
         bvd_data = RegistryData(
             {
-                "INDUSTRY_CLASSIFICATION": "US SIC",
-                "INDUSTRY_PRIMARY_CODE": ["3674"],
-                "INDUSTRY_PRIMARY_LABEL": ["Semiconductors and related devices"],
+                "USSIC_CORE_CODE": ["367"],
+                "USSIC_CORE_LABEL": ["Semiconductors and related devices"],
             }
         )
 
@@ -792,7 +813,7 @@ class TestIndustryClassification(TestCase):
                     {
                         "classification_type": IndustryClassificationType.SIC.value,
                         "classification_version": "US SIC",
-                        "code": "3674",
+                        "code": "367",
                         "description": "Semiconductors and related devices",
                     }
                 )

@@ -251,6 +251,44 @@ class IndustryClassification(BaseModel):
     classification_version = StringType()
     description = StringType()
 
+    def from_bvd_us_sic(bvd_data):
+        return [
+            IndustryClassification({
+                "code": code,
+                "description": label,
+                "classification_version": "US SIC",
+                "classification_type": IndustryClassificationType.SIC.value
+            }) for code, label in zip(
+                bvd_data.us_sic_core_code,
+                bvd_data.us_sic_core_label,
+            )
+        ]
+
+    def from_bvd_nace(bvd_data):
+        return [
+            IndustryClassification({
+                "code": code,
+                "description": label,
+                "classification_version": "NACE Rev. 2",
+                "classification_type": IndustryClassificationType.NACE.value,
+            }) for code, label in zip(
+                bvd_data.nace2_core_code,
+                bvd_data.nace2_core_label,
+            )
+        ]
+
+    def from_bvd_naics(bvd_data):
+        return [
+            IndustryClassification({
+                "code": code,
+                "description": label,
+                "classification_version": "NAICS 2017",
+                "classification_type": IndustryClassificationType.NAICS.value,
+            }) for code, label in zip(
+                bvd_data.naics2017_core_code,
+                bvd_data.naics2017_core_label,
+            )
+        ]
 
 class SICCode(BaseModel):
     code = StringType(required=True)
@@ -387,21 +425,10 @@ class CompanyMetadata(BaseModel):
                         bvd_data.previous_names, bvd_data.previous_dates
                     )
                 ],
-                "industry_classifications": [
-                    IndustryClassification(
-                        {
-                            "classification_type": IndustryClassificationType.from_bvd(
-                                bvd_data.industry_classification
-                            ).value,
-                            "classification_version": bvd_data.industry_classification,
-                            "code": primary_code,
-                            "description": primary_label,
-                        }
-                    )
-                    for primary_code, primary_label in zip(
-                        bvd_data.industry_primary_code, bvd_data.industry_primary_label,
-                    )
-                ],
+                "industry_classifications": 
+                    IndustryClassification.from_bvd_us_sic(bvd_data) +
+                    IndustryClassification.from_bvd_nace(bvd_data) +
+                    IndustryClassification.from_bvd_naics(bvd_data),
                 "sic_codes": [
                     SICCode.from_bvd(primary_code, primary_label)
                     for primary_code, primary_label in zip(
