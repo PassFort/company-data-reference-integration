@@ -345,9 +345,7 @@ class Relationship(BaseModel):
         return ShareholderRelationship.from_bvd_beneficial_owner(index, bvd_data)
 
     def from_bvd_contacts(index, bvd_data):
-        passfort_role = AssociatedRole.from_bvd_contacts_roles(
-            index, bvd_data
-        )
+        passfort_role = AssociatedRole.from_bvd_contacts_roles(index, bvd_data)
         # Sometimes there is no relationship (e.g. previous shareholders)
         # We might decide to return them, but we'll need to change the data structure to do that
         # E.g actually send an 'is_active' field from the integration, since we won't always have
@@ -360,7 +358,8 @@ class Relationship(BaseModel):
                     "original_role": bvd_data.contact_role[index],
                     "appointed_on": bvd_data.contact_appointment_date[index],
                     "resigned_on": bvd_data.contact_resignation_date[index],
-                    "is_resigned": bvd_data.contact_current_previous[index] != "Current",
+                    "is_resigned": bvd_data.contact_current_previous[index]
+                    != "Current",
                     "relationship_type": RelationshipType.OFFICER.value,
                     "associated_role": passfort_role.value,
                 }
@@ -375,8 +374,8 @@ class Relationship(BaseModel):
 
     @classmethod
     def merge(cls, a, b):
-        assert(a.relationship_type == b.relationship_type)
-        assert(a.associated_role == b.associated_role)
+        assert a.relationship_type == b.relationship_type
+        assert a.associated_role == b.associated_role
 
         if AssociatedRole(a.associated_role).is_potential_officer():
             return OfficerRelationship.merge(a, b)
@@ -395,11 +394,13 @@ class Relationship(BaseModel):
         keyed_by_kind = defaultdict(list)
 
         for relationship in relationships:
-            keyed_by_kind[(
-                relationship.relationship_type,
-                relationship.associated_role,
-                getattr(relationship, 'original_role', None)
-            )].append(relationship)
+            keyed_by_kind[
+                (
+                    relationship.relationship_type,
+                    relationship.associated_role,
+                    getattr(relationship, "original_role", None),
+                )
+            ].append(relationship)
 
         return [
             reduce(Relationship.merge, same_kind)
@@ -419,17 +420,19 @@ class OfficerRelationship(Relationship):
 
     @classmethod
     def merge(cls, a, b):
-        assert(a.relationship_type == b.relationship_type)
-        assert(a.associated_role == b.associated_role)
-        assert(a.original_role == b.original_role)
+        assert a.relationship_type == b.relationship_type
+        assert a.associated_role == b.associated_role
+        assert a.original_role == b.original_role
 
-        return OfficerRelationship({
-            'relationship_type': a.relationship_type,
-            'associated_role': a.associated_role,
-            'original_role': a.original_role,
-            'appointed_on': a.appointed_on or b.appointed_on,
-            'resigned_on': a.resigned_on or b.resigned_on,
-        })
+        return OfficerRelationship(
+            {
+                "relationship_type": a.relationship_type,
+                "associated_role": a.associated_role,
+                "original_role": a.original_role,
+                "appointed_on": a.appointed_on or b.appointed_on,
+                "resigned_on": a.resigned_on or b.resigned_on,
+            }
+        )
 
 
 class ShareholderRelationship(Relationship):
@@ -438,36 +441,49 @@ class ShareholderRelationship(Relationship):
     @serializable
     def total_percentage(self):
         from decimal import Decimal
-        return float(sum(Decimal(x.percentage) for x in self.shareholdings if x.percentage is not None))
+
+        return float(
+            sum(
+                Decimal(x.percentage)
+                for x in self.shareholdings
+                if x.percentage is not None
+            )
+        )
 
     @classmethod
     def _claim_polymorphic(cls, data):
         return data.get("relationship_type") == RelationshipType.SHAREHOLDER.value
 
     def from_bvd_beneficial_owner(index, bvd_data):
-        return ShareholderRelationship({
-            "relationship_type": RelationshipType.SHAREHOLDER.value,
-            "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
-            "shareholdings": [],
-        })
+        return ShareholderRelationship(
+            {
+                "relationship_type": RelationshipType.SHAREHOLDER.value,
+                "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
+                "shareholdings": [],
+            }
+        )
 
     def from_bvd_shareholder(index, bvd_data):
-        shareholding = Shareholding.from_bvd(bvd_data.shareholder_direct_percentage[index])
-        return ShareholderRelationship({
-            "relationship_type": RelationshipType.SHAREHOLDER.value,
-            "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
-            "shareholdings": [shareholding] if shareholding else [],
-        })
+        shareholding = Shareholding.from_bvd(
+            bvd_data.shareholder_direct_percentage[index]
+        )
+        return ShareholderRelationship(
+            {
+                "relationship_type": RelationshipType.SHAREHOLDER.value,
+                "associated_role": AssociatedRole.BENEFICIAL_OWNER.value,
+                "shareholdings": [shareholding] if shareholding else [],
+            }
+        )
 
     @classmethod
     def merge(cls, a, b):
-        assert(a.relationship_type == b.relationship_type)
-        assert(a.associated_role == b.associated_role)
+        assert a.relationship_type == b.relationship_type
+        assert a.associated_role == b.associated_role
         return ShareholderRelationship(
             {
                 "relationship_type": a.relationship_type,
                 "associated_role": a.associated_role,
-                "shareholdings": a.shareholdings + b.shareholdings
+                "shareholdings": a.shareholdings + b.shareholdings,
             }
         )
 
@@ -553,7 +569,7 @@ class Associate(BaseModel):
 
     @classmethod
     def merge(cls, bvd_ids, a, b):
-        assert(a.merge_id == b.merge_id)
+        assert a.merge_id == b.merge_id
 
         return Associate(
             {
@@ -562,7 +578,9 @@ class Associate(BaseModel):
                 "immediate_data": AssociateEntityData.merge(
                     a.immediate_data, b.immediate_data
                 ),
-                "relationships": Relationship.dedup(a.relationships + b.relationships),  # todo merge relationships
+                "relationships": Relationship.dedup(
+                    a.relationships + b.relationships
+                ),  # todo merge relationships
             }
         )
 
@@ -575,10 +593,7 @@ def merge_associates_by_id(bvd_ids, associates):
 
     # Merge associates by common key fields (BvD ID, UCI, name...)
     merged = [
-        reduce(
-            partial(Associate.merge, bvd_ids),
-            matching_associates
-        )
+        reduce(partial(Associate.merge, bvd_ids), matching_associates)
         for matching_associates in keyed_by_id.values()
     ]
 
@@ -617,8 +632,7 @@ class CompanyData(BaseModel):
             {
                 "metadata": CompanyMetadata.from_bvd(bvd_data),
                 "associated_entities": merge_associates_by_id(
-                    bvd_ids,
-                    shareholders + beneficial_owners + officers
+                    bvd_ids, shareholders + beneficial_owners + officers
                 ),
             }
         )

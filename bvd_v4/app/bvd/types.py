@@ -44,8 +44,12 @@ class RegistryData(Model):
     )
     isin = StringType(serialized_name="ISIN", default=None)
     lei = StringType(serialized_name="LEI", default=None)
-    vat = MaybeListType(StringType(), serialized_name="VAT_NUMBER", default=list, required=True)
-    eurovat = MaybeListType(StringType(), serialized_name="EUROPEAN_VAT_NUMBER", default=list, required=True)
+    vat = MaybeListType(
+        StringType(), serialized_name="VAT_NUMBER", default=list, required=True
+    )
+    eurovat = MaybeListType(
+        StringType(), serialized_name="EUROPEAN_VAT_NUMBER", default=list, required=True
+    )
     irs = StringType(serialized_name="IRS", default=None)
 
     # Contact Details
@@ -180,8 +184,7 @@ class RegistryData(Model):
     def address_lines(self):
         return [
             line
-            for line
-            in (
+            for line in (
                 self.address_line_one,
                 self.address_line_two,
                 self.address_line_three,
@@ -203,8 +206,8 @@ class RegistryData(Model):
         return len(self.contact_bvd_id)
 
     def contact_merge_id(self, index):
-        ''' Generates a UUID to be used for merging contacts
-        '''
+        """ Generates a UUID to be used for merging contacts
+        """
         if self.contact_uci[index]:
             return build_resolver_id(self.contact_uci[index])
         else:
@@ -293,16 +296,16 @@ class OwnershipData(Model):
         )
 
     def shareholder_merge_id(self, index):
-        ''' Generates a UUID to be used for merging shareholders
-        '''
+        """ Generates a UUID to be used for merging shareholders
+        """
         if self.shareholder_uci[index]:
             return build_resolver_id(self.shareholder_uci[index])
         else:
             return build_resolver_id(self.shareholder_name[index])
 
     def beneficial_owner_merge_id(self, index):
-        ''' Generates a UUID to be used for merging beneficial_owners
-        '''
+        """ Generates a UUID to be used for merging beneficial_owners
+        """
         if self.beneficial_owner_uci[index]:
             return build_resolver_id(self.beneficial_owner_uci[index])
         else:
@@ -334,9 +337,9 @@ class SearchData(Model):
     match = ModelType(WrappedMatch, serialized_name="MATCH", required=True)
 
     def score(self):
-        if self.match.zero.hint == 'Selected':
+        if self.match.zero.hint == "Selected":
             return self.match.zero.score + 2
-        elif self.match.zero.hint == 'Potential':
+        elif self.match.zero.hint == "Potential":
             return self.match.zero.score + 1
         else:
             return self.match.zero.score
@@ -381,11 +384,7 @@ class SearchResult(Model):
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
 
     def sorted_hits(self):
-        return sorted(
-            self.data,
-            reverse=True,
-            key=lambda hit: hit.score(),
-        )
+        return sorted(self.data, reverse=True, key=lambda hit: hit.score(),)
 
 
 class Update(Model):

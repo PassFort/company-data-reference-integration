@@ -30,7 +30,7 @@ def country_alpha_2_to_3(alpha_2):
     try:
         return countries.get(alpha_2=alpha_2).alpha_3
     except (LookupError, AttributeError):
-        if alpha_2 != "n.a." and alpha_2 != '-' and alpha_2 is not None:
+        if alpha_2 != "n.a." and alpha_2 != "-" and alpha_2 is not None:
             logging.error(
                 {
                     "error": "BvD returned unrecognised alpha 2 country code",
@@ -53,9 +53,7 @@ def country_names_to_alpha_3(country_name):
 
     def get_possible_names(country_name):
         # BvD can return names that don't match pycountry fields
-        name_mapping = {
-            'Korea Republic of': 'Korea, Republic of'
-        }
+        name_mapping = {"Korea Republic of": "Korea, Republic of"}
 
         names = []
         name = country_name.split(";")[0]
@@ -93,20 +91,24 @@ def format_names(first, last, full, entity_type):
     if not first and not last:
         if full:
             full = name_strip(full)
-            names = full.split(' ')
+            names = full.split(" ")
             # First element is the title
             return names[0], names[1:-1], names[-1]
         else:
-            return None, [], ''
+            return None, [], ""
     else:
-        names_from_full = [name for name in name_strip(full).split(' ') if name] if full else []
-        names_from_first = [name for name in name_strip(first).split(' ') if name] if first else []
+        names_from_full = (
+            [name for name in name_strip(full).split(" ") if name] if full else []
+        )
+        names_from_first = (
+            [name for name in name_strip(first).split(" ") if name] if first else []
+        )
         first_name = names_from_first[0] if names_from_first else None
         possible_title = names_from_full[0] if names_from_full else None
         return (
             possible_title if possible_title != first_name else None,
             names_from_first,
-            name_strip(last) if last else ''
+            name_strip(last) if last else "",
         )
 
 
@@ -280,10 +282,12 @@ class Shareholding(BaseModel):
             percentage = Decimal(direct_percentage)
             return Shareholding({"percentage": percentage})
         except InvalidOperation:
-            logging.warning({
-                "error": "BvD returned invalid share percentage",
-                "info": {"percentage": direct_percentage},
-            })
+            logging.warning(
+                {
+                    "error": "BvD returned invalid share percentage",
+                    "info": {"percentage": direct_percentage},
+                }
+            )
 
 
 class StructuredAddress(BaseModel):
@@ -297,18 +301,20 @@ class StructuredAddress(BaseModel):
 
     @serializable
     def type(self):
-        return 'STRUCTURED'
+        return "STRUCTURED"
 
     def from_bvd(bvd_data):
-        return StructuredAddress({
-            "postal_code": bvd_data.postcode,
-            "route": bvd_data.address_line_one,
-            "locality": bvd_data.city,
-            "state_province": bvd_data.state,
-            "country": country_alpha_2_to_3(bvd_data.country_code),
-            "address_lines": bvd_data.address_lines,
-            "original_freeform_address": bvd_data.freeform_address,
-        })
+        return StructuredAddress(
+            {
+                "postal_code": bvd_data.postcode,
+                "route": bvd_data.address_line_one,
+                "locality": bvd_data.city,
+                "state_province": bvd_data.state,
+                "country": country_alpha_2_to_3(bvd_data.country_code),
+                "address_lines": bvd_data.address_lines,
+                "original_freeform_address": bvd_data.freeform_address,
+            }
+        )
 
 
 class CompanyAddress(BaseModel):
@@ -316,10 +322,12 @@ class CompanyAddress(BaseModel):
     address = ModelType(StructuredAddress)
 
     def from_bvd(bvd_data):
-        return CompanyAddress({
-            "type": "registered_address",
-            "address": StructuredAddress.from_bvd(bvd_data)
-        })
+        return CompanyAddress(
+            {
+                "type": "registered_address",
+                "address": StructuredAddress.from_bvd(bvd_data),
+            }
+        )
 
 
 class CompanyMetadata(BaseModel):
@@ -356,9 +364,8 @@ class CompanyMetadata(BaseModel):
                 "lei": bvd_data.lei,
                 "tax_ids": [
                     TaxId.from_bvd_eurovat(tax_id) for tax_id in bvd_data.eurovat
-                ] + [
-                    TaxId.from_bvd_vat(tax_id) for tax_id in bvd_data.vat
-                ],
+                ]
+                + [TaxId.from_bvd_vat(tax_id) for tax_id in bvd_data.vat],
                 "name": bvd_data.name,
                 "company_type": bvd_data.standardised_legal_form,
                 "structured_company_type": StructuredCompanyType.from_bvd(

@@ -66,7 +66,6 @@ class TestDemoRequest(unittest.TestCase):
             response.json()["output_data"]["id"], "4ed92e40-a501-eb11-90b5-d89d672fa480"
         )
 
-
     def test_company_data_associate_ids(self):
         response = requests.post(
             COMPANY_DATA_URL,
@@ -80,33 +79,34 @@ class TestDemoRequest(unittest.TestCase):
         self.assertFalse(response.json()["errors"])
 
         # Test merges to expected number of associates
+        self.assertEqual(len(response.json()["output_data"]["associated_entities"]), 30)
+
+        shareholder_with_bvd_id = next(
+            (
+                entity
+                for entity in response.json()["output_data"]["associated_entities"]
+                if entity["immediate_data"].get("metadata", {}).get("bvd_id", None)
+                == "GBLP016464"
+            )
+        )
         self.assertEqual(
-            len(response.json()["output_data"]["associated_entities"]),
-            30
+            shareholder_with_bvd_id["associate_id"],
+            str(build_resolver_id("GBLP016464")),
+        )
+        self.assertEqual(
+            len(shareholder_with_bvd_id["relationships"][0]["shareholdings"]), 1
         )
 
-        shareholder_with_bvd_id = next((
-            entity for entity in
-            response.json()["output_data"]["associated_entities"]
-            if entity['immediate_data'].get('metadata', {}).get('bvd_id', None) == 'GBLP016464'
-        ))
         self.assertEqual(
-            shareholder_with_bvd_id['associate_id'],
-            str(build_resolver_id('GBLP016464'))
+            shareholder_with_bvd_id["relationships"][0]["shareholdings"][0][
+                "percentage"
+            ],
+            4.03,
         )
         self.assertEqual(
-            len(shareholder_with_bvd_id['relationships'][0]['shareholdings']),
-            1
+            shareholder_with_bvd_id["relationships"][0]["total_percentage"], 4.03
         )
 
-        self.assertEqual(
-            shareholder_with_bvd_id['relationships'][0]['shareholdings'][0]['percentage'],
-            4.03
-        )
-        self.assertEqual(
-            shareholder_with_bvd_id['relationships'][0]['total_percentage'],
-            4.03
-        )
 
 class TestSearchRequest(unittest.TestCase):
     def setUp(self):
@@ -119,111 +119,112 @@ class TestSearchRequest(unittest.TestCase):
     def test_search_returns_rate_limit_error(self):
         responses.add(
             responses.POST,
-            'https://orbis.bvdinfo.com/api/orbis/Companies/data',
-            status=429)
+            "https://orbis.bvdinfo.com/api/orbis/Companies/data",
+            status=429,
+        )
 
         result = self.app.post(
-            '/search',
+            "/search",
             json={
-                'credentials': {'key': '123456789'},
-                'is_demo': False,
-                'input_data': {
-                    'country': 'GBR',
-                    'name': 'PassFort',
-                    'state': '',
-                    'number': ''
-                }
-            }
+                "credentials": {"key": "123456789"},
+                "is_demo": False,
+                "input_data": {
+                    "country": "GBR",
+                    "name": "PassFort",
+                    "state": "",
+                    "number": "",
+                },
+            },
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(len(result.json['errors']), 1)
-        self.assertEqual(result.json['errors'][0]['code'], 302)
+        self.assertEqual(len(result.json["errors"]), 1)
+        self.assertEqual(result.json["errors"][0]["code"], 302)
         self.assertEqual(
-            result.json['errors'][0]['message'],
-            "Provider rate limit exceeded"
+            result.json["errors"][0]["message"], "Provider rate limit exceeded"
         )
 
     @responses.activate
     def test_connection_error(self):
         result = self.app.post(
-            '/search',
+            "/search",
             json={
-                'credentials': {'key': '123456789'},
-                'is_demo': False,
-                'input_data': {
-                    'country': 'GBR',
-                    'name': 'PassFort',
-                    'state': '',
-                    'number': ''
-                }
-            }
+                "credentials": {"key": "123456789"},
+                "is_demo": False,
+                "input_data": {
+                    "country": "GBR",
+                    "name": "PassFort",
+                    "state": "",
+                    "number": "",
+                },
+            },
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(len(result.json['errors']), 1)
-        self.assertEqual(result.json['errors'][0]['code'], 302)
+        self.assertEqual(len(result.json["errors"]), 1)
+        self.assertEqual(result.json["errors"][0]["code"], 302)
         self.assertEqual(
-            result.json['errors'][0]['message'],
-            "Failed to connect to provider"
+            result.json["errors"][0]["message"], "Failed to connect to provider"
         )
 
     @responses.activate
     def test_bad_provider_response(self):
         responses.add(
             responses.POST,
-            'https://orbis.bvdinfo.com/api/orbis/Companies/data',
-            json={'bad': 'response'},
-            status=200)
+            "https://orbis.bvdinfo.com/api/orbis/Companies/data",
+            json={"bad": "response"},
+            status=200,
+        )
 
         result = self.app.post(
-            '/search',
+            "/search",
             json={
-                'credentials': {'key': '123456789'},
-                'is_demo': False,
-                'input_data': {
-                    'country': 'GBR',
-                    'name': 'PassFort',
-                    'state': '',
-                    'number': ''
-                }
-            }
+                "credentials": {"key": "123456789"},
+                "is_demo": False,
+                "input_data": {
+                    "country": "GBR",
+                    "name": "PassFort",
+                    "state": "",
+                    "number": "",
+                },
+            },
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(len(result.json['errors']), 1)
-        self.assertEqual(result.json['errors'][0]['code'], 303)
+        self.assertEqual(len(result.json["errors"]), 1)
+        self.assertEqual(result.json["errors"][0]["code"], 303)
         self.assertEqual(
-            result.json['errors'][0]['message'],
-            "Provider returned data in an unexpected format"
+            result.json["errors"][0]["message"],
+            "Provider returned data in an unexpected format",
         )
 
     @responses.activate
     def test_bad_provider_response(self):
         responses.add(
             responses.POST,
-            'https://orbis.bvdinfo.com/api/orbis/Companies/data',
-            body='not json',
-            status=200)
+            "https://orbis.bvdinfo.com/api/orbis/Companies/data",
+            body="not json",
+            status=200,
+        )
 
         result = self.app.post(
-            '/search',
+            "/search",
             json={
-                'credentials': {'key': '123456789'},
-                'is_demo': False,
-                'input_data': {
-                    'country': 'GBR',
-                    'name': 'PassFort',
-                    'state': '',
-                    'number': ''
-                }
-            }
+                "credentials": {"key": "123456789"},
+                "is_demo": False,
+                "input_data": {
+                    "country": "GBR",
+                    "name": "PassFort",
+                    "state": "",
+                    "number": "",
+                },
+            },
         )
 
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(len(result.json['errors']), 1)
-        self.assertEqual(result.json['errors'][0]['code'], 303)
+        self.assertEqual(len(result.json["errors"]), 1)
+        self.assertEqual(result.json["errors"][0]["code"], 303)
         self.assertEqual(
-            result.json['errors'][0]['message'],
-            "Provider returned data in an unexpected format"
+            result.json["errors"][0]["message"],
+            "Provider returned data in an unexpected format",
         )
