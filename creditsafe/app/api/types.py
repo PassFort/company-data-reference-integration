@@ -142,6 +142,14 @@ class CreditSafeCredentials(Model):
     password = StringType(required=True)
 
 
+# Some countries (only Brazil known for now) only produce
+# results with a specified search language (presumably because
+# the implicit default is English) and need to be overridden.
+COUNTRY_DEFAULT_SEARCH_LANGUAGE = {
+    'BRA': 'PT'
+}
+
+
 class SearchInput(Model):
     # Name or company number
     query = StringType(default=None)
@@ -160,11 +168,18 @@ class SearchInput(Model):
             'USA', 'CAN'
         }
 
+    @property
+    def language_override(self):
+        return COUNTRY_DEFAULT_SEARCH_LANGUAGE.get(self.country)
+
     def build_queries(self):
         country_code = self.get_creditsafe_country()
         all_queries = []
         any_queries = []
         all_queries.append(f'countries={country_code}')
+
+        if self.language_override is not None:
+            all_queries.append(f'language={self.language_override}')
 
         if self.supports_state and self.state:
             # Only supports state and name search, not state and number
@@ -188,6 +203,24 @@ class SearchInput(Model):
 class ReportInput(Model):
     creditsafe_id = StringType(required=True)
     country_of_incorporation = StringType(default=None)
+
+    @property
+    def language_override(self):
+        if self.country_of_incorporation is None:
+            return None
+
+        return COUNTRY_DEFAULT_SEARCH_LANGUAGE.get(self.country_of_incorporation)
+
+    def build_query(self):
+        query_params = []
+
+        if self.language_override is not None:
+            query_params.append(f'language={self.language_override}')
+
+        if self.country_of_incorporation == 'DEU':
+            query_params.append('customData=de_reason_code::1')  # 1 is code for Credit Decisioning
+
+        return '&'.join(query_params)
 
 
 class CreditSafeSearchRequest(Model):

@@ -130,8 +130,9 @@ class CreditSafeHandler:
         # Valid for 1 hour. Multiple valid tokens can exist at the same time.
         token = self.get_token(self.credentials.username, self.credentials.password)
         url = f'{self.base_url}/companies/{input_data.creditsafe_id}'
-        if input_data.country_of_incorporation == 'DEU':
-            url = f'{url}?customData=de_reason_code::1'  # 1 is code for Credit Decisioning
+        params = input_data.build_query()
+        if params:
+            url = f'{url}?{params}'
         response = self.session.get(
             url,
             headers={
