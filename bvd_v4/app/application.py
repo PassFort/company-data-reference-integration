@@ -45,7 +45,9 @@ def health():
 def get_bvd_id(client, country, bvd_id, company_number, name, state):
     if bvd_id is not None:
         return bvd_id
-    result = client.search(company_number=company_number, country=country, name=name, state=state)
+    result = client.search(
+        company_number=company_number, country=country, name=name, state=state
+    )
     hits = result.sorted_hits()
     if hits:
         return hits[0].bvd_id
@@ -174,9 +176,7 @@ def company_search(request):
         SearchResponse(
             {
                 "output_data": [
-                    Candidate.from_bvd(hit)
-                    for hit
-                    in search_results.sorted_hits()
+                    Candidate.from_bvd(hit) for hit in search_results.sorted_hits()
                 ]
                 if search_results
                 else [],

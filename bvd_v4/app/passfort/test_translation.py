@@ -82,8 +82,7 @@ class TestShareholders(TestCase):
             first_shareholder.relationships[0].associated_role, "BENEFICIAL_OWNER"
         )
         self.assertEqual(
-            first_shareholder.relationships[0].shareholdings[0].percentage,
-            22.5,
+            first_shareholder.relationships[0].shareholdings[0].percentage, 22.5,
         )
         second_shareholder = company_data.associated_entities[1]
         self.assertEqual(second_shareholder.immediate_data.entity_type, "INDIVIDUAL")
@@ -105,8 +104,7 @@ class TestShareholders(TestCase):
             second_shareholder.relationships[0].associated_role, "BENEFICIAL_OWNER"
         )
         self.assertEqual(
-            second_shareholder.relationships[0].shareholdings[0].percentage,
-            19.63,
+            second_shareholder.relationships[0].shareholdings[0].percentage, 19.63,
         )
 
 
@@ -133,12 +131,12 @@ class TestOfficers(TestCase):
                     "2018-12-31T00:00:00",
                     None,
                 ],
-                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Current", "Previous", "Current"],
-                "CPYCONTACTS_HEADER_BareTitle": [
-                    None,
-                    None,
-                    None,
+                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": [
+                    "Current",
+                    "Previous",
+                    "Current",
                 ],
+                "CPYCONTACTS_HEADER_BareTitle": [None, None, None,],
                 "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
                     None,
                     None,
@@ -197,9 +195,7 @@ class TestOfficers(TestCase):
         self.assertEqual(
             officer.immediate_data.personal_details.name.family_name, "Steiner"
         )
-        self.assertEqual(
-            officer.immediate_data.personal_details.dob, date(1969, 12, 9)
-        )
+        self.assertEqual(officer.immediate_data.personal_details.dob, date(1969, 12, 9))
         self.assertEqual(officer.immediate_data.personal_details.nationality, "GBR")
 
         self.assertEqual(len(officer.relationships), 3)
@@ -245,12 +241,12 @@ class TestOfficers(TestCase):
                     "Chief Executive Officer - Executive Contact",
                     "Manager - General Contact",
                 ],
-                "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [
-                    None,
-                    None,
-                    None,
+                "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [None, None, None,],
+                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": [
+                    "Current",
+                    "Current",
+                    "Current",
                 ],
-                "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Current", "Current", "Current"],
                 "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
                     None,
                     None,
@@ -350,35 +346,23 @@ class TestOfficers(TestCase):
 
     def test_previous_associate(self):
 
-        with self.subTest('previous shareholder relationship is not returned'):
+        with self.subTest("previous shareholder relationship is not returned"):
             bvd_data = Data(
                 {
                     "BVD_ID_NUMBER": "GB04366849",
                     "BVD9": "004954174",
                     "CPYCONTACTS_HEADER_Type": ["Individual"],
                     "CPYCONTACTS_HEADER_BvdId": [None],
-                    "CPYCONTACTS_HEADER_IdDirector": [
-                        "P045831593",
-                    ],
-                    "CPYCONTACTS_MEMBERSHIP_Function": [
-                        "Shareholder",
-                    ],
-                    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [
-                        None,
-                    ],
+                    "CPYCONTACTS_HEADER_IdDirector": ["P045831593",],
+                    "CPYCONTACTS_MEMBERSHIP_Function": ["Shareholder",],
+                    "CPYCONTACTS_MEMBERSHIP_EndExpirationDate": [None,],
                     "CPYCONTACTS_MEMBERSHIP_CurrentPrevious": ["Previous"],
                     "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
                         "Mr Charles Harrisson",
                     ],
-                    "CPYCONTACTS_HEADER_Birthdate": [
-                        "1969-12-09T00:00:00",
-                    ],
-                    "CPYCONTACTS_HEADER_NationalityCountryLabel": [
-                        "United Kingdom",
-                    ],
-                    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate": [
-                        None,
-                    ],
+                    "CPYCONTACTS_HEADER_Birthdate": ["1969-12-09T00:00:00",],
+                    "CPYCONTACTS_HEADER_NationalityCountryLabel": ["United Kingdom",],
+                    "CPYCONTACTS_MEMBERSHIP_BeginningNominationDate": [None,],
                 }
             )
             bvd_data.validate()
@@ -388,17 +372,14 @@ class TestOfficers(TestCase):
 
             self.assertEqual(len(company_data.associated_entities), 0)
 
-        with self.subTest('previous officer relationship is returned'):
+        with self.subTest("previous officer relationship is returned"):
             bvd_data = Data(
                 {
                     "BVD_ID_NUMBER": "GB04366849",
                     "BVD9": "004954174",
                     "CPYCONTACTS_HEADER_Type": ["Individual", "Individual"],
                     "CPYCONTACTS_HEADER_BvdId": [None, None],
-                    "CPYCONTACTS_HEADER_IdDirector": [
-                        "P045831593",
-                        "P045831593",
-                    ],
+                    "CPYCONTACTS_HEADER_IdDirector": ["P045831593", "P045831593",],
                     "CPYCONTACTS_MEMBERSHIP_Function": [
                         "Shareholder",
                         "Company secretary",
@@ -451,13 +432,13 @@ class TestOfficers(TestCase):
             self.assertDictEqual(
                 officer.relationships[0].serialize(),
                 {
-                    'relationship_type': 'OFFICER',
-                    'associated_role': 'RESIGNED_OFFICER',
-                    'original_role': 'Company secretary',
-                    'appointed_on': '2005-05-19',
-                    'resigned_on': '2009-05-19',
-                    'is_resigned': True,
-                }
+                    "relationship_type": "OFFICER",
+                    "associated_role": "RESIGNED_OFFICER",
+                    "original_role": "Company secretary",
+                    "appointed_on": "2005-05-19",
+                    "resigned_on": "2009-05-19",
+                    "is_resigned": True,
+                },
             )
 
 
@@ -485,9 +466,7 @@ class TestMergeAssociates(TestCase):
                         {
                             "associated_role": "BENEFICIAL_OWNER",
                             "relationship_type": "SHAREHOLDER",
-                            "shareholdings": [
-                                Shareholding({"percentage": 25})
-                            ],
+                            "shareholdings": [Shareholding({"percentage": 25})],
                         }
                     )
                 ],
@@ -547,9 +526,7 @@ class TestMergeAssociates(TestCase):
                     {
                         "associated_role": "BENEFICIAL_OWNER",
                         "relationship_type": "SHAREHOLDER",
-                        "shareholdings": [
-                            Shareholding({"percentage": 25})
-                        ],
+                        "shareholdings": [Shareholding({"percentage": 25})],
                     }
                 ),
                 Relationship(
@@ -561,52 +538,55 @@ class TestMergeAssociates(TestCase):
     def test_merge_duplicate_relationships(self):
         relationships = [
             # All shareholdings should merge
-            ShareholderRelationship({
-                "associated_role": "BENEFICIAL_OWNER",
-                "relationship_type": "SHAREHOLDER"
-            }),
-            ShareholderRelationship({
-                "associated_role": "BENEFICIAL_OWNER",
-                "relationship_type": "SHAREHOLDER",
-                "shareholdings": [
-                    {
-                        "percentage": 10.63,
-                        "provider_name": "BvD Orbis"
-                    }
-                ]
-            }),
-            ShareholderRelationship({
-                "associated_role": "BENEFICIAL_OWNER",
-                "relationship_type": "SHAREHOLDER",
-                "shareholdings": [
-                    {
-                        "percentage": 20.63,
-                        "provider_name": "BvD Orbis"
-                    }
-                ]
-            }),
-
+            ShareholderRelationship(
+                {
+                    "associated_role": "BENEFICIAL_OWNER",
+                    "relationship_type": "SHAREHOLDER",
+                }
+            ),
+            ShareholderRelationship(
+                {
+                    "associated_role": "BENEFICIAL_OWNER",
+                    "relationship_type": "SHAREHOLDER",
+                    "shareholdings": [
+                        {"percentage": 10.63, "provider_name": "BvD Orbis"}
+                    ],
+                }
+            ),
+            ShareholderRelationship(
+                {
+                    "associated_role": "BENEFICIAL_OWNER",
+                    "relationship_type": "SHAREHOLDER",
+                    "shareholdings": [
+                        {"percentage": 20.63, "provider_name": "BvD Orbis"}
+                    ],
+                }
+            ),
             # This role should not be dedupped as the original role is distinct
-            OfficerRelationship({
-                "appointed_on": "2015-04-28",
-                "associated_role": "DIRECTOR",
-                "original_role": "Director",
-                "relationship_type": "OFFICER"
-            }),
-
-
+            OfficerRelationship(
+                {
+                    "appointed_on": "2015-04-28",
+                    "associated_role": "DIRECTOR",
+                    "original_role": "Director",
+                    "relationship_type": "OFFICER",
+                }
+            ),
             # This pair should dedup with and keep the appointed on date
-            OfficerRelationship({
-                "appointed_on": "2018-07-12",
-                "associated_role": "DIRECTOR",
-                "original_role": "Director - Executive Contact",
-                "relationship_type": "OFFICER"
-            }),
-            OfficerRelationship({
-                "associated_role": "DIRECTOR",
-                "original_role": "Director - Executive Contact",
-                "relationship_type": "OFFICER"
-            }),
+            OfficerRelationship(
+                {
+                    "appointed_on": "2018-07-12",
+                    "associated_role": "DIRECTOR",
+                    "original_role": "Director - Executive Contact",
+                    "relationship_type": "OFFICER",
+                }
+            ),
+            OfficerRelationship(
+                {
+                    "associated_role": "DIRECTOR",
+                    "original_role": "Director - Executive Contact",
+                    "relationship_type": "OFFICER",
+                }
+            ),
         ]
 
         deduped = Relationship.dedup(relationships)
@@ -620,16 +600,10 @@ class TestMergeAssociates(TestCase):
                     "associated_role": "BENEFICIAL_OWNER",
                     "relationship_type": "SHAREHOLDER",
                     "shareholdings": [
-                        {
-                            "percentage": 10.63,
-                            "provider_name": "BvD Orbis"
-                        },
-                        {
-                            "percentage": 20.63,
-                            "provider_name": "BvD Orbis"
-                        },
+                        {"percentage": 10.63, "provider_name": "BvD Orbis"},
+                        {"percentage": 20.63, "provider_name": "BvD Orbis"},
                     ],
-                    "total_percentage": 31.26
+                    "total_percentage": 31.26,
                 },
                 {
                     "appointed_on": "2015-04-28",
@@ -642,7 +616,7 @@ class TestMergeAssociates(TestCase):
                     "relationship_type": "OFFICER",
                     "original_role": "Director - Executive Contact",
                     "appointed_on": "2018-07-12",
-                }
+                },
             ],
         )
 
@@ -844,44 +818,46 @@ class TestCompanyNames(TestCase):
 
 class TestIndividualNames(TestCase):
     def test_officer_name(self):
-        bvd_data = Data({
-            "CPYCONTACTS_HEADER_BareTitle": [
-                None,
-                "Sir",
-                "The Rt.hon. Baroness",
-                None,
-                None,
-            ],
-            "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
-                "Martin",
-                "Michael",
-                "Baroness",
-                "John",
-                None,
-            ],
-            "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [
-                "Peter",
-                "Richardson",
-                "Elizabeth Conway",
-                None,
-                None,
-            ],
-            "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [
-                "George",
-                "Angus",
-                "Symons",
-                "Smith",
-                "Flandorfer",
-            ],
-            "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
-                "Mr Martin Peter George",
-                "Sir Michael Richardson Angus",
-                # This is weird but it is what BvD are returning
-                "The Rt.hon. Baroness Baroness Elizabeth Conway Symons",
-                "John Smith",
-                "Dr. Flandorfer"
-            ],
-        })
+        bvd_data = Data(
+            {
+                "CPYCONTACTS_HEADER_BareTitle": [
+                    None,
+                    "Sir",
+                    "The Rt.hon. Baroness",
+                    None,
+                    None,
+                ],
+                "CPYCONTACTS_HEADER_FirstNameOriginalLanguagePreferred": [
+                    "Martin",
+                    "Michael",
+                    "Baroness",
+                    "John",
+                    None,
+                ],
+                "CPYCONTACTS_HEADER_MiddleNameOriginalLanguagePreferred": [
+                    "Peter",
+                    "Richardson",
+                    "Elizabeth Conway",
+                    None,
+                    None,
+                ],
+                "CPYCONTACTS_HEADER_LastNameOriginalLanguagePreferred": [
+                    "George",
+                    "Angus",
+                    "Symons",
+                    "Smith",
+                    "Flandorfer",
+                ],
+                "CPYCONTACTS_HEADER_FullNameOriginalLanguagePreferred": [
+                    "Mr Martin Peter George",
+                    "Sir Michael Richardson Angus",
+                    # This is weird but it is what BvD are returning
+                    "The Rt.hon. Baroness Baroness Elizabeth Conway Symons",
+                    "John Smith",
+                    "Dr. Flandorfer",
+                ],
+            }
+        )
 
         name = FullName.from_bvd_contact(0, bvd_data)
         self.assertEqual(name.title, "Mr")
@@ -904,6 +880,6 @@ class TestIndividualNames(TestCase):
         self.assertEqual(name.family_name, "Smith")
 
         name = FullName.from_bvd_contact(4, bvd_data)
-        self.assertEqual(name.title, 'Dr.')
+        self.assertEqual(name.title, "Dr.")
         self.assertEqual(name.given_names, [])
         self.assertEqual(name.family_name, "Flandorfer")

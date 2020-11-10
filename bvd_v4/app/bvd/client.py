@@ -139,48 +139,44 @@ class Client:
         return self._request(response_model, get_demo_data, "PUT", *args, **kwargs)
 
     def search(self, name=None, country=None, state=None, company_number=None):
-        return self._get(
+        return self._post(
             SearchResult,
             lambda: search_demo(name, country, state, company_number),
             f"{self.base_url}/Companies/data",
             headers={"Content-Type": "application/json", "ApiToken": self.token},
-            params={
-                "QUERY": json.dumps(
+            json={
+                "WHERE": [
                     {
-                        "WHERE": [
-                            {
-                                "MATCH": {
-                                    "Criteria": {
-                                        key: value
-                                        for key, value in {
-                                            "Name": quote(name) if name else None,
-                                            "NationalId": company_number,
-                                            "Country": country_alpha_3_to_2(country),
-                                            "State": state,
-                                        }.items()
-                                        if value is not None
-                                    }
-                                }
+                        "MATCH": {
+                            "Criteria": {
+                                key: value
+                                for key, value in {
+                                    "Name": name,
+                                    "NationalId": company_number,
+                                    "Country": country_alpha_3_to_2(country),
+                                    "State": state,
+                                }.items()
+                                if value is not None
                             }
-                        ],
-                        "SELECT": [
-                            "BVDID",
-                            "MATCH.BVD9",
-                            "MATCH.NAME",
-                            "MATCH.STATUS",
-                            "MATCH.NAME_INTERNATIONAL",
-                            "MATCH.ADDRESS",
-                            "MATCH.POSTCODE",
-                            "MATCH.CITY",
-                            "MATCH.COUNTRY",
-                            "MATCH.NATIONAL_ID",
-                            "MATCH.STATE",
-                            "MATCH.ADDRESS_TYPE",
-                            "MATCH.HINT",
-                            "MATCH.SCORE",
-                        ],
+                        }
                     }
-                )
+                ],
+                "SELECT": [
+                    "BVDID",
+                    "MATCH.BVD9",
+                    "MATCH.NAME",
+                    "MATCH.STATUS",
+                    "MATCH.NAME_INTERNATIONAL",
+                    "MATCH.ADDRESS",
+                    "MATCH.POSTCODE",
+                    "MATCH.CITY",
+                    "MATCH.COUNTRY",
+                    "MATCH.NATIONAL_ID",
+                    "MATCH.STATE",
+                    "MATCH.ADDRESS_TYPE",
+                    "MATCH.HINT",
+                    "MATCH.SCORE",
+                ],
             },
         )
 
@@ -248,8 +244,12 @@ class Client:
                             {
                                 "UpdatedReport": {
                                     "Period": {
-                                        "Start": from_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                                        "End": to_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                                        "Start": from_datetime.strftime(
+                                            "%Y-%m-%dT%H:%M:%S.%fZ"
+                                        ),
+                                        "End": to_datetime.strftime(
+                                            "%Y-%m-%dT%H:%M:%S.%fZ"
+                                        ),
                                     },
                                     **update_query,
                                 }
