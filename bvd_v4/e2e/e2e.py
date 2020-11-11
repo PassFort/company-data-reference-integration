@@ -198,6 +198,7 @@ class TestSearchRequest(unittest.TestCase):
             "Provider returned data in an unexpected format",
         )
 
+
     @responses.activate
     def test_bad_provider_response(self):
         responses.add(
@@ -227,4 +228,36 @@ class TestSearchRequest(unittest.TestCase):
         self.assertEqual(
             result.json["errors"][0]["message"],
             "Provider returned data in an unexpected format",
+        )
+
+
+    @responses.activate
+    def test_provider_auth_error(self):
+        responses.add(
+            "POST",
+            "https://orbis.bvdinfo.com/api/orbis/Companies/data",
+            status=401,
+            json={"error": "Example provider error message"}
+        )
+
+        result = self.app.post(
+            "/search",
+            json={
+                "credentials": {"key": "123456789"},
+                "is_demo": False,
+                "input_data": {
+                    "country": "GBR",
+                    "name": "PassFort",
+                    "state": "",
+                    "number": ""
+                }
+            }
+        )
+
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(len(result.json["errors"]), 1)
+        self.assertEqual(result.json["errors"][0]["code"], 205)
+        self.assertEqual(
+            result.json["errors"][0]["message"],
+            "Failed to authenticate with the provider. Please check your credentials."
         )

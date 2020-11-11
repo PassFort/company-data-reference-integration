@@ -115,7 +115,7 @@ def format_names(first, last, full, entity_type):
 class ErrorCode(Enum):
     PROVIDER_CONNECTION_ERROR = 302
     PROVIDER_UNKNOWN_ERROR = 303
-
+    PROVIDER_MISCONFIGURATION_ERROR = 205
 
 class Error(BaseModel):
     source = StringType()
@@ -162,6 +162,14 @@ class Error(BaseModel):
                 "info": cause,
             }
         )
+
+    def provider_bad_credentials(cause):
+        return Error({
+            'code': ErrorCode.PROVIDER_MISCONFIGURATION_ERROR.value,
+            'source': 'PROVIDER',
+            'message': 'Failed to authenticate with the provider. Please check your credentials.',
+            "info": cause,
+        })
 
 
 class EntityType(Enum):

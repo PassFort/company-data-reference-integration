@@ -106,6 +106,9 @@ class Client:
             elif e.response.status_code == 429:
                 self.raw_responses.append(e.response.text)
                 self._record_error(Error.provider_rate_limit_exceeded(str(e)))
+            elif e.response.status_code in {403, 401}:
+                self.raw_responses.append(e.response.text)
+                self._record_error(Error.provider_bad_credentials(str(e)))
             else:
                 self.raw_responses.append(e.response.text)
                 self._record_error(Error.provider_unknown_error(str(e)))
