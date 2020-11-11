@@ -129,7 +129,7 @@ class Error(BaseModel):
                 "source": "PROVIDER",
                 "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
                 "message": "Unknown provider error",
-                "info": cause,
+                "info": {"raw": cause},
             }
         )
 
@@ -139,7 +139,7 @@ class Error(BaseModel):
                 "source": "PROVIDER",
                 "code": ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
                 "message": "Provider returned data in an unexpected format",
-                "info": cause,
+                "info": {"raw": cause},
             }
         )
 
@@ -149,7 +149,7 @@ class Error(BaseModel):
                 "source": "PROVIDER",
                 "code": ErrorCode.PROVIDER_CONNECTION_ERROR.value,
                 "message": "Failed to connect to provider",
-                "info": cause,
+                "info": {"raw": cause},
             }
         )
 
@@ -159,7 +159,7 @@ class Error(BaseModel):
                 "source": "PROVIDER",
                 "code": ErrorCode.PROVIDER_CONNECTION_ERROR.value,
                 "message": "Provider rate limit exceeded",
-                "info": cause,
+                "info": {"raw": cause},
             }
         )
 
@@ -168,7 +168,7 @@ class Error(BaseModel):
             'code': ErrorCode.PROVIDER_MISCONFIGURATION_ERROR.value,
             'source': 'PROVIDER',
             'message': 'Failed to authenticate with the provider. Please check your credentials.',
-            "info": cause,
+            "info": {"raw": cause},
         })
 
 
