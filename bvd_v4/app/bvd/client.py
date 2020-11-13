@@ -234,7 +234,8 @@ class Client:
             json={"WHERE": [{"BvDID": [bvd_id]}]},
         )
 
-    def _fetch_updates(self, update_query, record_set_id, from_datetime, to_datetime):
+    def _fetch_updates(self, dataset, record_set_id, from_datetime, to_datetime):
+
         return self._get(
             FetchUpdatesResult,
             lambda: demo_path("events"),
@@ -244,19 +245,7 @@ class Client:
                 "QUERY": json.dumps(
                     {
                         "WHERE": [
-                            {
-                                "UpdatedReport": {
-                                    "Period": {
-                                        "Start": from_datetime.strftime(
-                                            "%Y-%m-%dT%H:%M:%S.%fZ"
-                                        ),
-                                        "End": to_datetime.strftime(
-                                            "%Y-%m-%dT%H:%M:%S.%fZ"
-                                        ),
-                                    },
-                                    **update_query,
-                                }
-                            },
+                            dataset.update_query(from_datetime, to_datetime),
                             {"AND": [{"RecordSet": str(record_set_id)}]},
                         ],
                         "SELECT": DataSet.UPDATE.data_fields,
@@ -266,10 +255,10 @@ class Client:
         )
 
     def fetch_registry_updates(self, *args, **kwargs):
-        return self._fetch_updates(DataSet.REGISTRY.update_query, *args, **kwargs)
+        return self._fetch_updates(DataSet.REGISTRY, *args, **kwargs)
 
     def fetch_ownership_updates(self, *args, **kwargs):
-        return self._fetch_updates(DataSet.OWNERSHIP.update_query, *args, **kwargs)
+        return self._fetch_updates(DataSet.OWNERSHIP, *args, **kwargs)
 
     def fetch_officers_updates(self, *args, **kwargs):
-        return self._fetch_updates(DataSet.OFFICERS.update_query, *args, **kwargs)
+        return self._fetch_updates(DataSet.OFFICERS, *args, **kwargs)

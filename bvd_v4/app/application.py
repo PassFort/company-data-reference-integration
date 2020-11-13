@@ -22,6 +22,7 @@ from app.passfort.types import (
     RegistryCheckResponse,
     RegistryCompanyData,
     RegistryEvent,
+    ShareholdersEvent,
     SearchRequest,
     SearchResponse,
     ShareholdersEvent,

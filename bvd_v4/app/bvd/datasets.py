@@ -120,20 +120,53 @@ class DataSet(Enum):
         elif self == DataSet.UPDATE:
             return list(UPDATE_FIELDS)
 
-    @property
-    def update_query(self):
+    def update_query(self, from_datetime, to_datetime):
         if self == DataSet.REGISTRY:
-            return {"General": ["1", "2", "8"]}
+            return {
+                "UpdatedReport": {
+                    "Period": {
+                        "Start": from_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                        "End": to_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                    },
+                    "General": ["1", "2", "8"]
+                }
+
+            }
         elif self == DataSet.OFFICERS:
             return {
-                "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
-                    "COMMON_DIRECTORS_00",
-                    "COMMON_DIRECTORS_01",
-                    "COMMON_DIRECTORS_02",
-                    "COMMON_DIRECTORS_09",
-                ],
+                "UpdatedReport": {
+                    "Period": {
+                        "Start": from_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                        "End": to_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                    },
+                    "UpdatedCompaniesBasedOnMembershipsWithWocoFlags": [
+                        "COMMON_DIRECTORS_00",
+                        "COMMON_DIRECTORS_01",
+                        "COMMON_DIRECTORS_02",
+                        "COMMON_DIRECTORS_09",
+                    ],
+                }
             }
         elif self == DataSet.OWNERSHIP:
             return {
-                "UpdatedWoco4OwnerShip": ["Ownership_bo_w", "Ownership_wof",],
+                "UpdatedOwnership": {
+                    "Period": {
+                        "Start": from_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                        "End": to_datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                    },
+                    "ShareHolders":[
+                        "DirectShareholderUpdated",
+                        "FirstLevelShareholderMoreThan50",
+                        "FirstLevelShareholderAny",
+                        "ShDirNewlyIdentified",
+                        "ShDirNoLongerIdentified"
+                    ],
+                    "BeneficialOwners":[
+                        "BONewlyIdentified",
+                        "BONewlyIdentifiedRestriction",
+                        "BONoLongerIdentified",
+                        "BONoLongerIdentifiedRestriction",
+                        "BOFromRegister"
+                    ]
+                }
             }
