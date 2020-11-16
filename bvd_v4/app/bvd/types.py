@@ -107,7 +107,24 @@ class RegistryData(Model):
     industry_secondary_label = MaybeListType(
         StringType(), serialized_name="INDUSTRY_SECONDARY_LABEL", default=list
     )
-
+    us_sic_core_code = MaybeListType(
+        StringType(), serialized_name="USSIC_CORE_CODE", default=list
+    )
+    us_sic_core_label = MaybeListType(
+        StringType(), serialized_name="USSIC_CORE_LABEL", default=list
+    )
+    nace2_core_code = MaybeListType(
+        StringType(), serialized_name="NACE2_CORE_CODE", default=list
+    )
+    nace2_core_label = MaybeListType(
+        StringType(), serialized_name="NACE2_CORE_LABEL", default=list
+    )
+    naics2017_core_code = MaybeListType(
+        StringType(), serialized_name="NAICS2017_CORE_CODE", default=list
+    )
+    naics2017_core_label = MaybeListType(
+        StringType(), serialized_name="NAICS2017_CORE_LABEL", default=list
+    )
     # Officers
     contact_bvd_id = MaybeListType(
         StringType(), serialized_name="CPYCONTACTS_HEADER_BvdId", default=list
