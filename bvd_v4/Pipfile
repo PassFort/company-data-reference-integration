@@ -9,6 +9,7 @@ mypy = "==0.511"
 [packages]
 coverage = "*"
 codecov = "*"
+datadog = "*"
 flask = "*"
 gunicorn = "==19.5.0"
 mock = "*"

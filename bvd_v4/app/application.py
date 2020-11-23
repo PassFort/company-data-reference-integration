@@ -1,5 +1,8 @@
-import os
+import asyncio
 import logging
+import os
+import time
+from functools import wraps
 
 from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
@@ -9,6 +12,7 @@ from app.bvd.datasets import DataSet
 from app.bvd.client import Client as BvDClient
 from app.passfort.client import Client as PassFortClient
 from app.passfort.company_data import CompanyData, CompanyDataCheckResponse
+from app.bvd.types import SearchResult
 from app.passfort.types import (
     AddToPortfolioRequest,
     Candidate,
@@ -29,6 +33,8 @@ from app.passfort.types import (
     OfficersEvent,
 )
 
+logging.getLogger().setLevel(logging.INFO)
+
 app = Flask(__name__)
 
 sentry_url = os.environ.get("SENTRY_URL")
@@ -38,6 +44,66 @@ else:
     logging.warning("SENTRY_URL not provided")
 
 
+class DataDogWrapper:
+    def __init__(self, mock=True):
+        self.mock = mock
+
+    def increment(self, metric, value=1, tags=None, sample_rate=1):
+        from datadog import statsd
+
+        if self.mock:
+            logging.info('Increment {} called with value {} and tags: {}'.format(metric, value, tags))
+        else:
+            try:
+                statsd.increment(metric, value, tags, sample_rate)
+            except Exception:
+                logging.error('Statsd error when increment {} was '
+                              'called with value {} and tags: {}'.format(metric, value, tags))
+
+    def histogram(self, metric, value, tags=None, sample_rate=1):
+        from datadog import statsd
+
+        if self.mock:
+            logging.info('Histogram {} called with value {} and tags: {}'.format(metric, value, tags))
+        try:
+            statsd.histogram(metric, value, tags, sample_rate)
+        except Exception:
+            logging.error('Statsd error when histogram {} was '
+                          'called with value {} and tags: {}'.format(metric, value, tags))
+
+    def track_time(self, metric):
+        def track_time_decorator(fn):
+            @wraps(fn)
+            def wrapped_fn(*args, **kwargs):
+                start = time.time()
+                try:
+                    result = fn(*args, **kwargs)
+                except Exception as e:
+                    self.histogram(metric + '.error', time.time() - start)
+                    raise e
+
+                self.histogram(metric, time.time() - start)
+                return result
+
+            return wrapped_fn
+
+        return track_time_decorator
+
+
+def initialize_datadog():
+    from datadog import initialize
+
+    try:
+        initialize(statsd_host=os.environ['STATSD_HOST_IP'],
+                   statsd_port=os.environ['STATSD_HOST_PORT'])
+        return DataDogWrapper(mock=False)
+    except Exception:
+        return DataDogWrapper(mock=True)
+
+
+app.dd = initialize_datadog()
+
+    
 @app.route("/health")
 def health():
     return jsonify("success")
@@ -57,6 +123,7 @@ def get_bvd_id(client, country, bvd_id, company_number, name, state):
 
 
 @app.route("/company-data-check", methods=["POST"])
+@app.dd.track_time("passfort.services.bvd_v4.report")
 @request_model(RegistryCheckRequest)
 def company_data_check(request):
     # Assuming we always have either a BvD ID or a company number
@@ -164,6 +231,7 @@ def ownership_check(request):
 
 
 @app.route("/search", methods=["POST"])
+@app.dd.track_time("passfort.services.bvd_v4.search")
 @request_model(SearchRequest)
 def company_search(request):
     client = BvDClient(request.credentials.key, request.is_demo)
@@ -190,6 +258,7 @@ def company_search(request):
 
 
 @app.route("/monitoring_portfolio", methods=["POST"])
+@app.dd.track_time("passfort.services.bvd_v4.monitoring_portfolio")
 @request_model(CreatePortfolioRequest)
 def create_monitoring_portfolio(request):
     client = BvDClient(request.credentials.key, request.is_demo)
@@ -206,6 +275,7 @@ def create_monitoring_portfolio(request):
 
 
 @app.route("/monitoring", methods=["POST"])
+@app.dd.track_time("passfort.services.bvd_v4.monitoring")
 @request_model(AddToPortfolioRequest)
 def add_to_monitoring_portfolio(request):
     client = BvDClient(request.credentials.key, request.is_demo)
@@ -224,6 +294,7 @@ def add_to_monitoring_portfolio(request):
 
 
 @app.route("/monitoring_events", methods=["POST"])
+@app.dd.track_time("passfort.services.bvd_v4.monitoring_events")
 @request_model(MonitoringEventsRequest)
 def get_monitoring_events(request):
     bvd_client = BvDClient(request.credentials.key, request.is_demo)
