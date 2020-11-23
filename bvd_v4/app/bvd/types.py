@@ -400,8 +400,15 @@ class SearchResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
 
+    def merged_hits(a, b):
+        return sorted(
+            (a.data if a else []) + (b.data if b else []),
+            reverse=True,
+            key=lambda hit: hit.score()
+        )
+
     def sorted_hits(self):
-        return sorted(self.data, reverse=True, key=lambda hit: hit.score(),)
+        return sorted(self.data, reverse=True, key=lambda hit: hit.score())
 
 
 class Update(Model):

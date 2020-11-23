@@ -229,19 +229,34 @@ def ownership_check(request):
         ).to_primitive()
     )
 
-
 @app.route("/search", methods=["POST"])
 @app.dd.track_time("passfort.services.bvd_v4.search")
 @request_model(SearchRequest)
 def company_search(request):
     client = BvDClient(request.credentials.key, request.is_demo)
-    search_results = client.search(
-        request.input_data.name,
-        country=request.input_data.country,
-        state=request.input_data.state,
-        company_number=request.input_data.number,
-    )
-    hits = search_results.sorted_hits() if search_results else []
+
+    if request.input_data.name == request.input_data.number:
+        input_data = request.input_data
+        name_results = client.search(
+            name=input_data.name,
+            country=input_data.country,
+            state=input_data.state,
+        )
+        number_results = client.search(
+            company_number=input_data.number,
+            country=input_data.country,
+            state=input_data.state,
+        )
+        hits = SearchResult.merged_hits(name_results, number_results)
+    else:
+        search_results = client.search(
+            request.input_data.name,
+            country=request.input_data.country,
+            state=request.input_data.state,
+            company_number=request.input_data.number,
+        )
+        hits = search_results.sorted_hits() if search_results else []
+
     return jsonify(
         SearchResponse(
             {
