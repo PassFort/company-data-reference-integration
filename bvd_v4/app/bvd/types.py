@@ -401,10 +401,17 @@ class SearchResult(Model):
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
 
     def merged_hits(a, b):
-        return sorted(
+        lowest_score_first = sorted(
             (a.data if a else []) + (b.data if b else []),
-            reverse=True,
             key=lambda hit: hit.score()
+        )
+
+        return reversed(
+            {
+                hit.bvd_id: hit
+                for hit
+                in lowest_score_first
+            }.values()
         )
 
     def sorted_hits(self):
