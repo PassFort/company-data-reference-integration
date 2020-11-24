@@ -1,4 +1,5 @@
 import logging
+from collections import OrderedDict
 
 from schematics import Model
 from schematics.exceptions import (
@@ -406,13 +407,13 @@ class SearchResult(Model):
             key=lambda hit: hit.score()
         )
 
-        return reversed(
-            {
-                hit.bvd_id: hit
+        return reversed(list(
+            OrderedDict(
+                (hit.bvd_id, hit)
                 for hit
                 in lowest_score_first
-            }.values()
-        )
+            ).values()
+        ))
 
     def sorted_hits(self):
         return sorted(self.data, reverse=True, key=lambda hit: hit.score())
