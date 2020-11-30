@@ -73,6 +73,9 @@ parameters:
   loqate:
     type: boolean
     default: false
+  g2_kyc_automation:
+    type: boolean
+    default: false
 
 executors:
   python-builder:
@@ -1070,6 +1073,37 @@ workflows:
           to: production
           requires:
             - unit_loqate
+          filters:
+            branches:
+              only:
+                - master
+  g2_kyc_automation:
+    when: << pipeline.parameters.g2_kyc_automation >>
+    jobs:
+      - build:
+          name: build_g2_kyc_automation
+          package: g2_kyc_automation
+      - unit:
+          name: unit_g2_kyc_automation
+          package: g2_kyc_automation
+          requires:
+            - build_g2_kyc_automation
+      - deploy_common:
+          name: deploy_g2_kyc_automation_staging
+          package: g2_kyc_automation
+          to: staging
+          requires:
+            - unit_g2_kyc_automation
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy_common:
+          name: deploy_g2_kyc_automation_production
+          package: g2_kyc_automation
+          to: production
+          requires:
+            - unit_g2_kyc_automation
           filters:
             branches:
               only:
