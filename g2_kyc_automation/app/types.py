@@ -255,8 +255,13 @@ class Error(object):
 
 
 class RequestBase(Model):
-    credentials = ModelType(Credentials, required=True)
-    config = ModelType(Config, required=True)
+    credentials: Credentials = ModelType(Credentials, required=True)
+    config: Config = ModelType(Config, required=True)
+    is_demo: bool = BooleanType(default=False)
+
+
+class CaseIdInput(Model):
+    case_id = StringType(required=True)
 
 
 class ScreeningRequest(RequestBase):
@@ -264,8 +269,8 @@ class ScreeningRequest(RequestBase):
 
 
 class PollRequest(RequestBase):
-    case_id = StringType(required=True)
+    input_data = ModelType(CaseIdInput, required=True)
 
 
 class ReportRequest(RequestBase):
-    case_id = StringType(required=True)
+    input_data = ModelType(CaseIdInput, required=True)

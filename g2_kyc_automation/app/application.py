@@ -5,6 +5,9 @@ from functools import wraps
 
 from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
+from app.types import ScreeningRequest, PollRequest
+from app.api_client import ApiClient
+from app.validation import request_model
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -23,8 +26,15 @@ def health():
 
 
 @app.route("/screening_request", methods=['POST'])
-def screening_request():
-    abort(501)
+@request_model(ScreeningRequest)
+def screening_request(screening_request: ScreeningRequest):
+    client = ApiClient(
+        screening_request.credentials.client_id,
+        screening_request.credentials.client_secret,
+        use_sandbox=screening_request.config.use_sandbox,
+        is_demo=screening_request.is_demo,
+    )
+    return client.get_auth_token()
 
 
 @app.route("/poll_report", methods=['POST'])
