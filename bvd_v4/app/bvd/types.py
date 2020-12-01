@@ -1,4 +1,5 @@
 import logging
+from collections import OrderedDict
 
 from schematics import Model
 from schematics.exceptions import (
@@ -400,8 +401,22 @@ class SearchResult(Model):
     search_summary = ModelType(SearchSummary, serialized_name="SearchSummary")
     data = MaybeListType(ModelType(SearchData), serialized_name="Data", required=True)
 
+    def merged_hits(a, b):
+        lowest_score_first = sorted(
+            (a.data if a else []) + (b.data if b else []),
+            key=lambda hit: hit.score()
+        )
+
+        return reversed(list(
+            OrderedDict(
+                (hit.bvd_id, hit)
+                for hit
+                in lowest_score_first
+            ).values()
+        ))
+
     def sorted_hits(self):
-        return sorted(self.data, reverse=True, key=lambda hit: hit.score(),)
+        return sorted(self.data, reverse=True, key=lambda hit: hit.score())
 
 
 class Update(Model):

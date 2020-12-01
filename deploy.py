@@ -30,6 +30,7 @@ integrations = {
     'gdc_worldview': './gdc_worldview',
     'capita': './capita',
     'loqate': './loqate',
+    'g2_kyc_automation': './g2_kyc_automation',
 }
 
 sentry = {

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: integrations-g2-kyc-automation
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  selector:
+    matchLabels:
+      passfort: integrations-g2-kyc-automation
+  progressDeadlineSeconds: 240
+  template:
+    metadata:
+      name: integrations-g2-kyc-automation
+      labels:
+        passfort: integrations-g2-kyc-automation
+    spec:
+      containers:
+        - name: integrations-g2-kyc-automation
+          image: { container_uri }
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "128Mi"
+          ports:
+            - containerPort: 8001
+          env:
+            - name: CLUSTER
+              value: { cluster }
+            - name: SENTRY_URL
+              value: { sentry_url }
+            - name: STATSD_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: STATSD_HOST_PORT
+              value: "8125"
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: 8001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: integrations-g2-kyc-automation
+spec:
+  ports:
+    - name: http
+      port: 8001
+  selector:
+    passfort: integrations-g2-kyc-automation
