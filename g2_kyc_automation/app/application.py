@@ -28,18 +28,25 @@ def health():
 @app.route("/screening_request", methods=['POST'])
 @request_model(ScreeningRequest)
 def screening_request(screening_request: ScreeningRequest):
-    client = ApiClient(
-        screening_request.credentials.client_id,
-        screening_request.credentials.client_secret,
-        use_sandbox=screening_request.config.use_sandbox,
-        is_demo=screening_request.is_demo,
-    )
-    return client.get_auth_token()
+    client = ApiClient(**screening_request.client_setup)
+    case_id, errors, raw = client.create_report(screening_request)
+
+    return {"output_data": case_id, "errors": errors, "raw": raw}
 
 
 @app.route("/poll_report", methods=['POST'])
-def poll_report():
-    abort(501)
+@request_model(PollRequest)
+def poll_report(poll_request: PollRequest):
+    client = ApiClient(**poll_request.client_setup)
+
+    report_is_ready, errors, raw = client.poll_report(poll_request)
+
+    response = jsonify({'errors': errors, "raw": raw})
+    if report_is_ready:
+        return response
+    else:
+        response.status_code = 202
+        return response
 
 
 @app.route("/report", methods=['POST'])

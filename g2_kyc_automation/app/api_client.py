@@ -7,9 +7,10 @@ from pycountry import countries
 from requests.adapters import ConnectTimeout, HTTPAdapter
 from requests.exceptions import ConnectionError, HTTPError
 from requests.packages.urllib3.util.retry import Retry
-from app.types import Error
+from app.types import Error, ReportRequest, G2Report, PollRequest
 from schematics.exceptions import DataError
 from urllib.parse import quote
+from schematics.exceptions import DataError
 
 AUTH_URL = 'https://verisk-sso.okta.com/oauth2/aus6npp13bDEGCJju2p7/v1/token'
 
@@ -27,8 +28,12 @@ def requests_retry_session(
     return _session
 
 
+def headers_with_auth(token, **kwargs):
+    return {**kwargs, 'Authorization': f'Bearer {token}'}
+
+
 class ApiClient():
-    def __init__(self, client_id, client_secret, auth_url=AUTH_URL, is_demo=False, use_sandbox=False):
+    def __init__(self, client_id=None, client_secret=None, use_sandbox=False, is_demo=False, auth_url=AUTH_URL):
         if use_sandbox:
             self.url = 'https://boarding.g2netview.com/ebsvc/sandbox/v1'
         else:
@@ -51,7 +56,7 @@ class ApiClient():
         except HTTPError as e:
             status_code = e.response.status_code
             if status_code > 499:
-                errors.append(Error.provider_connection(str(e)))
+                errors.append(Error.provider_connection_error(str(e)))
             elif status_code in {403, 401}:
                 errors.append(Error.provider_bad_credentials(str(e)))
             else:
@@ -81,3 +86,45 @@ class ApiClient():
             return token, []
         else:
             return None, [Error.provider_unknown_error("Error retrieving api access token")]
+
+    def create_report(self, report_request: ReportRequest):
+        token, errors = self.get_auth_token()
+        if errors:
+            return None, errors, None
+
+        response, errors = self._post(
+            self.url + '/newBoardingRequest',
+            headers=headers_with_auth(token),
+            json=report_request.input_data.as_request(),
+        )
+
+        if errors:
+            return None, errors, response
+
+        case_id = response.get('CaseID')
+        if not case_id:
+            err = 'Unexpected provider response - did not receive CaseId'
+            logging.error(err)
+            return None, [Error.provider_unknown_error(str(err))], response
+
+        return {'case_id': case_id}, [], response
+
+    def poll_report(self, poll_request: PollRequest):
+        token, errors = self.get_auth_token()
+        if errors:
+            return None, errors, None
+
+        response, errors = self._get(
+            f'{self.url}/boardingRequestStatus/{poll_request.input_data.case_id}',
+            headers=headers_with_auth(token),
+        )
+        if errors:
+            return None, errors, response
+
+        is_ready = response.get('ResponseReady')
+        if is_ready is None:
+            err = 'Unexpected provider response - did not receive ResponseReady'
+            logging.error(err)
+            return None, [Error.provider_unknown_error(str(err))], response
+
+        return is_ready, [], response

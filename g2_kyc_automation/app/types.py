@@ -1,3 +1,4 @@
+import logging
 from enum import Enum, unique
 from schematics.common import NOT_NONE
 from schematics.exceptions import ValidationError
@@ -6,6 +7,19 @@ from schematics.types.compound import ModelType, ListType
 from schematics import Model
 from datetime import datetime
 from flask import Response
+from pycountry import countries
+
+
+def country_alpha_3_to_2(alpha_3):
+    try:
+        return countries.get(alpha_3=alpha_3).alpha_2
+    except (LookupError, AttributeError):
+        logging.error(f"Received invalid alpha 3 code from PassFort {alpha_3}")
+        return None
+
+
+def clean_dict(dict):
+    return {k: v for k, v in dict.items() if v is not None}
 
 
 class MaybeBooleanType(BooleanType):
@@ -39,11 +53,6 @@ class Config(Model):
     compass_score_threshold = IntType(default=500)
 
 
-
-def clean_dict(dict):
-    return {k: v for k, v in dict.items() if v is not None}
-
-
 class StructuredAddress(Model):
     type = StringType(required=True)
     country = StringType(required=True)
@@ -65,7 +74,7 @@ class StructuredAddress(Model):
         ser_data = self.to_primitive()
 
         return clean_dict({
-            'country': ser_data['country'],
+            'country': country_alpha_3_to_2(ser_data['country']),
             'city': ser_data.get('locality'),
             'postcode': ser_data.get('postal_code'),
             'state': ser_data.get('state_province'),
@@ -258,6 +267,15 @@ class RequestBase(Model):
     credentials: Credentials = ModelType(Credentials, required=True)
     config: Config = ModelType(Config, required=True)
     is_demo: bool = BooleanType(default=False)
+
+    @property
+    def client_setup(self):
+        return {
+            "client_id": self.credentials.client_id,
+            "client_secret": self.credentials.client_secret,
+            "use_sandbox": self.config.use_sandbox,
+            "is_demo": self.is_demo
+        }
 
 
 class CaseIdInput(Model):

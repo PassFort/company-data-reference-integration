@@ -88,7 +88,7 @@ class TestFromPassfortToG2(TestCase):
             "company_name": "Passfort",
             "url": "https://www.passfort.com",
             "business_address": {
-                "country": "GBR",
+                "country": "GB",
                 "city": "London",
                 "state": "England"
             },
