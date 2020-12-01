@@ -5,7 +5,7 @@ from functools import wraps
 
 from flask import Flask, jsonify, abort
 from raven.contrib.flask import Sentry
-from app.types import ScreeningRequest, PollRequest
+from app.types import ScreeningRequest, PollRequest, ReportRequest
 from app.api_client import ApiClient
 from app.validation import request_model
 
@@ -13,16 +13,16 @@ logging.getLogger().setLevel(logging.INFO)
 
 app = Flask(__name__)
 
-sentry_url = os.environ.get("SENTRY_URL")
+sentry_url = os.environ.get('SENTRY_URL')
 if sentry_url:
     sentry = Sentry(app, logging=True, level=logging.ERROR, dsn=sentry_url)
 else:
-    logging.warning("SENTRY_URL not provided")
+    logging.warning('SENTRY_URL not provided')
 
 
-@app.route("/health")
+@app.route('/health')
 def health():
-    return jsonify("success")
+    return jsonify('success')
 
 
 @app.route("/screening_request", methods=['POST'])
@@ -31,7 +31,7 @@ def screening_request(screening_request: ScreeningRequest):
     client = ApiClient(**screening_request.client_setup)
     case_id, errors, raw = client.create_report(screening_request)
 
-    return {"output_data": case_id, "errors": errors, "raw": raw}
+    return {'output_data': case_id, 'errors': errors, 'raw': raw}
 
 
 @app.route("/poll_report", methods=['POST'])
@@ -41,7 +41,7 @@ def poll_report(poll_request: PollRequest):
 
     report_is_ready, errors, raw = client.poll_report(poll_request)
 
-    response = jsonify({'errors': errors, "raw": raw})
+    response = jsonify({'errors': errors, 'raw': raw})
     if report_is_ready:
         return response
     else:
@@ -50,5 +50,10 @@ def poll_report(poll_request: PollRequest):
 
 
 @app.route("/report", methods=['POST'])
-def report():
-    abort(501)
+@request_model(ReportRequest)
+def report(report_request: ReportRequest):
+    client = ApiClient(**report_request.client_setup)
+
+    report, errors, raw = client.retrieve_report(report_request)
+
+    return {'output_data': report, 'errors': errors, 'raw': raw}

@@ -10,7 +10,6 @@ from requests.packages.urllib3.util.retry import Retry
 from app.types import Error, ReportRequest, G2Report, PollRequest
 from schematics.exceptions import DataError
 from urllib.parse import quote
-from schematics.exceptions import DataError
 
 AUTH_URL = 'https://verisk-sso.okta.com/oauth2/aus6npp13bDEGCJju2p7/v1/token'
 
@@ -128,3 +127,25 @@ class ApiClient():
             return None, [Error.provider_unknown_error(str(err))], response
 
         return is_ready, [], response
+
+    def retrieve_report(self, request: ReportRequest):
+        token, errors = self.get_auth_token()
+        if errors:
+            return None, errors, None
+
+        response, errors = self._get(
+            f'{self.url}/boardingRequestStatus/{request.input_data.case_id}/results',
+            headers=headers_with_auth(token)
+        )
+        if errors:
+            return None, errors, response
+
+        report = G2Report().import_data(response, apply_defaults=True)
+        try:
+            report.validate()
+        except DataError as e:
+            err = 'Unexpected provider response'
+            logging.error(err)
+            return None, [Error.provider_unknown_error(err, e.to_primitive())], response
+
+        return report.to_passfort(), [], response

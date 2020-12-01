@@ -168,6 +168,7 @@ class G2Report(Model):
     g2_compass_results = ListType(ModelType(G2CompassResult))
     pdf_url: str = StringType(required=True)
     messages: Messages = ModelType(Messages, required=True, default={})
+    test = StringType(required=True)
 
     @property
     def compass_result(self):
@@ -243,14 +244,15 @@ class Error(object):
         }
 
     @staticmethod
-    def provider_unknown_error(e):
+    def provider_unknown_error(e, extra=None):
         return {
             'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
             'source': 'PROVIDER',
             'message': e or 'There was an error calling G2',
             'info': {
                 'Provider': 'G2',
-                'Timestamp': str(datetime.now())
+                'Timestamp': str(datetime.now()),
+                'Extra': extra,
             }
         }
 
