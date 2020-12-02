@@ -27,7 +27,6 @@ from app.passfort.types import (
     ContactDetails,
     IndustryClassification,
     IndustryClassificationType,
-    OwnershipMetadata,
     PreviousName,
     Shareholding,
     TaxId,
@@ -699,21 +698,6 @@ class TestMetadata(TestCase):
                 metadata.trade_description, "Business and domestic software development"
             )
             self.assertIsNone(metadata.description)
-
-    def test_ownership_check(self):
-        with open("./demo_data/ownership/pass.json") as demo_file:
-            bvd_result = OwnershipResult(json.load(demo_file))
-            bvd_result.validate()
-
-            metadata = OwnershipMetadata.from_bvd(bvd_result.data[0])
-            metadata.validate()
-            self.assertEqual(metadata.company_type, "Private limited companies")
-            self.assertFalse(metadata.structured_company_type.is_public)
-            self.assertTrue(metadata.structured_company_type.is_limited)
-            self.assertEqual(
-                metadata.structured_company_type.ownership_type,
-                OwnershipType.COMPANY.value,
-            )
 
 
 class TestCompanyType(TestCase):
