@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: integrations-g2-kyc-automation
-          image: { container_uri }
+          image: {container_uri}
           resources:
             requests:
               cpu: "20m"
@@ -29,9 +29,9 @@ spec:
             - containerPort: 8001
           env:
             - name: CLUSTER
-              value: { cluster }
+              value: {cluster}
             - name: SENTRY_URL
-              value: { sentry_url }
+              value: {sentry_url}
             - name: STATSD_HOST_IP
               valueFrom:
                 fieldRef:
