@@ -7,6 +7,7 @@ from flask import (
 from functools import wraps
 from flask.json import jsonify
 from schematics.exceptions import DataError
+from app.types import Error
 
 
 def request_model(validation_model):
@@ -27,9 +28,14 @@ def request_model(validation_model):
                 )
                 model.validate()
             except DataError as e:
-                response = jsonify(e.to_primitive())
-                response.status_code = 400
+                errors = e.to_primitive()
+                if errors.get("credentials") is not None:
+                    response = jsonify({"errors": Error.provider_misconfiguration_error(
+                        "No credentials provided")})
+                else:
+                    response = jsonify({"errors": Error.bad_api_request(e)})
                 abort(response)
+
             return fn(model, *args, **kwargs)
 
         return wrapped_fn

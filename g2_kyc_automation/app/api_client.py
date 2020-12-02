@@ -10,6 +10,7 @@ from requests.packages.urllib3.util.retry import Retry
 from app.types import Error, ReportRequest, G2Report, PollRequest
 from schematics.exceptions import DataError
 from urllib.parse import quote
+from demo_data import demo_create_response, demo_poll_success_response, load_file
 
 AUTH_URL = 'https://verisk-sso.okta.com/oauth2/aus6npp13bDEGCJju2p7/v1/token'
 
@@ -87,6 +88,13 @@ class ApiClient():
             return None, [Error.provider_unknown_error("Error retrieving api access token")]
 
     def create_report(self, report_request: ReportRequest):
+        if report_request.is_demo:
+            if 'refer' in report_request.input_data.metadata.name.lower():
+                case_id = 'refer'
+            else:
+                case_id = 'pass'
+            return {'case_id': case_id}, [], demo_create_response
+
         token, errors = self.get_auth_token()
         if errors:
             return None, errors, None
@@ -109,6 +117,9 @@ class ApiClient():
         return {'case_id': case_id}, [], response
 
     def poll_report(self, poll_request: PollRequest):
+        if poll_request.is_demo:
+            return True, [], demo_poll_success_response
+
         token, errors = self.get_auth_token()
         if errors:
             return None, errors, None
@@ -129,6 +140,15 @@ class ApiClient():
         return is_ready, [], response
 
     def retrieve_report(self, request: ReportRequest):
+        case_id = request.input_data.case_id
+        if request.is_demo:
+            if case_id == 'refer':
+                data = load_file('demo_report_refer.json')
+            else:
+                data = load_file('demo_report_pass.json')
+            report = G2Report().import_data(data, apply_defaults=True)
+            return report.to_passfort(case_id), [], data
+
         token, errors = self.get_auth_token()
         if errors:
             return None, errors, None
@@ -148,4 +168,4 @@ class ApiClient():
             logging.error(err)
             return None, [Error.provider_unknown_error(err, e.to_primitive())], response
 
-        return report.to_passfort(), [], response
+        return report.to_passfort(case_id), [], response

@@ -54,7 +54,6 @@ class Config(Model):
 
 
 class StructuredAddress(Model):
-    type = StringType(required=True)
     country = StringType(required=True)
     locality = StringType(default=None)
     state_province = StringType(default=None)
@@ -85,7 +84,6 @@ class StructuredAddress(Model):
 
 class CompanyAddress(Model):
     address = ModelType(StructuredAddress, required=True)
-    type = StringType(required=True)
 
 
 class ContactDetails(Model):
@@ -107,7 +105,6 @@ class CompanyMetadata(Model):
 
 
 class CompanyData(Model):
-    entity_type: str = StringType(required=True)
     metadata: CompanyMetadata = ModelType(CompanyMetadata, required=True)
     customer_ref: str = StringType(default=None)
 
@@ -168,13 +165,12 @@ class G2Report(Model):
     g2_compass_results = ListType(ModelType(G2CompassResult))
     pdf_url: str = StringType(required=True)
     messages: Messages = ModelType(Messages, required=True, default={})
-    test = StringType(required=True)
 
     @property
     def compass_result(self):
         return self.g2_compass_results[0]
 
-    def to_passfort(self):
+    def to_passfort(self, case_id):
         messages = self.messages.get_joined()
         reason_codes = [{
             "name": x.code,
@@ -189,10 +185,11 @@ class G2Report(Model):
                 "reason_codes": reason_codes,
                 "request_id": ser_compass_result.get('request_id'),
             },
-            "messages": messages,
+            "assessment_messages": messages,
             "pdf_url": self.pdf_url,
             "valid_url": ser_compass_result.get('valid_url'),
             "is_active": ser_compass_result.get('site_active'),
+            "provider_id": case_id,
         }
 
 

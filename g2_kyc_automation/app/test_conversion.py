@@ -44,20 +44,17 @@ g2_report_data = {
         "request_id": "197cb011-ec13-4295-a6a2-d5a44b9cc087",
         "status": "complete"
     }],
-    "malware_detections": { "phishings": 0, "malwares": 0 }
+    "malware_detections": {"phishings": 0, "malwares": 0}
 }
 
 input_data = {
-    "entity_type": "COMPANY",
     "metadata": {
         "name": "Passfort",
         "contact_details": {
             "url": "https://www.passfort.com"
         },
         "addresses": [{
-            "type": "registered_address",
             "address": {
-                "type": "STRUCTURED",
                 "country": "GBR",
                 "locality": "London",
                 "state_province": "England"
@@ -67,10 +64,10 @@ input_data = {
     "customer_ref": "79E25148-BB64-4280-962C-738436151487",
 }
 
+
 class TestFromPassfortToG2(TestCase):
     def test_address_validation(self):
         address = {
-            "type": "STRUCTURED",
             "country": "GBR",
             "locality": "LONDON"
         }
@@ -78,7 +75,6 @@ class TestFromPassfortToG2(TestCase):
         with self.assertRaises(DataError):
             address = StructuredAddress().import_data(address)
             address.validate()
-
 
     def test_minimal_input(self):
         data: CompanyData = CompanyData().import_data(input_data, apply_defaults=True)
@@ -108,23 +104,23 @@ class TestFromG2ToPassfort(TestCase):
                 "score": 1,
                 "reason_codes": [
                     {"name": "105200", "value": "Whois record is private"},
-                    {"name": "105470", "value": "Monitored without incident for more than 3 years, last monitored between 4 and 12 months ago"},
+                    {"name": "105470", "value": "Monitored without incident for more than 3 years, last monitored between 4 and 12 months ago"}
                 ],
                 "request_id": "197cb011-ec13-4295-a6a2-d5a44b9cc087",
             },
             "pdf_url": "https://kyc-files.s3.amazonaws.com/scan_pdfs/httpwwwexamplecom_2020-02-11_22-40-58-UTC_seACGC.pdf",
-            "messages": [
-                { "level": "CRITICAL", "description": "YellowPages.com requires a business address." },
-                { "level": "CRITICAL", "description": "OpenCorporates corporate search not run. No business address was provided."},
-                { "level": "WARNING", "description": "The following required pages could not be found: Payment Policy" },
-                { "level": "WARNING", "description": "The following required pages could not be found: Refund Policy" },
-                { "level": "INFO", "description": "This is a high traffic site (Alexa rank 26037)" },
-                { "level": "OK", "description": "Prohibited phrases were not found." },
-                { "level": "OK", "description": "Alexa reported no adult content." },
+            "assessment_messages": [
+                {"level": "CRITICAL", "description": "YellowPages.com requires a business address."},
+                {"level": "CRITICAL", "description": "OpenCorporates corporate search not run. No business address was provided."},
+                {"level": "WARNING", "description": "The following required pages could not be found: Payment Policy"},
+                {"level": "WARNING", "description": "The following required pages could not be found: Refund Policy"},
+                {"level": "INFO", "description": "This is a high traffic site (Alexa rank 26037)"},
+                {"level": "OK", "description": "Prohibited phrases were not found."},
+                {"level": "OK", "description": "Alexa reported no adult content."},
             ],
             "valid_url": True,
             "is_active": None,
+            "provider_id": "1234",
         }
 
-        self.assertEqual(expected, report.to_passfort())
-
+        self.assertEqual(expected, report.to_passfort("1234"))
