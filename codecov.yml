@@ -85,3 +85,7 @@ flags:
     paths:
       - worldcheck/
     carryforward: true
+  g2_kyc_automation:
+    paths:
+      - g2_k2c_automation/
+    carryforward: true

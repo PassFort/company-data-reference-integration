@@ -5,6 +5,7 @@ from flask import (
     request,
 )
 from functools import wraps
+from flask.json import jsonify
 from schematics.exceptions import DataError
 
 
@@ -26,7 +27,9 @@ def request_model(validation_model):
                 )
                 model.validate()
             except DataError as e:
-                abort(400, e.to_primitive())
+                response = jsonify(e.to_primitive())
+                response.status_code = 400
+                abort(response)
             return fn(model, *args, **kwargs)
 
         return wrapped_fn
