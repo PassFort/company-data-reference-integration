@@ -8,6 +8,9 @@ passfort-deployment = {git = "git@github.com:PassFort/deployment.git@3de7b3f8d63
 requests = "*"
 slacker-cli = "*"
 coverage = "*"
+schematics = "==2.1.0"
+Flask = "==1.1.1"
+Flask-HTTPAuth = "==3.3.0"
 
 [dev-packages]
 

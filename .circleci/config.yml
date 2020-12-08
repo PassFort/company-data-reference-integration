@@ -55,9 +55,12 @@ parameters:
   reference_integration:
     type: boolean
     default: false
+  company_data_reference_integration:
+    type: boolean
+    default: false
   docver_reference_integration:
-      type: boolean
-      default: false
+    type: boolean
+    default: false
   lexisnexis_id:
     type: boolean
     default: false
@@ -886,6 +889,32 @@ workflows:
             branches:
               only:
                 - master
+
+  company_data_reference_integration:
+    when: << pipeline.parameters.company_data_reference_integration >>
+    jobs:
+      - unit_appengine:
+          name: unit_company_data_reference_integration
+          package: company_data_reference_integration
+      - deploy_appengine:
+          name: deploy_company_data_reference_integration_staging
+          package: company_data_reference_integration
+          requires:
+            - unit_company_data_reference_integration
+          filters:
+              branches:
+                only:
+                  - staging
+      - build_docker_image:
+          context: org-global
+          name: build_company_data_reference_integration_image
+          package: company_data_reference_integration
+          requires:
+            - unit_company_data_reference_integration
+          filters:
+              branches:
+                ignore:
+                  - master
 
   docver_reference_integration:
     when: << pipeline.parameters.docver_reference_integration >>
