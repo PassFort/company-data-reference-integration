@@ -1,3 +1,4 @@
+import logging
 from enum import Enum, unique
 from schematics.common import NOT_NONE
 from schematics.exceptions import ValidationError
@@ -6,6 +7,19 @@ from schematics.types.compound import ModelType, ListType
 from schematics import Model
 from datetime import datetime
 from flask import Response
+from pycountry import countries
+
+
+def country_alpha_3_to_2(alpha_3):
+    try:
+        return countries.get(alpha_3=alpha_3).alpha_2
+    except (LookupError, AttributeError):
+        logging.error(f"Received invalid alpha 3 code from PassFort {alpha_3}")
+        return None
+
+
+def clean_dict(dict):
+    return {k: v for k, v in dict.items() if v is not None}
 
 
 class MaybeBooleanType(BooleanType):
@@ -39,13 +53,7 @@ class Config(Model):
     compass_score_threshold = IntType(default=500)
 
 
-
-def clean_dict(dict):
-    return {k: v for k, v in dict.items() if v is not None}
-
-
 class StructuredAddress(Model):
-    type = StringType(required=True)
     country = StringType(required=True)
     locality = StringType(default=None)
     state_province = StringType(default=None)
@@ -65,7 +73,7 @@ class StructuredAddress(Model):
         ser_data = self.to_primitive()
 
         return clean_dict({
-            'country': ser_data['country'],
+            'country': country_alpha_3_to_2(ser_data['country']),
             'city': ser_data.get('locality'),
             'postcode': ser_data.get('postal_code'),
             'state': ser_data.get('state_province'),
@@ -76,7 +84,6 @@ class StructuredAddress(Model):
 
 class CompanyAddress(Model):
     address = ModelType(StructuredAddress, required=True)
-    type = StringType(required=True)
 
 
 class ContactDetails(Model):
@@ -98,7 +105,6 @@ class CompanyMetadata(Model):
 
 
 class CompanyData(Model):
-    entity_type: str = StringType(required=True)
     metadata: CompanyMetadata = ModelType(CompanyMetadata, required=True)
     customer_ref: str = StringType(default=None)
 
@@ -164,7 +170,7 @@ class G2Report(Model):
     def compass_result(self):
         return self.g2_compass_results[0]
 
-    def to_passfort(self):
+    def to_passfort(self, case_id):
         messages = self.messages.get_joined()
         reason_codes = [{
             "name": x.code,
@@ -179,10 +185,11 @@ class G2Report(Model):
                 "reason_codes": reason_codes,
                 "request_id": ser_compass_result.get('request_id'),
             },
-            "messages": messages,
+            "assessment_messages": messages,
             "pdf_url": self.pdf_url,
             "valid_url": ser_compass_result.get('valid_url'),
             "is_active": ser_compass_result.get('site_active'),
+            "provider_id": case_id,
         }
 
 
@@ -234,14 +241,15 @@ class Error(object):
         }
 
     @staticmethod
-    def provider_unknown_error(e):
+    def provider_unknown_error(e, extra=None):
         return {
             'code': ErrorCode.PROVIDER_UNKNOWN_ERROR.value,
             'source': 'PROVIDER',
             'message': e or 'There was an error calling G2',
             'info': {
                 'Provider': 'G2',
-                'Timestamp': str(datetime.now())
+                'Timestamp': str(datetime.now()),
+                'Extra': extra,
             }
         }
 
@@ -258,6 +266,15 @@ class RequestBase(Model):
     credentials: Credentials = ModelType(Credentials, required=True)
     config: Config = ModelType(Config, required=True)
     is_demo: bool = BooleanType(default=False)
+
+    @property
+    def client_setup(self):
+        return {
+            "client_id": self.credentials.client_id,
+            "client_secret": self.credentials.client_secret,
+            "use_sandbox": self.config.use_sandbox,
+            "is_demo": self.is_demo
+        }
 
 
 class CaseIdInput(Model):
