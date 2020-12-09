@@ -3,6 +3,7 @@
   "warnings": [],
   "errors": [],
   "check_output": {
+    "entity_type": "COMPANY",
     "metadata": {
       "trade_description": "Business and domestic software development",
       "tax_ids": [
