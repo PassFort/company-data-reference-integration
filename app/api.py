@@ -151,8 +151,8 @@ class CompanyAddressType(StringType, metaclass=EnumMeta):
 
 
 class CompanyAddress(Model):
-    type_ = CompanyAddressType(serialized_name="type", required=True)
-    address = ModelType(StructuredAddress, required=True)
+    type = CompanyAddressType(required=True)
+    address = ModelType(Address, required=True)
     
 
 class ContactDetails(Model):
