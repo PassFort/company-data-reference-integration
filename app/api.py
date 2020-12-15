@@ -36,9 +36,11 @@ class DemoResultType(StringType):
 
     # Company search specific
     NO_HITS = 'NO_HITS'
+    MANY_HITS = 'MANY_HITS'
 
     # Company data check specific
     NO_DATA = 'NO_DATA'
+    ALL_DATA = 'ALL_DATA'
 
 
 # Local field names (for errors)
@@ -206,7 +208,17 @@ class CompanyMetadata(Model):
     description = StringType(default=None)
     
 
+class ProviderRef(Model):
+    reference = StringType(required=True)
+    label = StringType(required=True)
+
+
+class ExternalRefs(Model):
+    provider = ListType(ModelType(ProviderRef), required=True)
+
+
 class CompanyData(Model):
+    external_refs = ModelType(ExternalRefs, default=None)
     entity_type = EntityType(default=None)
     metadata = ModelType(CompanyMetadata, default=None)
 
@@ -338,7 +350,7 @@ class SearchCandidate(Model):
     number = StringType(default=None)
     country_of_incorporation = StringType(default=None)
     status = StringType(default=None)
-    provider_reference = StringType(default=None)
+    provider_reference = ModelType(ProviderRef, default=None)
 
     class Options:
         export_level = NOT_NONE
@@ -346,7 +358,7 @@ class SearchCandidate(Model):
 
         
 class SearchResponse(Model):
-    search_result: List[SearchCandidate] = ListType(ModelType(SearchCandidate), default=[])
+    search_output: List[SearchCandidate] = ListType(ModelType(SearchCandidate), default=[])
     errors: List[Error] = ListType(ModelType(Error), default=[])
     warnings: List[Warn] = ListType(ModelType(Warn), default=[])
     provider_data = BaseType(default=None)

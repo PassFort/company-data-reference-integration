@@ -120,18 +120,12 @@ def _run_demo_check(
     country = check_input.country_of_incorporation
 
     if demo_result in {DemoResultType.ANY, DemoResultType.ANY_CHARGE}:
-        demo_result = DemoResultType.NO_MATCH
+        demo_result = DemoResultType.ALL_DATA
 
     check_response = _try_load_demo_result(RunCheckResponse, commercial_relationship, f'{country}_{demo_result}') or \
         _try_load_demo_result(RunCheckResponse, commercial_relationship, f'OTHER_{demo_result}') or \
         _try_load_demo_result(RunCheckResponse, commercial_relationship, 'UNSUPPORTED_DEMO_RESULT')
     
-    # check_output = check_response.check_output
-
-    # if check_output is not None and check_output.address_history is not None and current_address is not None:
-    #     check_response.check_output.address_history = [
-    #     ]
-
     return check_response
 
 def _run_demo_search(
@@ -143,7 +137,7 @@ def _run_demo_search(
 
     # Default to no matches if we could return any result
     if demo_result in {DemoResultType.ANY}:
-        demo_result = DemoResultType.NO_HITS
+        demo_result = DemoResultType.MANY_HITS
 
     return _try_load_demo_result(SearchResponse, commercial_relationship, f'{country}_{demo_result}') or \
         _try_load_demo_result(SearchResponse, commercial_relationship, f'OTHER_{demo_result}') or \
