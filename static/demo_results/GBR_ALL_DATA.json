@@ -4,12 +4,6 @@
   "errors": [],
   "check_output": {
     "entity_type": "COMPANY",
-    "external_refs": {
-      "provider": [{
-        "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
-        "reference": "GB-09565115"
-      }]
-    },
     "metadata": {
       "trade_description": "Business and domestic software development",
       "tax_ids": [
@@ -35,7 +29,7 @@
           "end": "2015-07-31"
         }
       ],
-      "number": "09565115",
+      "number": "11111111",
       "name": "PASSFORT LIMITED",
       "is_active_details": "Active",
       "is_active": true,
