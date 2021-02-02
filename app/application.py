@@ -8,7 +8,6 @@ from typing import Optional, List, Tuple
 from flask import Flask, send_file, request, abort, Response
 
 from app.api import (
-    Address,
     CommercialRelationshipType,
     Charge,
     DemoResultType,
@@ -35,7 +34,10 @@ SUPPORTED_COUNTRIES = ['GBR', 'USA', 'CAN', 'NLD']
 
 @dataclass
 class CheckInput:
-    country_of_incorporation: str
+    name: Optional[str]
+    number: Optional[str]
+    country_of_incorporation: Optional[str]
+
 
 @dataclass
 class SearchInput:
@@ -78,7 +80,6 @@ def get_config():
     return send_file('../static/config.json', cache_timeout=-1)
 
 
-
 def _try_load_demo_result(response_model, commercial_relationship: CommercialRelationshipType, name: str):
 
     def _sanitize_filename(value: str, program=re.compile('^[a-zA-Z_]+$')):
@@ -117,30 +118,48 @@ def _run_demo_check(
     demo_result: str,
     commercial_relationship: CommercialRelationshipType
 ) -> RunCheckResponse:
-    country = check_input.country_of_incorporation
+    if demo_result in {
+        DemoResultType.ANY,
+        DemoResultType.ANY_CHARGE,
+        DemoResultType.COMPANY_INACTIVE,
+        DemoResultType.COMPANY_NAME_MISMATCH,
+        DemoResultType.COMPANY_NUMBER_MISMATCH,
+        DemoResultType.COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH,
+    }:
+        check_response = (
+            _try_load_demo_result(RunCheckResponse, commercial_relationship, DemoResultType.ALL_DATA)
+        )
+    else:
+        check_response = (
+            _try_load_demo_result(RunCheckResponse, commercial_relationship, f'{demo_result}')
+            or _try_load_demo_result(RunCheckResponse, commercial_relationship, 'UNSUPPORTED_DEMO_RESULT')
+        )
 
-    if demo_result in {DemoResultType.ANY, DemoResultType.ANY_CHARGE}:
-        demo_result = DemoResultType.ALL_DATA
+    check_response.patch_to_match_input(check_input)
 
-    check_response = _try_load_demo_result(RunCheckResponse, commercial_relationship, f'{country}_{demo_result}') or \
-        _try_load_demo_result(RunCheckResponse, commercial_relationship, f'OTHER_{demo_result}') or \
-        _try_load_demo_result(RunCheckResponse, commercial_relationship, 'UNSUPPORTED_DEMO_RESULT')
-    
+    if demo_result == DemoResultType.COMPANY_INACTIVE:
+        check_response.check_output.metadata.is_active = False
+        check_response.check_output.metadata.is_active_details = 'Inactive'
+    elif demo_result == DemoResultType.COMPANY_NAME_MISMATCH:
+        check_response.check_output.metadata.name = f'NOT {check_input.name}' if check_input.name else 'Example Co.'
+    elif demo_result == DemoResultType.COMPANY_NUMBER_MISMATCH:
+        check_response.check_output.metadata.number = f'NOT {check_input.number}' if check_input.number else '123456'
+    elif demo_result == DemoResultType.COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH:
+        check_response.check_output.metadata.number = 'GBR' if check_input.country_of_incorporation != 'GBR' else 'FRA'
+
     return check_response
+
 
 def _run_demo_search(
     search_input: SearchInput,
     demo_result: str,
     commercial_relationship: CommercialRelationshipType
 ) -> SearchResponse:
-    country = search_input.country_of_incorporation
-
-    # Default to no matches if we could return any result
+    # Default to full match if we can return any result
     if demo_result in {DemoResultType.ANY}:
         demo_result = DemoResultType.MANY_HITS
 
-    return _try_load_demo_result(SearchResponse, commercial_relationship, f'{country}_{demo_result}') or \
-        _try_load_demo_result(SearchResponse, commercial_relationship, f'OTHER_{demo_result}') or \
+    return _try_load_demo_result(SearchResponse, commercial_relationship, f'{demo_result}') or \
         _try_load_demo_result(SearchResponse, commercial_relationship, 'UNSUPPORTED_DEMO_RESULT')
 
 
@@ -152,12 +171,18 @@ def _extract_check_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[Ch
     if country_of_incorporation is None:
         errors.append(Error.missing_required_field(Field.COUNTRY_OF_INCORPORATION))
 
+    name = req.check_input.get_company_name()
+    number = req.check_input.get_company_number()
+
     if errors:
         return errors, None
     else:
         return [], CheckInput(
-            country_of_incorporation=country_of_incorporation
+            name=name,
+            number=number,
+            country_of_incorporation=country_of_incorporation,
         )
+
 
 def _extract_search_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[SearchInput]]:
     errors = []
@@ -170,11 +195,10 @@ def _extract_search_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[S
     if errors:
         return errors, None
     else:
-        return [], CheckInput(
+        return [], SearchInput(
             country_of_incorporation=country_of_incorporation
         )
 
-    
 
 @app.route('/checks', methods=['POST'])
 @auth.login_required
@@ -204,14 +228,14 @@ def search(req: SearchRequest) -> SearchResponse:
     errors, search_input = _extract_search_input(req)
     if errors:
         return SearchResponse.error(errors)
-    
+
     country = search_input.country_of_incorporation
     if country not in SUPPORTED_COUNTRIES:
         return SearchResponse.error([Error.unsupported_country()])
-    
+
     if req.demo_result is not None:
         return _run_demo_search(search_input, req.demo_result, req.commercial_relationship)
-    
+
     return SearchResponse.error([Error({
         'type': ErrorType.PROVIDER_MESSAGE,
         'message': 'Live searches are not supported',

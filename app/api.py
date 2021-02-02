@@ -41,6 +41,10 @@ class DemoResultType(StringType):
     # Company data check specific
     NO_DATA = 'NO_DATA'
     ALL_DATA = 'ALL_DATA'
+    COMPANY_INACTIVE = 'COMPANY_INACTIVE'
+    COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH = 'COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH'
+    COMPANY_NAME_MISMATCH = 'COMPANY_NAME_MISMATCH'
+    COMPANY_NUMBER_MISMATCH = 'COMPANY_NUMBER_MISMATCH'
 
 
 # Local field names (for errors)
@@ -155,7 +159,7 @@ class CompanyAddressType(StringType, metaclass=EnumMeta):
 class CompanyAddress(Model):
     type = CompanyAddressType(required=True)
     address = ModelType(Address, required=True)
-    
+
 
 class ContactDetails(Model):
     email = StringType(default=None)
@@ -182,7 +186,7 @@ class IndustryClassification(Model):
     class Options:
         export_level = NOT_NONE
 
-        
+
 class CompanyMetadata(Model):
     name = StringType(default=None)
     number = StringType(default=None)
@@ -193,7 +197,7 @@ class CompanyMetadata(Model):
     company_type = StringType(default=None)
     # structured_company_type = ModelType(StructuredCompanyType)
     industry_classifications = ListType(ModelType(IndustryClassification), default=None)
-    
+
     # tax_ids = ListType(ModelType(TaxId), default=list, required=True)
 
     country_of_incorporation = StringType(default=None)
@@ -206,7 +210,7 @@ class CompanyMetadata(Model):
     is_active_details = StringType(default=None)
     trade_description = StringType(default=None)
     description = StringType(default=None)
-    
+
 
 class ProviderRef(Model):
     reference = StringType(required=True)
@@ -228,6 +232,14 @@ class CompanyData(Model):
     def get_country_of_incorporation(self):
         if self.metadata:
             return self.metadata.country_of_incorporation
+
+    def get_company_name(self):
+        if self.metadata:
+            return self.metadata.name
+
+    def get_company_number(self):
+        if self.metadata:
+            return self.metadata.number
 
 
 class Charge(Model):
@@ -264,6 +276,15 @@ class RunCheckResponse(Model):
         res = RunCheckResponse()
         res.errors = errors
         return res
+
+    def patch_to_match_input(self, check_input):
+        if self.check_output:
+            if self.check_output.metadata:
+                self.check_output.metadata.country_of_incorporation = (
+                    check_input.country_of_incorporation or self.check_output.metadata.country_of_incorporation
+                )
+                self.check_output.metadata.name = check_input.name or self.check_output.metadata.name
+                self.check_output.metadata.number = check_input.number or self.check_output.metadata.number
 
     class Options:
         export_level = NOT_NONE
@@ -344,7 +365,7 @@ class SearchRequest(Model):
     class Options:
         export_level = NOT_NONE
 
-        
+
 class SearchCandidate(Model):
     name = StringType(default=None)
     number = StringType(default=None)
@@ -356,14 +377,13 @@ class SearchCandidate(Model):
         export_level = NOT_NONE
 
 
-        
 class SearchResponse(Model):
     search_output: List[SearchCandidate] = ListType(ModelType(SearchCandidate), default=[])
     errors: List[Error] = ListType(ModelType(Error), default=[])
     warnings: List[Warn] = ListType(ModelType(Warn), default=[])
     provider_data = BaseType(default=None)
     charges = ListType(ModelType(Charge), default=[])
-    
+
     @staticmethod
     def error(errors: List[Error]) -> 'SearchResponse':
         res = SearchResponse()
