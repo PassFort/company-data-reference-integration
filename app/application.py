@@ -145,7 +145,7 @@ def _run_demo_check(
     elif demo_result == DemoResultType.COMPANY_NUMBER_MISMATCH:
         check_response.check_output.metadata.number = f'NOT {check_input.number}' if check_input.number else '123456'
     elif demo_result == DemoResultType.COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH:
-        check_response.check_output.metadata.number = 'GBR' if check_input.country_of_incorporation != 'GBR' else 'FRA'
+        check_response.check_output.metadata.country_of_incorporation = 'GBR' if check_input.country_of_incorporation != 'GBR' else 'FRA'
 
     return check_response
 

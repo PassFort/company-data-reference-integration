@@ -131,3 +131,145 @@ def test_run_check_invalid_credentials(session, auth):
         'type': 'INVALID_CREDENTIALS',
         'message': 'Username or password is invalid.',
     }]
+
+
+def test_run_check_country_mismatch_demo_result(session, auth):
+    r = session.post('http://app/checks', json={
+        'id': str(uuid4()),
+        'check_input': {
+            'entity_type': 'COMPANY',
+            'metadata': {
+                'name': 'PASSFORT LIMITED',
+                'number': '09565115',
+                'country_of_incorporation': 'GBR'
+            }
+        },
+        'commercial_relationship': 'DIRECT',
+        'provider_config': {},
+        'demo_result': 'COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH'
+    }, auth=auth())
+    assert r.status_code == 200
+    assert r.headers['content-type'] == 'application/json'
+
+    res = r.json()
+
+    assert not res['errors']
+    assert res['check_output']['metadata']['country_of_incorporation'] != 'GBR'
+
+
+def test_run_check_name_mismatch_demo_result(session, auth):
+    r = session.post('http://app/checks', json={
+        'id': str(uuid4()),
+        'check_input': {
+            'entity_type': 'COMPANY',
+            'metadata': {
+                'name': 'PASSFORT LIMITED',
+                'number': '09565115',
+                'country_of_incorporation': 'GBR'
+            }
+        },
+        'commercial_relationship': 'DIRECT',
+        'provider_config': {},
+        'demo_result': 'COMPANY_NAME_MISMATCH'
+    }, auth=auth())
+    assert r.status_code == 200
+    assert r.headers['content-type'] == 'application/json'
+
+    res = r.json()
+
+    assert not res['errors']
+    assert res['check_output']['metadata']['name'] != 'PASSFORT LIMITED'
+
+
+def test_run_check_missing_name_mismatch_demo_result(session, auth):
+    r = session.post('http://app/checks', json={
+        'id': str(uuid4()),
+        'check_input': {
+            'entity_type': 'COMPANY',
+            'metadata': {
+                'number': '09565115',
+                'country_of_incorporation': 'GBR'
+            }
+        },
+        'commercial_relationship': 'DIRECT',
+        'provider_config': {},
+        'demo_result': 'COMPANY_NAME_MISMATCH'
+    }, auth=auth())
+    assert r.status_code == 200
+    assert r.headers['content-type'] == 'application/json'
+
+    res = r.json()
+
+    assert not res['errors']
+    assert res['check_output']['metadata']['name']
+
+
+def test_run_check_number_mismatch_demo_result(session, auth):
+    r = session.post('http://app/checks', json={
+        'id': str(uuid4()),
+        'check_input': {
+            'entity_type': 'COMPANY',
+            'metadata': {
+                'name': 'PASSFORT LIMITED',
+                'number': '09565115',
+                'country_of_incorporation': 'GBR'
+            }
+        },
+        'commercial_relationship': 'DIRECT',
+        'provider_config': {},
+        'demo_result': 'COMPANY_NUMBER_MISMATCH'
+    }, auth=auth())
+    assert r.status_code == 200
+    assert r.headers['content-type'] == 'application/json'
+
+    res = r.json()
+
+    assert not res['errors']
+    assert res['check_output']['metadata']['number'] != '09565115'
+
+
+def test_run_check_missing_number_mismatch_demo_result(session, auth):
+    r = session.post('http://app/checks', json={
+        'id': str(uuid4()),
+        'check_input': {
+            'entity_type': 'COMPANY',
+            'metadata': {
+                'name': 'PASSFORT LIMITED',
+                'country_of_incorporation': 'GBR'
+            }
+        },
+        'commercial_relationship': 'DIRECT',
+        'provider_config': {},
+        'demo_result': 'COMPANY_NUMBER_MISMATCH'
+    }, auth=auth())
+    assert r.status_code == 200
+    assert r.headers['content-type'] == 'application/json'
+
+    res = r.json()
+
+    assert not res['errors']
+    assert res['check_output']['metadata']['number'] != '09565115'
+
+
+def test_run_check_inactive_demo_result(session, auth):
+    r = session.post('http://app/checks', json={
+        'id': str(uuid4()),
+        'check_input': {
+            'entity_type': 'COMPANY',
+            'metadata': {
+                'name': 'PASSFORT LIMITED',
+                'number': '09565115',
+                'country_of_incorporation': 'GBR'
+            }
+        },
+        'commercial_relationship': 'DIRECT',
+        'provider_config': {},
+        'demo_result': 'COMPANY_INACTIVE'
+    }, auth=auth())
+    assert r.status_code == 200
+    assert r.headers['content-type'] == 'application/json'
+
+    res = r.json()
+
+    assert not res['errors']
+    assert not res['check_output']['metadata']['is_active']
