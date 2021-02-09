@@ -88,6 +88,7 @@ def _try_load_demo_result(response_model, commercial_relationship: CommercialRel
         return value
 
     filename = f'../static/demo_results/{_sanitize_filename(name)}.json'
+
     try:
         # Load file relative to current script
         with open(os.path.join(os.path.dirname(__file__), filename), 'r') as file:
