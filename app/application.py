@@ -87,9 +87,7 @@ def _try_load_demo_result(response_model, commercial_relationship: CommercialRel
             abort(Response('Invalid demo request'), status=400)
         return value
 
-    import logging
     filename = f'../static/demo_results/{_sanitize_filename(name)}.json'
-    logging.info(filename)
     try:
         # Load file relative to current script
         with open(os.path.join(os.path.dirname(__file__), filename), 'r') as file:
