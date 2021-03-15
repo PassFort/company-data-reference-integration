@@ -92,22 +92,12 @@
         },
         "relationships": [
           {
-            "relationship_type": "OFFICER",
-            "associated_role": "PARTNER",
-            "original_role": "previous position",
-            "tenure": {
-              "tenure_type": "FORMER",
-              "start": "2010-01-11"
-            }
-          },
-          {
-            "relationship_type": "OFFICER",
-            "associated_role": "DIRECTOR",
-            "original_role": "current position",
-            "tenure": {
-              "tenure_type": "CURRENT",
-              "start": "2014-01-11"
-            }
+              "relationship_type": "SHAREHOLDER",
+              "associated_role": "SHAREHOLDER",
+              "tenure": {
+                "tenure_type": "CURRENT"
+              },
+              "total_percentage": 100.0
           }
         ]
       }

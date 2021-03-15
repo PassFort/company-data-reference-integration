@@ -82,9 +82,9 @@ def get_config():
 
 def _try_load_demo_result(response_model, commercial_relationship: CommercialRelationshipType, name: str):
 
-    def _sanitize_filename(value: str, program=re.compile('^[a-zA-Z_]+$')):
+    def _sanitize_filename(value: str, program=re.compile('^[a-z0-9A-Z_]+$')):
         if not program.match(value):
-            abort(Response('Invalid demo request'), status=400)
+            abort(Response('Invalid demo request', status=400))
         return value
 
     filename = f'../static/demo_results/{_sanitize_filename(name)}.json'

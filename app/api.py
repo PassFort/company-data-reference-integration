@@ -4,8 +4,10 @@ from typing import Iterable, TypeVar, Optional, Type, List
 
 from schematics import Model
 from schematics.common import NOT_NONE
-from schematics.types import UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType, \
-    BooleanType
+from schematics.types import (
+    FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
+    BooleanType, PolyModelType
+)
 from schematics.exceptions import DataError
 from schematics.types.base import TypeMeta
 from flask import abort, request, Response, jsonify
@@ -45,6 +47,11 @@ class DemoResultType(StringType):
     COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH = 'COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH'
     COMPANY_NAME_MISMATCH = 'COMPANY_NAME_MISMATCH'
     COMPANY_NUMBER_MISMATCH = 'COMPANY_NUMBER_MISMATCH'
+    # Associates data
+    COMPANY_RESGINED_OFFICER = 'COMPANY_RESIGNED_OFFICER'
+    COMPANY_FORMER_SHAREHOLDER = 'COMPANY_FORMER_SHAREHOLDER'
+    COMPANY_OFFICER_WITH_MULTIPLE_ROLES = 'COMPANY_OFFICER_WITH_MULTIPLE_ROLES'
+    COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP = 'COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP'
 
 
 # Local field names (for errors)
@@ -74,6 +81,7 @@ class ErrorSubType(StringType, metaclass=EnumMeta):
 
 class EntityType(StringType, metaclass=EnumMeta):
     COMPANY = 'COMPANY'
+    INDIVIDUAL = 'INDIVIDUAL'
 
 
 class AddressType(StringType, metaclass=EnumMeta):
@@ -221,13 +229,114 @@ class ExternalRefs(Model):
     provider = ListType(ModelType(ProviderRef), required=True)
 
 
-class CompanyData(Model):
-    external_refs = ModelType(ExternalRefs, default=None)
-    entity_type = EntityType(default=None)
-    metadata = ModelType(CompanyMetadata, default=None)
+class RelationshipType(StringType, metaclass=EnumMeta):
+    SHAREHOLDER = "SHAREHOLDER"
+    OFFICER = "OFFICER"
+
+
+class AssociatedRole(StringType, metaclass=EnumMeta):
+    SHAREHOLDER = "SHAREHOLDER"
+
+    DIRECTOR = "DIRECTOR"
+    COMPANY_SECRETARY = "COMPANY_SECRETARY"
+    PARTNER = "PARTNER"
+
+
+class TenureType(StringType, metaclass=EnumMeta):
+    CURRENT = 'CURRENT'
+    FORMER = 'FORMER'
+
+
+class Tenure(Model):
+    tenure_type = TenureType(required=True)
 
     class Options:
         export_level = NOT_NONE
+
+
+class CurrentTenure(Tenure):
+    start = DateType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("tenure_type") == TenureType.CURRENT
+
+
+class FormerTenure(Tenure):
+    start = DateType(default=None)
+    end = DateType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("tenure_type") == TenureType.FORMER
+
+
+class Relationship(Model):
+    associated_role = AssociatedRole(required=True)
+    relationship_type = RelationshipType(required=True)
+    tenure = PolyModelType(Tenure, required=True)
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class OfficerRelationship(Relationship):
+    original_role = StringType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("relationship_type") == RelationshipType.OFFICER
+
+
+class ShareholderRelationship(Relationship):
+    total_percentage = FloatType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("relationship_type") == RelationshipType.SHAREHOLDER
+
+
+class EntityData(Model):
+    entity_type = EntityType(required=True)
+
+
+class AssociatedEntity(Model):
+    associate_id = UUIDType(required=True)
+    entity_type = EntityType(required=True)
+    immediate_data = ModelType(EntityData, required=True)
+    relationships = ListType(PolyModelType(Relationship), default=list)
+
+
+class Name(Model):
+    given_names = ListType(StringType, default=list)
+    family_name = StringType(default=None)
+
+
+class PersonalDetails(Model):
+    name = ModelType(Name, default=None)
+
+
+class IndividualData(EntityData):
+    entity_type = EntityType(required=True)
+    personal_details = ModelType(PersonalDetails, default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("entity_type") == EntityType.INDIVIDUAL
+
+
+class CompanyData(EntityData):
+    external_refs = ModelType(ExternalRefs, default=None)
+    entity_type = EntityType(default=None)
+    metadata = ModelType(CompanyMetadata, default=None)
+    associated_entities = ListType(ModelType(AssociatedEntity), default=list)
+
+    class Options:
+        export_level = NOT_NONE
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("entity_type") == EntityType.COMPANY
 
     def get_country_of_incorporation(self):
         if self.metadata:
