@@ -303,7 +303,7 @@ class EntityData(Model):
 class AssociatedEntity(Model):
     associate_id = UUIDType(required=True)
     entity_type = EntityType(required=True)
-    immediate_data = ModelType(EntityData, required=True)
+    immediate_data = PolyModelType(EntityData, required=True)
     relationships = ListType(PolyModelType(Relationship), default=list)
 
 
