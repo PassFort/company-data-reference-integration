@@ -1,11 +1,12 @@
 import inspect
+from decimal import Decimal
 from functools import wraps
 from typing import Iterable, TypeVar, Optional, Type, List
 
 from schematics import Model
 from schematics.common import NOT_NONE
 from schematics.types import (
-    FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
+    DecimalType, FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
     BooleanType, PolyModelType
 )
 from schematics.exceptions import DataError
@@ -288,8 +289,18 @@ class OfficerRelationship(Relationship):
         return data.get("relationship_type") == RelationshipType.OFFICER
 
 
+class Shareholding(Model):
+    share_class = StringType(default=None)
+    amount = IntType(default=None)
+    percentage = FloatType(default=None)
+
+    class Options:
+        export_level = NOT_NONE
+
+
 class ShareholderRelationship(Relationship):
     total_percentage = FloatType(default=None)
+    shareholdings = ListType(ModelType(Shareholding), default=list)
 
     @classmethod
     def _claim_polymorphic(cls, data):
