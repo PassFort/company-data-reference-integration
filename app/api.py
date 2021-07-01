@@ -6,7 +6,7 @@ from typing import Iterable, TypeVar, Optional, Type, List
 from schematics import Model
 from schematics.common import NOT_NONE
 from schematics.types import (
-    DecimalType, FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
+    FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
     BooleanType, PolyModelType
 )
 from schematics.exceptions import DataError
