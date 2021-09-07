@@ -18,6 +18,9 @@ from app.api import (
     RunCheckRequest,
     SearchRequest,
     SearchResponse,
+    CompanyFieldCheck,
+    CheckedCompanyDataField,
+    CompanyFieldCheckResult,
     validate_models,
 )
 from app.http_signature import HTTPSignatureAuth
@@ -123,6 +126,8 @@ def _run_demo_check(
         DemoResultType.COMPANY_INACTIVE,
         DemoResultType.COMPANY_NAME_MISMATCH,
         DemoResultType.COMPANY_NUMBER_MISMATCH,
+        DemoResultType.COMPANY_ADDRESS_MISMATCH,
+        DemoResultType.COMPANY_ADDRESS_MATCH,
         DemoResultType.COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH,
     }:
         check_response = (
@@ -145,7 +150,20 @@ def _run_demo_check(
         check_response.check_output.metadata.number = f'NOT {check_input.number}' if check_input.number else '123456'
     elif demo_result == DemoResultType.COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH:
         check_response.check_output.metadata.country_of_incorporation = 'GBR' if check_input.country_of_incorporation != 'GBR' else 'FRA'
-
+    elif demo_result == DemoResultType.COMPANY_ADDRESS_MATCH:
+            check_response.check_output.field_checks = [
+                CompanyFieldCheck({
+                    "field": CheckedCompanyDataField.ADDRESS,
+                    "result": CompanyFieldCheckResult.MATCH,
+                })
+            ]
+    elif demo_result == DemoResultType.COMPANY_ADDRESS_MISMATCH:
+        check_response.check_output.field_checks = [
+            CompanyFieldCheck({
+                "field":CheckedCompanyDataField.ADDRESS,
+                "result":CompanyFieldCheckResult.MISMATCH,
+            })
+        ]
     return check_response
 
 

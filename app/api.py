@@ -47,6 +47,8 @@ class DemoResultType(StringType):
     COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH = 'COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH'
     COMPANY_NAME_MISMATCH = 'COMPANY_NAME_MISMATCH'
     COMPANY_NUMBER_MISMATCH = 'COMPANY_NUMBER_MISMATCH'
+    COMPANY_ADDRESS_MISMATCH = 'COMPANY_ADDRESS_MISMATCH'
+    COMPANY_ADDRESS_MATCH = 'COMPANY_ADDRESS_MATCH'
     # Associates data
     COMPANY_RESGINED_OFFICER = 'COMPANY_RESIGNED_OFFICER'
     COMPANY_FORMER_SHAREHOLDER = 'COMPANY_FORMER_SHAREHOLDER'
@@ -334,12 +336,28 @@ class IndividualData(EntityData):
     def _claim_polymorphic(cls, data):
         return data.get("entity_type") == EntityType.INDIVIDUAL
 
+class CheckedCompanyDataField(StringType, metaclass=EnumMeta):
+    NAME = "NAME"
+    NUMBER = "NUMBER"
+    IS_ACTIVE = "IS_ACTIVE"
+    LEI = "LEI"
+    COUNTRY_OF_INCORPORATION = "COUNTRY_OF_INCORPORATION"
+    ADDRESS = "ADDRESS"
+
+class CompanyFieldCheckResult(StringType, metaclass=EnumMeta):
+    MATCH = "MATCH"
+    MISMATCH = "MISMATCH"
+
+class CompanyFieldCheck(Model):
+    field = CheckedCompanyDataField()
+    result = CompanyFieldCheckResult()
 
 class CompanyData(EntityData):
     external_refs = ModelType(ExternalRefs, default=None)
     entity_type = EntityType(default=None)
     metadata = ModelType(CompanyMetadata, default=None)
     associated_entities = ListType(ModelType(AssociatedEntity), default=list)
+    field_checks = ListType(ModelType(CompanyFieldCheck), default=list)
 
     class Options:
         export_level = NOT_NONE

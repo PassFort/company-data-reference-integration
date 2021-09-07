@@ -12,7 +12,8 @@
     "GBR", "USA", "CAN", "NLD"
   ],
   "supported_features": [
-      "COMPANY_SEARCH"
+      "COMPANY_SEARCH",
+      "PROVIDER_FIELD_CHECKS"
   ],
   "credentials": {
     "fields": [
