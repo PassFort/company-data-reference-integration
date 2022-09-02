@@ -13,6 +13,7 @@ from schematics.types.base import TypeMeta
 from flask import abort, request, Response, jsonify
 
 
+
 # Inheriting this class will make an enum exhaustive
 class EnumMeta(TypeMeta):
     def __new__(mcs, name, bases, attrs):
