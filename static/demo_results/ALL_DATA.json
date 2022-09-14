@@ -110,6 +110,13 @@
             }
           },
           {
+            "relationship_type": "PERSON_OF_SIGNIFICANT_CONTROL",
+            "associated_role": "PERSON_OF_SIGNIFICANT_CONTROL",
+            "tenure": {
+              "tenure_type": "CURRENT"
+            }
+          },
+          {
             "relationship_type": "SHAREHOLDER",
             "associated_role": "SHAREHOLDER",
             "shareholdings": [
@@ -132,7 +139,91 @@
             }
           }
         ]
+      },
+
+      {
+        "associate_id": "9a2e549e-4207-4ac6-8101-75f7f7f774c4",
+        "entity_type": "INDIVIDUAL",
+        "immediate_data": {
+          "entity_type": "INDIVIDUAL",
+          "personal_details": {
+            "name": {
+              "given_names": ["guo"],
+              "family_name": "testing1"
+            }
+          }
+        },
+        "relationships": [
+
+          {
+            "relationship_type": "GLOBAL_ULTIMATE_OWNER",
+            "associated_role": "GLOBAL_ULTIMATE_OWNER",
+            "tenure": {
+              "tenure_type": "CURRENT"
+            },
+            "calculated_percentage": 25.0,
+            "distance": 1
+          }
+        ]
+      },
+
+      {
+        "associate_id": "c46f71b5-bc14-44f5-848c-d39e91fb82fa",
+        "entity_type": "INDIVIDUAL",
+        "immediate_data": {
+          "entity_type": "INDIVIDUAL",
+          "personal_details": {
+            "name": {
+              "given_names": ["cs"],
+              "family_name": "testing2"
+            }
+          }
+        },
+        "relationships": [
+          {
+            "relationship_type": "CONTROLLING_SHAREHOLDER",
+            "associated_role": "CONTROLLING_SHAREHOLDER",
+            "tenure": {
+              "tenure_type": "CURRENT"
+            },
+            "calculated_percentage": 25.0,
+            "distance": 1
+          }
+        ]
+      },
+
+      {
+        "associate_id": "461f71b5-bc14-44f5-848c-d39e91fb82fa",
+        "entity_type": "INDIVIDUAL",
+        "immediate_data": {
+          "entity_type": "INDIVIDUAL",
+          "personal_details": {
+            "name": {
+              "given_names": ["bo"],
+              "family_name": "testing3"
+            }
+          }
+        },
+        "relationships": [
+          {
+            "relationship_type": "BENEFICIAL_OWNER",
+            "associated_role": "BENEFICIAL_OWNER",
+            "shareholdings": [
+              {
+                "provider_name": "Reference Integration",
+                "percentage": 25.0,
+                "amount": 200
+              }
+            ],
+            "tenure": {
+              "tenure_type": "CURRENT"
+            },
+            "calculated_percentage": 25.0,
+            "distance": 1
+          }
+        ]
       }
+
     ]
   }
 }

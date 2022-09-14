@@ -234,12 +234,17 @@ class ExternalRefs(Model):
 
 class RelationshipType(StringType, metaclass=EnumMeta):
     SHAREHOLDER = "SHAREHOLDER"
+    BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
+    GLOBAL_ULTIMATE_OWNER = "GLOBAL_ULTIMATE_OWNER"
+    CONTROLLING_SHAREHOLDER = "CONTROLLING_SHAREHOLDER"
     OFFICER = "OFFICER"
 
 
 class AssociatedRole(StringType, metaclass=EnumMeta):
     SHAREHOLDER = "SHAREHOLDER"
-
+    BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
+    GLOBAL_ULTIMATE_OWNER = "GLOBAL_ULTIMATE_OWNER"
+    CONTROLLING_SHAREHOLDER = "CONTROLLING_SHAREHOLDER"
     DIRECTOR = "DIRECTOR"
     COMPANY_SECRETARY = "COMPANY_SECRETARY"
     PARTNER = "PARTNER"
@@ -307,6 +312,38 @@ class ShareholderRelationship(Relationship):
     @classmethod
     def _claim_polymorphic(cls, data):
         return data.get("relationship_type") == RelationshipType.SHAREHOLDER
+
+
+class BeneficialOwner(Relationship):
+    total_percentage = FloatType(default=None)
+    shareholdings = ListType(ModelType(Shareholding), default=list)
+
+    distance = IntType(default=None)
+    calculated_percentage = FloatType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("relationship_type") == RelationshipType.BENEFICIAL_OWNER
+
+
+class GlobalUltimateOwner(Relationship):
+    distance = IntType(default=None)
+    calculated_percentage = FloatType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("relationship_type") == RelationshipType.GLOBAL_ULTIMATE_OWNER
+
+
+class ControllingShareholder(Relationship):
+    distance = IntType(default=None)
+    calculated_percentage = FloatType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("relationship_type") == RelationshipType.CONTROLLING_SHAREHOLDER
+
+
 
 
 class EntityData(Model):
