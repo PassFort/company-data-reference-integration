@@ -110,13 +110,6 @@
             }
           },
           {
-            "relationship_type": "PERSON_OF_SIGNIFICANT_CONTROL",
-            "associated_role": "PERSON_OF_SIGNIFICANT_CONTROL",
-            "tenure": {
-              "tenure_type": "CURRENT"
-            }
-          },
-          {
             "relationship_type": "SHAREHOLDER",
             "associated_role": "SHAREHOLDER",
             "shareholdings": [
