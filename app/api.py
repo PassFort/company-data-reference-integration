@@ -13,6 +13,10 @@ from schematics.types.base import TypeMeta
 from flask import abort, request, Response, jsonify
 
 
+class BaseModel(Model):
+    class Options:
+        export_level = NOT_NONE
+
 
 # Inheriting this class will make an enum exhaustive
 class EnumMeta(TypeMeta):
@@ -91,15 +95,15 @@ class AddressType(StringType, metaclass=EnumMeta):
     STRUCTURED = 'STRUCTURED'
 
 
-class ProviderConfig(Model):
+class ProviderConfig(BaseModel):
     ...
 
 
-class ProviderCredentials(Model):
+class ProviderCredentials(BaseModel):
     apikey = StringType(required=True)
 
 
-class Error(Model):
+class Error(BaseModel):
     type = ErrorType(required=True)
     sub_type = ErrorSubType()
     message = StringType(required=True)
@@ -123,19 +127,13 @@ class Error(Model):
             'message': f'Missing required field ({field})',
         })
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class Warn(Model):
+class Warn(BaseModel):
     type = ErrorType(required=True)
     message = StringType(required=True)
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class StructuredAddress(Model):
+class StructuredAddress(BaseModel):
     country = StringType(required=True)
     state_province = StringType(default=None)
     county = StringType(default=None)
@@ -147,9 +145,6 @@ class StructuredAddress(Model):
     premise = StringType(default=None)
     subpremise = StringType(default=None)
     address_lines = ListType(StringType(), default=None)
-
-    class Options:
-        export_level = NOT_NONE
 
 
 class Address(StructuredAddress):
@@ -167,18 +162,15 @@ class CompanyAddressType(StringType, metaclass=EnumMeta):
     TRADING_ADDRESS = 'trading_address'
 
 
-class CompanyAddress(Model):
+class CompanyAddress(BaseModel):
     type = CompanyAddressType(required=True)
     address = ModelType(Address, required=True)
 
 
-class ContactDetails(Model):
+class ContactDetails(BaseModel):
     email = StringType(default=None)
     phone_number = StringType(default=None)
     url = StringType(default=None)
-
-    class Options:
-        export_level = NOT_NONE
 
 
 class IndustryClassificationType(StringType, metaclass=EnumMeta):
@@ -188,17 +180,14 @@ class IndustryClassificationType(StringType, metaclass=EnumMeta):
     OTHER = "OTHER"
 
 
-class IndustryClassification(Model):
+class IndustryClassification(BaseModel):
     classification_type = IndustryClassificationType(required=True)
     code = StringType(required=True)
     classification_version = StringType(default=None)
     description = StringType(default=None)
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class CompanyMetadata(Model):
+class CompanyMetadata(BaseModel):
     name = StringType(default=None)
     number = StringType(default=None)
     lei = StringType(default=None)
@@ -223,12 +212,12 @@ class CompanyMetadata(Model):
     description = StringType(default=None)
 
 
-class ProviderRef(Model):
+class ProviderRef(BaseModel):
     reference = StringType(required=True)
     label = StringType(required=True)
 
 
-class ExternalRefs(Model):
+class ExternalRefs(BaseModel):
     provider = ListType(ModelType(ProviderRef), required=True)
 
 
@@ -255,11 +244,8 @@ class TenureType(StringType, metaclass=EnumMeta):
     FORMER = 'FORMER'
 
 
-class Tenure(Model):
+class Tenure(BaseModel):
     tenure_type = TenureType(required=True)
-
-    class Options:
-        export_level = NOT_NONE
 
 
 class CurrentTenure(Tenure):
@@ -279,13 +265,10 @@ class FormerTenure(Tenure):
         return data.get("tenure_type") == TenureType.FORMER
 
 
-class Relationship(Model):
+class Relationship(BaseModel):
     associated_role = AssociatedRole(required=True)
     relationship_type = RelationshipType(required=True)
     tenure = PolyModelType(Tenure, required=True)
-
-    class Options:
-        export_level = NOT_NONE
 
 
 class OfficerRelationship(Relationship):
@@ -296,13 +279,10 @@ class OfficerRelationship(Relationship):
         return data.get("relationship_type") == RelationshipType.OFFICER
 
 
-class Shareholding(Model):
+class Shareholding(BaseModel):
     share_class = StringType(default=None)
     amount = IntType(default=None)
     percentage = FloatType(default=None)
-
-    class Options:
-        export_level = NOT_NONE
 
 
 class ShareholderRelationship(Relationship):
@@ -344,25 +324,23 @@ class ControllingShareholder(Relationship):
         return data.get("relationship_type") == RelationshipType.CONTROLLING_SHAREHOLDER
 
 
-
-
-class EntityData(Model):
+class EntityData(BaseModel):
     entity_type = EntityType(required=True)
 
 
-class AssociatedEntity(Model):
+class AssociatedEntity(BaseModel):
     associate_id = UUIDType(required=True)
     entity_type = EntityType(required=True)
     immediate_data = PolyModelType(EntityData, required=True)
     relationships = ListType(PolyModelType(Relationship), default=list)
 
 
-class Name(Model):
+class Name(BaseModel):
     given_names = ListType(StringType, default=list)
     family_name = StringType(default=None)
 
 
-class PersonalDetails(Model):
+class PersonalDetails(BaseModel):
     name = ModelType(Name, default=None)
 
 
@@ -374,6 +352,7 @@ class IndividualData(EntityData):
     def _claim_polymorphic(cls, data):
         return data.get("entity_type") == EntityType.INDIVIDUAL
 
+
 class CheckedCompanyDataField(StringType, metaclass=EnumMeta):
     NAME = "NAME"
     NUMBER = "NUMBER"
@@ -382,13 +361,16 @@ class CheckedCompanyDataField(StringType, metaclass=EnumMeta):
     COUNTRY_OF_INCORPORATION = "COUNTRY_OF_INCORPORATION"
     ADDRESS = "ADDRESS"
 
+
 class CompanyFieldCheckResult(StringType, metaclass=EnumMeta):
     MATCH = "MATCH"
     MISMATCH = "MISMATCH"
 
-class CompanyFieldCheck(Model):
+
+class CompanyFieldCheck(BaseModel):
     field = CheckedCompanyDataField()
     result = CompanyFieldCheckResult()
+
 
 class CompanyData(EntityData):
     external_refs = ModelType(ExternalRefs, default=None)
@@ -396,9 +378,6 @@ class CompanyData(EntityData):
     metadata = ModelType(CompanyMetadata, default=None)
     associated_entities = ListType(ModelType(AssociatedEntity), default=list)
     field_checks = ListType(ModelType(CompanyFieldCheck), default=list)
-
-    class Options:
-        export_level = NOT_NONE
 
     @classmethod
     def _claim_polymorphic(cls, data):
@@ -417,16 +396,13 @@ class CompanyData(EntityData):
             return self.metadata.number
 
 
-class Charge(Model):
+class Charge(BaseModel):
     amount = IntType(required=True)
     reference = StringType(default=None)
     sku = StringType(default=None)
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class RunCheckRequest(Model):
+class RunCheckRequest(BaseModel):
     id = UUIDType(required=True)
     demo_result = DemoResultType(default=None)
     commercial_relationship = CommercialRelationshipType(required=True)
@@ -435,11 +411,8 @@ class RunCheckRequest(Model):
     provider_credentials: Optional[ProviderCredentials] = ModelType(
         ProviderCredentials, default=None)
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class RunCheckResponse(Model):
+class RunCheckResponse(BaseModel):
     check_output: Optional[CompanyData] = ModelType(CompanyData, default=None)
     errors: List[Error] = ListType(ModelType(Error), default=[])
     warnings: List[Warn] = ListType(ModelType(Warn), default=[])
@@ -456,13 +429,10 @@ class RunCheckResponse(Model):
         if self.check_output:
             if self.check_output.metadata:
                 self.check_output.metadata.country_of_incorporation = (
-                    check_input.country_of_incorporation or self.check_output.metadata.country_of_incorporation
+                        check_input.country_of_incorporation or self.check_output.metadata.country_of_incorporation
                 )
                 self.check_output.metadata.name = check_input.name or self.check_output.metadata.name
                 self.check_output.metadata.number = check_input.number or self.check_output.metadata.number
-
-    class Options:
-        export_level = NOT_NONE
 
 
 T = TypeVar('T')
@@ -523,13 +493,13 @@ def validate_models(fn):
     return wrapped_fn
 
 
-class SearchInput(Model):
+class SearchInput(BaseModel):
     query = StringType(required=True)
     country_of_incorporation = StringType(required=True)
     state_of_incorporation = StringType(default=None)
 
 
-class SearchRequest(Model):
+class SearchRequest(BaseModel):
     demo_result = DemoResultType(default=None)
     commercial_relationship = CommercialRelationshipType(required=True)
     search_input: SearchInput = ModelType(SearchInput, required=True)
@@ -537,22 +507,16 @@ class SearchRequest(Model):
     provider_credentials: Optional[ProviderCredentials] = ModelType(
         ProviderCredentials, default=None)
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class SearchCandidate(Model):
+class SearchCandidate(BaseModel):
     name = StringType(default=None)
     number = StringType(default=None)
     country_of_incorporation = StringType(default=None)
     status = StringType(default=None)
     provider_reference = ModelType(ProviderRef, default=None)
 
-    class Options:
-        export_level = NOT_NONE
 
-
-class SearchResponse(Model):
+class SearchResponse(BaseModel):
     search_output: List[SearchCandidate] = ListType(ModelType(SearchCandidate), default=[])
     errors: List[Error] = ListType(ModelType(Error), default=[])
     warnings: List[Warn] = ListType(ModelType(Warn), default=[])
@@ -564,6 +528,3 @@ class SearchResponse(Model):
         res = SearchResponse()
         res.errors = errors
         return res
-
-    class Options:
-        export_level = NOT_NONE
