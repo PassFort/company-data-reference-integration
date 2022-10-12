@@ -150,6 +150,7 @@ class StructuredAddress(BaseModel):
 class Address(StructuredAddress):
     type = AddressType(required=True, default=AddressType.STRUCTURED)
     original_freeform_address = StringType(default=None)
+    text = StringType(default=None)
     original_structured_address: Optional[StructuredAddress] = ModelType(
         StructuredAddress, default=None)
 
@@ -237,6 +238,34 @@ class AssociatedRole(StringType, metaclass=EnumMeta):
     DIRECTOR = "DIRECTOR"
     COMPANY_SECRETARY = "COMPANY_SECRETARY"
     PARTNER = "PARTNER"
+
+
+class TaxIdType(StringType, metaclass=EnumMeta):
+    Ein = "EIN"
+    Eurovat = "EUROVAT"
+    Other = "OTHER"
+    Vat = "VAT"
+
+
+class TaxId(BaseModel):
+    tax_id_name = StringType(default=None)
+    tax_id_type = TaxIdType(required=True)
+    value = StringType(required=True)
+
+
+class CompanyStructureOwnershipType(StringType, metaclass=EnumMeta):
+    Association = "ASSOCIATION"
+    Company = "COMPANY"
+    Other = "OTHER"
+    Partnership = "PARTNERSHIP"
+    SoleProprietorship = "SOLE_PROPRIETORSHIP"
+    Trust = "TRUST"
+
+
+class CompanyStructureType(BaseModel):
+    is_limited = BooleanType(default=None)
+    is_public = BooleanType(default=None)
+    ownership_type = CompanyStructureOwnershipType(default=None)
 
 
 class TenureType(StringType, metaclass=EnumMeta):
@@ -510,10 +539,17 @@ class SearchRequest(BaseModel):
 
 class SearchCandidate(BaseModel):
     name = StringType(default=None)
+    number_label = StringType(default=None)
     number = StringType(default=None)
     country_of_incorporation = StringType(default=None)
     status = StringType(default=None)
     provider_reference = ModelType(ProviderRef, default=None)
+    addresses = ListType(ModelType(CompanyAddress), default=None)
+    contact = ModelType(ContactDetails, default=None)
+    incorporation_date = DateType(default=None)
+    tax_ids = ListType(ModelType(TaxId), default=None)
+    structure_type = ModelType(CompanyStructureType)
+    lei = StringType(default=None)
 
 
 class SearchResponse(BaseModel):

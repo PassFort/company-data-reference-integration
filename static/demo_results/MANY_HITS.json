@@ -3,22 +3,69 @@
         {
             "name": "PASSFORT LIMITED",
             "number": "09565115",
+            "number_label": "Company Number",
             "country_of_incorporation": "GBR",
             "status": "ACTIVE",
             "provider_reference": {
                 "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
                 "reference": "GB-09565115"
-            }
+            },
+            "addresses": [
+                {
+                    "type": "registered_address",
+                    "address": {
+                        "type": "STRUCTURED",
+                        "route": "MEZZANINE FLOOR 24 CORNHILL",
+                        "postal_code": "EC3V 3ND",
+                        "original_freeform_address": "MEZZANINE FLOOR 24 CORNHILL, EC3V 3ND, LONDON, United Kingdom",
+                        "locality": "LONDON",
+                        "country": "GBR",
+                        "address_lines": [
+                            "MEZZANINE FLOOR 24 CORNHILL"
+                        ]
+                    }
+                }
+            ],
+            "contact": {
+                "url": "www.passfort.com",
+                "phone_number": "+44 20 3633 1761",
+                "email": "info@passfort.com"
+            },
+            "incorporation_date": "2022-10-11",
+            "structure_type": {
+                "is_public": false,
+                "is_limited": true,
+                "ownership_type": "COMPANY"
+            },
+            "lei": "SOMELEI123123",
+            "tax_ids": [
+                {
+                    "value": "n.a.",
+                    "tax_id_type": "EUROVAT"
+                }
+            ]
         },
         {
             "name": "PASSFORD PROPERTIES LIMITED",
             "number": "03852680",
+            "number_label": "Company Number",
             "country_of_incorporation": "GBR",
             "status": "DORMANT",
             "provider_reference": {
                 "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
                 "reference": "GB-03852680"
-            }
+            },
+            "addresses": [
+                {
+                    "type": "registered_address",
+                    "address": {
+                        "type": "FREEFORM",
+                        "text": "PASSFORD HOUSE, PASSFORD HOUSE, LOWER KINGSDOWN ROAD, KINGSDOWN",
+                        "country": "GBR"
+                    }
+                }
+            ],
+            "lei": "PASSFORDLEI"
         },
         {
             "name": "PASSFIELD ELECTRONICS LTD",
