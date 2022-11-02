@@ -85,14 +85,13 @@
           "entity_type": "INDIVIDUAL",
           "personal_details": {
             "name": {
-              "given_names": ["John"],
-              "family_name": "Smith"
+              "given_names": ["Ashley"],
+              "family_name": "Fitzwilliam"
             }
           }
         },
         "relationships": [
           {
-            "relationship_type": "OFFICER",
             "associated_role": "PARTNER",
             "original_role": "previous position",
             "tenure": {
@@ -101,7 +100,6 @@
             }
           },
           {
-            "relationship_type": "OFFICER",
             "associated_role": "DIRECTOR",
             "original_role": "current position",
             "tenure": {
@@ -110,22 +108,13 @@
             }
           },
           {
-            "relationship_type": "SHAREHOLDER",
             "associated_role": "SHAREHOLDER",
-            "shareholdings": [
-              {
-                "provider_name": "Reference Integration",
-                "percentage": 25.0,
-                "amount": 200
-              }
-            ],
             "tenure": {
               "tenure_type": "CURRENT"
             },
-            "total_percentage": 25.0
+            "total_percentage": 15.0
           },
           {
-            "relationship_type": "PERSON_OF_SIGNIFICANT_CONTROL",
             "associated_role": "PERSON_OF_SIGNIFICANT_CONTROL",
             "tenure": {
               "tenure_type": "CURRENT"
@@ -133,7 +122,6 @@
           }
         ]
       },
-
       {
         "associate_id": "9a2e549e-4207-4ac6-8101-75f7f7f774c4",
         "entity_type": "INDIVIDUAL",
@@ -141,21 +129,19 @@
           "entity_type": "INDIVIDUAL",
           "personal_details": {
             "name": {
-              "given_names": ["guo"],
-              "family_name": "testing1"
+              "given_names": ["Nayab", "Ali"],
+              "family_name": "Khan"
             }
           }
         },
         "relationships": [
-
           {
-            "relationship_type": "GLOBAL_ULTIMATE_OWNER",
             "associated_role": "GLOBAL_ULTIMATE_OWNER",
             "tenure": {
               "tenure_type": "CURRENT"
             },
-            "calculated_percentage": 25.0,
-            "distance": 1
+            "calculated_percentage": 35.0,
+            "distance": 3
           }
         ]
       },
@@ -167,20 +153,19 @@
           "entity_type": "INDIVIDUAL",
           "personal_details": {
             "name": {
-              "given_names": ["cs"],
-              "family_name": "testing2"
+              "given_names": ["Ania"],
+              "family_name": "Mrugalski"
             }
           }
         },
         "relationships": [
           {
-            "relationship_type": "CONTROLLING_SHAREHOLDER",
             "associated_role": "CONTROLLING_SHAREHOLDER",
             "tenure": {
               "tenure_type": "CURRENT"
             },
             "calculated_percentage": 25.0,
-            "distance": 1
+            "distance": 2
           }
         ]
       },
@@ -192,27 +177,19 @@
           "entity_type": "INDIVIDUAL",
           "personal_details": {
             "name": {
-              "given_names": ["bo"],
-              "family_name": "testing3"
+              "given_names": ["Reagan"],
+              "family_name": "Farruggia"
             }
           }
         },
         "relationships": [
           {
-            "relationship_type": "BENEFICIAL_OWNER",
             "associated_role": "BENEFICIAL_OWNER",
-            "shareholdings": [
-              {
-                "provider_name": "Reference Integration",
-                "percentage": 25.0,
-                "amount": 200
-              }
-            ],
             "tenure": {
               "tenure_type": "CURRENT"
             },
-            "calculated_percentage": 25.0,
-            "distance": 1
+            "calculated_percentage": 45.0,
+            "distance": 4
           }
         ]
       }

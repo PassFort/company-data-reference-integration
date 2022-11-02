@@ -93,10 +93,6 @@
         "relationships": [
           {
               "associated_role": "SHAREHOLDER",
-              "relationship_type": "SHAREHOLDER",
-              "shareholdings": [{
-                  "percentage": 30.0
-              }],
               "tenure": {
                 "tenure_type": "CURRENT"
               },
@@ -104,7 +100,6 @@
           },
           {
               "associated_role": "PERSON_OF_SIGNIFICANT_CONTROL",
-              "relationship_type": "PERSON_OF_SIGNIFICANT_CONTROL",
               "tenure": {
                 "tenure_type": "CURRENT"
               },

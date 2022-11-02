@@ -92,7 +92,6 @@
         },
         "relationships": [
           {
-              "relationship_type": "SHAREHOLDER",
               "associated_role": "SHAREHOLDER",
               "tenure": {
                 "tenure_type": "CURRENT"

@@ -222,14 +222,6 @@ class ExternalRefs(BaseModel):
     provider = ListType(ModelType(ProviderRef), required=True)
 
 
-class RelationshipType(StringType, metaclass=EnumMeta):
-    SHAREHOLDER = "SHAREHOLDER"
-    BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
-    GLOBAL_ULTIMATE_OWNER = "GLOBAL_ULTIMATE_OWNER"
-    CONTROLLING_SHAREHOLDER = "CONTROLLING_SHAREHOLDER"
-    OFFICER = "OFFICER"
-
-
 class AssociatedRole(StringType, metaclass=EnumMeta):
     SHAREHOLDER = "SHAREHOLDER"
     BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
@@ -296,16 +288,22 @@ class FormerTenure(Tenure):
 
 class Relationship(BaseModel):
     associated_role = AssociatedRole(required=True)
-    relationship_type = RelationshipType(required=True)
     tenure = PolyModelType(Tenure, required=True)
 
 
-class OfficerRelationship(Relationship):
+class DirectorRelationship(Relationship):
     original_role = StringType(default=None)
 
     @classmethod
     def _claim_polymorphic(cls, data):
-        return data.get("relationship_type") == RelationshipType.OFFICER
+        return data.get("associated_role") == AssociatedRole.DIRECTOR
+
+class PartnerRelationship(Relationship):
+    original_role = StringType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("associated_role") == AssociatedRole.PARTNER
 
 
 class Shareholding(BaseModel):
@@ -320,7 +318,7 @@ class ShareholderRelationship(Relationship):
 
     @classmethod
     def _claim_polymorphic(cls, data):
-        return data.get("relationship_type") == RelationshipType.SHAREHOLDER
+        return data.get("associated_role") == AssociatedRole.SHAREHOLDER
 
 
 class BeneficialOwner(Relationship):
@@ -332,7 +330,7 @@ class BeneficialOwner(Relationship):
 
     @classmethod
     def _claim_polymorphic(cls, data):
-        return data.get("relationship_type") == RelationshipType.BENEFICIAL_OWNER
+        return data.get("associated_role") == AssociatedRole.BENEFICIAL_OWNER
 
 
 class GlobalUltimateOwner(Relationship):
@@ -341,7 +339,7 @@ class GlobalUltimateOwner(Relationship):
 
     @classmethod
     def _claim_polymorphic(cls, data):
-        return data.get("relationship_type") == RelationshipType.GLOBAL_ULTIMATE_OWNER
+        return data.get("associated_role") == AssociatedRole.GLOBAL_ULTIMATE_OWNER
 
 
 class ControllingShareholder(Relationship):
@@ -350,7 +348,7 @@ class ControllingShareholder(Relationship):
 
     @classmethod
     def _claim_polymorphic(cls, data):
-        return data.get("relationship_type") == RelationshipType.CONTROLLING_SHAREHOLDER
+        return data.get("associated_role") == AssociatedRole.CONTROLLING_SHAREHOLDER
 
 
 class EntityData(BaseModel):

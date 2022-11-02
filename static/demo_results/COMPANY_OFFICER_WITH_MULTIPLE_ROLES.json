@@ -92,7 +92,6 @@
         },
         "relationships": [
           {
-            "relationship_type": "OFFICER",
             "associated_role": "PARTNER",
             "original_role": "previous position",
             "tenure": {
@@ -101,7 +100,6 @@
             }
           },
           {
-            "relationship_type": "OFFICER",
             "associated_role": "DIRECTOR",
             "original_role": "current position",
             "tenure": {
