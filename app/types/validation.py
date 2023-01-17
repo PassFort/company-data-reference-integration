@@ -1,16 +1,16 @@
 import inspect
 from dataclasses import dataclass
 from functools import wraps
-from typing import TypeVar, Iterable, Optional, Type, Tuple, List
+from typing import Iterable, List, Optional, Tuple, Type, TypeVar
 
-from flask import request, abort, Response, jsonify
+from flask import Response, abort, jsonify, request
 from schematics import Model
 from schematics.exceptions import DataError
 
 from app.types.checks import CheckInput, RunCheckRequest
 from app.types.common import Error, Field
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 @dataclass
@@ -23,12 +23,14 @@ def _first(x: Iterable[T]) -> Optional[T]:
 
 
 def _get_input_annotation(signature: inspect.Signature) -> Optional[Type[Model]]:
-    first_param: Optional[inspect.Parameter] = _first(
-        signature.parameters.values())
+    first_param: Optional[inspect.Parameter] = _first(signature.parameters.values())
     if first_param is None:
         return None
 
-    if first_param.kind not in [inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD]:
+    if first_param.kind not in [
+        inspect.Parameter.POSITIONAL_ONLY,
+        inspect.Parameter.POSITIONAL_OR_KEYWORD,
+    ]:
         return None
 
     if not issubclass(first_param.annotation, Model):
@@ -39,16 +41,17 @@ def _get_input_annotation(signature: inspect.Signature) -> Optional[Type[Model]]
 
 def validate_models(fn):
     """
-3    Creates a Schematics Model from the request data and validates it.
+    3    Creates a Schematics Model from the request data and validates it.
 
-    Throws DataError if invalid.
-    Otherwise, it passes the validated request data to the wrapped function.
+        Throws DataError if invalid.
+        Otherwise, it passes the validated request data to the wrapped function.
     """
 
     signature = inspect.signature(fn)
 
-    assert issubclass(signature.return_annotation,
-                      Model), 'Must have a return type annotation'
+    assert issubclass(
+        signature.return_annotation, Model
+    ), "Must have a return type annotation"
     output_model = signature.return_annotation
     input_model = _get_input_annotation(signature)
 
@@ -73,7 +76,9 @@ def validate_models(fn):
     return wrapped_fn
 
 
-def _extract_check_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[CheckInput]]:
+def _extract_check_input(
+    req: RunCheckRequest,
+) -> Tuple[List[Error], Optional[CheckInput]]:
     errors = []
 
     # Extract country of incorporation
@@ -94,7 +99,9 @@ def _extract_check_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[Ch
         )
 
 
-def _extract_search_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[SearchInput]]:
+def _extract_search_input(
+    req: RunCheckRequest,
+) -> Tuple[List[Error], Optional[SearchInput]]:
     errors = []
 
     # Extract country of incorporation
@@ -105,6 +112,4 @@ def _extract_search_input(req: RunCheckRequest) -> Tuple[List[Error], Optional[S
     if errors:
         return errors, None
     else:
-        return [], SearchInput(
-            country_of_incorporation=country_of_incorporation
-        )
+        return [], SearchInput(country_of_incorporation=country_of_incorporation)

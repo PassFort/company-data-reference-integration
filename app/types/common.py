@@ -1,10 +1,19 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from schematics import Model
 from schematics.common import NOT_NONE
 from schematics.types import (
-    FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
-    BooleanType, PolyModelType
+    BaseType,
+    BooleanType,
+    DateType,
+    DictType,
+    FloatType,
+    IntType,
+    ListType,
+    ModelType,
+    PolyModelType,
+    StringType,
+    UUIDType,
 )
 from schematics.types.base import TypeMeta
 
@@ -17,78 +26,83 @@ class BaseModel(Model):
 # Inheriting this class will make an enum exhaustive
 class EnumMeta(TypeMeta):
     def __new__(mcs, name, bases, attrs):
-        attrs['choices'] = [v for k, v in attrs.items(
-        ) if not k.startswith('_') and k.isupper()]
+        attrs["choices"] = [
+            v for k, v in attrs.items() if not k.startswith("_") and k.isupper()
+        ]
         return TypeMeta.__new__(mcs, name, bases, attrs)
 
 
 class ApproxDateType(DateType):
-    formats = ['%Y-%m']
+    formats = ["%Y-%m"]
 
 
 # Intentionally non-exhaustive
 class DemoResultType(StringType):
-    ANY = 'ANY'
-    ANY_CHARGE = 'ANY_CHARGE'
-    NO_MATCH = 'NO_MATCH'
+    ANY = "ANY"
+    ANY_CHARGE = "ANY_CHARGE"
+    NO_MATCH = "NO_MATCH"
 
     # Errors
-    ERROR_INVALID_CREDENTIALS = 'ERROR_INVALID_CREDENTIALS'
-    ERROR_ANY_PROVIDER_MESSAGE = 'ERROR_ANY_PROVIDER_MESSAGE'
-    ERROR_CONNECTION_TO_PROVIDER = 'ERROR_CONNECTION_TO_PROVIDER'
+    ERROR_INVALID_CREDENTIALS = "ERROR_INVALID_CREDENTIALS"
+    ERROR_ANY_PROVIDER_MESSAGE = "ERROR_ANY_PROVIDER_MESSAGE"
+    ERROR_CONNECTION_TO_PROVIDER = "ERROR_CONNECTION_TO_PROVIDER"
 
     # Company search specific
-    NO_HITS = 'NO_HITS'
-    MANY_HITS = 'MANY_HITS'
+    NO_HITS = "NO_HITS"
+    MANY_HITS = "MANY_HITS"
 
     # Company data check specific
-    NO_DATA = 'NO_DATA'
-    ALL_DATA = 'ALL_DATA'
-    COMPANY_INACTIVE = 'COMPANY_INACTIVE'
-    COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH = 'COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH'
-    COMPANY_NAME_MISMATCH = 'COMPANY_NAME_MISMATCH'
-    COMPANY_NUMBER_MISMATCH = 'COMPANY_NUMBER_MISMATCH'
-    COMPANY_ADDRESS_MISMATCH = 'COMPANY_ADDRESS_MISMATCH'
-    COMPANY_ADDRESS_MATCH = 'COMPANY_ADDRESS_MATCH'
+    NO_DATA = "NO_DATA"
+    ALL_DATA = "ALL_DATA"
+    COMPANY_INACTIVE = "COMPANY_INACTIVE"
+    COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH = (
+        "COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH"
+    )
+    COMPANY_NAME_MISMATCH = "COMPANY_NAME_MISMATCH"
+    COMPANY_NUMBER_MISMATCH = "COMPANY_NUMBER_MISMATCH"
+    COMPANY_ADDRESS_MISMATCH = "COMPANY_ADDRESS_MISMATCH"
+    COMPANY_ADDRESS_MATCH = "COMPANY_ADDRESS_MATCH"
     # Associates data
-    COMPANY_RESGINED_OFFICER = 'COMPANY_RESIGNED_OFFICER'
-    COMPANY_FORMER_SHAREHOLDER = 'COMPANY_FORMER_SHAREHOLDER'
-    COMPANY_OFFICER_WITH_MULTIPLE_ROLES = 'COMPANY_OFFICER_WITH_MULTIPLE_ROLES'
-    COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP = 'COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP'
+    COMPANY_RESGINED_OFFICER = "COMPANY_RESIGNED_OFFICER"
+    COMPANY_FORMER_SHAREHOLDER = "COMPANY_FORMER_SHAREHOLDER"
+    COMPANY_OFFICER_WITH_MULTIPLE_ROLES = "COMPANY_OFFICER_WITH_MULTIPLE_ROLES"
+    COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP = (
+        "COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP"
+    )
 
 
 # Local field names (for errors)
 class Field(StringType):
-    COUNTRY_OF_INCORPORATION = 'COUNTRY_OF_INCORPORATION'
+    COUNTRY_OF_INCORPORATION = "COUNTRY_OF_INCORPORATION"
 
 
 class CommercialRelationshipType(StringType, metaclass=EnumMeta):
-    PASSFORT = 'PASSFORT'
-    DIRECT = 'DIRECT'
+    PASSFORT = "PASSFORT"
+    DIRECT = "DIRECT"
 
 
 class ErrorType(StringType, metaclass=EnumMeta):
-    INVALID_CREDENTIALS = 'INVALID_CREDENTIALS'
-    INVALID_CONFIG = 'INVALID_CONFIG'
-    MISSING_CHECK_INPUT = 'MISSING_CHECK_INPUT'
-    INVALID_CHECK_INPUT = 'INVALID_CHECK_INPUT'
-    PROVIDER_CONNECTION = 'PROVIDER_CONNECTION'
-    PROVIDER_MESSAGE = 'PROVIDER_MESSAGE'
-    UNSUPPORTED_DEMO_RESULT = 'UNSUPPORTED_DEMO_RESULT'
+    INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
+    INVALID_CONFIG = "INVALID_CONFIG"
+    MISSING_CHECK_INPUT = "MISSING_CHECK_INPUT"
+    INVALID_CHECK_INPUT = "INVALID_CHECK_INPUT"
+    PROVIDER_CONNECTION = "PROVIDER_CONNECTION"
+    PROVIDER_MESSAGE = "PROVIDER_MESSAGE"
+    UNSUPPORTED_DEMO_RESULT = "UNSUPPORTED_DEMO_RESULT"
 
 
 class ErrorSubType(StringType, metaclass=EnumMeta):
     # INVALID_CHECK_INPUT
-    UNSUPPORTED_COUNTRY = 'UNSUPPORTED_COUNTRY'
+    UNSUPPORTED_COUNTRY = "UNSUPPORTED_COUNTRY"
 
 
 class EntityType(StringType, metaclass=EnumMeta):
-    COMPANY = 'COMPANY'
-    INDIVIDUAL = 'INDIVIDUAL'
+    COMPANY = "COMPANY"
+    INDIVIDUAL = "INDIVIDUAL"
 
 
 class AddressType(StringType, metaclass=EnumMeta):
-    STRUCTURED = 'STRUCTURED'
+    STRUCTURED = "STRUCTURED"
 
 
 class ProviderConfig(BaseModel):
@@ -107,21 +121,25 @@ class Error(BaseModel):
 
     @staticmethod
     def unsupported_country():
-        return Error({
-            'type': ErrorType.INVALID_CHECK_INPUT,
-            'sub_type': ErrorSubType.UNSUPPORTED_COUNTRY,
-            'message': 'Country not supported.',
-        })
+        return Error(
+            {
+                "type": ErrorType.INVALID_CHECK_INPUT,
+                "sub_type": ErrorSubType.UNSUPPORTED_COUNTRY,
+                "message": "Country not supported.",
+            }
+        )
 
     @staticmethod
     def missing_required_field(field: str):
-        return Error({
-            'type': ErrorType.MISSING_CHECK_INPUT,
-            'data': {
-                'field': field,
-            },
-            'message': f'Missing required field ({field})',
-        })
+        return Error(
+            {
+                "type": ErrorType.MISSING_CHECK_INPUT,
+                "data": {
+                    "field": field,
+                },
+                "message": f"Missing required field ({field})",
+            }
+        )
 
 
 class Warn(BaseModel):
@@ -148,15 +166,16 @@ class Address(StructuredAddress):
     original_freeform_address = StringType(default=None)
     text = StringType(default=None)
     original_structured_address: Optional[StructuredAddress] = ModelType(
-        StructuredAddress, default=None)
+        StructuredAddress, default=None
+    )
 
 
 class CompanyAddressType(StringType, metaclass=EnumMeta):
-    REGISTERED_ADDRESS = 'registered_address'
-    BRANCH_ADDRESS = 'branch_address'
-    HEAD_OFFICE_ADDRESS = 'head_office_address'
-    CONTACT_ADDRESS = 'contact_address'
-    TRADING_ADDRESS = 'trading_address'
+    REGISTERED_ADDRESS = "registered_address"
+    BRANCH_ADDRESS = "branch_address"
+    HEAD_OFFICE_ADDRESS = "head_office_address"
+    CONTACT_ADDRESS = "contact_address"
+    TRADING_ADDRESS = "trading_address"
 
 
 class CompanyAddress(BaseModel):
@@ -257,8 +276,8 @@ class CompanyStructureType(BaseModel):
 
 
 class TenureType(StringType, metaclass=EnumMeta):
-    CURRENT = 'CURRENT'
-    FORMER = 'FORMER'
+    CURRENT = "CURRENT"
+    FORMER = "FORMER"
 
 
 class Tenure(BaseModel):
@@ -293,6 +312,7 @@ class DirectorRelationship(Relationship):
     @classmethod
     def _claim_polymorphic(cls, data):
         return data.get("associated_role") == AssociatedRole.DIRECTOR
+
 
 class PartnerRelationship(Relationship):
     original_role = StringType(default=None)
@@ -437,7 +457,8 @@ class SearchRequest(BaseModel):
     search_input: SearchInput = ModelType(SearchInput, required=True)
     provider_config: ProviderConfig = ModelType(ProviderConfig, required=True)
     provider_credentials: Optional[ProviderCredentials] = ModelType(
-        ProviderCredentials, default=None)
+        ProviderCredentials, default=None
+    )
 
 
 class SearchCandidate(BaseModel):
@@ -456,17 +477,19 @@ class SearchCandidate(BaseModel):
 
 
 class SearchResponse(BaseModel):
-    search_output: List[SearchCandidate] = ListType(ModelType(SearchCandidate), default=[])
+    search_output: List[SearchCandidate] = ListType(
+        ModelType(SearchCandidate), default=[]
+    )
     errors: List[Error] = ListType(ModelType(Error), default=[])
     warnings: List[Warn] = ListType(ModelType(Warn), default=[])
     provider_data = BaseType(default=None)
     charges = ListType(ModelType(Charge), default=[])
 
     @staticmethod
-    def error(errors: List[Error]) -> 'SearchResponse':
+    def error(errors: List[Error]) -> "SearchResponse":
         res = SearchResponse()
         res.errors = errors
         return res
 
 
-SUPPORTED_COUNTRIES = ['GBR', 'USA', 'CAN', 'NLD']
+SUPPORTED_COUNTRIES = ["GBR", "USA", "CAN", "NLD"]

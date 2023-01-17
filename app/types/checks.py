@@ -1,10 +1,19 @@
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import List, Optional
 
-from schematics.types import UUIDType, ModelType, ListType, BaseType
+from schematics.types import BaseType, ListType, ModelType, UUIDType
 
-from app.types.common import BaseModel, DemoResultType, CommercialRelationshipType, CompanyData, ProviderConfig, \
-    ProviderCredentials, Error, Warn, Charge
+from app.types.common import (
+    BaseModel,
+    Charge,
+    CommercialRelationshipType,
+    CompanyData,
+    DemoResultType,
+    Error,
+    ProviderConfig,
+    ProviderCredentials,
+    Warn,
+)
 
 
 class RunCheckRequest(BaseModel):
@@ -14,7 +23,8 @@ class RunCheckRequest(BaseModel):
     check_input: CompanyData = ModelType(CompanyData, required=True)
     provider_config: ProviderConfig = ModelType(ProviderConfig, required=True)
     provider_credentials: Optional[ProviderCredentials] = ModelType(
-        ProviderCredentials, default=None)
+        ProviderCredentials, default=None
+    )
 
 
 class RunCheckResponse(BaseModel):
@@ -25,7 +35,7 @@ class RunCheckResponse(BaseModel):
     charges = ListType(ModelType(Charge), default=[])
 
     @staticmethod
-    def error(errors: List[Error]) -> 'RunCheckResponse':
+    def error(errors: List[Error]) -> "RunCheckResponse":
         res = RunCheckResponse()
         res.errors = errors
         return res
@@ -34,10 +44,15 @@ class RunCheckResponse(BaseModel):
         if self.check_output:
             if self.check_output.metadata:
                 self.check_output.metadata.country_of_incorporation = (
-                        check_input.country_of_incorporation or self.check_output.metadata.country_of_incorporation
+                    check_input.country_of_incorporation
+                    or self.check_output.metadata.country_of_incorporation
                 )
-                self.check_output.metadata.name = check_input.name or self.check_output.metadata.name
-                self.check_output.metadata.number = check_input.number or self.check_output.metadata.number
+                self.check_output.metadata.name = (
+                    check_input.name or self.check_output.metadata.name
+                )
+                self.check_output.metadata.number = (
+                    check_input.number or self.check_output.metadata.number
+                )
 
 
 @dataclass

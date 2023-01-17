@@ -10,19 +10,19 @@ app.register_blueprint(one_time_sync_api)
 
 @app.before_request
 def pre_request_logging():
-    request_data = '\n' + request.data.decode('utf8')
-    request_data = request_data.replace('\n', '\n    ')
+    request_data = "\n" + request.data.decode("utf8")
+    request_data = request_data.replace("\n", "\n    ")
 
-    app.logger.info(f'{request.method} {request.url}{request_data}')
+    app.logger.info(f"{request.method} {request.url}{request_data}")
 
 
 @app.after_request
 def post_request_logging(response):
     if response.direct_passthrough:
-        response_data = '\n(direct pass-through)'
+        response_data = "\n(direct pass-through)"
     else:
-        response_data = '\n' + response.data.decode('utf8')
-    response_data = response_data.replace('\n', '\n    ')
+        response_data = "\n" + response.data.decode("utf8")
+    response_data = response_data.replace("\n", "\n    ")
 
-    app.logger.info(f'{response.status} {request.url}{response_data}')
+    app.logger.info(f"{response.status} {request.url}{response_data}")
     return response
