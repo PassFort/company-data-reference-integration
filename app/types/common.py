@@ -1,6 +1,4 @@
-import inspect
-from functools import wraps
-from typing import Iterable, TypeVar, Optional, Type, List
+from typing import Optional, List
 
 from schematics import Model
 from schematics.common import NOT_NONE
@@ -8,9 +6,7 @@ from schematics.types import (
     FloatType, UUIDType, StringType, ModelType, ListType, DateType, BaseType, DictType, IntType,
     BooleanType, PolyModelType
 )
-from schematics.exceptions import DataError
 from schematics.types.base import TypeMeta
-from flask import abort, request, Response, jsonify
 
 
 class BaseModel(Model):
@@ -429,97 +425,6 @@ class Charge(BaseModel):
     sku = StringType(default=None)
 
 
-class RunCheckRequest(BaseModel):
-    id = UUIDType(required=True)
-    demo_result = DemoResultType(default=None)
-    commercial_relationship = CommercialRelationshipType(required=True)
-    check_input: CompanyData = ModelType(CompanyData, required=True)
-    provider_config: ProviderConfig = ModelType(ProviderConfig, required=True)
-    provider_credentials: Optional[ProviderCredentials] = ModelType(
-        ProviderCredentials, default=None)
-
-
-class RunCheckResponse(BaseModel):
-    check_output: Optional[CompanyData] = ModelType(CompanyData, default=None)
-    errors: List[Error] = ListType(ModelType(Error), default=[])
-    warnings: List[Warn] = ListType(ModelType(Warn), default=[])
-    provider_data = BaseType(default=None)
-    charges = ListType(ModelType(Charge), default=[])
-
-    @staticmethod
-    def error(errors: List[Error]) -> 'RunCheckResponse':
-        res = RunCheckResponse()
-        res.errors = errors
-        return res
-
-    def patch_to_match_input(self, check_input):
-        if self.check_output:
-            if self.check_output.metadata:
-                self.check_output.metadata.country_of_incorporation = (
-                        check_input.country_of_incorporation or self.check_output.metadata.country_of_incorporation
-                )
-                self.check_output.metadata.name = check_input.name or self.check_output.metadata.name
-                self.check_output.metadata.number = check_input.number or self.check_output.metadata.number
-
-
-T = TypeVar('T')
-
-
-def _first(x: Iterable[T]) -> Optional[T]:
-    return next(iter(x), None)
-
-
-def _get_input_annotation(signature: inspect.Signature) -> Optional[Type[Model]]:
-    first_param: Optional[inspect.Parameter] = _first(
-        signature.parameters.values())
-    if first_param is None:
-        return None
-
-    if first_param.kind not in [inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD]:
-        return None
-
-    if not issubclass(first_param.annotation, Model):
-        return None
-
-    return first_param.annotation
-
-
-def validate_models(fn):
-    """
-3    Creates a Schematics Model from the request data and validates it.
-
-    Throws DataError if invalid.
-    Otherwise, it passes the validated request data to the wrapped function.
-    """
-
-    signature = inspect.signature(fn)
-
-    assert issubclass(signature.return_annotation,
-                      Model), 'Must have a return type annotation'
-    output_model = signature.return_annotation
-    input_model = _get_input_annotation(signature)
-
-    @wraps(fn)
-    def wrapped_fn(*args, **kwargs):
-        if input_model is None:
-            res = fn(*args, **kwargs)
-        else:
-            model = None
-            try:
-                model = input_model().import_data(request.json, apply_defaults=True)
-                model.validate()
-            except DataError as e:
-                abort(Response(str(e), status=400))
-
-            res = fn(model, *args, **kwargs)
-
-        assert isinstance(res, output_model)
-
-        return jsonify(res.serialize())
-
-    return wrapped_fn
-
-
 class SearchInput(BaseModel):
     query = StringType(required=True)
     country_of_incorporation = StringType(required=True)
@@ -562,3 +467,6 @@ class SearchResponse(BaseModel):
         res = SearchResponse()
         res.errors = errors
         return res
+
+
+SUPPORTED_COUNTRIES = ['GBR', 'USA', 'CAN', 'NLD']
