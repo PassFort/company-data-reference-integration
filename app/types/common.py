@@ -1,43 +1,45 @@
-from typing import List, Optional
+from enum import Enum, EnumMeta
+from typing import Any, Dict, List, Optional, Union
 
-from schematics import Model
-from schematics.common import NOT_NONE
-from schematics.types import (
-    BaseType,
-    BooleanType,
-    DateType,
-    DictType,
-    FloatType,
-    IntType,
-    ListType,
-    ModelType,
-    PolyModelType,
-    StringType,
-    UUIDType,
-)
-from schematics.types.base import TypeMeta
+from pydantic import BaseModel, Field, constr
+from typing_extensions import Literal
 
 
-class BaseModel(Model):
-    class Options:
-        export_level = NOT_NONE
+class MetaEnum(EnumMeta):
+    def __contains__(cls, item):
+        try:
+            cls(item)
+        except ValueError:
+            return False
+        return True
 
 
-# Inheriting this class will make an enum exhaustive
-class EnumMeta(TypeMeta):
-    def __new__(mcs, name, bases, attrs):
-        attrs["choices"] = [
-            v for k, v in attrs.items() if not k.startswith("_") and k.isupper()
-        ]
-        return TypeMeta.__new__(mcs, name, bases, attrs)
+class BaseEnum(str, Enum, metaclass=MetaEnum):
+    ...
 
 
-class ApproxDateType(DateType):
-    formats = ["%Y-%m"]
+class Date(BaseModel):
+    __root__: constr(regex=r"(^\d{4}-\d{2}-\d{2}$)") = Field(
+        ...,
+        description="Exact date in `YYYY-MM-DD` format",
+        example="1992-11-24",
+        title="Date",
+    )
+
+
+class UUID(BaseModel):
+    __root__: constr(
+        regex=r"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+    ) = Field(
+        ...,
+        description="[Universally unique identifier.](https://en.wikipedia.org/wiki/Universally_unique_identifier)",
+        example="01234567-89ab-cdef-0123-456789abcdef",
+        title="UUID",
+    )
 
 
 # Intentionally non-exhaustive
-class DemoResultType(StringType):
+class DemoResultType(BaseEnum):
     ANY = "ANY"
     ANY_CHARGE = "ANY_CHARGE"
     NO_MATCH = "NO_MATCH"
@@ -63,7 +65,7 @@ class DemoResultType(StringType):
     COMPANY_ADDRESS_MISMATCH = "COMPANY_ADDRESS_MISMATCH"
     COMPANY_ADDRESS_MATCH = "COMPANY_ADDRESS_MATCH"
     # Associates data
-    COMPANY_RESGINED_OFFICER = "COMPANY_RESIGNED_OFFICER"
+    COMPANY_RESIGNED_OFFICER = "COMPANY_RESIGNED_OFFICER"
     COMPANY_FORMER_SHAREHOLDER = "COMPANY_FORMER_SHAREHOLDER"
     COMPANY_OFFICER_WITH_MULTIPLE_ROLES = "COMPANY_OFFICER_WITH_MULTIPLE_ROLES"
     COMPANY_SHAREHOLDER_WITH_100_PERCENT_OWNERSHIP = (
@@ -72,37 +74,39 @@ class DemoResultType(StringType):
 
 
 # Local field names (for errors)
-class Field(StringType):
+class LocalField(BaseEnum):
     COUNTRY_OF_INCORPORATION = "COUNTRY_OF_INCORPORATION"
 
 
-class CommercialRelationshipType(StringType, metaclass=EnumMeta):
+class CommercialRelationshipType(BaseEnum):
     PASSFORT = "PASSFORT"
     DIRECT = "DIRECT"
 
 
-class ErrorType(StringType, metaclass=EnumMeta):
+class ErrorType(BaseEnum):
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
     INVALID_CONFIG = "INVALID_CONFIG"
     MISSING_CHECK_INPUT = "MISSING_CHECK_INPUT"
     INVALID_CHECK_INPUT = "INVALID_CHECK_INPUT"
+    INVALID_INPUT = "INVALID_INPUT"
     PROVIDER_CONNECTION = "PROVIDER_CONNECTION"
     PROVIDER_MESSAGE = "PROVIDER_MESSAGE"
     UNSUPPORTED_DEMO_RESULT = "UNSUPPORTED_DEMO_RESULT"
 
 
-class ErrorSubType(StringType, metaclass=EnumMeta):
+class ErrorSubType(BaseEnum):
     # INVALID_CHECK_INPUT
     UNSUPPORTED_COUNTRY = "UNSUPPORTED_COUNTRY"
 
 
-class EntityType(StringType, metaclass=EnumMeta):
+class EntityType(BaseEnum):
     COMPANY = "COMPANY"
     INDIVIDUAL = "INDIVIDUAL"
 
 
-class AddressType(StringType, metaclass=EnumMeta):
+class AddressType(BaseEnum):
     STRUCTURED = "STRUCTURED"
+    FREEFORM = "FREEFORM"
 
 
 class ProviderConfig(BaseModel):
@@ -110,19 +114,19 @@ class ProviderConfig(BaseModel):
 
 
 class ProviderCredentials(BaseModel):
-    apikey = StringType(required=True)
+    apikey: str
 
 
 class Error(BaseModel):
-    type = ErrorType(required=True)
-    sub_type = ErrorSubType()
-    message = StringType(required=True)
-    data = DictType(StringType(), default=None)
+    type: ErrorType
+    sub_type: Optional[ErrorSubType]
+    message: Optional[str]
+    data: Optional[Dict] = None
 
     @staticmethod
     def unsupported_country():
         return Error(
-            {
+            **{
                 "type": ErrorType.INVALID_CHECK_INPUT,
                 "sub_type": ErrorSubType.UNSUPPORTED_COUNTRY,
                 "message": "Country not supported.",
@@ -132,7 +136,7 @@ class Error(BaseModel):
     @staticmethod
     def missing_required_field(field: str):
         return Error(
-            {
+            **{
                 "type": ErrorType.MISSING_CHECK_INPUT,
                 "data": {
                     "field": field,
@@ -143,34 +147,32 @@ class Error(BaseModel):
 
 
 class Warn(BaseModel):
-    type = ErrorType(required=True)
-    message = StringType(required=True)
+    type: ErrorType
+    message: str
 
 
 class StructuredAddress(BaseModel):
-    country = StringType(required=True)
-    state_province = StringType(default=None)
-    county = StringType(default=None)
-    postal_code = StringType(default=None)
-    locality = StringType(default=None)
-    postal_town = StringType(default=None)
-    route = StringType(default=None)
-    street_number = StringType(default=None)
-    premise = StringType(default=None)
-    subpremise = StringType(default=None)
-    address_lines = ListType(StringType(), default=None)
+    country: str
+    state_province: Optional[str]
+    county: Optional[str]
+    postal_code: Optional[str]
+    locality: Optional[str]
+    postal_town: Optional[str]
+    route: Optional[str]
+    street_number: Optional[str]
+    premise: Optional[str]
+    subpremise: Optional[str]
+    address_lines: Optional[List[str]]
 
 
 class Address(StructuredAddress):
-    type = AddressType(required=True, default=AddressType.STRUCTURED)
-    original_freeform_address = StringType(default=None)
-    text = StringType(default=None)
-    original_structured_address: Optional[StructuredAddress] = ModelType(
-        StructuredAddress, default=None
-    )
+    type: AddressType = AddressType.STRUCTURED
+    original_freeform_address: Optional[str]
+    text: Optional[str]
+    original_structured_address: Optional[StructuredAddress]
 
 
-class CompanyAddressType(StringType, metaclass=EnumMeta):
+class CompanyAddressType(BaseEnum):
     REGISTERED_ADDRESS = "registered_address"
     BRANCH_ADDRESS = "branch_address"
     HEAD_OFFICE_ADDRESS = "head_office_address"
@@ -179,17 +181,17 @@ class CompanyAddressType(StringType, metaclass=EnumMeta):
 
 
 class CompanyAddress(BaseModel):
-    type = CompanyAddressType(required=True)
-    address = ModelType(Address, required=True)
+    type: CompanyAddressType
+    address: Address
 
 
 class ContactDetails(BaseModel):
-    email = StringType(default=None)
-    phone_number = StringType(default=None)
-    url = StringType(default=None)
+    email: Optional[str]
+    phone_number: Optional[str]
+    url: Optional[str]
 
 
-class IndustryClassificationType(StringType, metaclass=EnumMeta):
+class IndustryClassificationType(BaseEnum):
     SIC = "SIC"
     NACE = "NACE"
     NAICS = "NAICS"
@@ -197,47 +199,48 @@ class IndustryClassificationType(StringType, metaclass=EnumMeta):
 
 
 class IndustryClassification(BaseModel):
-    classification_type = IndustryClassificationType(required=True)
-    code = StringType(required=True)
-    classification_version = StringType(default=None)
-    description = StringType(default=None)
+    classification_type: IndustryClassificationType
+    code: str
+    classification_version: Optional[str]
+    description: Optional[str]
 
 
 class CompanyMetadata(BaseModel):
-    name = StringType(default=None)
-    number = StringType(default=None)
-    lei = StringType(default=None)
-    isin = StringType(default=None)
-    lei = StringType(default=None)
+    name: Optional[str]
+    number: Optional[str]
+    lei: Optional[str]
+    isin: Optional[str]
+    lei: Optional[str]
 
-    company_type = StringType(default=None)
+    company_type: Optional[str]
     # structured_company_type = ModelType(StructuredCompanyType)
-    industry_classifications = ListType(ModelType(IndustryClassification), default=None)
+    industry_classifications: Optional[List[IndustryClassification]]
 
     # tax_ids = ListType(ModelType(TaxId), default=list, required=True)
 
-    country_of_incorporation = StringType(default=None)
-    incorporation_date = DateType(default=None)
+    country_of_incorporation: Optional[str]
+    incorporation_date: Optional[Date]
 
-    contact_information = ModelType(ContactDetails, default=None)
-    addresses = ListType(ModelType(CompanyAddress), default=None)
+    contact_information: Optional[ContactDetails]
+    addresses: Optional[List[CompanyAddress]]
 
-    is_active = BooleanType(default=None)
-    is_active_details = StringType(default=None)
-    trade_description = StringType(default=None)
-    description = StringType(default=None)
+    is_active: Optional[bool]
+    is_active_details: Optional[str]
+    trade_description: Optional[str]
+    description: Optional[str]
 
 
 class ProviderRef(BaseModel):
-    reference = StringType(required=True)
-    label = StringType(required=True)
+    reference: str
+    label: str
 
 
 class ExternalRefs(BaseModel):
-    provider = ListType(ModelType(ProviderRef), required=True)
+    provider: List[ProviderRef]
+    generic: Optional[str]
 
 
-class AssociatedRole(StringType, metaclass=EnumMeta):
+class AssociatedRole(BaseEnum):
     SHAREHOLDER = "SHAREHOLDER"
     BENEFICIAL_OWNER = "BENEFICIAL_OWNER"
     GLOBAL_ULTIMATE_OWNER = "GLOBAL_ULTIMATE_OWNER"
@@ -245,9 +248,10 @@ class AssociatedRole(StringType, metaclass=EnumMeta):
     DIRECTOR = "DIRECTOR"
     COMPANY_SECRETARY = "COMPANY_SECRETARY"
     PARTNER = "PARTNER"
+    PERSON_OF_SIGNIFICANT_CONTROL = "PERSON_OF_SIGNIFICANT_CONTROL"
 
 
-class TaxIdType(StringType, metaclass=EnumMeta):
+class TaxIdType(BaseEnum):
     Ein = "EIN"
     Eurovat = "EUROVAT"
     Other = "OTHER"
@@ -255,12 +259,12 @@ class TaxIdType(StringType, metaclass=EnumMeta):
 
 
 class TaxId(BaseModel):
-    tax_id_name = StringType(default=None)
-    tax_id_type = TaxIdType(required=True)
-    value = StringType(required=True)
+    tax_id_name: Optional[str]
+    tax_id_type: TaxIdType
+    value: str
 
 
-class CompanyStructureOwnershipType(StringType, metaclass=EnumMeta):
+class CompanyStructureOwnershipType(BaseEnum):
     Association = "ASSOCIATION"
     Company = "COMPANY"
     Other = "OTHER"
@@ -270,133 +274,125 @@ class CompanyStructureOwnershipType(StringType, metaclass=EnumMeta):
 
 
 class CompanyStructureType(BaseModel):
-    is_limited = BooleanType(default=None)
-    is_public = BooleanType(default=None)
-    ownership_type = CompanyStructureOwnershipType(default=None)
+    is_limited: Optional[bool]
+    is_public: Optional[bool]
+    ownership_type: Optional[CompanyStructureOwnershipType]
 
 
-class TenureType(StringType, metaclass=EnumMeta):
+class TenureType(BaseEnum):
     CURRENT = "CURRENT"
     FORMER = "FORMER"
 
 
 class Tenure(BaseModel):
-    tenure_type = TenureType(required=True)
+    tenure_type: TenureType
 
 
 class CurrentTenure(Tenure):
-    start = DateType(default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("tenure_type") == TenureType.CURRENT
+    tenure_type = TenureType.CURRENT
+    start: Optional[Date]
 
 
 class FormerTenure(Tenure):
-    start = DateType(default=None)
-    end = DateType(default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("tenure_type") == TenureType.FORMER
+    tenure_type = TenureType.FORMER
+    start: Optional[Date]
+    end: Optional[Date]
 
 
 class Relationship(BaseModel):
-    associated_role = AssociatedRole(required=True)
-    tenure = PolyModelType(Tenure, required=True)
+    associated_role: AssociatedRole
+    tenure: Optional[Union[FormerTenure, CurrentTenure]]
 
 
 class DirectorRelationship(Relationship):
-    original_role = StringType(default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("associated_role") == AssociatedRole.DIRECTOR
+    associated_role: Literal[AssociatedRole.DIRECTOR]
+    original_role: Optional[str]
 
 
 class PartnerRelationship(Relationship):
-    original_role = StringType(default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("associated_role") == AssociatedRole.PARTNER
+    associated_role: Literal[AssociatedRole.PARTNER]
+    original_role: Optional[str]
 
 
 class Shareholding(BaseModel):
-    share_class = StringType(default=None)
-    amount = IntType(default=None)
-    percentage = FloatType(default=None)
+    share_class: Optional[str]
+    amount: Optional[int]
+    percentage: Optional[float]
 
 
 class ShareholderRelationship(Relationship):
-    total_percentage = FloatType(default=None)
-    shareholdings = ListType(ModelType(Shareholding), default=list)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("associated_role") == AssociatedRole.SHAREHOLDER
+    associated_role: Literal[AssociatedRole.SHAREHOLDER]
+    total_percentage: Optional[float]
+    shareholdings: List[Shareholding] = []
 
 
 class BeneficialOwner(Relationship):
-    total_percentage = FloatType(default=None)
-    shareholdings = ListType(ModelType(Shareholding), default=list)
+    associated_role: Literal[AssociatedRole.BENEFICIAL_OWNER]
+    total_percentage: Optional[float]
+    shareholdings: List[Shareholding] = []
 
-    distance = IntType(default=None)
-    calculated_percentage = FloatType(default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("associated_role") == AssociatedRole.BENEFICIAL_OWNER
+    distance: Optional[int]
+    calculated_percentage: Optional[float]
 
 
 class GlobalUltimateOwner(Relationship):
-    distance = IntType(default=None)
-    calculated_percentage = FloatType(default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("associated_role") == AssociatedRole.GLOBAL_ULTIMATE_OWNER
+    associated_role: Literal[AssociatedRole.GLOBAL_ULTIMATE_OWNER]
+    distance: Optional[int]
+    calculated_percentage: Optional[float]
 
 
 class ControllingShareholder(Relationship):
-    distance = IntType(default=None)
-    calculated_percentage = FloatType(default=None)
+    associated_role: Literal[AssociatedRole.CONTROLLING_SHAREHOLDER]
+    distance: Optional[int]
+    calculated_percentage: Optional[float]
 
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("associated_role") == AssociatedRole.CONTROLLING_SHAREHOLDER
+
+class PersonOfSignificantControl(Relationship):
+    associated_role: Literal[AssociatedRole.PERSON_OF_SIGNIFICANT_CONTROL]
+    distance: Optional[int]
+    calculated_percentage: Optional[float]
 
 
 class EntityData(BaseModel):
-    entity_type = EntityType(required=True)
+    entity_type: EntityType
 
 
 class AssociatedEntity(BaseModel):
-    associate_id = UUIDType(required=True)
-    entity_type = EntityType(required=True)
-    immediate_data = PolyModelType(EntityData, required=True)
-    relationships = ListType(PolyModelType(Relationship), default=list)
+    associate_id: UUID
+    entity_type: EntityType
+    immediate_data: Union[
+        "IndividualData",
+        "CompanyData",
+    ] = Field(..., discriminator="entity_type")
+    relationships: List[
+        Union[
+            DirectorRelationship,
+            PartnerRelationship,
+            ShareholderRelationship,
+            BeneficialOwner,
+            GlobalUltimateOwner,
+            ControllingShareholder,
+            PersonOfSignificantControl,
+            Relationship,
+        ]
+    ] = [Field(..., discriminator="associated_role")]
 
 
 class Name(BaseModel):
-    given_names = ListType(StringType, default=list)
-    family_name = StringType(default=None)
+    given_names: List[str] = []
+    family_name: Optional[str]
 
 
 class PersonalDetails(BaseModel):
-    name = ModelType(Name, default=None)
+    name: Optional[Name]
 
 
 class IndividualData(EntityData):
-    entity_type = EntityType(required=True)
-    personal_details = ModelType(PersonalDetails, default=None)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("entity_type") == EntityType.INDIVIDUAL
+    entity_type: Literal[EntityType.INDIVIDUAL]
+    personal_details: Optional[PersonalDetails]
 
 
-class CheckedCompanyDataField(StringType, metaclass=EnumMeta):
+class CheckedCompanyDataField(BaseEnum):
     NAME = "NAME"
     NUMBER = "NUMBER"
     IS_ACTIVE = "IS_ACTIVE"
@@ -405,26 +401,23 @@ class CheckedCompanyDataField(StringType, metaclass=EnumMeta):
     ADDRESS = "ADDRESS"
 
 
-class CompanyFieldCheckResult(StringType, metaclass=EnumMeta):
+class CompanyFieldCheckResult(BaseEnum):
     MATCH = "MATCH"
     MISMATCH = "MISMATCH"
 
 
 class CompanyFieldCheck(BaseModel):
-    field = CheckedCompanyDataField()
-    result = CompanyFieldCheckResult()
+    field: CheckedCompanyDataField
+    result: CompanyFieldCheckResult
 
 
 class CompanyData(EntityData):
-    external_refs = ModelType(ExternalRefs, default=None)
-    entity_type = EntityType(default=None)
-    metadata = ModelType(CompanyMetadata, default=None)
-    associated_entities = ListType(ModelType(AssociatedEntity), default=list)
-    field_checks = ListType(ModelType(CompanyFieldCheck), default=list)
-
-    @classmethod
-    def _claim_polymorphic(cls, data):
-        return data.get("entity_type") == EntityType.COMPANY
+    entity_type: Literal[EntityType.COMPANY]
+    external_refs: Optional[ExternalRefs]
+    metadata: Optional[CompanyMetadata]
+    # NB: no AssociatedEntity type here to avoid circular types
+    associated_entities: List = []
+    field_checks: List[CompanyFieldCheck] = []
 
     def get_country_of_incorporation(self):
         if self.metadata:
@@ -440,56 +433,58 @@ class CompanyData(EntityData):
 
 
 class Charge(BaseModel):
-    amount = IntType(required=True)
-    reference = StringType(default=None)
-    sku = StringType(default=None)
+    amount: int
+    reference: Optional[str]
+    sku: Optional[str]
+
+
+class OperationRequest(BaseModel):
+    demo_result: Optional[str]
+    commercial_relationship: CommercialRelationshipType
+    provider_config: ProviderConfig
+    provider_credentials: Optional[ProviderCredentials]
+
+
+class OperationResponse(BaseModel):
+    errors: List[Error] = []
+    warnings: List[Warn] = []
+    provider_data: Optional[Any]
+
+    @classmethod
+    def error(cls, errors: List[Error], **kwargs) -> "OperationResponse":
+        res = cls(**kwargs)
+        res.errors = errors
+        return res
 
 
 class SearchInput(BaseModel):
-    query = StringType(required=True)
-    country_of_incorporation = StringType(required=True)
-    state_of_incorporation = StringType(default=None)
+    query: str
+    country_of_incorporation: str
+    state_of_incorporation: Optional[str]
 
 
-class SearchRequest(BaseModel):
-    demo_result = DemoResultType(default=None)
-    commercial_relationship = CommercialRelationshipType(required=True)
-    search_input: SearchInput = ModelType(SearchInput, required=True)
-    provider_config: ProviderConfig = ModelType(ProviderConfig, required=True)
-    provider_credentials: Optional[ProviderCredentials] = ModelType(
-        ProviderCredentials, default=None
-    )
+class SearchRequest(OperationRequest):
+    search_input: SearchInput
 
 
 class SearchCandidate(BaseModel):
-    name = StringType(default=None)
-    number_label = StringType(default=None)
-    number = StringType(default=None)
-    country_of_incorporation = StringType(default=None)
-    status = StringType(default=None)
-    provider_reference = ModelType(ProviderRef, default=None)
-    addresses = ListType(ModelType(CompanyAddress), default=None)
-    contact = ModelType(ContactDetails, default=None)
-    incorporation_date = DateType(default=None)
-    tax_ids = ListType(ModelType(TaxId), default=None)
-    structure_type = ModelType(CompanyStructureType)
-    lei = StringType(default=None)
+    name: Optional[str]
+    number_label: Optional[str]
+    number: Optional[str]
+    country_of_incorporation: Optional[str]
+    status: Optional[str]
+    provider_reference: Optional[ProviderRef]
+    addresses: Optional[List[CompanyAddress]]
+    contact: Optional[ContactDetails]
+    incorporation_date: Optional[Date]
+    tax_ids: Optional[List[TaxId]]
+    structure_type: Optional[CompanyStructureType]
+    lei: Optional[str]
 
 
-class SearchResponse(BaseModel):
-    search_output: List[SearchCandidate] = ListType(
-        ModelType(SearchCandidate), default=[]
-    )
-    errors: List[Error] = ListType(ModelType(Error), default=[])
-    warnings: List[Warn] = ListType(ModelType(Warn), default=[])
-    provider_data = BaseType(default=None)
-    charges = ListType(ModelType(Charge), default=[])
-
-    @staticmethod
-    def error(errors: List[Error]) -> "SearchResponse":
-        res = SearchResponse()
-        res.errors = errors
-        return res
+class SearchResponse(OperationResponse):
+    search_output: List[SearchCandidate] = []
+    charges: List[Charge] = []
 
 
 SUPPORTED_COUNTRIES = ["GBR", "USA", "CAN", "NLD"]

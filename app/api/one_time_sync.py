@@ -39,7 +39,7 @@ def run_check(req: RunCheckRequest) -> RunCheckResponse:
     return RunCheckResponse.error(
         [
             Error(
-                {
+                **{
                     "type": ErrorType.PROVIDER_MESSAGE,
                     "message": "Live checks are not supported",
                 }

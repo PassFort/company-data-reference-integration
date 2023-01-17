@@ -34,7 +34,7 @@ def search(req: SearchRequest) -> SearchResponse:
     return SearchResponse.error(
         [
             Error(
-                {
+                **{
                     "type": ErrorType.PROVIDER_MESSAGE,
                     "message": "Live searches are not supported",
                 }

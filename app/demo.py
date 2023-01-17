@@ -29,16 +29,15 @@ def _try_load_demo_result(
     try:
         # Load file relative to current script
         with open(os.path.join(os.path.dirname(__file__), filename), "r") as file:
-            demo_response = response_model().import_data(
-                json.load(file), apply_defaults=True
-            )
+            raw_data = json.load(file)
+            demo_response = response_model(**raw_data)
     except FileNotFoundError:
         return None
 
     if commercial_relationship == CommercialRelationshipType.PASSFORT:
         demo_response.charges = [
-            Charge({"amount": 100, "reference": "DUMMY REFERENCE"}),
-            Charge({"amount": 50, "sku": "NORMAL"}),
+            Charge(**{"amount": 100, "reference": "DUMMY REFERENCE"}),
+            Charge(**{"amount": 50, "sku": "NORMAL"}),
         ]
 
     return demo_response
@@ -89,7 +88,7 @@ def _run_demo_check(
     elif demo_result == DemoResultType.COMPANY_ADDRESS_MATCH:
         check_response.check_output.field_checks = [
             CompanyFieldCheck(
-                {
+                **{
                     "field": CheckedCompanyDataField.ADDRESS,
                     "result": CompanyFieldCheckResult.MATCH,
                 }
@@ -98,7 +97,7 @@ def _run_demo_check(
     elif demo_result == DemoResultType.COMPANY_ADDRESS_MISMATCH:
         check_response.check_output.field_checks = [
             CompanyFieldCheck(
-                {
+                **{
                     "field": CheckedCompanyDataField.ADDRESS,
                     "result": CompanyFieldCheckResult.MISMATCH,
                 }
