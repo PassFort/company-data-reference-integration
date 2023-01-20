@@ -4,6 +4,7 @@ from app.api.auth import auth
 from app.api.metadata import metadata_api
 from app.api.search import search_api
 from app.demo import _run_demo_check
+from app.files import static_file_path
 from app.types.checks import RunCheckRequest, RunCheckResponse
 from app.types.common import SUPPORTED_COUNTRIES, Error, ErrorType
 from app.types.validation import _extract_check_input, validate_models
@@ -16,7 +17,7 @@ one_time_sync_api.register_blueprint(metadata_api)
 @one_time_sync_api.route("/config")
 @auth.login_required
 def get_config():
-    return send_file("../static/config.json", cache_timeout=-1)
+    return send_file(static_file_path("config.one-time-sync.json"), max_age=-1)
 
 
 @one_time_sync_api.route("/checks", methods=["POST"])

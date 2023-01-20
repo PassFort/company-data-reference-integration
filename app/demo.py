@@ -1,10 +1,10 @@
 import json
-import os
 import re
 
 from flask import Response
 from werkzeug.exceptions import abort
 
+from app.files import static_file_path
 from app.types.checks import CheckInput, RunCheckResponse
 from app.types.common import (
     Charge,
@@ -24,11 +24,10 @@ def _try_load_demo_result(
             abort(Response("Invalid demo request", status=400))
         return value
 
-    filename = f"../static/demo_results/{_sanitize_filename(name)}.json"
+    file_path = static_file_path("demo_results", f"{_sanitize_filename(name)}.json")
 
     try:
-        # Load file relative to current script
-        with open(os.path.join(os.path.dirname(__file__), filename), "r") as file:
+        with open(file_path, "r") as file:
             raw_data = json.load(file)
             demo_response = response_model(**raw_data)
     except FileNotFoundError:
