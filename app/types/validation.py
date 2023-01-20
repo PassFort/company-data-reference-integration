@@ -6,8 +6,14 @@ from typing import Iterable, List, Optional, Tuple, Type, TypeVar
 from flask import abort, jsonify, make_response, request
 from pydantic import BaseModel, ValidationError
 
-from app.types.checks import CheckInput, RunCheckRequest
-from app.types.common import Error, ErrorType, LocalField, SearchRequest
+from app.types.checks import RunCheckRequest
+from app.types.common import (
+    SUPPORTED_COUNTRIES,
+    Error,
+    ErrorType,
+    LocalField,
+    SearchRequest,
+)
 
 T = TypeVar("T")
 
@@ -15,6 +21,45 @@ T = TypeVar("T")
 @dataclass
 class SearchInput:
     country_of_incorporation: str
+
+
+def _validate_country_of_incorporation(country_code) -> List[Error]:
+    errors = []
+    if country_code is None:
+        errors.append(Error.missing_required_field(LocalField.COUNTRY_OF_INCORPORATION))
+    if country_code not in SUPPORTED_COUNTRIES:
+        errors.append(Error.unsupported_country())
+    return errors
+
+
+def _validate_demo_check(demo_result, demo_type_label):
+    errors = []
+    if demo_result is None:
+        errors.append(
+            Error(
+                **{
+                    "type": ErrorType.PROVIDER_MESSAGE,
+                    "message": f"Live {demo_type_label} is not supported",
+                }
+            )
+        )
+    return errors
+
+
+def validate_search_request(request: SearchRequest) -> List[Error]:
+    errors = _validate_country_of_incorporation(
+        request.search_input.country_of_incorporation
+    )
+    errors.extend(_validate_demo_check(request.demo_result, "search"))
+    return errors
+
+
+def validate_check_request(request: RunCheckRequest) -> List[Error]:
+    errors = _validate_country_of_incorporation(
+        request.check_input.get_country_of_incorporation()
+    )
+    errors.extend(_validate_demo_check(request.demo_result, "check"))
+    return errors
 
 
 def _first(x: Iterable[T]) -> Optional[T]:
@@ -87,42 +132,3 @@ def validate_models(fn):
         return res.dict(exclude_none=True)
 
     return wrapped_fn
-
-
-def _extract_check_input(
-    req: RunCheckRequest,
-) -> Tuple[List[Error], Optional[CheckInput]]:
-    errors = []
-
-    # Extract country of incorporation
-    country_of_incorporation = req.check_input.get_country_of_incorporation()
-    if country_of_incorporation is None:
-        errors.append(Error.missing_required_field(LocalField.COUNTRY_OF_INCORPORATION))
-
-    name = req.check_input.get_company_name()
-    number = req.check_input.get_company_number()
-
-    if errors:
-        return errors, None
-    else:
-        return [], CheckInput(
-            name=name,
-            number=number,
-            country_of_incorporation=country_of_incorporation,
-        )
-
-
-def _extract_search_input(
-    req: SearchRequest,
-) -> Tuple[List[Error], Optional[SearchInput]]:
-    errors = []
-
-    # Extract country of incorporation
-    country_of_incorporation = req.search_input.country_of_incorporation
-    if country_of_incorporation is None:
-        errors.append(Error.missing_required_field(LocalField.COUNTRY_OF_INCORPORATION))
-
-    if errors:
-        return errors, None
-    else:
-        return [], SearchInput(country_of_incorporation=country_of_incorporation)
