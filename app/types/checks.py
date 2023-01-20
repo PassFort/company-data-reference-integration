@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from app.types.common import (
     UUID,
@@ -49,3 +49,38 @@ class RunCheckResponse(OperationResponse):
             self.check_output.metadata.number = (
                 check_input.number or self.check_output.metadata.number
             )
+
+
+class CheckPollRequest(OperationRequest):
+    id: str
+    reference: str
+    custom_data: Dict[str, Any]
+
+
+class MonitoredCheckRequest(OperationRequest):
+    reference: str
+
+
+class StartCheckResponse(OperationResponse):
+    reference: Optional[str]
+    provider_id: str
+    custom_data: Optional[Dict[str, Any]]
+
+
+class MonitoredCheckPollResponse(RunCheckResponse):
+    pending: bool = False
+
+
+class MonitoredPollResponse(OperationResponse):
+    # NOTE: This is not generally supported and SHOULD NOT BE USED IN OTHER INTEGRATIONS.
+    # This will eventually be deprecated and removed.
+    references: Optional[str] = "UNKNOWN"
+
+
+class MonitoredCheckResponse(OperationResponse):
+    pass
+
+
+class MonitoredCheckUpdateRequest(OperationRequest):
+    reference: str
+    updated_output: MonitoredCheckPollResponse

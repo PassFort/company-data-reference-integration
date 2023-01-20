@@ -1,11 +1,13 @@
 from flask import Flask, request
 
+from app.api.monitored_polling import monitored_polling_api
 from app.api.one_time_sync import one_time_sync_api
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = Flask(__name__)
 app.register_blueprint(one_time_sync_api)
+app.register_blueprint(monitored_polling_api)
 
 
 @app.before_request

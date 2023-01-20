@@ -1,11 +1,12 @@
 import json
 import re
+from typing import Union
 
 from flask import Response
 from werkzeug.exceptions import abort
 
 from app.files import static_file_path
-from app.types.checks import CheckInput, RunCheckResponse
+from app.types.checks import CheckInput, MonitoredCheckPollResponse, RunCheckResponse
 from app.types.common import (
     Charge,
     CheckedCompanyDataField,
@@ -46,7 +47,8 @@ def _run_demo_check(
     check_input: CheckInput,
     demo_result: str,
     commercial_relationship: CommercialRelationshipType,
-) -> RunCheckResponse:
+    response_class=RunCheckResponse,
+) -> Union[MonitoredCheckPollResponse, RunCheckResponse]:
     if demo_result in {
         DemoResultType.ANY,
         DemoResultType.ANY_CHARGE,
@@ -58,13 +60,13 @@ def _run_demo_check(
         DemoResultType.COMPANY_COUNTRY_OF_INCORPORATION_MISMATCH,
     }:
         check_response = _try_load_demo_result(
-            RunCheckResponse, commercial_relationship, DemoResultType.ALL_DATA
+            response_class, commercial_relationship, DemoResultType.ALL_DATA
         )
     else:
         check_response = _try_load_demo_result(
-            RunCheckResponse, commercial_relationship, f"{demo_result}"
+            response_class, commercial_relationship, f"{demo_result}"
         ) or _try_load_demo_result(
-            RunCheckResponse, commercial_relationship, "UNSUPPORTED_DEMO_RESULT"
+            response_class, commercial_relationship, "UNSUPPORTED_DEMO_RESULT"
         )
 
     check_response.patch_to_match_input(check_input)

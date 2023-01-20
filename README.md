@@ -20,3 +20,19 @@ the service with `python main.py`.
 This stateless service is designed to be deployed to Google App Engine, the `app.yaml`
 and `Dockerfile` reflect this. However, there is no requirement for your integration
 to use such a platform.
+
+
+## Monitored Polling Reference
+
+The monitored polling reference implementation is available at the
+path `/monitored-polling/`. It uses the same demo data as the synchronous
+reference implementation by default. To support testing ongoing monitoring changes,
+there is a private API at `/monitored-polling/monitored_checks/<reference>/_update`.
+
+The reference is injected as the external generic reference into the original check
+result for ease of testing.
+The private update endpoint is authenticated similarly to the other endpoints, thus
+every request must be signed as per the officially supported  HTTP Signature
+draft spec.
+The payload for the update endpoint must be in the same format as that returned
+by the poll endpoint.

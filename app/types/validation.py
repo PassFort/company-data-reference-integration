@@ -1,7 +1,7 @@
 import inspect
 from dataclasses import dataclass
 from functools import wraps
-from typing import Iterable, List, Optional, Tuple, Type, TypeVar
+from typing import Iterable, List, Optional, Type, TypeVar
 
 from flask import abort, jsonify, make_response, request
 from pydantic import BaseModel, ValidationError
@@ -59,6 +59,29 @@ def validate_check_request(request: RunCheckRequest) -> List[Error]:
         request.check_input.get_country_of_incorporation()
     )
     errors.extend(_validate_demo_check(request.demo_result, "check"))
+    return errors
+
+
+def validate_poll_request(request, check_id=None, reference=None):
+    errors = []
+    if check_id is not None and check_id != request.id:
+        errors.append(
+            [
+                Error(
+                    type=ErrorType.INVALID_CHECK_INPUT,
+                    message="ID in URL mismatches check ID in request",
+                )
+            ]
+        )
+    if reference is not None and reference != request.reference:
+        errors.append(
+            [
+                Error(
+                    type=ErrorType.INVALID_CHECK_INPUT,
+                    message="Reference in URL mismatches reference in request",
+                )
+            ]
+        )
     return errors
 
 
