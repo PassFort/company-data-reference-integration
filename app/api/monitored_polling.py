@@ -2,6 +2,7 @@ import json
 import logging
 import os.path
 import tempfile
+import uuid
 
 from flask import Blueprint, abort, make_response, send_file
 
@@ -25,13 +26,11 @@ from app.types.validation import (
 
 from .auth import auth
 from .metadata import metadata_api
-from .search import search_api
 
 logger = logging.getLogger(__name__)
 monitored_polling_api = Blueprint(
     "monitored_polling", __name__, url_prefix="/monitored-polling"
 )
-monitored_polling_api.register_blueprint(search_api)
 monitored_polling_api.register_blueprint(metadata_api)
 
 # arbitrary ID generated to uniquely identify this reference integration
@@ -40,7 +39,7 @@ TEMP_DIRECTORY = tempfile.gettempdir()
 
 
 def save_reference_data(reference, data, create=True):
-    response_data_path = os.path.join(TEMP_DIRECTORY, reference)
+    response_data_path = os.path.join(TEMP_DIRECTORY, f"{reference}.json")
     logger.debug("Saving reference data at %s", response_data_path)
     if create or os.path.isfile(response_data_path):
         with open(response_data_path, "w") as handle:
@@ -50,7 +49,7 @@ def save_reference_data(reference, data, create=True):
 
 
 def load_reference_data(reference):
-    response_data_path = os.path.join(TEMP_DIRECTORY, reference)
+    response_data_path = os.path.join(TEMP_DIRECTORY, f"{reference}.json")
     logger.debug("Loading reference data at %s", response_data_path)
     with open(response_data_path, "r") as handle:
         response_data = json.load(handle)
@@ -83,9 +82,7 @@ def run_check(req: RunCheckRequest) -> StartCheckResponse:
     # randomly generate a temp file and use its name as the reference
     # polling will check this temp file and report it back.
     # there's a separate private API endpoint to modify this temp file.
-    temp_file = tempfile.NamedTemporaryFile(delete=False, dir=TEMP_DIRECTORY)
-    temp_file.close()
-    reference = os.path.basename(temp_file.name)
+    reference = str(uuid.uuid4())
     # saving the reference into the check output for easy testing.
     # allows for updating the check output via _update API below.
     if demo_data.check_output:
@@ -151,6 +148,9 @@ def monitored_checks_ready(
     return MonitoredCheckResponse()
 
 
+#####################################
+# PRIVATE - FOR INTERNAL TESTING ONLY
+#####################################
 @monitored_polling_api.route("/monitored_checks/<reference>/_update", methods=["POST"])
 @auth.login_required
 @validate_models

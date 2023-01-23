@@ -6,7 +6,7 @@
       "type": "UNIFORM",
       "initial_interval": 0,
       "polling_interval": 30,
-      "max_polls": 10
+      "max_polls": 1
     },
     "monitoring_strategy": {
       "type": "UNIFORM",
