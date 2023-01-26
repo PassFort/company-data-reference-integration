@@ -21,6 +21,7 @@ from app.types.common import Error, ErrorType
 from app.types.validation import (
     validate_check_request,
     validate_models,
+    validate_poll_reference,
     validate_poll_request,
 )
 
@@ -158,6 +159,9 @@ def monitored_checks_update(
     updated_response: MonitoredCheckPollResponse,
     reference="",
 ) -> MonitoredCheckResponse:
+    errors = validate_poll_reference(reference)
+    if errors:
+        return MonitoredCheckResponse.error(errors, provider_id=PROVIDER_ID)
     saved = save_reference_data(reference, updated_response, create=False)
     if not saved:
         MonitoredCheckResponse.error(

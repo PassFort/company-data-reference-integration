@@ -9,6 +9,7 @@ from pydantic import BaseModel, ValidationError
 from app.types.checks import RunCheckRequest
 from app.types.common import (
     SUPPORTED_COUNTRIES,
+    UUID,
     Error,
     ErrorType,
     LocalField,
@@ -62,6 +63,22 @@ def validate_check_request(request: RunCheckRequest) -> List[Error]:
     return errors
 
 
+def validate_poll_reference(reference):
+    errors = []
+    try:
+        UUID(self=reference)
+    except ValidationError:
+        errors.append(
+            [
+                Error(
+                    type=ErrorType.INVALID_INPUT,
+                    message="Reference must be a valid UUID",
+                )
+            ]
+        )
+    return errors
+
+
 def validate_poll_request(request, check_id=None, reference=None):
     errors = []
     if check_id is not None and check_id != request.id:
@@ -73,15 +90,17 @@ def validate_poll_request(request, check_id=None, reference=None):
                 )
             ]
         )
-    if reference is not None and reference != request.reference:
-        errors.append(
-            [
-                Error(
-                    type=ErrorType.INVALID_CHECK_INPUT,
-                    message="Reference in URL mismatches reference in request",
-                )
-            ]
-        )
+    if reference is not None:
+        errors.extend(validate_poll_reference(reference))
+        if reference != request.reference:
+            errors.append(
+                [
+                    Error(
+                        type=ErrorType.INVALID_CHECK_INPUT,
+                        message="Reference in URL mismatches reference in request",
+                    )
+                ]
+            )
     return errors
 
 
@@ -137,7 +156,7 @@ def validate_models(fn):
                             {
                                 "errors": [
                                     {
-                                        "message": error["msg"],
+                                        "message": f"{error['msg']} {error.get('loc', '')}",
                                         "type": ErrorType.INVALID_INPUT,
                                     }
                                     for error in e.errors()

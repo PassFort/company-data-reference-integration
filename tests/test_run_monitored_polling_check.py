@@ -1,6 +1,7 @@
 import base64
 import os
 import time
+import urllib.parse
 from email.utils import formatdate
 from uuid import uuid4
 
@@ -207,4 +208,44 @@ def test_resold_check_has_valid_charges(session, auth):
     assert poll_result["charges"] == [
         {"amount": 100, "reference": "DUMMY REFERENCE"},
         {"amount": 50, "sku": "NORMAL"},
+    ]
+
+
+def test_cannot_use_invalid_poll_reference(session, auth):
+    invalid_reference = urllib.parse.quote("notareference")
+
+    response = session.post(
+        f"http://app/monitored-polling/monitored_checks/{invalid_reference}/poll",
+        json={
+            "reference": invalid_reference,
+            "commercial_relationship": "DIRECT",
+            "provider_config": {},
+        },
+        auth=auth(),
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/json"
+    result = response.json()
+    assert "errors" in result
+    assert result["errors"] == [
+        [{"message": "Reference must be a valid UUID", "type": "INVALID_INPUT"}],
+    ]
+
+
+def test_cannot_use_invalid_update_reference(session, auth):
+    invalid_reference = urllib.parse.quote("notareference")
+
+    response = session.post(
+        f"http://app/monitored-polling/monitored_checks/{invalid_reference}/_update",
+        json={},
+        auth=auth(),
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/json"
+    result = response.json()
+    assert "errors" in result
+    assert result["errors"] == [
+        [{"message": "Reference must be a valid UUID", "type": "INVALID_INPUT"}],
     ]
