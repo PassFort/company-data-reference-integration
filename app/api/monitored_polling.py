@@ -100,7 +100,7 @@ def checks_poll(
     request: CheckPollRequest,
     **route_kwargs,
 ) -> MonitoredCheckPollResponse:
-    errors = validate_poll_request(request, **route_kwargs)
+    errors = validate_poll_request(request, reference=request.reference, **route_kwargs)
     if errors:
         return MonitoredCheckPollResponse.error(
             errors, check_output=None, provider_id=PROVIDER_ID

@@ -66,7 +66,7 @@ def validate_check_request(request: RunCheckRequest) -> List[Error]:
 def validate_poll_reference(reference):
     errors = []
     try:
-        UUID(self=reference)
+        UUID.parse_obj(reference)
     except ValidationError:
         errors.append(
             [

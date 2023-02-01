@@ -211,6 +211,77 @@ def test_resold_check_has_valid_charges(session, auth):
     ]
 
 
+def test_can_monitor_poll_of_successful_check(session, auth):
+    check_response = session.post(
+        "http://app/monitored-polling/checks",
+        json={
+            "id": str(uuid4()),
+            "check_input": {
+                "entity_type": "COMPANY",
+                "metadata": {
+                    "name": "PASSFORT LIMITED",
+                    "number": "09565115",
+                    "country_of_incorporation": "GBR",
+                },
+            },
+            "commercial_relationship": "DIRECT",
+            "provider_config": {},
+            "demo_result": "NO_DATA",
+        },
+        auth=auth(),
+    )
+
+    assert check_response.status_code == 200
+    assert check_response.headers["content-type"] == "application/json"
+    check_result = check_response.json()
+    assert check_result["errors"] == []
+    assert "reference" in check_result
+    assert check_result["reference"] != ""
+    assert check_result["provider_id"] == "b4165f9c-8d21-11ed-90f6-4f528b1df65f"
+
+    check_reference = check_result["reference"]
+    check_id = str(uuid4())
+    poll_response = session.post(
+        f"http://app/monitored-polling/checks/{check_id}/poll",
+        json={
+            "id": check_id,
+            "reference": check_reference,
+            "custom_data": {},
+            "commercial_relationship": "DIRECT",
+            "provider_config": {},
+        },
+        auth=auth(),
+    )
+
+    assert poll_response.status_code == 200
+    assert poll_response.headers["content-type"] == "application/json"
+    poll_result = poll_response.json()
+    assert "pending" in poll_result
+    assert "errors" in poll_result
+    assert not poll_result["pending"]
+    assert poll_result["errors"] == []
+    assert poll_result["charges"] == []
+
+    monitored_poll_response = session.post(
+        f"http://app/monitored-polling/monitored_checks/{check_reference}/poll",
+        json={
+            "reference": check_reference,
+            "commercial_relationship": "DIRECT",
+            "provider_config": {},
+        },
+        auth=auth(),
+    )
+
+    assert monitored_poll_response.status_code == 200
+    assert monitored_poll_response.headers["content-type"] == "application/json"
+    monitored_poll_result = monitored_poll_response.json()
+    assert "pending" in monitored_poll_result
+    assert "errors" in monitored_poll_result
+    assert not monitored_poll_result["pending"]
+    assert monitored_poll_result["errors"] == []
+    assert monitored_poll_result["charges"] == []
+
+
 def test_cannot_use_invalid_poll_reference(session, auth):
     invalid_reference = urllib.parse.quote("notareference")
 
