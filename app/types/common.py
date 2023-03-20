@@ -1,5 +1,6 @@
 from enum import Enum, EnumMeta
 from typing import Any, Dict, List, Optional, Union
+from uuid import UUID
 
 from pydantic import BaseModel, Field, constr
 from typing_extensions import Literal
@@ -48,6 +49,10 @@ class DemoResultType(BaseEnum):
     ERROR_INVALID_CREDENTIALS = "ERROR_INVALID_CREDENTIALS"
     ERROR_ANY_PROVIDER_MESSAGE = "ERROR_ANY_PROVIDER_MESSAGE"
     ERROR_CONNECTION_TO_PROVIDER = "ERROR_CONNECTION_TO_PROVIDER"
+
+    # External resources
+    EXTERNAL_RESOURCE_LINK = "EXTERNAL_RESOURCE_LINK"
+    EXTERNAL_RESOURCE_EMBED = "EXTERNAL_RESOURCE_EMBED"
 
     # Company search specific
     NO_HITS = "NO_HITS"
@@ -437,6 +442,15 @@ class Charge(BaseModel):
     reference: Optional[str]
     sku: Optional[str]
 
+class ExternalResourceType(BaseEnum):
+    LINK = "LINK"
+    EMBED = "EMBED"
+
+class ExternalResource(BaseModel):
+      type: ExternalResourceType
+      url: str
+      id: UUID
+      label: str
 
 class OperationRequest(BaseModel):
     demo_result: Optional[str]
