@@ -5,7 +5,7 @@ from uuid import UUID
 from hypothesis import given, assume
 import hypothesis.strategies as st
 
-from app.verify_url import verify_signed_url, compute_signature
+from app.auth.signed_urls import verify_signed_url, compute_signature
 from tests.url_strategy import SecretKey, Url
 
 # 32 random bytes encoded as standard base64

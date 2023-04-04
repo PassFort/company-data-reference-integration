@@ -1,6 +1,6 @@
 from flask import Blueprint, send_file
 
-from app.api.auth import http_sig, require_signed_url
+from app.auth import http_sig, require_signed_url
 from app.api.metadata import metadata_api
 from app.api.search import search_api
 from app.demo import _run_demo_check

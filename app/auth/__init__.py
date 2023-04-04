@@ -1,13 +1,14 @@
 import base64
 from datetime import datetime, timezone
 from functools import wraps
+import logging
 from uuid import UUID
 
 from flask import abort, request
 
 from app.http_signature import HTTPSignatureAuth
 from app.startup import integration_key_store, INTEGRATION_SECRET_KEY
-from app.verify_url import QUERY_PARAMS, verify_signed_url
+from app.auth.signed_urls import QUERY_PARAMS, verify_signed_url
 
 http_sig = HTTPSignatureAuth()
 
@@ -19,7 +20,11 @@ def resolve_key(key_id):
 def require_signed_url(f):
     @wraps(f)
     def decorator(*args, **kwargs):
-        if request.args.get("version") != "1":
+        version = request.args.get("version")
+        if version != "1" :
+            logging.warning(
+                f"Attempt to access external resource via unsupported auth scheme (version `{version}`)"
+            )
             abort(400, "Integration was built to only support version `1` of the signed url scheme")
 
         if list(request.args.keys()) != QUERY_PARAMS:
@@ -38,8 +43,6 @@ def require_signed_url(f):
 
         try:
             auditee_id = UUID(request.args.get("auditee_id"))
-            if valid_until < datetime.now():
-                abort(404, "Signed URL no longer valid") 
         except ValueError:
             abort(400, "Auditee ID must be a valid UUID")
 
@@ -49,3 +52,4 @@ def require_signed_url(f):
         
         return f(*args, **kwargs)
     return decorator
+

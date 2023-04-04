@@ -1,6 +1,5 @@
 from enum import Enum, EnumMeta
 from typing import Any, Dict, List, Optional, Union
-from uuid import UUID
 
 from pydantic import BaseModel, Field, constr
 from typing_extensions import Literal

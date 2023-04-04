@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from app.api.auth import http_sig
+from app.auth import http_sig
 from app.demo import _try_load_demo_result
 from app.types.common import (
     CommercialRelationshipType,

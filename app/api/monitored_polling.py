@@ -6,6 +6,7 @@ import uuid
 
 from flask import Blueprint, abort, make_response, send_file
 
+from app.auth import http_sig
 from app.demo import _run_demo_check
 from app.files import static_file_path
 from app.types.checks import (
@@ -25,7 +26,6 @@ from app.types.validation import (
     validate_poll_request,
 )
 
-from .auth import http_sig
 from .metadata import metadata_api
 
 logger = logging.getLogger(__name__)

@@ -4,7 +4,7 @@ from uuid import UUID
 
 import hypothesis.strategies as st
 
-from app.verify_url import verify_signed_url, compute_signature
+from app.auth.signed_urls import verify_signed_url, compute_signature
 
 # Minimal strategy for generating example URLs 
 # Does not account for or include many valid URLs 

@@ -1,13 +1,13 @@
 {
-  "provider_data": "Demo result `EXTERNAL_RESOURCE_LINK`. Did not make request to provider.",
+  "provider_data": "Demo result `EXTERNAL_RESOURCE_EMBED`. Did not make request to provider.",
   "warnings": [],
   "errors": [],
   "external_resources": [
     {
-      "type": "LINK",
+      "type": "EMBED",
       "url": "http://localhost:8080/external_resource",
       "id": "8AA89547-89FC-4EAD-ACEC-FFA36F451337",
-      "label": "Example link"
+      "label": "Example embed"
     }
   ],
   "check_output": {
