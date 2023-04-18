@@ -263,7 +263,7 @@ def test_can_monitor_poll_of_successful_check(session, auth):
     assert poll_result["charges"] == []
 
     monitored_poll_response = session.post(
-        f"http://app/monitored-polling/monitored_checks/{check_reference}/poll",
+        f"http://app/monitored-polling/monitored_checks/poll",
         json={
             "reference": check_reference,
             "commercial_relationship": "DIRECT",
@@ -286,7 +286,7 @@ def test_cannot_use_invalid_poll_reference(session, auth):
     invalid_reference = urllib.parse.quote("notareference")
 
     response = session.post(
-        f"http://app/monitored-polling/monitored_checks/{invalid_reference}/poll",
+        f"http://app/monitored-polling/monitored_checks/poll",
         json={
             "reference": invalid_reference,
             "commercial_relationship": "DIRECT",

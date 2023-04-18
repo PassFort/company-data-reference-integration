@@ -79,8 +79,9 @@ def validate_poll_reference(reference):
     return errors
 
 
-def validate_poll_request(request, check_id=None, reference=None):
+def validate_poll_request(request, check_id=None):
     errors = []
+    reference = request.reference
     if check_id is not None and check_id != request.id:
         errors.append(
             [
@@ -92,15 +93,6 @@ def validate_poll_request(request, check_id=None, reference=None):
         )
     if reference is not None:
         errors.extend(validate_poll_reference(reference))
-        if reference != request.reference:
-            errors.append(
-                [
-                    Error(
-                        type=ErrorType.INVALID_CHECK_INPUT,
-                        message="Reference in URL mismatches reference in request",
-                    )
-                ]
-            )
     return errors
 
 

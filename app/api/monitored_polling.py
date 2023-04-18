@@ -100,7 +100,7 @@ def checks_poll(
     request: CheckPollRequest,
     **route_kwargs,
 ) -> MonitoredCheckPollResponse:
-    errors = validate_poll_request(request, reference=request.reference, **route_kwargs)
+    errors = validate_poll_request(request, **route_kwargs)
     if errors:
         return MonitoredCheckPollResponse.error(
             errors, check_output=None, provider_id=PROVIDER_ID
@@ -117,14 +117,14 @@ def monitored_provider_poll() -> MonitoredPollResponse:
     return MonitoredPollResponse()
 
 
-@monitored_polling_api.route("/monitored_checks/<reference>/poll", methods=["POST"])
+@monitored_polling_api.route("/monitored_checks/poll", methods=["POST"])
 @auth.login_required
 @validate_models
 def monitored_checks_poll(
     request: MonitoredCheckRequest,
-    reference="",
 ) -> MonitoredCheckPollResponse:
-    errors = validate_poll_request(request, reference=reference)
+    reference = request.reference
+    errors = validate_poll_request(request)
     if errors:
         return MonitoredCheckPollResponse.error(
             errors, check_output=None, provider_id=PROVIDER_ID
@@ -134,7 +134,7 @@ def monitored_checks_poll(
     return MonitoredCheckPollResponse(**cur_poll_data)
 
 
-@monitored_polling_api.route("/monitored_checks/<reference>/ready", methods=["POST"])
+@monitored_polling_api.route("/monitored_checks/ready", methods=["POST"])
 @auth.login_required
 @validate_models
 def monitored_checks_ready(
