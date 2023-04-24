@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from app.auth import http_sig
+from app.api.auth import auth
 from app.demo import _try_load_demo_result
 from app.types.common import (
     CommercialRelationshipType,
@@ -14,7 +14,7 @@ search_api = Blueprint("search", __name__)
 
 
 @search_api.route("/search", methods=["POST"])
-@http_sig.login_required
+@auth.login_required
 @validate_models
 def search(req: SearchRequest) -> SearchResponse:
     errors = validate_search_request(req)
