@@ -1,7 +1,15 @@
 {
-  "provider_data": "Demo result `ALL_DATA`. Did not make request to provider.",
+  "provider_data": "Demo result `EXTERNAL_RESOURCE_LINK`. Did not make request to provider.",
   "warnings": [],
   "errors": [],
+  "external_resources": [
+    {
+      "type": "LINK",
+      "url": "http://localhost:8080/external_resource",
+      "id": "8AA89547-89FC-4EAD-ACEC-FFA36F451337",
+      "label": "Example link"
+    }
+  ],
   "check_output": {
     "entity_type": "COMPANY",
     "external_refs": {

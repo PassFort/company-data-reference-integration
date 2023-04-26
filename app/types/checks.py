@@ -5,6 +5,7 @@ from app.types.common import (
     UUID,
     Charge,
     CompanyData,
+    ExternalResource,
     OperationRequest,
     OperationResponse,
 )
@@ -34,6 +35,7 @@ class RunCheckRequest(OperationRequest):
 
 
 class RunCheckResponse(OperationResponse):
+    external_resources: List[ExternalResource] = []
     check_output: Optional[CompanyData]
     charges: List[Charge] = []
 

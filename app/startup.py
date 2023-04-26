@@ -13,10 +13,10 @@ def _env(name):
         sys.exit(f"Missing required environment variable: {name}")
 
 
-_integration_secret_key = _env("INTEGRATION_SECRET_KEY")
+INTEGRATION_SECRET_KEY = _env("INTEGRATION_SECRET_KEY")
 
 integration_key_store = {
-    _integration_secret_key[:8]: base64.b64decode(_integration_secret_key)
+    INTEGRATION_SECRET_KEY[:8]: base64.b64decode(INTEGRATION_SECRET_KEY)
 }
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))

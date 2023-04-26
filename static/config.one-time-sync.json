@@ -13,7 +13,9 @@
   ],
   "supported_features": [
       "COMPANY_SEARCH",
-      "PROVIDER_FIELD_CHECKS"
+      "PROVIDER_FIELD_CHECKS",
+      "EXTERNAL_LINK",
+      "EXTERNAL_EMBED"
   ],
   "credentials": {
     "fields": [
